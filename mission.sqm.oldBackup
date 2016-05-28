@@ -1,0 +1,170 @@
+version=12;
+class Mission
+{
+	addOns[]=
+	{
+		"A3_Structures_F_EPC_Items_Electronics",
+		"A3_Structures_F_Mil_BagFence",
+		"a3_map_altis",
+		"a3_characters_f",
+		"A3_Structures_F_Civ_Dead",
+		"A3_Characters_F_Civil"
+	};
+	addOnsAuto[]=
+	{
+		"A3_Characters_F_Civil",
+		"a3_characters_f",
+		"a3_map_altis"
+	};
+	class Intel
+	{
+		briefingName="Bad Dead End";
+		resistanceWest=0;
+		startWind=0.099999994;
+		forecastWind=0.099999994;
+		forecastWaves=0.099999994;
+		year=2015;
+		month=12;
+		day=24;
+		hour=8;
+		minute=45;
+		startFogDecay=0.0049333;
+		forecastFogDecay=0.0049333;
+	};
+	class Groups
+	{
+		items=4;
+		class Item0
+		{
+			side="CIV";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={8517.5869,101.53504,25182.633};
+					id=0;
+					side="CIV";
+					vehicle="C_man_p_shorts_1_F";
+					player="PLAY CDG";
+					leader=1;
+					skill=0.60000002;
+				};
+			};
+		};
+		class Item1
+		{
+			side="CIV";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={8519.7373,95.380753,25204.242};
+					id=1;
+					side="CIV";
+					vehicle="C_man_1_3_F";
+					player="PLAY CDG";
+					leader=1;
+					skill=0.60000002;
+				};
+			};
+		};
+		class Item2
+		{
+			side="CIV";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={8499.7295,102.98288,25182.104};
+					id=2;
+					side="CIV";
+					vehicle="C_man_polo_5_F";
+					player="PLAYER COMMANDER";
+					leader=1;
+					skill=0.60000002;
+				};
+			};
+		};
+		class Item3
+		{
+			side="CIV";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={8499.6357,96.276436,25203.756};
+					id=3;
+					side="CIV";
+					vehicle="C_man_hunter_1_F";
+					player="PLAY CDG";
+					leader=1;
+					skill=0.60000002;
+				};
+			};
+		};
+	};
+};
+class Intro
+{
+	addOns[]=
+	{
+		"a3_map_altis"
+	};
+	addOnsAuto[]=
+	{
+		"a3_map_altis"
+	};
+	randomSeed=2744005;
+	class Intel
+	{
+		startWind=0.1;
+		forecastWind=0.1;
+		forecastWaves=0.1;
+		startFogDecay=0.0049333;
+		forecastFogDecay=0.0049333;
+	};
+};
+class OutroWin
+{
+	addOns[]=
+	{
+		"a3_map_altis"
+	};
+	addOnsAuto[]=
+	{
+		"a3_map_altis"
+	};
+	randomSeed=2744005;
+	class Intel
+	{
+		startWind=0.1;
+		forecastWind=0.1;
+		forecastWaves=0.1;
+		startFogDecay=0.0049333;
+		forecastFogDecay=0.0049333;
+	};
+};
+class OutroLoose
+{
+	addOns[]=
+	{
+		"a3_map_altis"
+	};
+	addOnsAuto[]=
+	{
+		"a3_map_altis"
+	};
+	randomSeed=2744005;
+	class Intel
+	{
+		startWind=0.1;
+		forecastWind=0.1;
+		forecastWaves=0.1;
+		startFogDecay=0.0049333;
+		forecastFogDecay=0.0049333;
+	};
+};
