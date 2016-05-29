@@ -133,6 +133,11 @@ class CfgSounds {
         sound[] = {"\sound\tool0.ogg", 1, 1};
         titles[] = {};
     };
+    class toolSound1 {
+        name = "";
+        sound[] = {"\sound\tool1.ogg", 1, 1};
+        titles[] = {};
+    };
     class buildSound0 {
         name = "";
         sound[] = {"\sound\build0.ogg", 0.5, 1};

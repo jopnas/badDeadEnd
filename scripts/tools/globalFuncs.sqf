@@ -4,7 +4,7 @@ bde_fnc_say3d = { // [_sayobject,_audioclip,_maxdistance,_audiopitch] remoteExec
         _audioclip      = _this select 1;
         _maxdistance    = _this select 2;
 
-        _sayobject say3D [_audioclip, _maxdistance, random(2)]
+        _sayobject say3D [_audioclip, _maxdistance, random(2)];
     };
 };
 
@@ -14,8 +14,8 @@ bde_fnc_addBurnAction = {
     burnAction = _targetObject addAction [ "Burn dead body", {
         _targetObject = _this select 0;
         _caller = _this select 1;
-        _lighterCount  = {_x == 'jii_zippo'} count magazines _caller;
-        _matchesCount  = {_x == 'jii_matches'} count magazines _caller;
+        _lighterCount  = {_x == 'jii_zippo'} count Magazines _caller;
+        _matchesCount  = {_x == 'jii_matches'} count Magazines _caller;
         if(_lighterCount > 0 || (rain < 0.2 && _matchesCount > 0))then{
             [_targetObject] remoteExec ["bde_fnc_removeBurnAction",0,false];
             [_targetObject] remoteExec ["fnc_burnDeadZ",0,false];

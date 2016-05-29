@@ -1,7 +1,7 @@
 _z = _this select 0;
 _z setHit ["head", 0.7 + random(0.2)];
 _z setHit ["hands", 0.7 + random(0.2)];
-_z setHit ["legs", 1];
+_z setHit ["legs", 0.5];
 
 removeAllWeapons _z;
 removeAllAssignedItems _z;
@@ -22,8 +22,47 @@ _z setVariable["speechPitch",random(2), false];
 
 _z setVariable["hasTarget",false, false];
 _z setVariable["lastPlayerSeen",[false,[]], false];
-_z setVariable["lastPlayerHeard",false, false];
+_z setVariable["lastPlayerHeard",[0,0,0], false];
 doStop _z;
+
+_z addEventHandler ["FiredNear", {
+    _unit = _this select 0; //Object - Object the event handler is assigned to
+    _firer = _this select 1; //Object - Object which fires a weapon near the unit
+    _distance = _this select 2; //Number - Distance in meters between the unit and firer (max. distance ~69m)
+    _weapon = _this select 3; //String - Fired weapon
+    //_muzzle = _this select 4; //String - Muzzle that was used
+    //_mode = _this select 5; //String - Current mode of the fired weapon
+    //_ammo = _this select 6; //String - Ammo used    
+    
+    _silenced = 0;
+    if(_weapon == primaryWeapon _firer)then{
+        if(str(primaryWeaponItems _firer) find "muzzle" > -1)then{
+            _silenced = 3;
+        };
+    };
+    if(_weapon == secondaryWeapon _firer)then{
+        if(str(secondaryWeaponItems _firer) find "muzzle" > -1)then{
+            _silenced = 2;
+        };
+    };
+    if(_weapon == handgunWeapon _firer)then{
+        if(str(handgunItems _firer) find "muzzle" > -1)then{
+            _silenced = 4;
+            
+        };
+    };
+    
+    if(_silenced > 0)then{
+        _distance = _distance / _silenced;
+    };
+    
+    _lastPlayerHeard     = _unit getVariable "lastPlayerHeard";
+    
+    if(_distance < _lastPlayerHeard distance _unit)then{   
+        _unit setVariable["lastPlayerHeard",position _firer, false];
+    };
+     systemChat str (_distance);
+}];
 
 _z addeventhandler ["HandleDamage",{
     _unit = _this select 0;
@@ -88,7 +127,7 @@ _zBehaviour = [_z] spawn {
         _lastPlayerSeenSet  = _lastPlayerSeen select 0;
         _lastPlayerSeenPos  = _lastPlayerSeen select 1;
       
-        _lastPlayerHeard    = _z getVariable "lastPlayerHeard";
+        _lastPlayerHeard     = _z getVariable "lastPlayerHeard";
         
         // Check Players in spawn range and seperate in alive/dead lists
         _alivePlayers = [];
@@ -117,15 +156,16 @@ _zBehaviour = [_z] spawn {
                 _z setVariable["lastPlayerSeen",[false,[]], false];
                 _z forceWalk true;
                 _z forceSpeed 0.3;
-                _z playMove "AmovPercMstpSnonWnon_turnL";
-                sleep 2;
+                if(_lastPlayerHeard distance _z < 200)then{
+                    _z doMove (_lastPlayerHeard);
+                };
             }else{
                 // if player in agro range
-                if(_closestPlayerAliveDistance < agroRange)then{                    
+                if(_closestPlayerAliveDistance < agroRange)then{
                     if([_z,_closestPlayerAlive] call canSeePlayer)then{
                         _z forceWalk false;
                         _z forceSpeed 10;
-
+                        
                         if(!_hasTarget)then{
                              [_z,"zhurt1",50,_speechPitch] remoteExec ["bde_fnc_say3d",0,false];
                             _z setVariable["hasTarget",true, false];
@@ -156,7 +196,11 @@ _zBehaviour = [_z] spawn {
                             )then{
                                 _z setVariable["lastPlayerSeen",[false,[]], false];
                             };
-                        };    
+                        }else{
+                            if(_lastPlayerHeard distance _z < 200)then{
+                                _z doMove (_lastPlayerHeard);
+                            };
+                        };
                     };    
 
                 }else{
@@ -165,8 +209,10 @@ _zBehaviour = [_z] spawn {
                       _z forceWalk true;
                       _z forceSpeed 0.3;
                     };
+                    if(_lastPlayerHeard distance _z < 200)then{
+                        _z doMove (_lastPlayerHeard);
+                    };
                 };  
-                //systemChat format["hasTarget: %1, lastPlayerSeenSet: %2, lastPlayerSeenPos: %3, ",_hasTarget,_lastPlayerSeenSet,_lastPlayerSeenPos];
             };
         }else{
             if(_hasTarget)then{
