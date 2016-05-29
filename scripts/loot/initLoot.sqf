@@ -22,7 +22,7 @@ fnc_spawnLoot = {
   // JII Mod Items
   _foodItems            = ["jii_canunknown","jii_canpasta","jii_canrusty","jii_matches","jii_hatchet","jii_antibiotics","jii_zippo","jii_ducttape","jii_vitamines","jii_bottleuseless","jii_bottleempty","jii_bottlefilled","jii_bottleclean","jii_canteenempty","jii_canteenfilled","jii_bakedbeans","jii_tacticalbacon"];
   _medicalItems	        = ["jii_waterpurificationtablets","jii_antibiotics","jii_vitamines"];
-  _toolItems            = ["jii_matches","jii_hatchet","jii_stone","jii_wood","jii_ducttape"];
+  _toolItems            = ["jii_matches","jii_hatchet","jii_stone","jii_wood","jii_ducttape","jii_tire"];
 
   // Building Type lists
   _militaryBuildings    = ["Land_Hangar_F","Land_TentHangar_V1_dam_F","Land_TentHangar_V1_F","Land_MilOffices_V1_F","Land_Cargo_Tower_V3_F","Land_Cargo_Tower_V2_F","Land_Cargo_Tower_V1_No7_F","Land_Cargo_Tower_V1_No6_F","Land_Cargo_Tower_V1_No5_F","Land_Cargo_Tower_V1_No4_F","Land_Cargo_Tower_V1_No3_F","Land_Cargo_Tower_V1_No2_F","Land_Cargo_Tower_V1_No1_F","Land_Cargo_Tower_V1_F","Land_Cargo_Patrol_V3_F","Land_Cargo_Patrol_V2_F","Land_Cargo_Patrol_V1_F","Land_Cargo_HQ_V3_F","Land_Cargo_HQ_V2_F","Land_Cargo_HQ_V1_F","Land_Cargo_building_V3_F","Land_Cargo_building_V2_F","Land_Cargo_building_V1_F","Land_i_Barracks_V1_F","Land_i_Barracks_V1_dam_F","Land_i_Barracks_V2_F","Land_i_Barracks_V2_dam_F","Land_u_Barracks_V2_F","Land_Bunker_F","Land_BagBunker_Large_F","Land_BagBunker_Small_F","Land_BagBunker_Tower_F",""];
