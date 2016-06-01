@@ -22,7 +22,7 @@ while {true} do {
             _rdmLocPos = getPos (_buildings call BIS_fnc_selectRandom);
             _pos = [((_rdmLocPos select 0) + floor (random 10)) - floor (random 10), ((_rdmLocPos select 1) + floor (random 10)) - floor (random 10), _rdmLocPos select 2];
             if([objNull, "VIEW"] checkVisibility [eyePos _thisPlayer, _pos] == 0 && _thisPlayer distance _pos > 30)then{
-                _z = _zUnits call BIS_fnc_selectRandom;
+                _z = selectRandom _zUnits;
                 _z createUnit [_pos, groupZ,"[this] call fnc_zombieBehaviour", 0, "NONE"];
                 sleep 0.2;
             };

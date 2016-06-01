@@ -82,6 +82,15 @@ if(_noiseLevel > 100)then{
 
 playerNoise = _noiseLevel;
 
+{
+    if(_playerUnit distance _x < playerNoise && alive _x)then{
+        _playerHeardPos = _x getVariable "lastPlayerHeard";
+        if(_playerUnit distance _x < _playerHeardPos distance _x)then{
+            _x setVariable["lastPlayerHeard",position _playerUnit, false];
+        };
+    };
+} forEach (units groupZ);
+
 /*["adjust_stand_side",["\A3\sounds_f\characters\stances\concrete_adjust_stand_side1",0.251189,1,20]],
     ["adjust_stand_side",["\A3\sounds_f\characters\stances\concrete_adjust_stand_side2",0.251189,1,20]],
     ["adjust_stand_side",["\A3\sounds_f\characters\stances\concrete_adjust_stand_side3",0.251189,1,20]],

@@ -1,5 +1,5 @@
-if(playerHealth < 10) then {
-	_newVal = playerSick + 0.001;
+if(playerHealth < 5) then {
+	_newVal = playerSick + 0.0001;
 	if(_newVal < 0)then{
 		_newVal = 0;
 	};

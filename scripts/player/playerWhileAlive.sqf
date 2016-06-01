@@ -135,14 +135,15 @@ _whileAliveFunc = [] spawn {
 
 		waitUntil {time - t > 0.1};
 
-		_cursorTarget = cursorTarget;
-		_cursorTargetType = typeOf _cursorTarget;
-		_closestBuilding = nearestBuilding player;
-		_isInside = [_closestBuilding,player,false] call checkInside;
-		_nearestFireplaces = nearestObjects [player, ["Land_FirePlace_F","Land_Campfire_F"], 3];
+		_cursorTarget         = cursorTarget;
+		_cursorTargetType     = typeOf _cursorTarget;
+		_closestBuilding      = nearestBuilding player;
+		_isInside             = [_closestBuilding,player,false] call checkInside;
+        _isInCar              = (vehicle player == player);
+		_nearestFireplaces    = nearestObjects [player, ["Land_FirePlace_F","Land_Campfire_F"], 3];
 
-		[_isInside,_nearestFireplaces] spawn handleWet;
-		[_isInside,_nearestFireplaces] spawn handleTemperature;
+		[_isInside,_isInCar,_nearestFireplaces] spawn handleWet;
+		[_isInside,_isInCar,_nearestFireplaces] spawn handleTemperature;
 
 		[] spawn checkSick;
 		[] spawn checkNoise;

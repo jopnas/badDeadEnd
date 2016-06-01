@@ -77,8 +77,8 @@ _namespaceUI = uiNamespace getVariable "bde_gui_display";
 	_ctrlTemperatureIcon = _namespaceUI displayCtrl 1203;
 	_ctrlTemperature = _namespaceUI displayCtrl 1204;
 	_ctrlTemperature ctrlSetText "images\gui\val_" + str ( floor(_temperatureVal/10)*10 ) + ".paa";
-    _tempVal = 1-((_temperatureVal/3) / 100);
-    _ctrlTemperatureIcon ctrlSetTextColor [1-_tempVal,1-_tempVal,1,1];
+    //_tempVal = 1-((_temperatureVal/3) / 100);
+    //_ctrlTemperatureIcon ctrlSetTextColor [1-_tempVal,1-_tempVal,1,1];
 
     // "health"
 	_ctrlHealthIcon = _namespaceUI displayCtrl 1205;

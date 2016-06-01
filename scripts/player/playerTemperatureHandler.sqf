@@ -1,20 +1,20 @@
 private["_playerUnitTemperature","_playerWetness","_nearestFireplaces"];
 
-_playerUnit 		= player;
 _isInside 			= _this select 0;
-_nearestFireplaces 	= _this select 1;
+_isInCar 			= _this select 1;
+_nearestFireplaces 	= _this select 2;
 
 _playerUnitTemperature = playerTemperature;
 
-if(playerWet > 10)then{
-	_playerUnitTemperature = _playerUnitTemperature - 0.3;
+if(playerWet > 50)then{
+	_playerUnitTemperature = _playerUnitTemperature - 0.2;
 };
 
-if(_isInside)then{
-	_playerUnitTemperature = _playerUnitTemperature + 0.2;
+if(_isInside || _isInCar)then{
+	_playerUnitTemperature = _playerUnitTemperature + 0.1;
 };
 
-if(count (_nearestFireplaces) > 0)then{
+if(count (_nearestFireplaces) > 0 && !_isInCar)then{
 	_playerUnitTemperature = _playerUnitTemperature + (count (_nearestFireplaces) * 1);
 };
 
