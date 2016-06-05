@@ -241,6 +241,9 @@ if(_isRespawn)then{
 	addCamShake [(_respawnTime + 7), 10, 50];
 };
 
+// Init Barricading
+[] execVM "scripts\barricading\initBarricading.sqf";
+
 _respawnTime fadeSound 3;
 _respawnTime fadeMusic 3;
 titleCut ["", "BLACK IN", _respawnTime];

@@ -132,8 +132,12 @@ fnc_saveCar = {
 	_weapons	= getWeaponCargo _car;//[["SMG_01_F","hgun_Pistol_heavy_01_F"],[2,2]];
 	_magazines	= getMagazineCargo _car;//[["jii_canrusty","jii_matches"],[2,3]];
 	_backpacks	= getBackpackCargo _car;//[["B_AssaultPack_blk","B_Carryall_khk"],[2,1]];
+    _destroyed  = 0;
+    if(!(alive _car))then{
+        _destroyed = 1;
+    };
 
     // Car Save
-    _QuerySave 	= format["0:SQL_VH_SAVE:UPDATE vehicles SET position='%2', rotation='%3', fuel='%4', damage='%5', destroyed='0', items='%6', weapons='%7', magazines='%8', backpacks='%9' WHERE id='%1'",_id,_position,_rotation,_fuel,_damage,_items,_weapons,_magazines,_backpacks];
+    _QuerySave 	= format["0:SQL_VH_SAVE:UPDATE vehicles SET position='%2', rotation='%3', fuel='%4', damage='%5', destroyed='0', items='%6', weapons='%7', magazines='%8', backpacks='%9', destroyed=%10 WHERE id='%1'",_id,_position,_rotation,_fuel,_damage,_items,_weapons,_magazines,_backpacks,_destroyed];
     _saveIs = "extDB2" callExtension _QuerySave;
 };

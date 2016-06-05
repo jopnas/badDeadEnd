@@ -10,4 +10,4 @@ agroRange 		    = 40;
 attackRangeDef 		= 1.5;
 zombiedamage        = 0.1;
 
-[] execVM "scripts\zombies\zombieManager.sqf";
+//[] execVM "scripts\zombies\zombieManager.sqf";

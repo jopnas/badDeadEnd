@@ -7,6 +7,7 @@ checkInside			= compile preprocessFile "scripts\tools\checkInside.sqf";
 checkAnimals		= compile preprocessFile "scripts\animals\checkAnimals.sqf";
 footFuncs			= compile preprocessFile "scripts\foot\foot_funcs.sqf";
 checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
+getBarricadeables	= compile preprocessFile "scripts\barricading\getBarricadeables.sqf";
 
 hungerWaitTime = 10;
 nextHungerDecr = hungerWaitTime;
@@ -144,6 +145,8 @@ _whileAliveFunc = [] spawn {
 
 		[_isInside,_isInCar,_nearestFireplaces] spawn handleWet;
 		[_isInside,_isInCar,_nearestFireplaces] spawn handleTemperature;
+        
+        [_isInside,_closestBuilding] spawn getBarricadeables;
 
 		[] spawn checkSick;
 		[] spawn checkNoise;

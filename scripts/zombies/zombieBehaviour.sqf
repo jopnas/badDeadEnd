@@ -61,7 +61,7 @@ _z addEventHandler ["FiredNear", {
     if(_distance < _lastPlayerHeard distance _unit)then{   
         _unit setVariable["lastPlayerHeard",position _firer, false];
     };
-     systemChat str (_distance);
+    //systemChat str (_distance);
 }];
 
 _z addeventhandler ["HandleDamage",{
