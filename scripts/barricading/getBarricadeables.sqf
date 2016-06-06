@@ -6,40 +6,40 @@ _canBarricade = false;
 
 if(_isInside)then{
     _claimedTo = _building getVariable["claimedTo",""];
-    
+
     _closestPointDist = 10000;
     if(_claimedTo == getPlayerUID player)then{
-        
+
         {
             if((position player) distance _x < _closestPointDist)then{
                 _closestPointDist = (position player) distance _x
                 systemChat format["closest barricading point: %1",_closestPointDist];
             };
-            
+
             if((position player) distance _x < 0.7)then{
                 _buildingDir    = getDir _building;
                 _playerDir      = getDir player;
                 _realRelDir     = floor abs(_buildingDir - _playerDir);
-                
+
                 if(_realRelDir < 4)then{
                     _canBarricade = true;
                 };
-                
+
                 if(_realRelDir < 94 && _realRelDir > 86)then{
                     _canBarricade = true;
                 };
-                
+
                 if(_realRelDir < 184 && _realRelDir > 16)then{
                     _canBarricade = true;
                 };
-                
+
                 if(_realRelDir < 274 && _realRelDir > 266)then{
                     _canBarricade = true;
                 };
 
                 if(_canBarricade)then{
                     if(barricadeAction < 0)then{
-                        barricadeAction = player addAction["Start barricading",{ 
+                        barricadeAction = player addAction["Start barricading",{
                             _vars = _this select 3;
                             [_vars select 0,_vars select 1,_vars select 2] call buildBarricade;
                         },["the type",_realRelDir,_x]];
@@ -51,52 +51,52 @@ if(_isInside)then{
                     };
                 };
             };
-            
+
         }forEach ([_building] call _findBarricadables);
-        
+
         if(declaimAction < 0)then{
-            declaimAction = player addAction["Declaime building",{ 
+            declaimAction = player addAction["Declaime building",{
                 _vars = _this select 3;
-                (_vars select 0) setVariable["claimedTo",""];  
+                (_vars select 0) setVariable["claimedTo",""];
             },[_building,getPlayerUID player]];
         };
-      
+
         if(claimAction >= 0)then{
             player removeAction claimAction;
             claimAction = -1;
-        };  
-        
+        };
+
     }else{
         if(claimAction < 0)then{
-            claimAction = player addAction["Claime building",{ 
+            claimAction = player addAction["Claime building",{
                 _vars = _this select 3;
-                (_vars select 0) setVariable["claimedTo",_vars select 1];  
+                (_vars select 0) setVariable["claimedTo",_vars select 1];
             },[_building,getPlayerUID player]];
         };
-      
+
         if(declaimAction >= 0)then{
             player removeAction declaimAction;
             declaimAction = -1;
-        };      
+        };
     };
-  
+
 }else{
-  
+
     if(claimAction >= 0)then{
         player removeAction claimAction;
         claimAction = -1;
     };
-  
+
     if(declaimAction >= 0)then{
         player removeAction declaimAction;
         declaimAction = -1;
     };
-  
+
     if(barricadeAction >= 0)then{
         player removeAction barricadeAction;
         barricadeAction = -1;
     };
-  
+
 };
 
 _findBarricadables = {
@@ -105,8 +105,8 @@ _findBarricadables = {
     _house = _this select 0;
 
     _window_pos_arr = [];
-    _cfgHitPoints = (configFile >> "cfgVehicles" >> (typeOf _house) >> "HitPoints");
-    for "_i" from 0 to count _cfgHitPoints - 1 do 
+    _cfgHitPoints = (configFile >> "cfgVehicles" >> (typeOf _house) >> "HitPoints"); // Mal im Spiel checken
+    for "_i" from 0 to count _cfgHitPoints - 1 do
     {
         _cfg_entry = _cfgHitPoints select _i;
 
@@ -124,13 +124,13 @@ _findBarricadables = {
                 _window_pos_arr set [count _window_pos_arr, _world_pos];
             };
         };
-    }; 
+    };
 
-    /*{ 
+    /*{
         veh = createVehicle ["Sign_Sphere100cm_F", _x, [], 0, "none"];
         _veh setObjectTexture [0,'#(argb,8,8,3)color(0.55,0,0.1,1)'];
-        _veh setPosATL _x;     
+        _veh setPosATL _x;
     } foreach _window_pos_arr;*/
-    
+
     _window_pos_arr
 };
