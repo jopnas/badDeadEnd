@@ -85,10 +85,19 @@ BIS_fn_createFireEffect = {
 fnc_burnDeadZ = {
     if(!isDedicated)then{
         _deadZ = _this select 0;
-        [getPosATL _deadZ,"FIRE_MEDIUM",22] spawn BIS_fn_createFireEffect;
-        sleep 20;
-        hideBody _deadZ;
-        sleep 2;
-        deleteVehicle _deadZ;
+        if(!(_deadZ getVariable["burning",false]))then{
+            [getPosATL _deadZ,"FIRE_MEDIUM",22] spawn BIS_fn_createFireEffect;
+            _deadZ setVariable["burning",true];
+            { 
+                if(_x != _deadZ && (position _x) distance (position _deadZ) < 5 && group _X == groupZ)then{
+                    [_x] spawn fnc_burnDeadZ; 
+                };
+            } forEach allDeadMen;
+
+            sleep 20;
+            hideBody _deadZ;
+            sleep 2;
+            deleteVehicle _deadZ;
+        };
     };
 };
