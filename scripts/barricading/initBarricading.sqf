@@ -8,3 +8,8 @@ buildBarricade = {
     _pos    = _this select 2;
     systemChat format["%1, %2, %3",_type,_dir,_pos]; 
 };
+
+
+// Barricadable Positions Arrays
+
+

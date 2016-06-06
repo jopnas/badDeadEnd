@@ -12,7 +12,7 @@ if(_isInside)then{
 
         {
             if((position player) distance _x < _closestPointDist)then{
-                _closestPointDist = (position player) distance _x
+                _closestPointDist = (position player) distance _x;
                 systemChat format["closest barricading point: %1",_closestPointDist];
             };
 
@@ -52,7 +52,7 @@ if(_isInside)then{
                 };
             };
 
-        }forEach ([_building] call _findBarricadables);
+        }forEach (_building buildingPos -1);
 
         if(declaimAction < 0)then{
             declaimAction = player addAction["Declaime building",{
@@ -97,40 +97,4 @@ if(_isInside)then{
         barricadeAction = -1;
     };
 
-};
-
-_findBarricadables = {
-    private ["_model_pos","_world_pos","_armor","_cfg_entry","_veh","_house","_window_pos_arr","_cfgHitPoints","_cfgDestEff","_brokenGlass","_selection_name"];
-
-    _house = _this select 0;
-
-    _window_pos_arr = [];
-    _cfgHitPoints = (configFile >> "cfgVehicles" >> (typeOf _house) >> "HitPoints"); // Mal im Spiel checken
-    for "_i" from 0 to count _cfgHitPoints - 1 do
-    {
-        _cfg_entry = _cfgHitPoints select _i;
-
-        if (isClass _cfg_entry) then
-        {
-            _armor = getNumber (_cfg_entry / "armor");
-
-            if (_armor < 0.5) then
-            {
-                _cfgDestEff = (_cfg_entry / "DestructionEffects");
-                _brokenGlass = _cfgDestEff select 0;
-                _selection_name = getText (_brokenGlass / "position");
-                _model_pos = _house selectionPosition _selection_name;
-                _world_pos = _house modelToWorld _model_pos;
-                _window_pos_arr set [count _window_pos_arr, _world_pos];
-            };
-        };
-    };
-
-    /*{
-        veh = createVehicle ["Sign_Sphere100cm_F", _x, [], 0, "none"];
-        _veh setObjectTexture [0,'#(argb,8,8,3)color(0.55,0,0.1,1)'];
-        _veh setPosATL _x;
-    } foreach _window_pos_arr;*/
-
-    _window_pos_arr
 };
