@@ -34,18 +34,18 @@ carRepair = {
     _part       = _this select 3;
     _action     = _this select 4;
     //systemChat format["%1,%2,%3,%4",_part,_damage,_car,_action];
-    
+
     _allineed = false;
     if(_partName find "Wheel" > -1 && "jii_tire" in Magazines Player)then{
         _allineed = true;
         player removeMagazine "jii_tire";
     };
-    
+
     if(_partName find "Fuel" > -1 && "jii_ducttape" in Magazines Player)then{
         _allineed = true;
         player removeMagazine "jii_ducttape";
     };
-    
+
     if(_allineed)then{
         player  say3D (selectRandom ["toolSound0","toolSound1"]);
         sleep 11;
@@ -72,7 +72,7 @@ eatCookedFoodAction = {
     player removeMagazine "jii_canunknown";
     player addMagazine ["jii_emptycanunknown",1];
     _tastes =  ["salty","sweet","bitter","sour","flavorless"];
-    cutText [format["ate somthing cooked %",_tastes call BIS_fnc_selectRandom], "PLAIN DOWN"];
+    cutText [format["ate somthing cooked %1",selectRandom _tastes], "PLAIN DOWN"];
 };
 
 _whileAliveFunc = [] spawn {
@@ -145,7 +145,7 @@ _whileAliveFunc = [] spawn {
 
 		[_isInside,_isInCar,_nearestFireplaces] spawn handleWet;
 		[_isInside,_isInCar,_nearestFireplaces] spawn handleTemperature;
-        
+
         [_isInside,_closestBuilding] spawn getBarricadeables;
 
 		[] spawn checkSick;
@@ -223,7 +223,7 @@ _whileAliveFunc = [] spawn {
             cannedFoodCooldownCountdown = 0;
             player removeAction eatCookedFoodAction;
         };
-        
+
         _nearestCars    = player nearEntities [["Car"], 4];
         _nearestCarObj  = _nearestCars select 0;
         if("ToolKit" in Items Player && count (_nearestCars) > 0 && vehicle player == player )then{
@@ -233,7 +233,7 @@ _whileAliveFunc = [] spawn {
                 _carDamageName  = (_carDamages select 1) select _i;
                 _carDamageValue = (_carDamages select 2) select _i;
                 _carDamageName2 = (_carDamages select 0) select _i;
-                
+
                 _damagePercent  = 100 - floor(_carDamageValue*100);
                 _actionText = "";
                 if(_damagePercent >= 66)then{
@@ -245,10 +245,10 @@ _whileAliveFunc = [] spawn {
                 if(_damagePercent < 33 )then{
                     _actionText = format["<t color='#FF0000'>Repair %1: %2%3</t>",_carDamageName2,_damagePercent,"%"];
                 };
-                           
+
                 if(_carDamageName != "" && _carDamageValue > 0 && repairableParts find _carDamageName < 0)then{
                     repairableParts = repairableParts + [_carDamageName];
-                      
+
                     switch (_i) do {
                         default { // = 0
                             repair00 = player addAction[_actionText,{
@@ -256,29 +256,29 @@ _whileAliveFunc = [] spawn {
                                 [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
                             },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
                             repairActionIDs = repairActionIDs + [repair00];
-                        };                        
-                        case 1: { 
+                        };
+                        case 1: {
                             repair01 = player addAction[_actionText,{
                                 _params = _this select 3;
                                 [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
                             },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
                             repairActionIDs = repairActionIDs + [repair01];
                         };
-                        case 2: { 
+                        case 2: {
                             repair02 = player addAction[_actionText,{
                                 _params = _this select 3;
                                 [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
                             },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
                             repairActionIDs = repairActionIDs + [repair02];
                         };
-                        case 3: { 
+                        case 3: {
                             repair03 = player addAction[_actionText,{
                                 _params = _this select 3;
                                 [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
                             },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
                             repairActionIDs = repairActionIDs + [repair03];
                         };
-                        case 4: { 
+                        case 4: {
                             repair04 = player addAction[_actionText,{
                                 _params = _this select 3;
                                 [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
@@ -292,7 +292,7 @@ _whileAliveFunc = [] spawn {
                             },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
                             repairActionIDs = repairActionIDs + [repair05];
                         };
-                        case 6: { 
+                        case 6: {
                             repair06 = player addAction[_actionText,{
                                 _params = _this select 3;
                                 [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
@@ -402,6 +402,6 @@ _whileAliveFunc = [] spawn {
                 }forEach repairActionIDs;
             };
         };
-        
+
     };
 };

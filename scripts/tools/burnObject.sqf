@@ -88,9 +88,10 @@ fnc_burnDeadZ = {
         if(!(_deadZ getVariable["burning",false]))then{
             [getPosATL _deadZ,"FIRE_MEDIUM",22] spawn BIS_fn_createFireEffect;
             _deadZ setVariable["burning",true];
-            { 
+            {
                 if(_x != _deadZ && (position _x) distance (position _deadZ) < 5 && group _X == groupZ)then{
-                    [_x] spawn fnc_burnDeadZ; 
+                    [_x] remoteExec ["bde_fnc_removeBurnAction",0,false];
+                    [_x] remoteExec ["fnc_burnDeadZ",0,false];
                 };
             } forEach allDeadMen;
 

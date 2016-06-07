@@ -39,7 +39,7 @@ _buildFireplace = {
     };
 	if(_stoneCount >= _minStone)then{
         _needCountOfStone = 0;
-    }else{	
+    }else{
 		_needCountOfStone = (_minStone - _stoneCount);
     };
     systemChat str _needCountOfWood;
@@ -145,7 +145,7 @@ switch(_data) do {
 		player removeMagazine _data;
 		player addMagazine ["jii_emptycanunknown",1];
 		_tastes =  ["salty","sweet","bitter","sour","flavorless"];
-		cutText [format["ate somthing %",_tastes call BIS_fnc_selectRandom], "PLAIN DOWN"];
+		cutText [format["ate somthing %1",selectRandom _tastes], "PLAIN DOWN"];
 	};
 	case "jii_canpasta": {
 	    //player  say3D "eatSound0";
@@ -174,7 +174,7 @@ switch(_data) do {
 		player addMagazine ["jii_emptycanunknown",1];
 		cutText ["ate tactical bacon", "PLAIN DOWN"];
 	};
-	
+
 	case "jii_meat_big": {
 	    //player say3D "eatSound0";
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
@@ -183,7 +183,7 @@ switch(_data) do {
 		playerHealth = playerHealth - 10;
 		player removeMagazine _data;
 		cutText ["ate big peace of raw meat", "PLAIN DOWN"];
-	};	
+	};
 	case "jii_meat_big_cooked": {
 	    //player say3D "eatSound0";
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
@@ -191,7 +191,7 @@ switch(_data) do {
 		playerHunger = playerHunger + 40;
 		player removeMagazine _data;
 		cutText ["ate big peace of cooked meat", "PLAIN DOWN"];
-	};	
+	};
 	case "jii_meat_small": {
 	    //player say3D "eatSound0";
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];

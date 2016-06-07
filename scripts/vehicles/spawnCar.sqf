@@ -5,7 +5,7 @@ _type = _this select 1;
 //_vListSup = ["C_Van_01_fuel_white_v2_F","C_Van_01_fuel_red_F","B_G_Van_01_fuel_F","C_Offroad_01_repair_F"];
 //_vListSpc = ["I_UGV_01_F"];
 
-//_rdmCar = (_vListCiv + _vListMil + _vListSup + _vListSpc) call BIS_fnc_selectRandom;
+//_rdmCar = selectRandom (_vListCiv + _vListMil + _vListSup + _vListSpc);
 _spawnedCar = _type createVehicle _pos;
 _spawnedCar setDir random 180;
 _spawnedCar setFuel random 1;

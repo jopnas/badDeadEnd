@@ -26,21 +26,17 @@ for "_a" from 0 to 3 step 1 do {
 
 
 	// Particle FX
-	/*_anomalyFXrefract = "#particlesource" createVehicleLocal anomalyPos;
+	_anomalyFXrefract = "#particlesource" createVehicleLocal anomalyPos;
 	_anomalyFXrefract setParticleCircle [100,[0,0,0]]; // [radius, velocity]
 	_anomalyFXrefract setParticleRandom [0, [0, 0, 0], [0, 0, 0], 0, 0, [0, 0, 0, 0], 0, 0]; // [lifeTime, position, moveVelocity, rotationVelocity, size, color, randomDirectionPeriod, randomDirectionIntensity, {angle}, bounceOnSurface]
 	_anomalyFXrefract setParticleParams [["\A3\data_f\ParticleEffects\Universal\Refract", 1, 0, 1], "", "Billboard", 1, 4, anomalyPos, [0, 0, 0.5], 9, 10, 7.9, 0.1, [0.6, 1, 0.9, 0.8], [[0.1, 0.1, 0.1, 1], [0.25, 0.25, 0.25, 0.5], [0.5, 0.5, 0.5, 0]], [0, 0.1, 0.2, 0.5, 0.1, 0.1], 0, 0, "", "", _anomalyFXrefract];
-	_anomalyFXrefract setDropInterval 0.1;*/
+	_anomalyFXrefract setDropInterval 0.1;
 
 	for "_i" from 0 to 19 step 1 do {
 
 		// Add Loot
 		_anomalyLoot = "GroundWeaponHolder" createVehicle anomalyPos;
-		
-		// Animals. BIS_fnc_animalSiteSpawn needs object to spawn around :(
-		[_anomalyLoot, ["hen_random_f","Cock_random_F"], 50] call BIS_fnc_animalSiteSpawn;
-		[_anomalyLoot, ["Sheep_random_F","Goat_random_F","Rabbit_F"], 50] call BIS_fnc_animalSiteSpawn;
-		
+
 		_newPos = [(getPos _anomalyLoot select 0) - 100 + random 200,(getPos _anomalyLoot select 1) - 100 + random 200,random 1];
 		_anomalyLoot setPosATL _newPos;
 		_anomalyLoot setDir round(random 359);
@@ -51,24 +47,24 @@ for "_a" from 0 to 3 step 1 do {
 		if(_thisSpawnDistance < 33)then{
 			if(random 100 < 50)then{
 				if(random 100 < 50)then{
-					_anomalyLoot addWeaponCargoGlobal [_shortRangeLootWeap call BIS_fnc_selectRandom,1];
+					_anomalyLoot addWeaponCargoGlobal [selectRandom _shortRangeLootWeap,1];
 				}else{
-					_anomalyLoot addWeaponCargoGlobal [_shortRangeLootWeap2 call BIS_fnc_selectRandom,1];
+					_anomalyLoot addWeaponCargoGlobal [selectRandom _shortRangeLootWeap2,1];
 				};
 			}else{
-				_anomalyLoot addItemCargoGlobal [_shortRangeLootItem call BIS_fnc_selectRandom,1];
+				_anomalyLoot addItemCargoGlobal [selectRandom _shortRangeLootItem,1];
 			};
 		};
 
 		// Add Medium Range Loot
 		if(_thisSpawnDistance >= 33 && _thisSpawnDistance < 66)then{
 			if(random 100 < 50)then{
-				_anomalyLoot addWeaponCargoGlobal [_mediumRangeLootWeap call BIS_fnc_selectRandom,1];
+				_anomalyLoot addWeaponCargoGlobal [selectRandom _mediumRangeLootWeap,1];
 			}else{
 				if(random 100 < 50)then{
-					_anomalyLoot addItemCargoGlobal [_mediumRangeLootItem call BIS_fnc_selectRandom,1];
+					_anomalyLoot addItemCargoGlobal [selectRandom _mediumRangeLootItem,1];
 				}else{;
-					_anomalyLoot addMagazineCargoGlobal [_mediumRangeLootItem2 call BIS_fnc_selectRandom,1];
+					_anomalyLoot addMagazineCargoGlobal [selectRandom _mediumRangeLootItem2,1];
 				};
 			};
 		};
@@ -77,12 +73,12 @@ for "_a" from 0 to 3 step 1 do {
 		if(_thisSpawnDistance >= 66)then{
 			if(random 100 < 50)then{
 				if(random 100 < 50)then{
-					_anomalyLoot addWeaponCargoGlobal [_longRangeLootWeap call BIS_fnc_selectRandom,1];
+					_anomalyLoot addWeaponCargoGlobal [selectRandom _longRangeLootWeap,1];
 				}else{
-					_anomalyLoot addWeaponCargoGlobal [_longRangeLootWeap2 call BIS_fnc_selectRandom,1];
+					_anomalyLoot addWeaponCargoGlobal [selectRandom _longRangeLootWeap2,1];
 				};
 			}else{
-				_anomalyLoot addItemCargoGlobal [_longRangeLootItem call BIS_fnc_selectRandom,1];
+				_anomalyLoot addItemCargoGlobal [selectRandom _longRangeLootItem,1];
 			};
 		};
 	};

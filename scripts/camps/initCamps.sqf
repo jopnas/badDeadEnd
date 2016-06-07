@@ -43,27 +43,27 @@ for "_a" from 0 to _minCamps step 1 do {
 	_campSelf   = _campLocatsRdm select _a;
 	_campCenter = _campSelf select 0;
 
-	_tent = createVehicle [_tents call BIS_fnc_selectRandom,_campCenter,[],0,""];
+	_tent = createVehicle [selectRandom _tents,_campCenter,[],0,""];
 
     _tentWeaponHolder = createVehicle ["GroundWeaponHolder", getPos _tent, [], 0, "NONE"];
     _tentWeaponHolder attachTo [_tent, [0,0,0]];
 
 	// Add Items to Tent
         // Weapon
-        _rdmWeapon = _weaponsList call BIS_fnc_selectRandom;
+        _rdmWeapon = selectRandom _weaponsList;
         _rdmWeaponMags = getArray(configfile >> "cfgWeapons" >> _rdmWeapon >> "magazines");
         _tentWeaponHolder addWeaponCargoGlobal [_rdmWeapon,1];
-        _tentWeaponHolder addMagazineCargoGlobal [_rdmWeaponMags call BIS_fnc_selectRandom, round(random 2)+1];
+        _tentWeaponHolder addMagazineCargoGlobal [selectRandom _rdmWeaponMags, round(random 2)+1];
         // Backpack
-        _tentWeaponHolder addBackpackCargoGlobal [_backpacksList call BIS_fnc_selectRandom,1];
+        _tentWeaponHolder addBackpackCargoGlobal [selectRandom _backpacksList,1];
         // Items
-        _tentWeaponHolder addItemCargoGlobal [_itemsList call BIS_fnc_selectRandom, round(random 1)+1];
+        _tentWeaponHolder addItemCargoGlobal [selectRandom _itemsList, round(random 1)+1];
         // Equipment
-        _tentWeaponHolder addItemCargoGlobal [_equipmentList call BIS_fnc_selectRandom,round(random 1)+1];
+        _tentWeaponHolder addItemCargoGlobal [selectRandom _equipmentList,round(random 1)+1];
 
     // Add Fireplace
 	_fireplacePos = [(_campCenter select 0)+6+(random 2),(_campCenter select 1)+6+(random 2)];
-	_fireplace = createVehicle [_fireplaces call BIS_fnc_selectRandom,_fireplacePos,[],0,""];
+	_fireplace = createVehicle [selectRandom _fireplaces,_fireplacePos,[],0,""];
 	_tent setPos _fireplacePos;
 
 	_markerstr  = createMarker ["camp" + str _a, _campCenter];
@@ -102,14 +102,14 @@ for "_a" from 0 to _minCamps step 1 do {
             };
     	    default{};
     	};
-		_stuff = createVehicle [_campstuff call BIS_fnc_selectRandom,_stuffPos,[],0,""];
+		_stuff = createVehicle [selectRandom _campstuff,_stuffPos,[],0,""];
         _stuff setDir random 40;
 		_tent setPos _stuffPos;
 
     // Add Items on Camp Ground
     _loot = createVehicle ["GroundWeaponHolder",[((_stuffPos select 0)-1)+random 1,((_stuffPos select 1)-1)+random 1],[],0,""];
-        for "_l" from 1 to (1+round(random 2)) step 1 do {
-            _loot addMagazineCargoGlobal[_foodItems call BIS_fnc_selectRandom,1];
+        for "_l" from 1 to (1+round(random 3)) step 1 do {
+            _loot addMagazineCargoGlobal[selectRandom _foodItems,1];
         };
 	};
 };
