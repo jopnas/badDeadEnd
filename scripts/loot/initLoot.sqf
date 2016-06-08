@@ -2,7 +2,6 @@ fnc_spawnLoot = {
   private ["_rdmPistol","_rdmRifle","_buildingType"];
   _playerPosition 	= _this select 0;
   _isPlayerSpawn 	= _this select 1;
-  
 
   // Military Lootlists
   _itemBackpacksMil     = ["B_AssaultPack_blk","B_AssaultPack_dgtl","B_AssaultPack_khk","B_AssaultPack_rgr","B_AssaultPack_sgg","B_AssaultPack_cbr","B_AssaultPack_mcamo","B_Bergen_mcamo","B_Carryall_oucamo","B_Carryall_ocamo","B_Carryall_mcamo","B_FieldPack_oucamo","B_FieldPack_ocamo","B_Kitbag_mcamo"];
@@ -22,12 +21,7 @@ fnc_spawnLoot = {
   // JII Mod Items
   _foodItems            = ["jii_canunknown","jii_canpasta","jii_canrusty","jii_matches","jii_hatchet","jii_antibiotics","jii_zippo","jii_ducttape","jii_vitamines","jii_bottleuseless","jii_bottleempty","jii_bottlefilled","jii_bottleclean","jii_canteenempty","jii_canteenfilled","jii_bakedbeans","jii_tacticalbacon"];
   _medicalItems	        = ["jii_waterpurificationtablets","jii_antibiotics","jii_vitamines"];
-  _toolItems            = ["jii_matches","jii_hatchet","jii_stone","jii_wood","jii_ducttape","jii_tire"];
-
-  // Building Type lists
-  _militaryBuildings    = ["Land_Hangar_F","Land_TentHangar_V1_dam_F","Land_TentHangar_V1_F","Land_MilOffices_V1_F","Land_Cargo_Tower_V3_F","Land_Cargo_Tower_V2_F","Land_Cargo_Tower_V1_No7_F","Land_Cargo_Tower_V1_No6_F","Land_Cargo_Tower_V1_No5_F","Land_Cargo_Tower_V1_No4_F","Land_Cargo_Tower_V1_No3_F","Land_Cargo_Tower_V1_No2_F","Land_Cargo_Tower_V1_No1_F","Land_Cargo_Tower_V1_F","Land_Cargo_Patrol_V3_F","Land_Cargo_Patrol_V2_F","Land_Cargo_Patrol_V1_F","Land_Cargo_HQ_V3_F","Land_Cargo_HQ_V2_F","Land_Cargo_HQ_V1_F","Land_Cargo_building_V3_F","Land_Cargo_building_V2_F","Land_Cargo_building_V1_F","Land_i_Barracks_V1_F","Land_i_Barracks_V1_dam_F","Land_i_Barracks_V2_F","Land_i_Barracks_V2_dam_F","Land_u_Barracks_V2_F","Land_Bunker_F","Land_BagBunker_Large_F","Land_BagBunker_Small_F","Land_BagBunker_Tower_F",""];
-  _researchBuildings    = ["Land_Hospital_main_F","Land_Hospital_side1_F","Land_Hospital_side2_F","Land_Research_HQ_F","Land_Research_house_V1_F","Land_Dome_Small_F","Land_Dome_Big_F","Land_Medevac_building_V1_F","Land_Medevac_HQ_V1_F"];
-  _constructBuildings   = ["Land_u_Shed_Ind_F","Land_Unfinished_Building_02_F","Land_WIP_F","Land_Unfinished_Building_01_F"];
+  _toolItems            = ["jii_matches","jii_hatchet","jii_stone","jii_wood","jii_ducttape","jii_tire"/*,"jii_fuelcan"*/];
 
   _garagesNames         = ["Land_i_Garage_V1_F","Land_i_Garage_V1_dam_F","Land_i_Garage_V2_F","Land_i_Garage_V2_dam_F"];
   _pierNames         	= ["Land_Pier_F","Land_Pier_Box_F","Land_Pier_wall_F"];
@@ -39,26 +33,26 @@ fnc_spawnLoot = {
     _building     = _x;
     _position     = getPos _building;
     _strHouseType = str(typeOf _building);
-	
+
 	//systemChat format["loot: %1",_building getVariable["hasLoot",0]];
-	
+
     if ( !(typeOf _building in _BuildingsExclude) && (_building getVariable["hasLoot",0]) == 0 && !(str _building find  "ruins" > -1)) then {
-	  		
+
 	  _building setVariable["hasLoot",1,true];
 
-      if(typeOf _building in _militaryBuildings)then {
+      if(typeOf _building in militaryBuildings)then {
         _buildingType = "MilitaryBuilding";
       };
 
-      if(typeOf _building in _researchBuildings)then {
+      if(typeOf _building in researchBuildings)then {
         _buildingType = "ResearchBuilding";
       };
 
-      if(typeOf _building in _constructBuildings)then {
+      if(typeOf _building in constructBuildings)then {
         _buildingType = "ConstructionBuilding";
       };
 
-      if(!(typeOf _building in (_militaryBuildings+_researchBuildings+_constructBuildings)))then {
+      if(!(typeOf _building in (researchBuildings+constructBuildings)))then {
         _buildingType = "CivilianBuilding";
       };
 
@@ -70,7 +64,7 @@ fnc_spawnLoot = {
 
 			_holderPos = _building buildingPos _i;
 			_spawn = createVehicle ["groundWeaponHolder",_holderPos,[],0,"can_collide"];
-			
+
 			// Options
 			_spawn setPosATL _holderPos;
 			_spawn setDir round(random 180);
@@ -132,7 +126,7 @@ fnc_spawnLoot = {
                 // xtra Stone
                 if(random 100 < 10) then {
                     _spawn addMagazineCargoGlobal ["jii_stone",round(random 3)];
-                };                
+                };
             };
 
             case "CivilianBuilding":{

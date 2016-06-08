@@ -1,3 +1,5 @@
+[] execVM "scripts\lists\buildingTypes.sqf";
+
 if(isServer)then{
 	[] execVM "scripts\server\MySQLPlayerData.sqf";
 	[] execVM "scripts\weather\initWeather.sqf";
@@ -13,4 +15,3 @@ if(isServer)then{
 
 [] execVM "scripts\tools\burnObject.sqf";
 [] execVM "scripts\tools\globalFuncs.sqf";
-
