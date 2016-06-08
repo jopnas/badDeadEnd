@@ -57,7 +57,7 @@ if(_isInside)then{
         if(declaimAction < 0)then{
             declaimAction = player addAction["Declaime building",{
                 _vars = _this select 3;
-                (_vars select 0) setVariable["claimedTo",""];
+                (_vars select 0) setVariable["claimedTo","",true];
             },[_building,getPlayerUID player]];
         };
 
@@ -70,7 +70,7 @@ if(_isInside)then{
         if(claimAction < 0)then{
             claimAction = player addAction["Claime building",{
                 _vars = _this select 3;
-                (_vars select 0) setVariable["claimedTo",_vars select 1];
+                (_vars select 0) setVariable["claimedTo",_vars select 1,true];
             },[_building,getPlayerUID player]];
         };
 

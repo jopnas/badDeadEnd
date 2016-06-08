@@ -60,6 +60,7 @@ nearestTree  			= [];
 // Watersources
 waterSourceObjects      = ["Land_BarrelWater_F","Land_WaterBarrel_F","Land_WaterTank_F","Land_BarrelWater_grey_F","Land_Water_source_F","Land_StallWater_F"];
 nearOpenWater           = false;
+nearWaterSource         = false;
 drinkActionAvailable    = false;
 
 cannedFoodCooldownTime      = 120;
@@ -181,7 +182,7 @@ _whileAliveFunc = [] spawn {
 		} forEach _things;
 
         // DrinkActionAvailable Check
-        if(_cursorTargetType in waterSourceObjects || nearOpenWater)then{
+        if((nearWaterSource || nearOpenWater) && !drinkActionAvailable)then{
             drinkAction = player addAction["Drink Water",{
                 playerThirst = playerThirst + 10;
             }];
@@ -192,6 +193,8 @@ _whileAliveFunc = [] spawn {
                 player removeAction drinkAction;
             };
         };
+        
+        systemChat format["ws: %1; ow: %2",nearWaterSource,nearOpenWater];
 
 		// Fireplace Check
 		if(_cursorTargetType == "Land_FirePlace_F" && inflamed _cursorTarget) then {

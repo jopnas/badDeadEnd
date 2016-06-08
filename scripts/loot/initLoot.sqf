@@ -52,7 +52,7 @@ fnc_spawnLoot = {
         _buildingType = "ConstructionBuilding";
       };
 
-      if(!(typeOf _building in (researchBuildings+constructBuildings)))then {
+      if(!(typeOf _building in (researchBuildings+constructBuildings+militaryBuildings)))then {
         _buildingType = "CivilianBuilding";
       };
 
