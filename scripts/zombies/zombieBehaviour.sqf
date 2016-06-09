@@ -88,7 +88,7 @@ _z addeventhandler ["HandleDamage",{
                 };
                 default {
                     _amountOfDamage = 0.05;
-                    [_z,format["zhurt%1",floor random 3],50,_speechPitch] remoteExec ["bde_fnc_say3d",0,false];
+                    [_unit,format["zhurt%1",floor random 3],50,_speechPitch] remoteExec ["bde_fnc_say3d",0,false];
 				};
 	        };
         }else{
@@ -166,7 +166,7 @@ _zBehaviour = [_z] spawn {
                 };
                 if(t > nextGrowl)then{
                     [_z,format["zidle%1",floor random 8],50,_speechPitch] remoteExec ["bde_fnc_say3d",0,false];
-                    nextGrowl = t + 10 + random 20;
+                    nextGrowl = time + 30 + random 30;
                 };
             }else{
                 if([_z,_closestPlayerAlive] call canSeePlayer)then{
@@ -205,7 +205,7 @@ _zBehaviour = [_z] spawn {
                             _z setVariable["lastPlayerSeen",[false,[]], false];
                         };
                     }else{
-                        if(_lastPlayerHeard distance _z < 200)then{
+                        if(count(_lastPlayerHeard) > 0)then{
                             _z doMove (_lastPlayerHeard);
                         };
                     };

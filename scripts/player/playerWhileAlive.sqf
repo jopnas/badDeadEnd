@@ -95,7 +95,7 @@ _whileAliveFunc = [] spawn {
     while{alive player && player getVariable["playerSetupReady",false]}do{
 		t=time;
 
-		if(t > nextHungerDecr)then{
+		if(time > nextHungerDecr)then{
 			// Hunger
 			_hungerVal = playerHunger;
 			if(_hungerVal > 0)then{
@@ -106,7 +106,7 @@ _whileAliveFunc = [] spawn {
 			nextHungerDecr = time + hungerWaitTime;
 		};
 
-		if(t > nextThirstDecr)then{
+		if(time > nextThirstDecr)then{
 			// Thirst
 			_thirstVal = playerThirst;
 			if(_thirstVal > 0)then{
@@ -117,7 +117,7 @@ _whileAliveFunc = [] spawn {
 			nextThirstDecr = time + thirstWaitTime;
 		};
 
-		if(t > nextHealthDecr)then{
+		if(time > nextHealthDecr)then{
 			// Health
 			_healthVal = playerHealth;
 			_sickVal = playerSick;
