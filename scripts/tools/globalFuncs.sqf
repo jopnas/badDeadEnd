@@ -1,10 +1,10 @@
-bde_fnc_say3d = { // [_sayobject,_audioclip,_maxdistance,_audiopitch] remoteExec ["bde_fnc_say3d",-2,false];
+bde_fnc_say3d = { // [_sayobject,_audioclip,_maxdistance,_audiopitch] remoteExec ["bde_fnc_say3d",0,false];
     if(!isDedicated)then{
         _sayobject      = _this select 0;
         _audioclip      = _this select 1;
         _maxdistance    = _this select 2;
 
-        _sayobject say3D [_audioclip, _maxdistance, random(2)];
+        _sayobject say [_audioclip, _maxdistance, random(2)];
     };
 };
 
@@ -14,9 +14,7 @@ bde_fnc_addBurnAction = {
     burnAction = _targetObject addAction [ "Burn dead body", {
         _targetObject = _this select 0;
         _caller = _this select 1;
-        _lighterCount  = {_x == 'jii_zippo'} count Magazines _caller;
-        _matchesCount  = {_x == 'jii_matches'} count Magazines _caller;
-        if(_lighterCount > 0 || (rain < 0.2 && _matchesCount > 0))then{
+        if(("jii_zippo" in Magazines _caller || (rain < 0.2 && "jii_matches" in Magazines _caller)) && "jii_fuelcan" in Magazines _caller)then{
             [_targetObject] remoteExec ["bde_fnc_removeBurnAction",0,false];
             [_targetObject] remoteExec ["fnc_burnDeadZ",0,false];
         };
@@ -26,4 +24,32 @@ bde_fnc_addBurnAction = {
 bde_fnc_removeBurnAction = {
     _targetObject = _this select 0;
     _targetObject removeAction burnAction;
+};
+
+// Fetch available Weapons
+bde_fetchWeapons = {
+    private["_weapons_heavy","_weapons_medium","_weapons_light","_weaponsArray","_hardestHitPossible"];
+    _weaponsArray   = [];
+    _weapons_light  = [];
+    _weapons_medium = [];
+    _weapons_heavy  = [];
+    {
+        _weapon             = _x;
+        _weaponType         = getnumber(_weapon >> "type");
+        _weaponMagazines    = getarray(_weapon >> "magazines");
+        if( _weapon &&  (_weapon >> "scope") == 2 && count _weaponMagazines > 0 && _weaponType == 1 || _weaponType == 2))then{
+            _hardestHitPossible = 0;
+            {
+        	    _ammo      = getText(configFile >> "CfgMagazines" >> _x >> "ammo");
+                _hitVal    = getNumber(configFile >> "cfgAmmo" >> _ammo >> "hit");
+                if(_hitVal > _hardestHitPossible)then{
+                    _hardestHitPossible = _hitVal;
+                };
+        	}forEach _weaponMagazines;
+            _weaponsArray pushBack _hardestHitPossible;
+        };
+
+    }forEach(configFile >> "CfgWeapons");
+
+    _weaponsArray
 };

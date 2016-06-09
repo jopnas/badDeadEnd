@@ -18,7 +18,8 @@ while {true} do {
         _thisPlayer       = _x;
         _thisPlayerPos    = position _thisPlayer;
 
-        _buildings = nearestObjects [_thisPlayer,["Building"], zSpawnRange];
+        //_buildings = nearestObjects [_thisPlayer,["Building"], zSpawnRange];
+        _buildings = _thisPlayer nearObjects ["Building", zSpawnRange];
         _buildingsCount = count _buildings;
 
         _useZlist = _zUnitsCiv;
@@ -33,11 +34,11 @@ while {true} do {
         if (count (units groupZ) < _zCount) then {
             _randomBuilding = selectRandom _buildings;
 
-            if(_randomBuilding in militaryBuildings)then{
+            if(typeOf(_randomBuilding) in militaryBuildings)then{
                 _useZlist = _zUnitsMilInf + _zUnitsMilPil + _zUnitsCivSci;
             };
 
-            if(_randomBuilding in researchBuildings)then{
+            if(typeOf(_randomBuilding) in researchBuildings)then{
                 _useZlist = _zUnitsCivSci + _zUnitsCivSer;
             };
 
@@ -47,7 +48,7 @@ while {true} do {
             _relDir         = _thisPlayer getRelDir _pos;
             _inViewAngle    = abs(_relDir - 180);
 
-            if([objNull, "VIEW"] checkVisibility [eyePos _thisPlayer, _pos] == 0 && _thisPlayer distance _pos > 30 && _inViewAngle < 100)then{
+            if([objNull, "VIEW"] checkVisibility [eyePos _thisPlayer, _pos] == 0 && _thisPlayer distance _pos > 20 && _inViewAngle < 120)then{
                 _z = selectRandom _useZlist;
                 _z createUnit [_pos, groupZ,"[this] call _fnc_zombieBehaviour", 0, "NONE"];
                 sleep 0.2;

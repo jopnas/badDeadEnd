@@ -13,3 +13,5 @@ if(isServer)then{
 
 [] execVM "scripts\tools\burnObject.sqf";
 [] execVM "scripts\tools\globalFuncs.sqf";
+
+[] call bde_fetchWeapons;

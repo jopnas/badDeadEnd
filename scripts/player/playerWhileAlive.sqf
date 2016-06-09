@@ -193,7 +193,7 @@ _whileAliveFunc = [] spawn {
                 player removeAction drinkAction;
             };
         };
-        
+
         systemChat format["ws: %1; ow: %2",nearWaterSource,nearOpenWater];
 
 		// Fireplace Check
