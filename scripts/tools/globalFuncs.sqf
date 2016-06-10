@@ -37,7 +37,8 @@ bde_fetchWeapons = {
         _weapon             = _x;
         _weaponType         = getNumber (configFile >> "CfgWeapons" >> _weapon >> "type");
         _weaponMagazines    = getArray (configFile >> "CfgWeapons" >> _weapon >> "magazines");
-        if(getNumber (configFile >> "CfgWeapons" >> _weapon >> "scope") == 2 && count _weaponMagazines > 0 && _weaponType == 1 || _weaponType == 2)then{
+        _fromBI             = (getText (configFile >> "CfgWeapons" >> _weapon >> "author") == "Bohemia Interactive");
+        if(getNumber (configFile >> "CfgWeapons" >> _weapon >> "scope") == 2 && _fromBI && count _weaponMagazines > 0 && _weaponType == 1 || _weaponType == 2)then{
             _hardestHitPossible = 0;
             {
         	    _ammo      = getText (configFile >> "CfgMagazines" >> _x >> "ammo");
