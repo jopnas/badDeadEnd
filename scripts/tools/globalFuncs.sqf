@@ -3,7 +3,7 @@ bde_fnc_say3d = { // [_sayobject,_audioclip,_maxdistance,_audiopitch] remoteExec
         _sayobject      = _this select 0;
         _audioclip      = _this select 1;
         _maxdistance    = _this select 2;
-        
+
         _sayobject say3D [_audioclip, _maxdistance, random(2)];
     };
 };
@@ -46,12 +46,28 @@ bde_fetchWeapons = {
                     _hardestHitPossible = _hitVal;
                 };
         	}forEach _weaponMagazines;
-            _weaponsArray pushBack _hardestHitPossible;
+
+            if(_hardestHitPossible < 10)then {
+                _weapons_light pushBack _weapon;
+            }
+            if(_hardestHitPossible >= 10 && _hardestHitPossible < 18)then {
+                _weapons_medium pushBack _weapon;
+            }
+            if(_hardestHitPossible >= 18)then {
+                _weapons_heavy pushBack _weapon;
+            }
         };
 
     } forEach  ((configFile >> "CfgWeapons") call BIS_fnc_getCfgSubClasses);
-
+    _weaponsArray = [_weapons_light,_weapons_medium,_weapons_heavy];
     _weaponsArray
+    // ([] call bde_fetchWeapons) select 0; // Light Damage Weapons;
+    // ([] call bde_fetchWeapons) select 1; // Medium Damage Weapons;
+    // ([] call bde_fetchWeapons) select 2; // Heavy Damage Weapons;
 };
 
-// 4, 8, 10, 12, 14, 16, 18, 20, 24, 60
+/*
+4, 8,
+10, 12,14, 16,
+18, 20, 24, 60
+*/

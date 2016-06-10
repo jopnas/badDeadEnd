@@ -35,7 +35,11 @@ while {true} do {
             _randomBuilding = selectRandom _buildings;
 
             if(typeOf(_randomBuilding) in militaryBuildings)then{
-                _useZlist = _zUnitsMilInf + _zUnitsMilPil + _zUnitsCivSci;
+                _useZlist = _zUnitsMilInf;
+            };
+
+            if(typeOf(_randomBuilding) in airportBuildings)then{
+                _useZlist = _zUnitsMilPil;
             };
 
             if(typeOf(_randomBuilding) in researchBuildings)then{
