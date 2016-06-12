@@ -85,9 +85,7 @@ playerNoise = _noiseLevel;
 {
     if(_playerUnit distance _x < playerNoise && alive _x)then{
         _playerHeardPos = _x getVariable "lastPlayerHeard";
-        if(_playerUnit distance _x < _playerHeardPos distance _x)then{
-            _x setVariable["lastPlayerHeard",position _playerUnit, false];
-        };
+        _x setVariable["lastPlayerHeard",position _playerUnit, false];
     };
 } forEach (units groupZ);
 

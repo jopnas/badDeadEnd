@@ -34,15 +34,15 @@ while {true} do {
         if (count (units groupZ) < _zCount) then {
             _randomBuilding = selectRandom _buildings;
 
-            if(typeOf(_randomBuilding) in militaryBuildings)then{
+            if(typeOf _randomBuilding in militaryBuildings)then{
                 _useZlist = _zUnitsMilInf;
             };
 
-            if(typeOf(_randomBuilding) in airportBuildings)then{
+            if(typeOf _randomBuilding in airportBuildings)then{
                 _useZlist = _zUnitsMilPil;
             };
 
-            if(typeOf(_randomBuilding) in researchBuildings)then{
+            if(typeOf _randomBuilding in researchBuildings)then{
                 _useZlist = _zUnitsCivSci + _zUnitsCivSer;
             };
 

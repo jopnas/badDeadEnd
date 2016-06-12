@@ -1,5 +1,6 @@
 if(isServer)then{
     [] execVM "scripts\lists\buildingTypes.sqf";
+    [] execVM "scripts\lists\weaponTypes.sqf";
 	[] execVM "scripts\server\MySQLPlayerData.sqf";
 	[] execVM "scripts\weather\initWeather.sqf";
 	[] execVM "scripts\anomaly\initAnomaly.sqf";
@@ -14,4 +15,3 @@ if(isServer)then{
 [] execVM "scripts\tools\burnObject.sqf";
 [] execVM "scripts\tools\globalFuncs.sqf";
 
-//[] call bde_fetchWeapons;

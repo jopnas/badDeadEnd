@@ -194,7 +194,7 @@ _whileAliveFunc = [] spawn {
             };
         };
 
-        systemChat format["ws: %1; ow: %2",nearWaterSource,nearOpenWater];
+        //systemChat format["ws: %1; ow: %2",nearWaterSource,nearOpenWater];
 
 		// Fireplace Check
 		if(_cursorTargetType == "Land_FirePlace_F" && inflamed _cursorTarget) then {

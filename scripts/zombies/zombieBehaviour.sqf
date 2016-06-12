@@ -85,6 +85,7 @@ _z addeventhandler ["HandleDamage",{
             switch(_selectionName) do {
                 case "head": {
                     _amountOfDamage = _amountOfDamage*100000;
+                    //[_unit,format["headshot0",floor random 3],60,_speechPitch] remoteExec ["bde_fnc_say3d",0,false];                  
                 };
                 default {
                     _amountOfDamage = 0.05;

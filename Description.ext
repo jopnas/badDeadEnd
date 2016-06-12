@@ -163,16 +163,19 @@ class CfgSounds {
         sound[] = {"\sound\fry0.ogg", 0.5, 1};
         titles[] = {};
     };
+    class headshot0 {
+        name = "headshot0";
+        sound[] = {"\sound\headshot0.ogg", 1, 1};
+        titles[] = {};
+    };
 
     // Zombie AI Sounds
-    class zidle0
-    {
+    class zidle0 {
         name = "zomb1";
         sound[] = {"\sound\zombie\zomb1.ogg", 0.5, 1};
         titles[] = {};
     };
-    class zidle1
-    {
+    class zidle1 {
         name = "zomb2";
         sound[] = {"\sound\zombie\zomb2.ogg", 0.5, 1};
         titles[] = {};
