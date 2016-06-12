@@ -77,8 +77,8 @@ fnc_spawnLoot = {
 
               // Ammo only
               if(random 100 < 30) then {
-                _rdmWeaponAmmoMil  = selectRandom heavyWeapons;
-                _rmags      = getArray(configfile >> "cfgWeapons" >> _rdmWeaponAmmoMil >> "magazines");
+                _rdmWeaponAmmoMil  = selectRandom (heavyWeapons call BIS_fnc_arrayShuffle);
+                _rmags = getArray(configfile >> "cfgWeapons" >> _rdmWeaponAmmoMil >> "magazines");
                 _spawn addMagazineCargoGlobal [selectRandom _rmags, round(random 3)+1];
               };
 
@@ -93,7 +93,7 @@ fnc_spawnLoot = {
 
               // Weapons
               if(random 100 < 30) then {
-                _rdmWeaponWeapMil = selectRandom heavyWeapons;
+                _rdmWeaponWeapMil = selectRandom (heavyWeapons call BIS_fnc_arrayShuffle);
                 _spawn addWeaponCargoGlobal [_rdmWeaponWeapMil,1];
                 _rmags = getArray(configfile >> "cfgWeapons" >> _rdmWeaponWeapMil >> "magazines");
                 _spawn addMagazineCargoGlobal [selectRandom _rmags, round(random 3)];
@@ -103,14 +103,14 @@ fnc_spawnLoot = {
             case "AirportBuilding":{
                 // Ammo only
                 if(random 100 < 30) then {
-                  _rdmWeaponAmmoAir  = selectRandom mediumWeapons;
+                  _rdmWeaponAmmoAir  = selectRandom (mediumWeapons call BIS_fnc_arrayShuffle);
                   _rmags      = getArray(configfile >> "cfgWeapons" >> _rdmWeaponAmmoAir >> "magazines");
                   _spawn addMagazineCargoGlobal [selectRandom _rmags, round(random 3)+1];
                 };
 
                 // Weapons
                 if(random 100 < 30) then {
-                  _rdmWeaponWeapAir = selectRandom mediumWeapons;
+                  _rdmWeaponWeapAir = selectRandom (mediumWeapons call BIS_fnc_arrayShuffle);
                   _spawn addWeaponCargoGlobal [_rdmWeaponWeapAir,1];
                   _rmags = getArray(configfile >> "cfgWeapons" >> _rdmWeaponWeapAir >> "magazines");
                   _spawn addMagazineCargoGlobal [selectRandom _rmags, round(random 3)];
@@ -157,7 +157,7 @@ fnc_spawnLoot = {
           
               // Ammo only
               if(random 100 < 30) then {
-                _rdmWeaponAmmoCiv  = selectRandom lightWeapons;
+                _rdmWeaponAmmoCiv  = selectRandom (lightWeapons call BIS_fnc_arrayShuffle);
                 _rmags      = getArray(configfile >> "cfgWeapons" >> _rdmWeaponAmmoCiv >> "magazines");
                 _spawn addMagazineCargoGlobal [selectRandom _rmags, round(random 3)+1];
               };
@@ -174,7 +174,7 @@ fnc_spawnLoot = {
 
               // Weapons
               if(random 100 < 30) then {
-                _rdmWeaponWeapCiv = selectRandom lightWeapons;
+                _rdmWeaponWeapCiv = selectRandom (lightWeapons call BIS_fnc_arrayShuffle);
                 _spawn addWeaponCargoGlobal [_rdmWeaponWeapCiv,1];
                 _rmags = getArray(configfile >> "cfgWeapons" >> _rdmWeaponWeapCiv >> "magazines");
                 _spawn addMagazineCargoGlobal [selectRandom _rmags, round(random 3)];
