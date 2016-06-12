@@ -1,5 +1,5 @@
 fnc_spawnLoot = {
-  private ["_rdmPistol","_rdmRifle","_rdmWeapon","_rdmWeapon1","_rdmWeapon2","_buildingType","_sortedWeaponList"];
+  private ["_buildingType"];
 
   _playerPosition 	= _this select 0;
   _isPlayerSpawn 	= _this select 1;

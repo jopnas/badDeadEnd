@@ -7,7 +7,7 @@ checkInside			= compile preprocessFile "scripts\tools\checkInside.sqf";
 checkAnimals		= compile preprocessFile "scripts\animals\checkAnimals.sqf";
 footFuncs			= compile preprocessFile "scripts\foot\foot_funcs.sqf";
 checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
-getBarricadeables	= compile preprocessFile "scripts\barricading\getBarricadeables.sqf";
+//getBarricadeables	= compile preprocessFile "scripts\barricading\getBarricadeables.sqf";
 
 hungerWaitTime = 10;
 nextHungerDecr = hungerWaitTime;
@@ -58,16 +58,14 @@ carRepair = {
 nearestTree  			= [];
 
 // Watersources
-waterSourceObjects      = ["Land_BarrelWater_F","Land_WaterBarrel_F","Land_WaterTank_F","Land_BarrelWater_grey_F","Land_Water_source_F","Land_StallWater_F"];
 nearOpenWater           = false;
-nearWaterSource         = false;
 drinkActionAvailable    = false;
 
 cannedFoodCooldownTime      = 120;
 cannedFoodCooldownCountdown = 0;
 
 eatCookedFoodAction = {
-    player say3D "eatSound0";
+    player  say3D "eatSound0";
     sleep 1;
     playerHunger = playerHunger + (random(20)+30);
     playerTemperature = playerTemperature + 20;
@@ -77,25 +75,11 @@ eatCookedFoodAction = {
     cutText [format["ate somthing cooked %1",selectRandom _tastes], "PLAIN DOWN"];
 };
 
-isInfront = {
-    _p      = player;
-    _o      = _this select 0;
-    _canSee = false;
-
-    _relDir         = _p getRelDir (position _o);
-    _inViewAngle    = abs(_relDir - 180);
-    if([objNull, "VIEW"] checkVisibility [eyePos _p, eyePos _o] > 0.9 && _inViewAngle > 120) then{
-         _canSee = true;
-    };
-
-    _canSee
-};
-
 _whileAliveFunc = [] spawn {
     while{alive player && player getVariable["playerSetupReady",false]}do{
 		t=time;
 
-		if(time > nextHungerDecr)then{
+		if(t > nextHungerDecr)then{
 			// Hunger
 			_hungerVal = playerHunger;
 			if(_hungerVal > 0)then{
@@ -106,7 +90,7 @@ _whileAliveFunc = [] spawn {
 			nextHungerDecr = time + hungerWaitTime;
 		};
 
-		if(time > nextThirstDecr)then{
+		if(t > nextThirstDecr)then{
 			// Thirst
 			_thirstVal = playerThirst;
 			if(_thirstVal > 0)then{
@@ -117,7 +101,7 @@ _whileAliveFunc = [] spawn {
 			nextThirstDecr = time + thirstWaitTime;
 		};
 
-		if(time > nextHealthDecr)then{
+		if(t > nextHealthDecr)then{
 			// Health
 			_healthVal = playerHealth;
 			_sickVal = playerSick;
@@ -140,7 +124,7 @@ _whileAliveFunc = [] spawn {
 			nextHealthDecr = time + healthWaitTime;
 		};
 
-		if(t > 0.2)then{
+		if(t > 0.1)then{
 			// Save Spawn Stats
             [player,[playerHunger,playerThirst,playerHealth,playerTemperature,playerWet,playerSick,playerInfected]] remoteExec ["fnc_savePlayerStats",2,false];
 		};
@@ -150,7 +134,7 @@ _whileAliveFunc = [] spawn {
 			[getPos player] remoteExec ["fnc_spawnLoot",2,false];
 		};
 
-		waitUntil {time - t > 0.2};
+		waitUntil {time - t > 0.1};
 
 		_cursorTarget         = cursorTarget;
 		_cursorTargetType     = typeOf _cursorTarget;
@@ -162,39 +146,27 @@ _whileAliveFunc = [] spawn {
 		[_isInside,_isInCar,_nearestFireplaces] spawn handleWet;
 		[_isInside,_isInCar,_nearestFireplaces] spawn handleTemperature;
 
-        [_isInside,_closestBuilding] spawn getBarricadeables;
+        //[_isInside,_closestBuilding] spawn getBarricadeables;
 
 		[] spawn checkSick;
 		[] spawn checkNoise;
 		[] spawn updateUI;
 		[] spawn checkAnimals;
 
-        nearOpenWater = surfaceIsWater position player;
-
 		nearestTree = [];
 		// Everything in 2 meters around player
 		_things = nearestObjects [player,[],5];
 		{
+			_obj = _x;
 			// Tree Check
-			if (str _x find ": t_" > -1 && [_x] call isInfront) then {
-				nearestTree = [_x];
+			if (str _x find ": t_" > -1) then {
+				nearestTree = [_obj];
+				//systemChat format ["%1 %2",str _obj,time];
 			};
+
+			//Debug
+			//systemChat str nearTree;
 		} forEach _things;
-
-        // DrinkActionAvailable Check
-        if((nearWaterSource || nearOpenWater) && !drinkActionAvailable)then{
-            drinkAction = player addAction["Drink Water",{
-                playerThirst = playerThirst + 10;
-            }];
-            drinkActionAvailable = true;
-        }else{
-            if(drinkActionAvailable)then{
-                drinkActionAvailable = false;
-                player removeAction drinkAction;
-            };
-        };
-
-        //systemChat format["ws: %1; ow: %2",nearWaterSource,nearOpenWater];
 
 		// Fireplace Check
 		if(_cursorTargetType == "Land_FirePlace_F" && inflamed _cursorTarget) then {
