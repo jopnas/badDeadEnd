@@ -96,6 +96,8 @@ fnc_burnDeadZ = {
             } forEach allDeadMen;
 
             sleep 20;
+            _skeletton = createVehicle ["Land_HumanSkeleton_F", getPos _deadZ, [], 0, "CAN_COLLIDE"];
+            _skeletton setDir (getDir _deadZ);
             hideBody _deadZ;
             sleep 2;
             deleteVehicle _deadZ;

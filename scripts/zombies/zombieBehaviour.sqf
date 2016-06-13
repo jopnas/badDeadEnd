@@ -160,8 +160,8 @@ _zBehaviour = [_z] spawn {
 
         if(count _alivePlayers > 0)then{
             if(_closestPlayerAliveDistance > agroRange)then{
-                //_z forceWalk true;
-                //_z forceSpeed 0.3;
+                _z forceWalk true;
+                _z forceSpeed 0.3;
                 _z setVariable["lastPlayerSeen",[false,[]], false];
                 _z setVariable["hasTarget",false, false];
                 if(count(_lastPlayerHeard) > 0)then{
@@ -215,10 +215,15 @@ _zBehaviour = [_z] spawn {
                 };
             };
         }else{
-            //_z forceWalk true;
-            //_z forceSpeed 0.3;
+            _z forceWalk true;
+            _z forceSpeed 0.3;
             _z setVariable["hasTarget",false, false];
         };
+
+        if(_closestPlayerAliveDistance > zMinSpawnRange)then{
+            deleteVehicle _z;            
+        };
+
 
         sleep 0.5;
     };

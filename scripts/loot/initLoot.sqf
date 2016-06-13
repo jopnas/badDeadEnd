@@ -62,11 +62,11 @@ fnc_spawnLoot = {
           // Create Holder
 
 			_holderPos = _building buildingPos _i;
-			_spawn = createVehicle ["groundWeaponHolder",_holderPos,[],0,"can_collide"];
+			_spawn = "groundWeaponHolder" createVehicle _holderPos;
 
 			// Options
-			_spawn setPosATL _holderPos;
-			_spawn setDir round(random 180);
+            _spawn setDir round(random 360);
+            _spawn setVehiclePosition [_holderPos, [], 0, "CAN_COLLIDE"];
 
           switch(_buildingType) do {
             case "MilitaryBuilding":{
@@ -154,7 +154,7 @@ fnc_spawnLoot = {
               if(random 100 < 5) then {
                 _spawn addItemCargoGlobal [selectRandom _itemsCiv,1];
               };
-          
+
               // Ammo only
               if(random 100 < 30) then {
                 _rdmWeaponAmmoCiv  = selectRandom (lightWeapons call BIS_fnc_arrayShuffle);
