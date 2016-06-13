@@ -1,11 +1,12 @@
 // Fetch available Weapons
 
 private["_hardestHitPossible"];
-lightWeapons  = [];
-mediumWeapons = [];
-heavyWeapons  = [];
+lightWeapons    = [];
+mediumWeapons   = [];
+heavyWeapons    = [];
+
 _allWeaponTypes = ["AssaultRifle","Handgun","MachineGun","Shotgun","Rifle","SubmachineGun","SniperRifle"];
-// AssaultRifle,BombLauncher,Cannon,GrenadeLauncher,Handgun,Launcher,MachineGun,Magazine,,MissileLauncher,Mortar,RocketLauncher,Shotgun,Throw,Rifle,SubmachineGun,SniperRifle
+// AssaultRifle,BombLauncher,Cannon,GrenadeLauncher,Handgun,Launcher,MachineGun,Magazine,MissileLauncher,Mortar,RocketLauncher,Shotgun,Throw,Rifle,SubmachineGun,SniperRifle
 //Full List: https://community.bistudio.com/wiki/BIS_fnc_itemType -> section Weapon
 _allBannedWeapons=[];  //add banned weapons, make shure to use the base version of the weapon
 _wpList = (configFile >> "cfgWeapons") call BIS_fnc_getCfgSubClasses;
@@ -36,7 +37,7 @@ _wpList = (configFile >> "cfgWeapons") call BIS_fnc_getCfgSubClasses;
                 if(_hardestHitPossible >= 10 && _hardestHitPossible < 15)then {
                     mediumWeapons pushBack _x;
                 };
-                if(_hardestHitPossible >= 18)then {
+                if(_hardestHitPossible >= 15)then {
                     heavyWeapons pushBack _x;
                 };
             };

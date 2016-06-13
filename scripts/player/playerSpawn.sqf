@@ -6,8 +6,6 @@ _PlayerUID	= getPlayerUID _playerUnit;
 
 _isRespawn = false;
 
-3 cutRsc ['playerStatusGUI', 'PLAIN',3];
-
 // Player Equipment Reset
 removeAllWeapons _playerUnit;
 removeAllAssignedItems _playerUnit;
@@ -26,7 +24,6 @@ playerThirst = 100;
 playerHealth = 100;
 playerTemperature = 100;
 playerNoise = 0;
-// Indicators
 playerWet = 0;
 playerSick = 0;
 playerInfected = 0;
@@ -83,7 +80,6 @@ if(count _db > 0)then{
 	playerThirst = _thirst;
 	playerHealth = _health;
 	playerTemperature = _temperature;
-	// Indicators
 	playerWet = _wet;
 	playerSick = _sick;
 	playerInfected = _infected;
@@ -91,16 +87,6 @@ if(count _db > 0)then{
 	// Set Position
 	_playerUnit setPosATL _playerPosition;
 	_playerUnit setDir _playerDirection;
-
-	switch(_playerStance)do{
-		case "CROUCH": {
-			_playerUnit switchMove "AmovPcrhMstpSrasWpstDnon_AadjPcrhMstpSrasWpstDdown";
-		};
-		case "PRONE": {
-			sleep 0.1;
-			_playerUnit switchMove "AmovPpneMstpSnonWnonDnon";
-		};
-	};
 
 	// Set Uniform
 	if(count _playerUniform > 2)then{
@@ -117,7 +103,22 @@ if(count _db > 0)then{
 		_playerUnit addBackpack _playerBackpack;
 	};
 
-	// Magazines loded in weapons
+	// Set Items Backpack
+	{
+		_playerUnit addItemToBackpack _x;
+	}forEach _playerItemsBackpack;
+
+	// Set Items Vest
+	{
+		_playerUnit addItemToVest _x;
+	}forEach _playerItemsVest;
+
+	// Set Items Uniform
+	{
+		_playerUnit addItemToUniform _x;
+	}forEach _playerItemsUniform;
+
+    // Magazines loaded in weapons
 	{
 		_playerUnit addMagazine[_x,1];
 	}forEach _primWeapMag;
@@ -137,22 +138,7 @@ if(count _db > 0)then{
 
 	_playerUnit setAmmo [primaryWeapon _playerUnit, _primWeapAmmo];
 	_playerUnit setAmmo [secondaryWeapon _playerUnit, _secWeapAmmo];
-	_playerUnit setAmmo [handgunWeapon _playerUnit, _handgunAmmo];
-
-	// Set Items Backpack
-	{
-		_playerUnit addItemToBackpack _x;
-	}forEach _playerItemsBackpack;
-
-	// Set Items Vest
-	{
-		_playerUnit addItemToVest _x;
-	}forEach _playerItemsVest;
-
-	// Set Items Uniform
-	{
-		_playerUnit addItemToUniform _x;
-	}forEach _playerItemsUniform;
+	_playerUnit setAmmo [handgunWeapon _playerUnit, _handgunAmmo];    
 
 	// Weapon Attachments
 	{
@@ -180,20 +166,30 @@ if(count _db > 0)then{
 		_playerUnit addGoggles _goggles;
 	};
 
-	_playerUnit selectWeapon _currentWeapon;
-
   	_hitPointNames	= _playerDamage select 0;
 	_hitPointValues	= _playerDamage select 1;
 	_hitPointsCount = count _hitPointNames;
 
 	for "_i" from 0 to _hitPointsCount do {
 		if(count(_hitPointNames select _i) > 0)then{
-			_playerUnit setHitPointDamage [_hitPointNames select _i, _hitPointValues select _i];
+			_playerUnit setHit [_hitPointNames select _i, _hitPointValues select _i];
 		};
-      
+
       if(_i >= _hitPointsCount)then{
         _playerUnit setVariable["playerSetupReady",true];
       };
+	};
+
+    _playerUnit selectWeapon _currentWeapon;
+
+    switch(_playerStance)do{
+		case "CROUCH": {
+			_playerUnit switchMove "AmovPcrhMstpSrasWpstDnon_AadjPcrhMstpSrasWpstDdown";
+		};
+		case "PRONE": {
+			sleep 0.1;
+			_playerUnit switchMove "AmovPpneMstpSnonWnonDnon";
+		};
 	};
 
 }else{

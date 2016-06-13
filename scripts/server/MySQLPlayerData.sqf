@@ -21,13 +21,13 @@ fnc_loadPlayerStats = {
 	private["_playerUnit","_PlayerUID","_result"];
 	_playerUnit	= _this select 0;
 	_PlayerUID	= _this select 1;
-    
+
     if(_PlayerUID == "_SP_PLAYER_")then{
         _PlayerUID = 12345;
     };
 
 	_result = call compile ("extDB2" callExtension format["0:SQL_PL_LOAD:SELECT * FROM player WHERE PlayerUID='%1'",_PlayerUID]);
-    waitUntil{count _result > 0 && _result select 0 > 0};    
+    waitUntil{count _result > 0 && _result select 0 > 0};
 	_playerUnit setVariable["db",(_result select 1) select 0,true];
 };
 
@@ -76,7 +76,7 @@ fnc_savePlayerStats = {
 	_assignedItems	= assignedItems _player;
 	_assignedItems	= _assignedItems - ["Binocular"] - ["Laserdesignator"] - ["Laserdesignator_02"] - ["Laserdesignator_03"] - ["Rangefinder"] - ["NVGoggles"];
 	_goggles		= goggles _player;
-  
+
     _playerDamages  = getAllHitPointsDamage _player;
 	_playerDamage   = [_playerDamages select 0,_playerDamages select 2];
 
@@ -128,10 +128,10 @@ fnc_saveCar = {
 	_fuel		= fuel _car;
 	_damages	= getAllHitPointsDamage _car;
 	_damage		= [_damages select 0,_damages select 2];
-	_items		= getItemCargo _car;//[["ItemMap","Binocular"],[2,1]];
-	_weapons	= getWeaponCargo _car;//[["SMG_01_F","hgun_Pistol_heavy_01_F"],[2,2]];
-	_magazines	= getMagazineCargo _car;//[["jii_canrusty","jii_matches"],[2,3]];
-	_backpacks	= getBackpackCargo _car;//[["B_AssaultPack_blk","B_Carryall_khk"],[2,1]];
+	_items		= getItemCargo _car;
+	_weapons	= getWeaponCargo _car;
+	_magazines	= getMagazineCargo _car;
+	_backpacks	= getBackpackCargo _car;
     _destroyed  = 0;
     if(!(alive _car))then{
         _destroyed = 1;
@@ -140,4 +140,11 @@ fnc_saveCar = {
     // Car Save
     _QuerySave 	= format["0:SQL_VH_SAVE:UPDATE vehicles SET position='%2', rotation='%3', fuel='%4', damage='%5', destroyed='0', items='%6', weapons='%7', magazines='%8', backpacks='%9', destroyed=%10 WHERE id='%1'",_id,_position,_rotation,_fuel,_damage,_items,_weapons,_magazines,_backpacks,_destroyed];
     _saveIs = "extDB2" callExtension _QuerySave;
+
+    _carMarker = format["car %1",_id];
+    if(_destroyed < 1)then{
+        _carMarker setMarkerPos _position;
+    }else{
+        deleteMarker _carMarker;
+    };
 };
