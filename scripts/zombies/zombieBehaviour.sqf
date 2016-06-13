@@ -85,12 +85,10 @@ _z addeventhandler ["HandleDamage",{
             switch(_selectionName) do {
                 case "head": {
                     _amountOfDamage = _amountOfDamage*100000;
-                    _headshotSound = createSoundSource ["headshot0", position _unit, [], 0];
-                	sleep 2;
-                	deleteVehicle _headshotSound;
+                    playSound3D ["headshot0.ogg", _unit];
                 };
                 default {
-                    _amountOfDamage = 0.05;
+                    _amountOfDamage = 0.005;
                     [_unit,format["zhurt%1",floor random 3],50,_speechPitch] remoteExec ["bde_fnc_say3d",0,false];
 				};
 	        };
