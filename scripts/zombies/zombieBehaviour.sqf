@@ -1,7 +1,7 @@
 _z = _this select 0;
-_z setHit ["head", 0.7 + random(0.2)];
-_z setHit ["hands", 0.7 + random(0.2)];
-_z setHit ["legs", 0.4];
+_z setHit ["head", 0.5 + random(0.3)];
+_z setHit ["hands", 0.5 + random(0.3)];
+_z setHit ["legs", 0.5];
 
 removeAllWeapons _z;
 removeAllAssignedItems _z;
@@ -18,11 +18,11 @@ _z addRating -10000;
 _z disableConversation true;
 enableSentences false;
 
-_z setVariable["speechPitch",random(2), false];
+_z setVariable["speechPitch",random(2), true];
 
-_z setVariable["hasTarget",false, false];
-_z setVariable["lastPlayerSeen",[false,[]], false];
-_z setVariable["lastPlayerHeard",[], false];
+_z setVariable["hasTarget",false, true];
+_z setVariable["lastPlayerSeen",[false,[]], true];
+_z setVariable["lastPlayerHeard",[], true];
 doStop _z;
 
 _z addEventHandler ["FiredNear", {
@@ -59,7 +59,7 @@ _z addEventHandler ["FiredNear", {
     //_lastPlayerHeard     = _unit getVariable "lastPlayerHeard";
 
     //if(_distance < _lastPlayerHeard distance _unit)then{
-        _unit setVariable["lastPlayerHeard",position _firer, false];
+        _unit setVariable["lastPlayerHeard",position _firer, true];
     //};
     //systemChat str (_distance);
 }];
@@ -84,12 +84,16 @@ _z addeventhandler ["HandleDamage",{
             };
             switch(_selectionName) do {
                 case "head": {
-                    _amountOfDamage = _amountOfDamage*100000;
-                    playSound3D ["headshot0.ogg", _unit];
+                    _amountOfDamage = _amountOfDamage * 1000000;
+                    //playSound3D ["headshot0.ogg", _unit];
+                    [_unit,"headshot0",floor random 3],50,_speechPitch] remoteExec ["bde_fnc_say3d",0,false];
+                };
+                case "legs": {
+                    _amountOfDamage = 0;
+                    [_unit,"headshot0",floor random 3],50,_speechPitch] remoteExec ["bde_fnc_say3d",0,false];
                 };
                 default {
                     _amountOfDamage = 0.005;
-                    [_unit,format["zhurt%1",floor random 3],50,_speechPitch] remoteExec ["bde_fnc_say3d",0,false];
 				};
 	        };
         }else{
@@ -102,6 +106,8 @@ _z addeventhandler ["HandleDamage",{
 _z addMPEventHandler ["MPKilled",{
     _deadZ = _this select 0;
     [_deadZ] call bde_fnc_addBurnAction;
+    _zsMarkerName = format["zombie%1",_deadZ getVariable "zID"];
+    deleteMarker _zsMarkerName;
 }];
 
 canSeePlayer = {
@@ -160,8 +166,8 @@ _zBehaviour = [_z] spawn {
             if(_closestPlayerAliveDistance > agroRange)then{
                 _z forceWalk true;
                 _z forceSpeed 0.3;
-                _z setVariable["lastPlayerSeen",[false,[]], false];
-                _z setVariable["hasTarget",false, false];
+                _z setVariable["lastPlayerSeen",[false,[]], true];
+                _z setVariable["hasTarget",false, true];
                 if(count(_lastPlayerHeard) > 0)then{
                     _z doMove (_lastPlayerHeard);
                 };
@@ -176,7 +182,7 @@ _zBehaviour = [_z] spawn {
 
                     if(!_hasTarget)then{
                         [_z,format["zpunch%1",floor random 4],50,_speechPitch] remoteExec ["bde_fnc_say3d",0,false];
-                        _z setVariable["hasTarget",true, false];
+                        _z setVariable["hasTarget",true, true];
                     };
 
                    if(_closestPlayerAliveDistance > attackRangeDef)then{
@@ -197,13 +203,13 @@ _zBehaviour = [_z] spawn {
                 }else{
                     if(_lastPlayerSeenSet)then{
                         _z doMove (_lastPlayerSeenPos);
-                        _z setVariable["hasTarget",false, false];
+                        _z setVariable["hasTarget",false, true];
                         if(
                             (position _z) distance _lastPlayerSeenPos < 2 &&
                             (!(terrainIntersectASL [_lastPlayerSeenPos, eyePos _z]) && !(lineIntersects [ _lastPlayerSeenPos, eyePos _z])) &&
                             !([_z,_closestPlayerAlive] call canSeePlayer)
                         )then{
-                            _z setVariable["lastPlayerSeen",[false,[]], false];
+                            _z setVariable["lastPlayerSeen",[false,[]], true];
                         };
                     }else{
                         if(count(_lastPlayerHeard) > 0)then{
@@ -215,11 +221,11 @@ _zBehaviour = [_z] spawn {
         }else{
             _z forceWalk true;
             _z forceSpeed 0.3;
-            _z setVariable["hasTarget",false, false];
+            _z setVariable["hasTarget",false, true];
         };
 
         if(_closestPlayerAliveDistance > zMinSpawnRange)then{
-            deleteVehicle _z;            
+            deleteVehicle _z;
         };
 
 
