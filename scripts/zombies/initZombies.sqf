@@ -4,7 +4,7 @@ groupZ 			= createGroup Resistance;
 groupZ allowFleeing 0;
 
 zSpawnRange         = 700;
-zMinSpawnRangeDef   = 100;
+zMinSpawnRangeDef   = 10;
 zMinSpawnRange 	    = zMinSpawnRangeDef;
 agroRange 		    = 40;
 attackRangeDef 		= 1.5;

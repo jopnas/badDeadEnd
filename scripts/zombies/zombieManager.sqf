@@ -19,8 +19,8 @@ while {true} do {
         _thisPlayer       = _x;
         _thisPlayerPos    = position _thisPlayer;
 
-        //_buildings = nearestObjects [_thisPlayer,["Building"], zSpawnRange];
-        _buildings = _thisPlayer nearObjects ["Building", zSpawnRange];
+        _buildings = nearestObjects [_thisPlayer,["Building"], zSpawnRange];
+        //_buildings = _thisPlayer nearObjects ["Building", zSpawnRange];
         _buildingsCount = count _buildings;
 
         _useZlist = _zUnitsCiv;
@@ -31,6 +31,13 @@ while {true} do {
         if (_zCount > _zMax) then {
             _zCount = _zMax;
         };
+
+        /*
+            BIS_fnc_findSafePos
+            https://community.bistudio.com/wiki/BIS_fnc_findSafePos
+
+            _safeSpawnPoint = [_thisPlayer, zMinSpawnRange, zSpawnRange, 1, 0, 20, 0] call BIS_fnc_findSafePos;
+        */
 
         if (count (units groupZ) < _zCount) then {
             _randomBuilding = selectRandom _buildings;
@@ -53,7 +60,7 @@ while {true} do {
             _relDir         = _thisPlayer getRelDir _pos;
             _inViewAngle    = abs(_relDir - 180);
 
-            if([objNull, "VIEW"] checkVisibility [eyePos _thisPlayer, [_pos select 0,_pos select 1,(_pos select 2) + 1]] == 0 && _thisPlayer distance _pos > 10 && _inViewAngle < 100)then{
+            if([objNull, "VIEW"] checkVisibility [eyePos _thisPlayer, [_pos select 0,_pos select 1,(_pos select 2) + 1]] == 0 && _thisPlayer distance _pos > zMinSpawnRange && _inViewAngle < 100)then{
                 _z = selectRandom _useZlist;
                 _newZ = _z createUnit [_pos, groupZ,"[this] call _fnc_zombieBehaviour", 0, "NONE"];
                 _newZ setVariable ["zID",_createdZno,true];
