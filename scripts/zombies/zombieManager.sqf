@@ -39,7 +39,7 @@ while {true} do {
             _safeSpawnPoint = [_thisPlayer, zMinSpawnRange, zSpawnRange, 1, 0, 20, 0] call BIS_fnc_findSafePos;
         */
 
-        if (count (units groupZ) < _zCount) then {
+        if ({alive _x} count (units groupZ) < _zCount) then {
             _randomBuilding = selectRandom _buildings;
 
             if(typeOf _randomBuilding in militaryBuildings)then{

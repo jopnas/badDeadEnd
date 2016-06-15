@@ -150,8 +150,6 @@ _whileAliveFunc = [] spawn {
 		[_isInside,_isInCar,_nearestFireplaces] spawn handleWet;
 		[_isInside,_isInCar,_nearestFireplaces] spawn handleTemperature;
 
-        systemChat format["cursorObject: %1",_cursorObjectType];
-
         //[_isInside,_closestBuilding] spawn getBarricadeables;
 
 		[] spawn checkSick;
@@ -415,4 +413,6 @@ _whileAliveFunc = [] spawn {
         };
 
     };
+
+    hint format["Zs Alive: %1\nZs Dead: %2\ncursorObject: %3",{alive _x} count (units groupZ),{!(alive _x)} count (units groupZ),_cursorObject];    
 };
