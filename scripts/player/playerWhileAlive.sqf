@@ -3,7 +3,7 @@ updateUI   			= compile preprocessFile "scripts\player\playerUpdateUI.sqf";
 checkNoise 			= compile preprocessFile "scripts\player\playerNoiseCheck.sqf";
 handleWet 			= compile preprocessFile "scripts\player\playerWetHandler.sqf";
 handleTemperature 	= compile preprocessFile "scripts\player\playerTemperatureHandler.sqf";
-checkBoundingBox    = compile preprocessFile "scripts\tools\checkBoundingBox";
+checkBoundingBox    = compile preprocessFile "scripts\tools\checkBoundingBox.sqf";
 checkAnimals		= compile preprocessFile "scripts\animals\checkAnimals.sqf";
 footFuncs			= compile preprocessFile "scripts\foot\foot_funcs.sqf";
 checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
@@ -137,10 +137,10 @@ _whileAliveFunc = [] spawn {
 		waitUntil {time - t > 0.1};
 
 		_cursorTarget         = cursorTarget;
-		_cursorTargetType     = typeOf _cursorTarget
+		_cursorTargetType     = typeOf _cursorTarget;
 
         _cursorObject         = cursorObject;
-		_cursorObjectType     = typeOf _cursorObject
+		_cursorObjectType     = typeOf _cursorObject;
 
 		_closestBuilding      = nearestBuilding player;
 		_isInside             = [_closestBuilding,player,false,false] call checkBoundingBox;
@@ -234,8 +234,8 @@ _whileAliveFunc = [] spawn {
             player removeAction eatCookedFoodAction;
         };
 
-        if("ToolKit" in Items Player && vehicle player == player && cursorObject isKindOf "Car" && cursorObject distance player < 3)then{
-            _nearestCarObj = cursorObject;
+        if("ToolKit" in Items Player && vehicle player == player && _cursorObject isKindOf "Car" && cursorObject distance player < 5)then{
+            _nearestCarObj = _cursorObject;
             _carDamages = getAllHitPointsDamage _nearestCarObj;
             {
                 _i = _forEachIndex;
@@ -412,7 +412,7 @@ _whileAliveFunc = [] spawn {
             };
         };
 
+        hint format["cursorObject: %1",_cursorObject];
     };
 
-    hint format["Zs Alive: %1\nZs Dead: %2\ncursorObject: %3",{alive _x} count (units groupZ),{!(alive _x)} count (units groupZ),_cursorObject];    
 };

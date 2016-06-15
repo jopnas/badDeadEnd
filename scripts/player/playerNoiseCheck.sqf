@@ -93,7 +93,7 @@ playerNoise = _noiseLevel;
     };
 } forEach (units groupZ);*/
 
-systemChat str playerNoise;
+//systemChat str playerNoise;
 
 /*["adjust_stand_side",["\A3\sounds_f\characters\stances\concrete_adjust_stand_side1",0.251189,1,20]],
     ["adjust_stand_side",["\A3\sounds_f\characters\stances\concrete_adjust_stand_side2",0.251189,1,20]],

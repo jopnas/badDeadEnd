@@ -13,7 +13,6 @@ _zPerPlayer	    = 30;
 _zMax           = _zPerPlayer; // initial
 _zCount         = 0;
 
-_createdZno     = 0;
 while {true} do {
     {
         _thisPlayer       = _x;
@@ -62,16 +61,9 @@ while {true} do {
 
             if([objNull, "VIEW"] checkVisibility [eyePos _thisPlayer, [_pos select 0,_pos select 1,(_pos select 2) + 1]] == 0 && _thisPlayer distance _pos > zMinSpawnRange && _inViewAngle < 100)then{
                 _z = selectRandom _useZlist;
-                _newZ = _z createUnit [_pos, groupZ,"[this] call _fnc_zombieBehaviour", 0, "NONE"];
-                _newZ setVariable ["zID",_createdZno,true];
-
-                _createdZno = _createdZno + 1;
-                _markerstr = createMarker [format["zombie%1",_createdZno] , _pos];
-            	_markerstr setMarkerShape "ICON";
-            	_markerstr setMarkerType "mil_dot";
-            	_markerstr setMarkerColor "ColorRed";
-
-                sleep 0.5;
+                _z createUnit [_pos, groupZ,"[this] call _fnc_zombieBehaviour", 0, "NONE"];
+                
+                sleep 0.2;
             };
         };
     } forEach allPlayers;

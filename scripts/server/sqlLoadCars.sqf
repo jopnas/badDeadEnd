@@ -18,7 +18,6 @@ waitUntil { _CarsQueryStatus > 0 };
 	_magazines = ((call compile ("extDB2" callExtension format["0:SQL_VH_LOAD:SELECT magazines FROM vehicles WHERE id='%1'",_id]) select 1) select 0) select 0;
 	_backpacks = ((call compile ("extDB2" callExtension format["0:SQL_VH_LOAD:SELECT backpacks FROM vehicles WHERE id='%1'",_id]) select 1) select 0) select 0;
 
-
     if(_destroyed > 0)then{
         _towns = nearestLocations [[16000,16000], ["NameVillage","NameCity","NameCityCapital"], 12000];
         _roads = getPos selectRandom(_towns) nearRoads 1000;
@@ -79,7 +78,7 @@ waitUntil { _CarsQueryStatus > 0 };
 
     	for "_i" from 0 to _hitPointsCount do {
     		if(count(_hitPointNames select _i) > 0)then{
-    			_spawnedCar setHit [_hitPointNames select _i, _hitPointValues select _i];
+                _spawnedCar setHitPointDamage [_hitPointNames select _i, _hitPointValues select _i];
     		};
     	};
     };
