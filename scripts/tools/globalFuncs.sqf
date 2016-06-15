@@ -25,3 +25,12 @@ bde_fnc_removeBurnAction = {
     _targetObject = _this select 0;
     _targetObject removeAction burnAction;
 };
+
+bde_fnc_underCover = {
+    _object         = _this select 0;
+    _startPosition  = getPosASL _object;
+    _endPosition    = [_startPosition select 0, _startPosition select 1, (_startPosition select 2 ) + 10];
+    _intersections  = lineIntersectsSurfaces [_startPosition, _endPosition, _object, objNull, false, 1, "GEOM", "VIEW"];
+    _isBelowRoof    = !(_intersections isEqualTo []);
+    _isBelowRoof
+};

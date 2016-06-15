@@ -3,7 +3,7 @@ updateUI   			= compile preprocessFile "scripts\player\playerUpdateUI.sqf";
 checkNoise 			= compile preprocessFile "scripts\player\playerNoiseCheck.sqf";
 handleWet 			= compile preprocessFile "scripts\player\playerWetHandler.sqf";
 handleTemperature 	= compile preprocessFile "scripts\player\playerTemperatureHandler.sqf";
-checkInside			= compile preprocessFile "scripts\tools\checkInside.sqf";
+checkBoundingBox    = compile preprocessFile "scripts\tools\checkBoundingBox";
 checkAnimals		= compile preprocessFile "scripts\animals\checkAnimals.sqf";
 footFuncs			= compile preprocessFile "scripts\foot\foot_funcs.sqf";
 checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
@@ -137,14 +137,20 @@ _whileAliveFunc = [] spawn {
 		waitUntil {time - t > 0.1};
 
 		_cursorTarget         = cursorTarget;
-		_cursorTargetType     = typeOf _cursorTarget;
+		_cursorTargetType     = typeOf _cursorTarget
+
+        _cursorObject         = cursorObject;
+		_cursorObjectType     = typeOf _cursorObject
+
 		_closestBuilding      = nearestBuilding player;
-		_isInside             = [_closestBuilding,player,false] call checkInside;
+		_isInside             = [_closestBuilding,player,false,false] call checkBoundingBox;
         _isInCar              = (vehicle player == player);
 		_nearestFireplaces    = nearestObjects [player, ["Land_FirePlace_F","Land_Campfire_F"], 3];
 
 		[_isInside,_isInCar,_nearestFireplaces] spawn handleWet;
 		[_isInside,_isInCar,_nearestFireplaces] spawn handleTemperature;
+
+        systemChat format["cursorObject: %1",_cursorObjectType];
 
         //[_isInside,_closestBuilding] spawn getBarricadeables;
 
@@ -159,14 +165,20 @@ _whileAliveFunc = [] spawn {
 		{
 			_obj = _x;
 			// Tree Check
-			if (str _x find ": t_" > -1) then {
+			/*if (str _x find ": t_" > -1) then {
 				nearestTree = [_obj];
 				//systemChat format ["%1 %2",str _obj,time];
-			};
+			};*/
 
 			//Debug
 			//systemChat str nearTree;
 		} forEach _things;
+
+        if(str (getModelInfo _cursorObject) find ": t_" > -1)then{
+            nearestTree = [_cursorObjectType];
+        }else{
+            nearestTree = [];
+        };
 
 		// Fireplace Check
 		if(_cursorTargetType == "Land_FirePlace_F" && inflamed _cursorTarget) then {
@@ -224,9 +236,8 @@ _whileAliveFunc = [] spawn {
             player removeAction eatCookedFoodAction;
         };
 
-        _nearestCars    = player nearEntities [["Car"], 4];
-        _nearestCarObj  = _nearestCars select 0;
-        if("ToolKit" in Items Player && count (_nearestCars) > 0 && vehicle player == player )then{
+        if("ToolKit" in Items Player && vehicle player == player && cursorObject isKindOf "Car" && cursorObject distance player < 3)then{
+            _nearestCarObj = cursorObject;
             _carDamages = getAllHitPointsDamage _nearestCarObj;
             {
                 _i = _forEachIndex;

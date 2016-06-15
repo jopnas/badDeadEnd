@@ -1,14 +1,20 @@
-private["_building","_checkObj","_insideBuilding","_canEnter","_debug"];
-_building 	= _this select 0;
-_checkObj 	= _this select 1;
-_debug 		= _this select 2;
+private["_bboxObject","_notBuilding","_checkObj","_result","_canEnter","_debug"];
+_bboxObject     = _this select 0;
+_checkObj 	    = _this select 1;
+_notBuilding    = _this select 2;
+_debug          = _this select 3;
 
-_insideBuilding = false;
-_canEnter       = [_building] call BIS_fnc_isBuildingEnterable;
+_result = false;
+
+if(_notBuilding)then{
+    _canEnter = true;
+}else{
+    _canEnter = [_bboxObject] call BIS_fnc_isBuildingEnterable;
+};
 
 _offset     = 1;
-_pPos       = _building worldToModel (getPosATL _checkObj);
-_BBox       = boundingBoxReal _building;
+_pPos       = _bboxObject worldToModel (getPosATL _checkObj);
+_BBox       = boundingBoxReal _bboxObject;
 
 _BBoxMin    = _BBox select 0;
 _BBoxMax    = _BBox select 1;
@@ -22,14 +28,14 @@ if(_pX > (_BBoxMin select 0)+_offset && _pX < (_BBoxMax select 0)-_offset) then 
 	if(_pY > (_BBoxMin select 1)+_offset && _pY < (_BBoxMax select 1)-_offset) then {
 		if(_pZ > (_BBoxMin select 2) && _pZ < (_BBoxMax select 2)) then {
 		    if(_canEnter)then{
-	            _insideBuilding = true;
+	            _result = true;
 	        };
 		};
 	};
 };
 
 if(_debug)then{
-	_building call {
+	_bboxObject call {
 		private ["_obj","_bb","_bbx","_bby","_bbz","_arr","_y","_z"];
 		_obj = _this;
 		_bb = {
@@ -90,4 +96,4 @@ if(_debug)then{
 	};
 };
 
-_insideBuilding;
+_result
