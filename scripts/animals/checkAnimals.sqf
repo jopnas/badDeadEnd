@@ -18,11 +18,6 @@ _animals = nearestObjects[player,["Rabbit_F","Goat_random_F","Sheep_random_F","H
 				_gwh addMagazineCargoGlobal["jii_meat_small",2];
 			};
 		};
-        /*burnAction = _animal addAction [ "Burn dead animal", {
-            _deadA = _this select 0;
-            _deadA removeAction burnAction;
-            [_deadA] remoteExec ["fnc_burnDeadA",2,false];
-        }];*/
     };
 
 	if(random 100 < 5)then{
@@ -47,9 +42,3 @@ _animals = nearestObjects[player,["Rabbit_F","Goat_random_F","Sheep_random_F","H
 	};
 
 }forEach _animals;
-
-/*_maxAnimals = 10;
-if(count _animals < _maxAnimals && random(100) > 80) then {
-    _animalList = ["Rabbit_F","Goat_random_F","Sheep_random_F","Hen_random_F","Cock_random_F","Fin_random_F","Alsatian_Random_F"];
-    [selectRandom _animalList,_maxAnimals-(count _animals),100,getPos player] spawn fnc_spawnAnimals;
-};*/

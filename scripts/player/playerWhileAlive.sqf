@@ -70,10 +70,57 @@ eatCookedFoodAction = {
     playerHunger = playerHunger + (random(20)+30);
     playerTemperature = playerTemperature + 20;
     player removeMagazine "jii_canunknown";
-    player addMagazine ["jii_emptycanunknown",1];
+
+    _wph = "groundWeaponHolder" createVehicle getPos player;
+    _wph setDir round(random 360);
+    _wph setVehiclePosition [getPos _wph, [], 0, "CAN_COLLIDE"];
+    _wph addMagazine ["jii_emptycanunknown",1];
+
     _tastes =  ["salty","sweet","bitter","sour","flavorless"];
     cutText [format["ate somthing cooked %1",selectRandom _tastes], "PLAIN DOWN"];
 };
+
+// broadcast shot to zombie
+player addEventHandler ["Fired", {
+    _unit       = _this select 0; // Object - Object the event handler is assigned to
+    _weapon     = _this select 1; // String - Fired weapon
+    _muzzle     = _this select 2; // String - Muzzle that was used
+    _mode       = _this select 3; // String - Current mode of the fired weapon
+    _ammo       = _this select 4; // String - Ammo used
+    _magazine   = _this select 5; // String - magazine name which was used
+    _projectile = _this select 6; // Object - Object of the projectile that was shot
+
+    _noiseRange = 0;
+    _silenced   = 0;
+    if(_weapon == primaryWeapon _firer)then{
+        _noiseRange = 500;
+
+        if(str(primaryWeaponItems _firer) find "muzzle" > -1)then{
+            _noiseRange = 50;
+        };
+    };
+    if(_weapon == secondaryWeapon _firer)then{
+        _noiseRange = 100;
+
+        if(str(secondaryWeaponItems _firer) find "muzzle" > -1)then{
+            _noiseRange = 10;
+        };
+    };
+    if(_weapon == handgunWeapon _firer)then{
+        _noiseRange = 300;
+
+        if(str(handgunItems _firer) find "muzzle" > -1)then{
+            _noiseRange = 30;
+        };
+    };
+
+    {
+        _zombie = _x;
+        if(_unit distance _zombie < _noiseRange)then{
+            _zombie setVariable["lastPlayerHeard",getPos _unit,false];
+        };
+    }forEach (units groupZ);
+}];
 
 _whileAliveFunc = [] spawn {
     while{alive player && player getVariable["playerSetupReady",false]}do{
@@ -106,20 +153,11 @@ _whileAliveFunc = [] spawn {
 			_healthVal = playerHealth;
 			_sickVal = playerSick;
 
-			if(_healthVal < 30)then{
-				_sickSound = floor (round(random 1));
-				player say3D format["sickSound%1",_sickSound];
-				sleep random 5;
-				_sickSound = floor (round(random 1));
-				player say3D format["sickSound%1",_sickSound];
-			};
-
 			if(_healthVal > 0)then{
 				playerHealth = _healthVal - 1;
 			}else{
 				playerHealth = 0;
 			};
-
 
 			nextHealthDecr = time + healthWaitTime;
 		};
@@ -136,41 +174,42 @@ _whileAliveFunc = [] spawn {
 
 		waitUntil {time - t > 0.1};
 
-		_cursorTarget         = cursorTarget;
-		_cursorTargetType     = typeOf _cursorTarget;
-
         _cursorObject         = cursorObject;
 		_cursorObjectType     = typeOf _cursorObject;
 
 		_closestBuilding      = nearestBuilding player;
 		_isInside             = [_closestBuilding,player,false,false] call checkBoundingBox;
         _isInCar              = (vehicle player == player);
+        _isUnderCover         = false;
+
 		_nearestFireplaces    = nearestObjects [player, ["Land_FirePlace_F","Land_Campfire_F"], 3];
 
 		[_isInside,_isInCar,_nearestFireplaces] spawn handleWet;
 		[_isInside,_isInCar,_nearestFireplaces] spawn handleTemperature;
 
-        //[_isInside,_closestBuilding] spawn getBarricadeables;
+        //[_isInside,_closestBuilding] call getBarricadeables;
+        _isUnderCover = [player] call bde_fnc_underCover;
 
 		[] spawn checkSick;
 		[] spawn checkNoise;
 		[] spawn updateUI;
 		[] spawn checkAnimals;
 
+
+
 		nearestTree = [];
 		// Everything in 2 meters around player
-		_things = nearestObjects [player,[],5];
+		/*_things = nearestObjects [player,[],5];   //!DON'T NEED IT AT MOMENT!
 		{
 			_obj = _x;
 			// Tree Check
-			/*if (str _x find ": t_" > -1) then {
+			if (str _x find ": t_" > -1) then {
 				nearestTree = [_obj];
-				//systemChat format ["%1 %2",str _obj,time];
-			};*/
+			};
 
 			//Debug
 			//systemChat str nearTree;
-		} forEach _things;
+		} forEach _things;*/
 
         if(str (getModelInfo _cursorObject) find ": t_" > -1)then{
             nearestTree = [_cursorObjectType];
@@ -179,7 +218,7 @@ _whileAliveFunc = [] spawn {
         };
 
 		// Fireplace Check
-		if(_cursorTargetType == "Land_FirePlace_F" && inflamed _cursorTarget) then {
+		if(/*_cursorObjectType == "Land_FirePlace_F" &&*/ inflamed _cursorObject) then {
 			_emptyPastaCanCount     = {_x == "jii_emptycanpasta"} count magazines player;
 			_emptyUnknownCanCount   = {_x == "jii_emptycanunknown"} count magazines player;
 			_emptyCanCount 			= _emptyPastaCanCount + _emptyUnknownCanCount;
@@ -412,7 +451,7 @@ _whileAliveFunc = [] spawn {
             };
         };
 
-        hint format["cursorObject: %1",_cursorObject];
+        hint format["cursorObject: %1\ncursorObjectType: %2\nisUnderCover: %3",_cursorObject,_cursorObjectType,_isUnderCover];
     };
 
 };

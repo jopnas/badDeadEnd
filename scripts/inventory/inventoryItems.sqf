@@ -47,6 +47,10 @@ _buildFireplace = {
   };
 };
 
+_trashWph = "groundWeaponHolder" createVehicle getPos player;
+_trashWph setDir round(random 360);
+_trashWph setVehiclePosition [getPos _trashWph, [], 0, "CAN_COLLIDE"];
+
 switch(_data) do {
     // Food
 	case "jii_bottleuseless": {
@@ -133,7 +137,7 @@ switch(_data) do {
 	    sleep 1;
 		playerThirst = playerThirst + 10;
 		player removeMagazine _data;
-		player addMagazine ["jii_canempty",1];
+		_trashWph addMagazine ["jii_canempty",1];
 		cutText ["drank can of Spirit", "PLAIN DOWN"];
 	};
 
@@ -143,7 +147,7 @@ switch(_data) do {
 	    sleep 1;
 		playerHunger = playerHunger + (random(20)+20);
 		player removeMagazine _data;
-		player addMagazine ["jii_emptycanunknown",1];
+		_trashWph addMagazine ["jii_emptycanunknown",1];
 		_tastes =  ["salty","sweet","bitter","sour","flavorless"];
 		cutText [format["ate somthing %1",selectRandom _tastes], "PLAIN DOWN"];
 	};
@@ -153,7 +157,7 @@ switch(_data) do {
 	    sleep 1;
 		playerHunger = playerHunger + 20;
 		player removeMagazine _data;
-		player addMagazine ["jii_emptycanpasta",1];
+		_trashWph addMagazine ["jii_emptycanpasta",1];
 		cutText ["ate pasta", "PLAIN DOWN"];
 	};
 	case "jii_bakedbeans": {
@@ -162,7 +166,7 @@ switch(_data) do {
 	    sleep 1;
 		playerHunger = playerHunger + 25;
 		player removeMagazine _data;
-		player addMagazine ["jii_emptycanunknown",1];
+		_trashWph addMagazine ["jii_emptycanunknown",1];
 		cutText ["ate baked beans", "PLAIN DOWN"];
 	};
 	case "jii_tacticalbacon": {
@@ -171,7 +175,7 @@ switch(_data) do {
 	    sleep 1;
 		playerHunger = playerHunger + 15;
 		player removeMagazine _data;
-		player addMagazine ["jii_emptycanunknown",1];
+		_trashWph addMagazine ["jii_emptycanunknown",1];
 		cutText ["ate tactical bacon", "PLAIN DOWN"];
 	};
 
@@ -259,11 +263,11 @@ switch(_data) do {
 	};
 
     case "jii_stone": {
-        [] spawn _buildFireplace;
+        [] call _buildFireplace;
     };
 
     case "jii_wood": {
-        [] spawn _buildFireplace;
+        [] call _buildFireplace;
     };
 
     default {

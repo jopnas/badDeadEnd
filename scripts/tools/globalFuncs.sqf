@@ -17,6 +17,13 @@ bde_fnc_addBurnAction = {
         if(("jii_zippo" in Magazines _caller || (rain < 0.2 && "jii_matches" in Magazines _caller))/* && "jii_fuelcan" in Magazines _caller*/)then{
             [_targetObject] remoteExec ["bde_fnc_removeBurnAction",0,false];
             [_targetObject] remoteExec ["fnc_burnDeadZ",0,false];
+        }else{
+            if(!("jii_zippo" in Magazines _caller) || !("jii_matches" in Magazines _caller))then{
+                [] remoteExec ["cutText ['need matches or lighter', 'PLAIN DOWN'];", _caller, false];
+            };
+            if(rain > 0.2 && !("jii_zippo" in Magazines _caller))then{
+                [] remoteExec ["cutText ['need zippo while raining', 'PLAIN DOWN'];", _caller, false];
+            };
         };
     },[],6,true,true,"","_target distance _this < 4"];
 };

@@ -31,41 +31,6 @@ _z setVariable["lastPlayerSeen",[false,[]], false];
 _z setVariable["lastPlayerHeard",[], false];
 doStop _z;
 
-_z addEventHandler ["FiredNear", {
-    _unit = _this select 0; //Object - Object the event handler is assigned to
-    _firer = _this select 1; //Object - Object which fires a weapon near the unit
-    _distance = _this select 2; //Number - Distance in meters between the unit and firer (max. distance ~69m)
-    _weapon = _this select 3; //String - Fired weapon
-    //_muzzle = _this select 4; //String - Muzzle that was used
-    //_mode = _this select 5; //String - Current mode of the fired weapon
-    //_ammo = _this select 6; //String - Ammo used
-
-    _silenced = 0;
-    if(_weapon == primaryWeapon _firer)then{
-        if(str(primaryWeaponItems _firer) find "muzzle" > -1)then{
-            _silenced = 3;
-        };
-    };
-    if(_weapon == secondaryWeapon _firer)then{
-        if(str(secondaryWeaponItems _firer) find "muzzle" > -1)then{
-            _silenced = 2;
-        };
-    };
-    if(_weapon == handgunWeapon _firer)then{
-        if(str(handgunItems _firer) find "muzzle" > -1)then{
-            _silenced = 4;
-
-        };
-    };
-
-    if(_silenced > 0)then{
-        _distance = _distance / _silenced;
-    };
-
-    _unit setVariable["lastPlayerHeard",getPos _firer, false];
-    systemChat str (_distance);
-}];
-
 _z addeventhandler ["HandleDamage",{
     _unit = _this select 0;
     _selectionName = _this select 1;
