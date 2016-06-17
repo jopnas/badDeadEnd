@@ -13,7 +13,6 @@ if(_isInside)then{
         {
             if((position player) distance _x < _closestPointDist)then{
                 _closestPointDist = (position player) distance _x;
-                systemChat format["closest barricading point: %1",_closestPointDist];
             };
 
             if((position player) distance _x < 0.7)then{

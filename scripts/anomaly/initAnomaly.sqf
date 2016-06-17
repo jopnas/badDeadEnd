@@ -41,7 +41,6 @@ for "_a" from 0 to 3 step 1 do {
 		_anomalyLoot setPosATL _newPos;
 		_anomalyLoot setDir round(random 359);
 		_thisSpawnDistance =  getPos _anomalyLoot distance2d getPos _anomaly;
-		//systemChat str _thisSpawnDistance;
 
 		// Add Short Range Loot
 		if(_thisSpawnDistance < 33)then{

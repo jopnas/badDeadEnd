@@ -30,7 +30,6 @@ playerInfected = 0;
 
 sleep _respawnTime;
 _db = (_playerUnit getVariable["db",[]]);
-//systemChat str(_db);
 
 if(count _db > 0)then{
 	_playerStats 			= _db;
@@ -103,21 +102,6 @@ if(count _db > 0)then{
 		_playerUnit addBackpack _playerBackpack;
 	};
 
-	// Set Items Backpack
-	{
-		_playerUnit addItemToBackpack _x;
-	}forEach _playerItemsBackpack;
-
-	// Set Items Vest
-	{
-		_playerUnit addItemToVest _x;
-	}forEach _playerItemsVest;
-
-	// Set Items Uniform
-	{
-		_playerUnit addItemToUniform _x;
-	}forEach _playerItemsUniform;
-
     // Magazines loaded in weapons
 	{
 		_playerUnit addMagazine[_x,1];
@@ -138,7 +122,7 @@ if(count _db > 0)then{
 
 	_playerUnit setAmmo [primaryWeapon _playerUnit, _primWeapAmmo];
 	_playerUnit setAmmo [secondaryWeapon _playerUnit, _secWeapAmmo];
-	_playerUnit setAmmo [handgunWeapon _playerUnit, _handgunAmmo];    
+	_playerUnit setAmmo [handgunWeapon _playerUnit, _handgunAmmo];
 
 	// Weapon Attachments
 	{
@@ -165,6 +149,21 @@ if(count _db > 0)then{
 	if(count _goggles > 2)then{
 		_playerUnit addGoggles _goggles;
 	};
+
+    // Set Items Backpack
+	{
+		_playerUnit addItemToBackpack _x;
+	}forEach _playerItemsBackpack;
+
+	// Set Items Vest
+	{
+		_playerUnit addItemToVest _x;
+	}forEach _playerItemsVest;
+
+	// Set Items Uniform
+	{
+		_playerUnit addItemToUniform _x;
+	}forEach _playerItemsUniform;
 
   	_hitPointNames	= _playerDamage select 0;
 	_hitPointValues	= _playerDamage select 1;
@@ -218,9 +217,9 @@ actionsEventHandler = [] spawn {
 	while {true} do {
 		waituntil {!(isnull (finddisplay 602))};
         // Items Action
-        ((findDisplay 602) displayCtrl 619) ctrlSetEventHandler ["LBDblClick", "_this call fnc_coordinateItemActions"]; // Backback
-        ((findDisplay 602) displayCtrl 638) ctrlSetEventHandler ["LBDblClick", "_this call fnc_coordinateItemActions"]; // Vest
-		((findDisplay 602) displayCtrl 633) ctrlSetEventHandler ["LBDblClick", "_this call fnc_coordinateItemActions"]; // Uniform
+        ((findDisplay 602) displayCtrl 619) ctrlSetEventHandler ["LBDblClick", "[_this,'Backpack'] call fnc_coordinateItemActions"]; // Backback
+        ((findDisplay 602) displayCtrl 638) ctrlSetEventHandler ["LBDblClick", "[_this,'Vest'] call fnc_coordinateItemActions"]; // Vest
+		((findDisplay 602) displayCtrl 633) ctrlSetEventHandler ["LBDblClick", "[_this,'Uniform'] call fnc_coordinateItemActions"]; // Uniform
 		waituntil {isnull (finddisplay 602)};
 	};
 };

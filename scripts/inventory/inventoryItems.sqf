@@ -1,18 +1,75 @@
-private["_idc","_selectedIndex","_data","_text","_value","_pic","_buildFireplace","_needCountOfWood","_needCountOfStone"];
-_idc  			= _this select 0;
-_selectedIndex  = _this select 1;
+private["_idcData","_cargoType","_idc","_selectedIndex","_data","_text","_value","_pic","_buildFireplace","_needCountOfWood","_needCountOfStone","_magazinesDetail","_magazinesAmmoCargo"];
+_idcData        = _this select 0;
+_cargoType      = _this select 1;
+
+_idc  			= _idcData select 0;
+_selectedIndex  = _idcData select 1;
 
 _data 	= lbData [_idc, _selectedIndex];
 _text 	= lbText [_idc, _selectedIndex];
 _value 	= lbValue [_idc, _selectedIndex];
-_pic 	  = lbPicture [_idc, _selectedIndex];
+_pic 	= lbPicture [_idc, _selectedIndex];
+
+_magazinesDetail = magazinesDetail player
+{
+    if(str _x find format["[id:%1]",_selectedIndex])then{
+        systemChat format["ItemInfo: %1",_x];
+    };
+}forEach _magazinesDetail;
+/* example result
+[
+	"6.5mm 30Rnd STANAG Mag(30/30)[id:3]",
+	"6.5mm 30Rnd STANAG Mag(30/30)[id:9]",
+	"9mm 16Rnd Mag(16/16)[id:12]",
+	"Smoke Grenade (Green)(1/1)[id:14]",
+	"Chemlight (Green)(1/1)[id:16]",
+	"RGO Frag Grenade(1/1)[id:18]"
+]*/
+
+/*switch(_cargoType) do {
+    case "Backpack": {
+        _magazinesAmmoCargo = magazinesAmmoCargo backpackContainer player;
+    };
+    case "Vest": {
+        _magazinesAmmoCargo = magazinesAmmoCargo vestContainer player;
+    };
+    case "Uniform": {
+        _magazinesAmmoCargo = magazinesAmmoCargo uniformContainer player;
+    };
+    default {
+    };
+};*/
+/* example result
+[
+    ["30Rnd_65x39_caseless_mag",30],
+    ["30Rnd_65x39_caseless_mag",30],
+    ["Chemlight_green",1]
+]*/
 
 // Functions
+_addItemCargo = { // [_item,_cargoType] call _addItemCargo;
+    _itemClass = _this select 0;
+    _cargoType = _this select 1;
+
+    switch(_cargoType) do {
+        case "Backpack": {
+            player addItemToBackpack _itemClass;
+        };
+        case "Vest": {
+            player addItemToVest _itemClass;
+        };
+        case "Uniform": {
+            player addItemToUniform _itemClass;
+        };
+        default {
+        };
+    };
+};
+
 _buildFireplace = {
+    private["_minWood","_minStone","_needCountOfWood","_needCountOfStone","_woodCount","_stoneCount"];
     _minWood = 2;
     _minStone = 4;
-    _needCountOfWood = 0;
-    _needCountOfStone = 0;
     _woodCount  = {_x == "jii_wood"} count magazines player;
     _stoneCount = {_x == "jii_stone"} count magazines player;
   if(_woodCount >= _minWood && _stoneCount >= _minStone)then{
@@ -35,14 +92,13 @@ _buildFireplace = {
 	if(_woodCount >= _minWood)then{
         _needCountOfWood = 0;
     }else{
-        _needCountOfWood = (_minWood - _woodCount);
+        _needCountOfWood = _minWood - _woodCount;
     };
 	if(_stoneCount >= _minStone)then{
         _needCountOfStone = 0;
     }else{
-		_needCountOfStone = (_minStone - _stoneCount);
+		_needCountOfStone = _minStone - _stoneCount;
     };
-    systemChat str _needCountOfWood;
     cutText [ format["need %1 more wood and %2 more stone to build fireplace",_needCountOfWood,_needCountOfStone], "PLAIN DOWN"];
   };
 };
@@ -60,7 +116,8 @@ switch(_data) do {
             [player,"toolSound0",100,1] remoteExec ["bde_fnc_say3d",0,false];
 	        sleep 1;
             player removeMagazine _data;
-		    player addMagazine ["jii_bottleempty",1];
+            ["jii_bottleempty",_cargoType] call _addItemCargo;
+            //player addMagazine ["jii_bottleempty",1];
 		    cutText ["fixed damaged bottle", "PLAIN DOWN"];
         }else{
             cutText ["need Ducttape to fix it", "PLAIN DOWN"];
@@ -73,7 +130,8 @@ switch(_data) do {
             [player,"fillSound0",20,1] remoteExec ["bde_fnc_say3d",0,false];
     	    sleep 1;
 			player removeMagazine _data;
-			player addMagazine ["jii_bottleclean",1];
+            ["jii_bottleclean",_cargoType] call _addItemCargo;
+			//player addMagazine ["jii_bottleclean",1];
 			cutText ["filled bottle with clean water", "PLAIN DOWN"];
 		}else{
 			if(nearOpenWater)then{
@@ -82,7 +140,8 @@ switch(_data) do {
                 [player,"fillSound0",20,1] remoteExec ["bde_fnc_say3d",0,false];
         	    sleep 1;
 			    player removeMagazine _data;
-			    player addMagazine ["jii_bottlefilled",1];
+                ["jii_bottlefilled",_cargoType] call _addItemCargo;
+                //player addMagazine ["jii_bottlefilled",1];
 			    cutText ["filled bottle with dirty water", "PLAIN DOWN"];
 			}else{
 			    cutText ["not close to water source", "PLAIN DOWN"];
@@ -95,7 +154,8 @@ switch(_data) do {
 	        sleep 1;
 			player removeMagazine _data;
 			player removeMagazine "jii_waterpurificationtablets";
-			player addMagazine ["jii_bottleclean",1];
+            ["jii_bottleclean",_cargoType] call _addItemCargo;
+            //player addMagazine ["jii_bottleclean",1];
 			cutText ["purified dirty water", "PLAIN DOWN"];
 		}else{
 			cutText ["need water purification tablets", "PLAIN DOWN"];
@@ -107,7 +167,8 @@ switch(_data) do {
 	    sleep 1;
 		playerThirst = playerThirst + 50;
 		player removeMagazine _data;
-		player addMagazine ["jii_bottleempty",1];
+        ["jii_bottleempty",_cargoType] call _addItemCargo;
+        //player addMagazine ["jii_bottleempty",1];
 		cutText ["drank clean water", "PLAIN DOWN"];
 	};
 	case "jii_canteenempty":  {
@@ -116,7 +177,8 @@ switch(_data) do {
             [player,"fillSound0",20,1] remoteExec ["bde_fnc_say3d",0,false];
     	    sleep 1;
 			player removeMagazine _data;
-			player addMagazine ["jii_canteenfilled",1];
+            ["jii_canteenfilled",_cargoType] call _addItemCargo;
+            //player addMagazine ["jii_canteenfilled",1];
 			cutText ["filled canteen with clean water", "PLAIN DOWN"];
 		}else{
 	        cutText ["not close to clean water source", "PLAIN DOWN"];
@@ -128,7 +190,8 @@ switch(_data) do {
 	    sleep 1;
 		playerThirst = playerThirst + 30;
 		player removeMagazine _data;
-		player addMagazine ["jii_canteenempty",1];
+        ["jii_canteenempty",_cargoType] call _addItemCargo;
+        //player addMagazine ["jii_canteenempty",1];
 		cutText ["drank clean water", "PLAIN DOWN"];
 	};
 	case "jii_canrusty": {

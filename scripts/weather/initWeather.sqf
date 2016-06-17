@@ -4,7 +4,6 @@ curChangeTime = 86400;
 weatherInit = [] spawn {
 	while{true}do{
 		if(time > nextChangeWeather)then{
-			//systemChat "start to change weather";
 			skipTime -24;
 			curChangeTime setOvercast random 1;
 			skipTime 24;

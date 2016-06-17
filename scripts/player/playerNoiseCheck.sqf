@@ -63,7 +63,6 @@ if(_surfaceLevelBySpeed > 0)then{
 }else{
     _surfaceLevel = 1;
 };
-//systemChat format["%1, %2, %3",((_soundVal select 44) select 1) select 3,_speedLevel,_surfaceLevel];
 
 // Calculate Noise
 _noiseLevel = round(_surfaceLevel * _stanceLevel * _speedLevel);
@@ -92,8 +91,6 @@ playerNoise = _noiseLevel;
         };
     };
 } forEach (units groupZ);*/
-
-//systemChat str playerNoise;
 
 /*["adjust_stand_side",["\A3\sounds_f\characters\stances\concrete_adjust_stand_side1",0.251189,1,20]],
     ["adjust_stand_side",["\A3\sounds_f\characters\stances\concrete_adjust_stand_side2",0.251189,1,20]],

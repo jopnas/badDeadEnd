@@ -33,7 +33,6 @@ carRepair = {
     _car        = _this select 2;
     _part       = _this select 3;
     _action     = _this select 4;
-    //systemChat format["%1,%2,%3,%4",_part,_damage,_car,_action];
 
     _allineed = false;
     if(_partName find "Wheel" > -1 && "jii_tire" in Magazines Player)then{
@@ -206,9 +205,6 @@ _whileAliveFunc = [] spawn {
 			if (str _x find ": t_" > -1) then {
 				nearestTree = [_obj];
 			};
-
-			//Debug
-			//systemChat str nearTree;
 		} forEach _things;*/
 
         if(str (getModelInfo _cursorObject) find ": t_" > -1)then{

@@ -4,8 +4,7 @@ _animals = nearestObjects[player,["Rabbit_F","Goat_random_F","Sheep_random_F","H
 	_animal = _x;
 	_animalHasLoot = _animal getVariable["animalHasLoot",0];
 	if(!(alive _animal) && _animalHasLoot == 0)then{
-		_nearestHolder =  nearestObject [position _animal, "groundWeaponHolder"];
-		if (isNull _nearestHolder || _nearestHolder distance _animal > 1) then {
+		if (_animalHasLoot < 1) then {
 			_animal setVariable["animalHasLoot",1,true];
 			_gwh = createVehicle ["groundWeaponHolder",position _animal,[],0,"can_collide"];
 			_gwh modelToWorld [0,0.3,0];

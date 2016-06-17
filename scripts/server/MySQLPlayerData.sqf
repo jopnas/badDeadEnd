@@ -36,21 +36,20 @@ fnc_savePlayerStats = {
 	_player 				= _this select 0;
 	_playerStats			= _this select 1;
 	_PlayerUID  			= getPlayerUID _player;
-	_PlayerPosition 		= getPosATL _player;
+	_PlayerPosition 		= getPos _player;
 	_playerDirection 		= getDir _player;
-	_PlayerWeapons 			= weapons _player;
+    _PlayerStance			= stance _player;
 
+	_PlayerWeapons 			= weapons _player;
 	_currentWeapon 			= currentWeapon _player;
+
+    _PlayerUniform			= uniform _player;
+	_PlayerVest				= vest _player;
+	_PlayerBackpack			= backpack _player;
 
 	_PlayerBackpackItems	= backpackItems _player;
 	_PlayerVestItems		= vestItems _player;
 	_PlayerUniformItems		= uniformItems _player;
-
-	_PlayerUniform			= uniform _player;
-	_PlayerVest				= vest _player;
-	_PlayerBackpack			= backpack _player;
-
-	_PlayerStance			= stance _player;
 
 	_hunger      	= _playerStats select 0;
 	_thirst      	= _playerStats select 1;
