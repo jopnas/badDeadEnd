@@ -81,6 +81,7 @@ eatCookedFoodAction = {
 
 // broadcast shot to zombie
 player addEventHandler ["Fired", {
+    private["_audible","_caliber","_distance"];
     _unit       = _this select 0; // Object - Object the event handler is assigned to
     _weapon     = _this select 1; // String - Fired weapon
     _muzzle     = _this select 2; // String - Muzzle that was used
@@ -89,33 +90,26 @@ player addEventHandler ["Fired", {
     _magazine   = _this select 5; // String - magazine name which was used
     _projectile = _this select 6; // Object - Object of the projectile that was shot
 
-    _noiseRange = 0;
-    _silenced   = 0;
-    if(_weapon == primaryWeapon _firer)then{
-        _noiseRange = 500;
-
-        if(str(primaryWeaponItems _firer) find "muzzle" > -1)then{
-            _noiseRange = 50;
-        };
+    if(_weapon == primaryWeapon _firer && str(primaryWeaponItems _firer) find "muzzle" > -1)then{
+        _sil = 2;
     };
-    if(_weapon == secondaryWeapon _firer)then{
-        _noiseRange = 100;
-
-        if(str(secondaryWeaponItems _firer) find "muzzle" > -1)then{
-            _noiseRange = 10;
-        };
+    if(_weapon == secondaryWeapon _firer && str(secondaryWeaponItems _firer) find "muzzle" > -1)then{
+        _sil = 1;
     };
-    if(_weapon == handgunWeapon _firer)then{
-        _noiseRange = 300;
-
-        if(str(handgunItems _firer) find "muzzle" > -1)then{
-            _noiseRange = 30;
-        };
+    if(_weapon == handgunWeapon _firer && str(handgunItems _firer) find "muzzle" > -1)then{
+        _sil = 3;
     };
+
+    _aud    = getNumber (configFile >> "CfgAmmo" >> _ammo >> "audibleFire");
+    _cal    = getNumber (configFile >> "CfgAmmo" >> _ammo >> "caliber");
+
+    _dist   = round((_aud/_sil) * 10 * _cal);
+
+    systemChat format["Fired _muzzle: %1, _dist: %2",_muzzle,_dist];
 
     {
         _zombie = _x;
-        if(_unit distance _zombie < _noiseRange)then{
+        if(_unit distance _zombie < _dist)then{
             _zombie setVariable["lastPlayerHeard",getPos _unit,false];
         };
     }forEach (units groupZ);
