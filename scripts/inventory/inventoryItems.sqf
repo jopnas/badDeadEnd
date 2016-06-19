@@ -1,21 +1,18 @@
 private["_idcData","_cargoType","_idc","_selectedIndex","_data","_text","_value","_pic","_buildFireplace","_needCountOfWood","_needCountOfStone","_magazinesDetail","_magazinesAmmoCargo"];
-_idcData        = _this select 0;
-_cargoType      = _this select 1;
-
-_idc  			= _idcData select 0;
-_selectedIndex  = _idcData select 1;
+_idc            = _this select 0;
+_selectedIndex  = _this select 1;
 
 _data 	= lbData [_idc, _selectedIndex];
 _text 	= lbText [_idc, _selectedIndex];
 _value 	= lbValue [_idc, _selectedIndex];
 _pic 	= lbPicture [_idc, _selectedIndex];
 
-_magazinesDetail = magazinesDetail player
+/*_magazinesDetail = magazinesDetail player;
 {
     if(str _x find format["[id:%1]",_selectedIndex])then{
         systemChat format["ItemInfo: %1",_x];
     };
-}forEach _magazinesDetail;
+}forEach _magazinesDetail;*/
 /* example result
 [
 	"6.5mm 30Rnd STANAG Mag(30/30)[id:3]",

@@ -212,14 +212,14 @@ actionsEventHandler = [] spawn {
 		_idc = ctrlIDC (_this select 0);
 		_selectedIndex = _this select 1;
 		[_idc,_selectedIndex] spawn inventoryItemAction;
-		false;
-	};
+		false
+    };
 	while {true} do {
 		waituntil {!(isnull (finddisplay 602))};
         // Items Action
-        ((findDisplay 602) displayCtrl 619) ctrlSetEventHandler ["LBDblClick", "[_this,'Backpack'] call fnc_coordinateItemActions"]; // Backback
-        ((findDisplay 602) displayCtrl 638) ctrlSetEventHandler ["LBDblClick", "[_this,'Vest'] call fnc_coordinateItemActions"]; // Vest
-		((findDisplay 602) displayCtrl 633) ctrlSetEventHandler ["LBDblClick", "[_this,'Uniform'] call fnc_coordinateItemActions"]; // Uniform
+        ((findDisplay 602) displayCtrl 619) ctrlSetEventHandler ["LBDblClick", "_this call fnc_coordinateItemActions"]; // Backback
+        ((findDisplay 602) displayCtrl 638) ctrlSetEventHandler ["LBDblClick", "_this call fnc_coordinateItemActions"]; // Vest
+        ((findDisplay 602) displayCtrl 633) ctrlSetEventHandler ["LBDblClick", "_this call fnc_coordinateItemActions"]; // Uniform
 		waituntil {isnull (finddisplay 602)};
 	};
 };

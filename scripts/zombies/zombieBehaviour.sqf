@@ -7,7 +7,7 @@ _markerstr setMarkerColor "ColorRed";
 
 _z setHit ["head", 0.5 + random(0.3)];
 _z setHit ["hands", 0.5 + random(0.3)];
-_z setHit ["legs", 0.5];
+_z setHit ["legs", 0.4];
 
 removeAllWeapons _z;
 removeAllAssignedItems _z;
@@ -102,7 +102,7 @@ _zBehaviour = [_z] spawn {
 
         _speechPitch        = _z getVariable "speechPitch";
         _hasTarget          = _z getVariable "hasTarget";
-        _lastPlayerHeard    = _z getVariable "lastPlayerHeard";
+        _lastPlayerHeard    = _z getVariable["lastPlayerHeard",[]];
 
         _lastPlayerSeen     = _z getVariable "lastPlayerSeen";
         _lastPlayerSeenSet  = _lastPlayerSeen select 0;
@@ -112,10 +112,10 @@ _zBehaviour = [_z] spawn {
         // Check Players in spawn range and seperate in alive/dead lists
         _alivePlayers   = [];
         _deadPlayers    = [];
-        _closestPlayerAliveDistance = zMinSpawnRange;
+        _closestPlayerAliveDistance = zSpawnRange;
         {
             _player = _x;
-            if(_player distance _z < zMinSpawnRange)then{
+            if(_player distance _z < zSpawnRange)then{
                 if(alive _player)then{
                     _alivePlayers = _alivePlayers + [_player];
                     if(_player distance _z < _closestPlayerAliveDistance)then{
@@ -129,6 +129,10 @@ _zBehaviour = [_z] spawn {
         } forEach (allPlayers - entities "HeadlessClient_F");
 
         if(count _alivePlayers > 0)then{
+            if(_closestPlayerAlive distance _z > 1000)then{
+                deleteVehicle _z;
+            };
+
             if(_closestPlayerAliveDistance > agroRange)then{
                 _z forceWalk true;
                 _z forceSpeed 0.3;
@@ -189,11 +193,6 @@ _zBehaviour = [_z] spawn {
             _z forceSpeed 0.3;
             _z setVariable["hasTarget",false, false];
         };
-
-        if(_closestPlayerAliveDistance > zSpawnRange)then{
-            deleteVehicle _z;
-        };
-
 
         sleep 0.5;
     };

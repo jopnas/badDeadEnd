@@ -81,7 +81,7 @@ eatCookedFoodAction = {
 
 // broadcast shot to zombie
 player addEventHandler ["Fired", {
-    private["_audible","_caliber","_distance"];
+    private["_unit","_audible","_caliber","_distance","_sil"];
     _unit       = _this select 0; // Object - Object the event handler is assigned to
     _weapon     = _this select 1; // String - Fired weapon
     _muzzle     = _this select 2; // String - Muzzle that was used
@@ -90,22 +90,22 @@ player addEventHandler ["Fired", {
     _magazine   = _this select 5; // String - magazine name which was used
     _projectile = _this select 6; // Object - Object of the projectile that was shot
 
-    if(_weapon == primaryWeapon _firer && str(primaryWeaponItems _firer) find "muzzle" > -1)then{
-        _sil = 2;
+    _sil        = 1;
+
+    if(_weapon == primaryWeapon _unit && str(primaryWeaponItems _unit) find "_snds_" > -1)then{
+        _sil    = 3;
     };
-    if(_weapon == secondaryWeapon _firer && str(secondaryWeaponItems _firer) find "muzzle" > -1)then{
-        _sil = 1;
+    if(_weapon == secondaryWeapon _unit && str(secondaryWeaponItems _unit) find "_snds_" > -1)then{
+        _sil    = 2;
     };
-    if(_weapon == handgunWeapon _firer && str(handgunItems _firer) find "muzzle" > -1)then{
-        _sil = 3;
+    if(_weapon == handgunWeapon _unit && str(handgunItems _unit) find "_snds_" > -1)then{
+        _sil    = 4;
     };
 
-    _aud    = getNumber (configFile >> "CfgAmmo" >> _ammo >> "audibleFire");
-    _cal    = getNumber (configFile >> "CfgAmmo" >> _ammo >> "caliber");
+    _aud        = getNumber (configFile >> "CfgAmmo" >> _ammo >> "audibleFire");
+    //_cal        = getNumber (configFile >> "CfgAmmo" >> _ammo >> "caliber");
 
-    _dist   = round((_aud/_sil) * 10 * _cal);
-
-    systemChat format["Fired _muzzle: %1, _dist: %2",_muzzle,_dist];
+    _dist       = round((_aud/_sil) * 100 );
 
     {
         _zombie = _x;

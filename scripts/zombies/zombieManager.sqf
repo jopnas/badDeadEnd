@@ -59,10 +59,10 @@ while {true} do {
             _relDir         = _thisPlayer getRelDir _pos;
             _inViewAngle    = abs(_relDir - 180);
 
-            if([objNull, "VIEW"] checkVisibility [eyePos _thisPlayer, [_pos select 0,_pos select 1,(_pos select 2) + 1]] == 0 && _thisPlayer distance _pos > zMinSpawnRange && _inViewAngle < 100)then{
+            if([objNull, "VIEW"] checkVisibility [eyePos _thisPlayer, [_pos select 0,_pos select 1,(_pos select 2) + 1]] == 0 && _thisPlayer distance _pos > zMinSpawnRange /*&& _inViewAngle < 100*/)then{
                 _z = selectRandom _useZlist;
                 _z createUnit [_pos, groupZ,"[this] call _fnc_zombieBehaviour", 0, "NONE"];
-                
+
                 sleep 0.2;
             };
         };
