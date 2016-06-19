@@ -1,16 +1,16 @@
-private["_playerWetness"];
-
-_isInside 			= _this select 0;
+_isUnderCover 		= _this select 0;
 _isInCar 			= _this select 1;
 _nearestFireplaces 	= _this select 2;
 
 _playerWetness  = playerWet;
 
-if(rain > 0 && !_isInside && !_isInCar)then{
-	_playerWetness = _playerWetness + (rain/100);
+systemChat format["%1, %2, %3",rain,_isUnderCover,_isInCar];
+
+if(rain > 0 && !_isUnderCover && !_isInCar)then{
+	_playerWetness = _playerWetness + 0.2;
 };
 
-if(_isInside || _isInCar)then{
+if(_isUnderCover || _isInCar)then{
 	_playerWetness = _playerWetness - 0.01;
 };
 

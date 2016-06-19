@@ -1,47 +1,27 @@
-private["_idcData","_cargoType","_idc","_selectedIndex","_data","_text","_value","_pic","_buildFireplace","_needCountOfWood","_needCountOfStone","_magazinesDetail","_magazinesAmmoCargo"];
+private["_idcData","_cargoType","_idc","_selectedIndex","_classname","_description","_index","_pic","_buildFireplace","_needCountOfWood","_needCountOfStone","_magazinesDetail","_magazinesAmmoCargo"];
 _idc            = _this select 0;
 _selectedIndex  = _this select 1;
+_cargoType      = _this select 2;
 
-_data 	= lbData [_idc, _selectedIndex];
-_text 	= lbText [_idc, _selectedIndex];
-_value 	= lbValue [_idc, _selectedIndex];
-_pic 	= lbPicture [_idc, _selectedIndex];
+_classname 	    = lbData [_idc, _selectedIndex];
+_description    = lbText [_idc, _selectedIndex];
+_index          = lbValue [_idc, _selectedIndex];
+_pic 	        = lbPicture [_idc, _selectedIndex];
 
-/*_magazinesDetail = magazinesDetail player;
+
+//["30Rnd_65x39_caseless_mag",30,false,-1,"Uniform"]
+/*_magazinesAmmoFull = magazinesAmmoFull player;
 {
-    if(str _x find format["[id:%1]",_selectedIndex])then{
-        systemChat format["ItemInfo: %1",_x];
-    };
-}forEach _magazinesDetail;*/
-/* example result
-[
-	"6.5mm 30Rnd STANAG Mag(30/30)[id:3]",
-	"6.5mm 30Rnd STANAG Mag(30/30)[id:9]",
-	"9mm 16Rnd Mag(16/16)[id:12]",
-	"Smoke Grenade (Green)(1/1)[id:14]",
-	"Chemlight (Green)(1/1)[id:16]",
-	"RGO Frag Grenade(1/1)[id:18]"
-]*/
+    _class      = _x select 0;
+    _ammo       = _x select 1;
+    _loaded     = _x select 2;
+    _type       = _x select 3; // -1 - n/a, 0 - grenade, 1 - primary weapon mag, 2 - handgun mag, 4 - secondary weapon mag, 65536 - vehicle mag
+    _location   = _x select 4;
 
-/*switch(_cargoType) do {
-    case "Backpack": {
-        _magazinesAmmoCargo = magazinesAmmoCargo backpackContainer player;
+    if(_class == _classname && _cargoType == _location)then{
+        systemChat str _x;
     };
-    case "Vest": {
-        _magazinesAmmoCargo = magazinesAmmoCargo vestContainer player;
-    };
-    case "Uniform": {
-        _magazinesAmmoCargo = magazinesAmmoCargo uniformContainer player;
-    };
-    default {
-    };
-};*/
-/* example result
-[
-    ["30Rnd_65x39_caseless_mag",30],
-    ["30Rnd_65x39_caseless_mag",30],
-    ["Chemlight_green",1]
-]*/
+} forEach _magazinesAmmoFull;*/
 
 // Functions
 _addItemCargo = { // [_item,_cargoType] call _addItemCargo;
@@ -61,6 +41,17 @@ _addItemCargo = { // [_item,_cargoType] call _addItemCargo;
         default {
         };
     };
+};
+
+_addItemFloor = { // [_item] call _addItemFloor;
+    _itemClass  = _this select 0;
+
+    _pPos       = getPos player;
+    _trashPos   = [_pPos select 0,_pPos select 1,(_pPos select 2) + 1];
+    _trashWph   = "groundWeaponHolder" createVehicle _trashPos;
+    _trashWph setDir round(random 360);
+    _trashWph setVehiclePosition [_trashPos, [], 0, "CAN_COLLIDE"];
+    _trashWph addMagazineCargoGlobal [_itemClass, 1];
 };
 
 _buildFireplace = {
@@ -100,11 +91,7 @@ _buildFireplace = {
   };
 };
 
-_trashWph = "groundWeaponHolder" createVehicle getPos player;
-_trashWph setDir round(random 360);
-_trashWph setVehiclePosition [getPos _trashWph, [], 0, "CAN_COLLIDE"];
-
-switch(_data) do {
+switch(_classname) do {
     // Food
 	case "jii_bottleuseless": {
         if("jii_ducttape" in Magazines Player)then{
@@ -112,7 +99,7 @@ switch(_data) do {
 			//player say3D "toolSound0";
             [player,"toolSound0",100,1] remoteExec ["bde_fnc_say3d",0,false];
 	        sleep 1;
-            player removeMagazine _data;
+            player removeMagazine _classname;
             ["jii_bottleempty",_cargoType] call _addItemCargo;
             //player addMagazine ["jii_bottleempty",1];
 		    cutText ["fixed damaged bottle", "PLAIN DOWN"];
@@ -126,7 +113,7 @@ switch(_data) do {
     	    //player say3D "fillSound0";
             [player,"fillSound0",20,1] remoteExec ["bde_fnc_say3d",0,false];
     	    sleep 1;
-			player removeMagazine _data;
+			player removeMagazine _classname;
             ["jii_bottleclean",_cargoType] call _addItemCargo;
 			//player addMagazine ["jii_bottleclean",1];
 			cutText ["filled bottle with clean water", "PLAIN DOWN"];
@@ -136,7 +123,7 @@ switch(_data) do {
         	    //player say3D "fillSound0";
                 [player,"fillSound0",20,1] remoteExec ["bde_fnc_say3d",0,false];
         	    sleep 1;
-			    player removeMagazine _data;
+			    player removeMagazine _classname;
                 ["jii_bottlefilled",_cargoType] call _addItemCargo;
                 //player addMagazine ["jii_bottlefilled",1];
 			    cutText ["filled bottle with dirty water", "PLAIN DOWN"];
@@ -149,7 +136,7 @@ switch(_data) do {
 		if("jii_waterpurificationtablets" in Magazines player)then{
         	player playActionNow "Medic";
 	        sleep 1;
-			player removeMagazine _data;
+			player removeMagazine _classname;
 			player removeMagazine "jii_waterpurificationtablets";
             ["jii_bottleclean",_cargoType] call _addItemCargo;
             //player addMagazine ["jii_bottleclean",1];
@@ -163,7 +150,7 @@ switch(_data) do {
         [player,"drinkSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerThirst = playerThirst + 50;
-		player removeMagazine _data;
+		player removeMagazine _classname;
         ["jii_bottleempty",_cargoType] call _addItemCargo;
         //player addMagazine ["jii_bottleempty",1];
 		cutText ["drank clean water", "PLAIN DOWN"];
@@ -173,7 +160,7 @@ switch(_data) do {
     	    //player say3D "fillSound0";
             [player,"fillSound0",20,1] remoteExec ["bde_fnc_say3d",0,false];
     	    sleep 1;
-			player removeMagazine _data;
+			player removeMagazine _classname;
             ["jii_canteenfilled",_cargoType] call _addItemCargo;
             //player addMagazine ["jii_canteenfilled",1];
 			cutText ["filled canteen with clean water", "PLAIN DOWN"];
@@ -186,7 +173,7 @@ switch(_data) do {
         [player,"drinkSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerThirst = playerThirst + 30;
-		player removeMagazine _data;
+		player removeMagazine _classname;
         ["jii_canteenempty",_cargoType] call _addItemCargo;
         //player addMagazine ["jii_canteenempty",1];
 		cutText ["drank clean water", "PLAIN DOWN"];
@@ -196,8 +183,8 @@ switch(_data) do {
         [player,"drinkSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerThirst = playerThirst + 10;
-		player removeMagazine _data;
-		_trashWph addMagazine ["jii_canempty",1];
+		player removeMagazine _classname;
+		["jii_canempty"] call _addItemFloor;
 		cutText ["drank can of Spirit", "PLAIN DOWN"];
 	};
 
@@ -206,8 +193,8 @@ switch(_data) do {
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerHunger = playerHunger + (random(20)+20);
-		player removeMagazine _data;
-		_trashWph addMagazine ["jii_emptycanunknown",1];
+		player removeMagazine _classname;
+		["jii_emptycanunknown"] call _addItemFloor;
 		_tastes =  ["salty","sweet","bitter","sour","flavorless"];
 		cutText [format["ate somthing %1",selectRandom _tastes], "PLAIN DOWN"];
 	};
@@ -216,8 +203,8 @@ switch(_data) do {
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerHunger = playerHunger + 20;
-		player removeMagazine _data;
-		_trashWph addMagazine ["jii_emptycanpasta",1];
+		player removeMagazine _classname;
+		["jii_emptycanpasta"] call _addItemFloor;
 		cutText ["ate pasta", "PLAIN DOWN"];
 	};
 	case "jii_bakedbeans": {
@@ -225,8 +212,8 @@ switch(_data) do {
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerHunger = playerHunger + 25;
-		player removeMagazine _data;
-		_trashWph addMagazine ["jii_emptycanunknown",1];
+		player removeMagazine _classname;
+		["jii_emptycanunknown"] call _addItemFloor;
 		cutText ["ate baked beans", "PLAIN DOWN"];
 	};
 	case "jii_tacticalbacon": {
@@ -234,8 +221,8 @@ switch(_data) do {
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerHunger = playerHunger + 15;
-		player removeMagazine _data;
-		_trashWph addMagazine ["jii_emptycanunknown",1];
+		player removeMagazine _classname;
+		["jii_emptycanunknown"] call _addItemFloor;
 		cutText ["ate tactical bacon", "PLAIN DOWN"];
 	};
 
@@ -245,7 +232,7 @@ switch(_data) do {
 	    sleep 1;
 		playerHunger = playerHunger + 30;
 		playerHealth = playerHealth - 10;
-		player removeMagazine _data;
+		player removeMagazine _classname;
 		cutText ["ate big peace of raw meat", "PLAIN DOWN"];
 	};
 	case "jii_meat_big_cooked": {
@@ -253,7 +240,7 @@ switch(_data) do {
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerHunger = playerHunger + 40;
-		player removeMagazine _data;
+		player removeMagazine _classname;
 		cutText ["ate big peace of cooked meat", "PLAIN DOWN"];
 	};
 	case "jii_meat_small": {
@@ -262,7 +249,7 @@ switch(_data) do {
 	    sleep 1;
 		playerHunger = playerHunger + 15;
 		playerHealth = playerHealth - 10;
-		player removeMagazine _data;
+		player removeMagazine _classname;
 		cutText ["ate small peace of raw meat", "PLAIN DOWN"];
 	};
 	case "jii_meat_small_cooked": {
@@ -270,7 +257,7 @@ switch(_data) do {
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerHunger = playerHunger + 30;
-		player removeMagazine _data;
+		player removeMagazine _classname;
 		cutText ["ate small peace of cooked meat", "PLAIN DOWN"];
 	};
 
@@ -280,7 +267,7 @@ switch(_data) do {
         [player,"swallowSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 		sleep 1;
 		playerHealth = playerHealth + 10;
-		player removeMagazine _data;
+		player removeMagazine _classname;
 		cutText ["took vitamines", "PLAIN DOWN"];
 	};
 
@@ -291,7 +278,7 @@ switch(_data) do {
 		playerInfected = 0;
 		playerSick = 0;
 		playerHealth = playerHealth + 20;
-		player removeMagazine _data;
+		player removeMagazine _classname;
 		cutText ["took antibiotics", "PLAIN DOWN"];
 	};
 
@@ -331,6 +318,6 @@ switch(_data) do {
     };
 
     default {
-        //cutText [format["what can i do with %1?",_text], "PLAIN DOWN"];
+        //cutText [format["what can i do with %1?",_description], "PLAIN DOWN"];
     };
 };

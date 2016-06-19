@@ -137,7 +137,7 @@ fnc_saveCar = {
     };
 
     // Car Save
-    _QuerySave 	= format["0:SQL_VH_SAVE:UPDATE vehicles SET position='%2', rotation='%3', fuel='%4', damage='%5', destroyed='0', items='%6', weapons='%7', magazines='%8', backpacks='%9', destroyed=%10 WHERE id='%1'",_id,_position,_rotation,_fuel,_damage,_items,_weapons,_magazines,_backpacks,_destroyed];
+    _QuerySave 	= format["0:SQL_VH_SAVE:UPDATE vehicles SET position='%2', rotation='%3', fuel='%4', damage='%5', destroyed='0', items='%6', weapons='%7', magazines='%8', backpacks='%9', destroyed='%10' WHERE id='%1'",_id,_position,_rotation,_fuel,_damage,_items,_weapons,_magazines,_backpacks,_destroyed];
     _saveIs = "extDB2" callExtension _QuerySave;
 
 };

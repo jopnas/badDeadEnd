@@ -44,7 +44,6 @@ waitUntil { _CarsQueryStatus > 0 };
 
         [_spawnedCar] call fnc_saveCar;
 
-
     }else{
         _spawnedCar = _classname createVehicle _position;
         _spawnedCar setVariable["id",_id];
@@ -83,7 +82,7 @@ waitUntil { _CarsQueryStatus > 0 };
     	};
     };
 
-	loadedCarsList = loadedCarsList + [_classname];
+	loadedCarsList pushBack _classname;
 
     _markerstr = createMarker [format["car %1",_id] , _position];
 	_markerstr setMarkerShape "ICON";

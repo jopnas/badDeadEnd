@@ -115,7 +115,7 @@ if(count _db > 0)then{
 		_playerUnit addMagazine[_x,1];
 	}forEach _handgunMag;
 
-	// Set Weapons
+	// Add Weapons
 	{
 		_playerUnit addWeapon _x;
 	}forEach _playerWeapons;
@@ -209,17 +209,21 @@ inventoryItemAction = compile preprocessFile "scripts\inventory\inventoryItems.s
 
 actionsEventHandler = [] spawn {
 	fnc_coordinateItemActions = {
-		_idc = ctrlIDC (_this select 0);
-		_selectedIndex = _this select 1;
-		[_idc,_selectedIndex] spawn inventoryItemAction;
+        _idcData = _this select 0;
+        _bagType = _this select 1;
+
+		_idc = ctrlIDC (_idcData select 0);
+		_selectedIndex = _idcData select 1;
+
+		[_idc,_selectedIndex,_bagType] spawn inventoryItemAction;
 		false
     };
 	while {true} do {
 		waituntil {!(isnull (finddisplay 602))};
         // Items Action
-        ((findDisplay 602) displayCtrl 619) ctrlSetEventHandler ["LBDblClick", "_this call fnc_coordinateItemActions"]; // Backback
-        ((findDisplay 602) displayCtrl 638) ctrlSetEventHandler ["LBDblClick", "_this call fnc_coordinateItemActions"]; // Vest
-        ((findDisplay 602) displayCtrl 633) ctrlSetEventHandler ["LBDblClick", "_this call fnc_coordinateItemActions"]; // Uniform
+        ((findDisplay 602) displayCtrl 619) ctrlSetEventHandler ["LBDblClick", "[_this,'Backpack'] call fnc_coordinateItemActions"]; // Backpack
+        ((findDisplay 602) displayCtrl 638) ctrlSetEventHandler ["LBDblClick", "[_this,'Vest'] call fnc_coordinateItemActions"]; // Vest
+        ((findDisplay 602) displayCtrl 633) ctrlSetEventHandler ["LBDblClick", "[_this,'Uniform'] call fnc_coordinateItemActions"]; // Uniform
 		waituntil {isnull (finddisplay 602)};
 	};
 };
@@ -237,7 +241,7 @@ if(_isRespawn)then{
 };
 
 // Init Barricading
-[] execVM "scripts\barricading\initBarricading.sqf";
+//[] execVM "scripts\barricading\initBarricading.sqf";
 
 _respawnTime fadeSound 3;
 _respawnTime fadeMusic 3;
