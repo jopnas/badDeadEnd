@@ -1,6 +1,9 @@
 sideZ 			= createCenter Resistance;
 groupZ 			= createGroup Resistance;
 
+publicVariable "sideZ";
+publicVariable "groupZ"
+
 groupZ allowFleeing 0;
 
 zSpawnRange         = 700;

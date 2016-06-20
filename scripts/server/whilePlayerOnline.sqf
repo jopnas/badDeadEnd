@@ -1,4 +1,3 @@
-_cntSaves = 0;
 while {true} do {
     t = time;
     waitUntil {time - t > 0.5};
@@ -14,8 +13,6 @@ while {true} do {
     } forEach allPlayers;*/
 
     // save car data to mysql if player close
-    systemChat str _cntSaves;
-
     if(count loadedCarsList > 0 && count allPlayers > 0)then{
         _nearestCars = nearestObjects[[16000,16000],loadedCarsList,16000];
         {

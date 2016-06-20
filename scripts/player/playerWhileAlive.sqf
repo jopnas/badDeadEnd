@@ -58,23 +58,30 @@ nearestTree  			= [];
 
 // Watersources
 nearOpenWater           = false;
-nearWaterSorce          = false;
 drinkActionAvailable    = false;
+drinkWater = {
+    player playActionNow "PutDown";
+    player say3D "drinkSound0";
+    sleep 2;
+    playerThirst = playerThirst + 10;
+};
 
 cannedFoodCooldownTime      = 120;
 cannedFoodCooldownCountdown = 0;
 
 eatCookedFoodAction = {
-    player  say3D "eatSound0";
+    player say3D "eatSound0";
     sleep 1;
     playerHunger = playerHunger + (random(20)+30);
     playerTemperature = playerTemperature + 20;
     player removeMagazine "jii_canunknown";
 
-    _wph = "groundWeaponHolder" createVehicle getPos player;
+    _pPos     = getPos player;
+    _trashPos = [_pPos select 0,_pPos select 1,(_pPos select 2) + 1];
+    _wph = "groundWeaponHolder" createVehicle _trashPos;
     _wph setDir round(random 360);
-    _wph setVehiclePosition [getPos _wph, [], 0, "CAN_COLLIDE"];
-    _wph addMagazine ["jii_emptycanunknown",1];
+    _wph setVehiclePosition [_trashPos, [], 0, "CAN_COLLIDE"];
+    _wph addMagazineCargoGlobal ["jii_emptycanunknown", 1];
 
     _tastes =  ["salty","sweet","bitter","sour","flavorless"];
     cutText [format["ate somthing cooked %1",selectRandom _tastes], "PLAIN DOWN"];
@@ -111,7 +118,7 @@ player addEventHandler ["Fired", {
     {
         _zombie = _x;
         if(_unit distance _zombie < _dist)then{
-            _zombie setVariable["lastPlayerHeard",getPos _unit,false];
+            _zombie setVariable["lastPlayerHeard",getPos _unit,true];
         };
     }forEach (units groupZ);
 }];
@@ -164,22 +171,29 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 	if(t > 5)then{
 		// Spawn Loot
 		[getPos player] remoteExec ["fnc_spawnLoot",2,false];
+        systemChat str weaponCaliber;
 	};
 
 	waitUntil {time - t > 0.1};
 
-    _cursorObject         = cursorObject;
-	_cursorObjectType     = typeOf _cursorObject;
+    _cursorObject       = cursorObject;
+	_cursorObjectType   = typeOf _cursorObject;
 
-	_closestBuilding      = nearestBuilding player;
-	_isInside             = [_closestBuilding,player,false,false] call checkBoundingBox;
-    _isInCar              = (vehicle player != player);
-    _isUnderCover         = [player] call bde_fnc_underCover;
+	_closestBuilding    = nearestBuilding player;
+	_isInside           = [_closestBuilding,player,false,false] call checkBoundingBox;
+    _isInCar            = (vehicle player != player);
+    _isUnderCover       = [player] call bde_fnc_underCover;
 
-	_nearestFireplaces    = nearestObjects [player, ["Land_FirePlace_F","Land_Campfire_F"], 3];
+	_nearestFireplaces  = nearestObjects [player, ["Land_FirePlace_F","Land_Campfire_F"], 3];
+    _inflamedFireplaces = [];
+    {
+        if(inflamed _x)then{
+            _inflamedFireplaces pushBack _inflamedFireplaces;
+        };
+    } forEach _nearestFireplaces;
 
-	[_isUnderCover,_isInCar,_nearestFireplaces] spawn handleWet;
-	[_isInside,_isInCar,_nearestFireplaces] spawn handleTemperature;
+	[_isUnderCover,_isInside,_isInCar,_inflamedFireplaces] spawn handleWet;
+	[_isUnderCover,_isInside,_isInCar,_inflamedFireplaces] spawn handleTemperature;
 
     //[_isInside,_closestBuilding] call getBarricadeables;
 
@@ -206,13 +220,21 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
     };
 
     if(str (getModelInfo _cursorObject) find "watertank" > -1 || str (getModelInfo _cursorObject) find "waterbarrel" > -1 || str (getModelInfo _cursorObject) find "barrelwater" > -1 || str (getModelInfo _cursorObject) find "stallwater" > -1 || str (getModelInfo _cursorObject) find "watersource" > -1)then{
-        drinkActionAvailable = true;
+        if(!drinkActionAvailable)then{
+            drinkAction = player addAction["drink clean water",{
+                [] call drinkWater;
+            }];
+            drinkActionAvailable = true;
+        }
     }else{
-        drinkActionAvailable = false;
+        if(drinkActionAvailable)then{
+            drinkActionAvailable = false;
+            player removeAction drinkAction;
+        };
     };
 
 	// Fireplace Check
-	if(/*_cursorObjectType == "Land_FirePlace_F" &&*/ inflamed _cursorObject) then {
+	if(inflamed _cursorObject) then {
 		_emptyPastaCanCount     = {_x == "jii_emptycanpasta"} count magazines player;
 		_emptyUnknownCanCount   = {_x == "jii_emptycanunknown"} count magazines player;
 		_emptyCanCount 			= _emptyPastaCanCount + _emptyUnknownCanCount;
@@ -445,5 +467,5 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         };
     };
 
-    hint format["cursorObject: %1\ncursorObjectType: %2\nisUnderCover: %3\nplayerWet: %4\nplayerTemperatur: %5",_cursorObject,_cursorObjectType,_isUnderCover,playerWet,playerTemperature];
+    hint format["cursorObject: %1\ncursorObjectType: %2\nisUnderCover: %3",_cursorObject,_cursorObjectType,_isUnderCover];
 };

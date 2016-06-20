@@ -28,7 +28,7 @@ _z setVariable["speechPitch",random(2), false];
 
 _z setVariable["hasTarget",false, false];
 _z setVariable["lastPlayerSeen",[false,[]], false];
-_z setVariable["lastPlayerHeard",[], false];
+_z setVariable["lastPlayerHeard",[], true];
 doStop _z;
 
 _z addeventhandler ["HandleDamage",{
@@ -129,8 +129,9 @@ _zBehaviour = [_z] spawn {
         } forEach (allPlayers - entities "HeadlessClient_F");
 
         if(count _alivePlayers > 0)then{
-            if(_closestPlayerAlive distance _z > 1000)then{
+            if(_closestPlayerAlive distance _z > zSpawnRange)then{
                 deleteVehicle _z;
+                deleteMarker format["zMarker%1",_z];
             };
 
             if(_closestPlayerAliveDistance > agroRange)then{
@@ -143,7 +144,7 @@ _zBehaviour = [_z] spawn {
                 };
                 if(t > nextGrowl)then{
                     [_z,format["zidle%1",floor random 8],50,_speechPitch] remoteExec ["bde_fnc_say3d",0,false];
-                    nextGrowl = time + 30 + random 30;
+                    nextGrowl = time + 30 + random 60;
                 };
             }else{
                 if([_z,_closestPlayerAlive] call canSeePlayer)then{

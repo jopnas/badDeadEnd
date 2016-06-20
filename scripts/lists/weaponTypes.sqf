@@ -5,6 +5,9 @@ lightWeapons    = [];
 mediumWeapons   = [];
 heavyWeapons    = [];
 
+weaponCaliber   = [];
+weaponHitVal    = [];
+
 _allWeaponTypes = ["AssaultRifle","Handgun","MachineGun","Shotgun","Rifle","SubmachineGun","SniperRifle"];
 // AssaultRifle,BombLauncher,Cannon,GrenadeLauncher,Handgun,Launcher,MachineGun,Magazine,MissileLauncher,Mortar,RocketLauncher,Shotgun,Throw,Rifle,SubmachineGun,SniperRifle
 //Full List: https://community.bistudio.com/wiki/BIS_fnc_itemType -> section Weapon
@@ -24,10 +27,13 @@ _wpList = (configFile >> "cfgWeapons") call BIS_fnc_getCfgSubClasses;
                 _weaponMagazines    = getArray (configFile >> "CfgWeapons" >> _x >> "magazines");
                 {
                     _ammo       = getText (configFile >> "CfgMagazines" >> _x >> "ammo");
+                    _cal        = getNumber (configFile >> "CfgAmmo" >> _ammo >> "caliber");
                     _hitVal     = getNumber (configFile >> "cfgAmmo" >> _ammo >> "hit");
                     if(_hitVal > _hardestHitPossible)then{
                         _hardestHitPossible = _hitVal;
                     };
+                    weaponCaliber pushBackUnique _cal;
+                    weaponHitVal pushBackUnique _cal;
                 }forEach _weaponMagazines;
 
                 // Sort Weapon to Array

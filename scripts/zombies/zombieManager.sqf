@@ -10,16 +10,15 @@ _zUnitsCiv      = _zUnitsCivStd1 + _zUnitsCivStd2 + _zUnitsCivStd3 + _zUnitsCivS
 _zUnitsMilInf   = ["I_G_Soldier_F","I_G_Soldier_lite_F","I_G_Soldier_A_F","I_Soldier_02_F","I_Soldier_M_F","I_medic_F","I_Soldier_repair_F","I_engineer_F","i_soldier_unarmed_f","I_Spotter_F","I_Sniper_F","I_support_AMort_F"];
 _zUnitsMilPil   = ["I_Soldier_04_F","I_helipilot_F","I_pilot_F","I_helicrew_F"];
 _zPerPlayer	    = 30;
-_zMax           = _zPerPlayer; // initial
+_zMax           = _zPerPlayer;
 _zCount         = 0;
 
 while {true} do {
     {
-        _thisPlayer       = _x;
-        _thisPlayerPos    = position _thisPlayer;
+        _thisPlayer     = _x;
+        _thisPlayerPos  = position _thisPlayer;
 
-        _buildings = nearestObjects [_thisPlayer,["Building"], zSpawnRange];
-        //_buildings = _thisPlayer nearObjects ["Building", zSpawnRange];
+        _buildings      = nearestObjects [_thisPlayer,["Building"], zSpawnRange];
         _buildingsCount = count _buildings;
 
         _useZlist = _zUnitsCiv;

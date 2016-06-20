@@ -79,18 +79,13 @@ if(_noiseLevel > 100)then{
 
 playerNoise = _noiseLevel;
 
-/*{
-    if(_playerUnit distance _x < playerNoise && alive _x)then{
-        _playerHeardPos = _x getVariable "lastPlayerHeard";
-        if(count _playerHeardPos > 0)then{
-            if(_playerUnit distance _x < _playerHeardPos distance _x)then{
-                _x setVariable["lastPlayerHeard",position _playerUnit, false];
-            };
-        }else{
-            _x setVariable["lastPlayerHeard",position _playerUnit, false];
-        };
+// TODO send noise to zombie server
+{
+    _zombie = _x;
+    if(_playerUnit distance _zombie < _noiseLevel)then{
+        _zombie setVariable["lastPlayerHeard",getPos _playerUnit,true];
     };
-} forEach (units groupZ);*/
+}forEach (units groupZ);
 
 /*["adjust_stand_side",["\A3\sounds_f\characters\stances\concrete_adjust_stand_side1",0.251189,1,20]],
     ["adjust_stand_side",["\A3\sounds_f\characters\stances\concrete_adjust_stand_side2",0.251189,1,20]],
