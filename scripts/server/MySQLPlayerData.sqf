@@ -1,10 +1,3 @@
-"extDB2" callExtension "9:ADD_DATABASE:sid110451_1";
-"extDB2" callExtension "9:ADD_DATABASE_PROTOCOL:sid110451_1:SQL_RAW_V2:SQL_PL_DEL";
-"extDB2" callExtension "9:ADD_DATABASE_PROTOCOL:sid110451_1:SQL_RAW_V2:SQL_PL_LOAD";
-"extDB2" callExtension "9:ADD_DATABASE_PROTOCOL:sid110451_1:SQL_RAW_V2:SQL_PL_CHECK";
-"extDB2" callExtension "9:ADD_DATABASE_PROTOCOL:sid110451_1:SQL_RAW_V2:SQL_PL_SAVE";
-"extDB2" callExtension "9:ADD_DATABASE_PROTOCOL:sid110451_1:SQL_RAW_V2:SQL_VH_SAVE";
-
 fnc_deletePlayerStats = {
 	private["_playerUnit","_PlayerUID"];
 	_playerUnit	= _this select 0;

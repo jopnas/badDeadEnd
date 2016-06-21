@@ -1,6 +1,4 @@
 private["_spawnedCar"];
-"extDB2" callExtension "9:ADD_DATABASE_PROTOCOL:sid110451_1:SQL_RAW_V2:SQL_VH_LOAD";
-
 _CarsQuery        = call compile ("extDB2" callExtension "0:SQL_VH_LOAD:SELECT id FROM vehicles");
 _CarsQueryStatus  = _CarsQuery select 0;
 _CarsInDB         = _CarsQuery select 1;

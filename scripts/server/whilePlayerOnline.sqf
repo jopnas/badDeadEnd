@@ -13,13 +13,12 @@ while {true} do {
     } forEach allPlayers;*/
 
     // save car data to mysql if player close
-    if(count loadedCarsList > 0 && count allPlayers > 0)then{
+    if(count loadedCarsList > 0)then{
         _nearestCars = nearestObjects[[16000,16000],loadedCarsList,16000];
         {
             [_x] call fnc_saveCar;
         } forEach _nearestCars;
     };
-    _cntSaves = _cntSaves + 1;
 };
 
 onPlayerDisconnected {
