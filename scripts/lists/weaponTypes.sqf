@@ -52,10 +52,15 @@ _wpList = (configFile >> "cfgWeapons") call BIS_fnc_getCfgSubClasses;
 
 } forEach _wpList;
 
-sleep 10;
-systemChat format["weaponCaliber: %1",weaponCaliber];
+/* Caliber
+0.1,0.4,0.7,1,
+1.6,1.8,2,
+2.2,2.4,2.8,
+3.6,*
+4.6,
+*/
 
-/*
+/* HitDamage
 4, 8,
 10, 12,14,
 16,18, 20, 24, 60

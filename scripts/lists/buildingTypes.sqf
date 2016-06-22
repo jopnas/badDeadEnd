@@ -5,7 +5,7 @@ constructBuildings  = ["Land_u_Shed_Ind_F","Land_Unfinished_Building_02_F","Land
 
 //vehicleClass      = "Structures_Town";
 buildingInfos       = [];
-_vecList = (configFile >> "cfgVehicles") call BIS_fnc_getCfgSubClasses;
+/*_vecList = (configFile >> "cfgVehicles") call BIS_fnc_getCfgSubClasses;
 {
     if(getnumber (configFile >> "cfgVehicles" >> _x >> "scope") == 2)then{
         _itemType = _x call bis_fnc_itemType;
@@ -13,4 +13,4 @@ _vecList = (configFile >> "cfgVehicles") call BIS_fnc_getCfgSubClasses;
             buildingInfos pushBackUnique getnumber(configFile >> "cfgVehicles" >> _x >> "crew");
         };
     };
-}forEach _vecList;
+} forEach _vecList;*/

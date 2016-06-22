@@ -73,6 +73,7 @@ if(count _db > 0)then{
 	_playerDirection		= _playerStats select 30;
 	_currentWeapon			= _playerStats select 31;
 	_playerDamage			= _playerStats select 32;
+	_playerLoadout			= _playerStats select 33;
 
 	// Player Variables
 	playerHunger = _hunger;
@@ -84,11 +85,11 @@ if(count _db > 0)then{
 	playerInfected = _infected;
 
 	// Set Position
-	_playerUnit setPosATL _playerPosition;
+	_playerUnit setVehiclePosition [_playerPosition, [], 0, "NONE"];
 	_playerUnit setDir _playerDirection;
 
 	// Set Uniform
-	if(count _playerUniform > 2)then{
+	/*if(count _playerUniform > 2)then{
 		_playerUnit forceAddUniform _playerUniform;
 	};
 
@@ -179,7 +180,9 @@ if(count _db > 0)then{
       };
 	};
 
-    _playerUnit selectWeapon _currentWeapon;
+    _playerUnit selectWeapon _currentWeapon;*/
+
+    _playerUnit setUnitLoadout _playerLoadout;
 
     switch(_playerStance)do{
 		case "CROUCH": {

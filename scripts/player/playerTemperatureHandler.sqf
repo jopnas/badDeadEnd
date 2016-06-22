@@ -1,6 +1,7 @@
-_isInside 			= _this select 0;
-_isInCar 			= _this select 1;
-_nearestFireplaces 	= _this select 2;
+_isUnderCover 		= _this select 0;
+_isInside 		    = _this select 1;
+_isInCar 			= _this select 2;
+_nearestFireplaces 	= _this select 3;
 
 _playerUnitTemperature = playerTemperature;
 

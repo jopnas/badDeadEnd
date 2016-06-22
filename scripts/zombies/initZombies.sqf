@@ -2,7 +2,7 @@ sideZ 			= createCenter Resistance;
 groupZ 			= createGroup Resistance;
 
 publicVariable "sideZ";
-publicVariable "groupZ"
+publicVariable "groupZ";
 
 groupZ allowFleeing 0;
 

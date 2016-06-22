@@ -13,7 +13,7 @@ if(_isUnderCover || _isInCar)then{
 	_playerWetness = _playerWetness - 0.01;
 };
 
-if(count _nearestFireplaces > 0 && !_isInCar)then{
+if(count _nearestFireplaces > 0 && _isInCar)then{
 	_playerWetness = _playerWetness - (count(_nearestFireplaces) / 2);
 };
 

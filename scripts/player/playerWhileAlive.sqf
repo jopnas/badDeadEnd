@@ -192,7 +192,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
     _inflamedFireplaces = [];
     {
         if(inflamed _x)then{
-            _inflamedFireplaces pushBack _inflamedFireplaces;
+            _inflamedFireplaces pushBack _x;
         };
     } forEach _nearestFireplaces;
 

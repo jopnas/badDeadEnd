@@ -1,7 +1,9 @@
 private["_spawnedCar"];
+loadedCarsList = [];
 _CarsQuery        = call compile ("extDB2" callExtension "0:SQL_VH_LOAD:SELECT id FROM vehicles");
 _CarsQueryStatus  = _CarsQuery select 0;
 _CarsInDB         = _CarsQuery select 1;
+
 waitUntil { _CarsQueryStatus > 0 };
 {
 	_id = _x select 0;
@@ -15,8 +17,6 @@ waitUntil { _CarsQueryStatus > 0 };
 	_weapons   = ((call compile ("extDB2" callExtension format["0:SQL_VH_LOAD:SELECT weapons FROM vehicles WHERE id='%1'",_id]) select 1) select 0) select 0;
 	_magazines = ((call compile ("extDB2" callExtension format["0:SQL_VH_LOAD:SELECT magazines FROM vehicles WHERE id='%1'",_id]) select 1) select 0) select 0;
 	_backpacks = ((call compile ("extDB2" callExtension format["0:SQL_VH_LOAD:SELECT backpacks FROM vehicles WHERE id='%1'",_id]) select 1) select 0) select 0;
-
-    systemChat format["_destroyed isNumber: %1",isNumber _destroyed];
 
     if(_destroyed > 0)then{
         _towns = nearestLocations [[16000,16000], ["NameVillage","NameCity","NameCityCapital"], 12000];
@@ -38,6 +38,8 @@ waitUntil { _CarsQueryStatus > 0 };
             };
         };
 
+        _spawnedCar setVehiclePosition [[_roadPosition select 0,_roadPosition select 1,(_roadPosition select 2) + 1], [], 0, "NONE"];
+
         clearWeaponCargoGlobal _spawnedCar;
         clearMagazineCargoGlobal _spawnedCar;
         clearItemCargoGlobal _spawnedCar;
@@ -47,6 +49,10 @@ waitUntil { _CarsQueryStatus > 0 };
     }else{
         _spawnedCar = _classname createVehicle _position;
         _spawnedCar setVariable["id",_id,true];
+
+        clearWeaponCargoGlobal _spawnedCar;
+        clearMagazineCargoGlobal _spawnedCar;
+        clearItemCargoGlobal _spawnedCar;
 
     	_spawnedCar setDir _rotation;
     	_spawnedCar setFuel _fuel;
@@ -80,6 +86,7 @@ waitUntil { _CarsQueryStatus > 0 };
                 _spawnedCar setHitPointDamage [_hitPointNames select _i, _hitPointValues select _i];
     		};
     	};
+        _spawnedCar setVehiclePosition [[_position select 0,_position select 1,(_position select 2) + 1], [], 0, "NONE"];
     };
 
 	loadedCarsList pushBack _classname;
