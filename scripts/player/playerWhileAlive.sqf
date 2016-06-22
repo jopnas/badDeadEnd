@@ -45,6 +45,11 @@ carRepair = {
         player removeMagazine "jii_ducttape";
     };
 
+    // Fallback if condition to repair vehiclepart is not set
+    if(_partName find "Wheel" < 0 && _partName find "Fuel" < 0)then{
+        _allineed = true;
+    };
+
     if(_allineed)then{
         player  say3D (selectRandom ["toolSound0","toolSound1"]);
         sleep 11;
@@ -171,7 +176,6 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 	if(t > 5)then{
 		// Spawn Loot
 		[getPos player] remoteExec ["fnc_spawnLoot",2,false];
-        systemChat str weaponCaliber;
 	};
 
 	waitUntil {time - t > 0.1};

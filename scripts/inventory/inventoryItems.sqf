@@ -2,12 +2,14 @@ private["_idcData","_cargoType","_idc","_selectedIndex","_classname","_descripti
 _idc            = _this select 0;
 _selectedIndex  = _this select 1;
 _cargoType      = _this select 2;
+_idcData        = _this select 3;
 
 _classname 	    = lbData [_idc, _selectedIndex];
 _description    = lbText [_idc, _selectedIndex];
 _index          = lbValue [_idc, _selectedIndex];
 _pic 	        = lbPicture [_idc, _selectedIndex];
 
+systemChat str _idcData;
 
 //["30Rnd_65x39_caseless_mag",30,false,-1,"Uniform"]
 /*_magazinesAmmoFull = magazinesAmmoFull player;

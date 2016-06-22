@@ -52,6 +52,9 @@ _wpList = (configFile >> "cfgWeapons") call BIS_fnc_getCfgSubClasses;
 
 } forEach _wpList;
 
+sleep 10;
+systemChat format["weaponCaliber: %1",weaponCaliber];
+
 /*
 4, 8,
 10, 12,14,

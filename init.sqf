@@ -1,6 +1,7 @@
 if(isServer)then{
     [] execVM "scripts\server\registerDBdata.sqf";
     [] execVM "scripts\server\MySQLPlayerData.sqf";
+
     [] execVM "scripts\lists\buildingTypes.sqf";
     [] execVM "scripts\lists\weaponTypes.sqf";
 	[] execVM "scripts\weather\initWeather.sqf";

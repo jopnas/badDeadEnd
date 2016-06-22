@@ -215,9 +215,10 @@ actionsEventHandler = [] spawn {
 		_idc = ctrlIDC (_idcData select 0);
 		_selectedIndex = _idcData select 1;
 
-		[_idc,_selectedIndex,_bagType] spawn inventoryItemAction;
+		[_idc,_selectedIndex,_bagType,_idcData] spawn inventoryItemAction;
 		false
     };
+
 	while {true} do {
 		waituntil {!(isnull (finddisplay 602))};
         // Items Action
