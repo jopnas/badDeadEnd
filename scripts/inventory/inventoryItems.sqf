@@ -9,21 +9,10 @@ _description    = lbText [_idc, _selectedIndex];
 _index          = lbValue [_idc, _selectedIndex];
 _pic 	        = lbPicture [_idc, _selectedIndex];
 
-systemChat str _idcData;
 
-//["30Rnd_65x39_caseless_mag",30,false,-1,"Uniform"]
-/*_magazinesAmmoFull = magazinesAmmoFull player;
-{
-    _class      = _x select 0;
-    _ammo       = _x select 1;
-    _loaded     = _x select 2;
-    _type       = _x select 3; // -1 - n/a, 0 - grenade, 1 - primary weapon mag, 2 - handgun mag, 4 - secondary weapon mag, 65536 - vehicle mag
-    _location   = _x select 4;
+_magazinesDetailBackpack = magazinesDetailBackpack player;
 
-    if(_class == _classname && _cargoType == _location)then{
-        systemChat str _x;
-    };
-} forEach _magazinesAmmoFull;*/
+systemChat format["_idcData: %1, _magazinesDetailBackpack: %2",_idcData,_magazinesDetailBackpack];
 
 // Functions
 _addItemCargo = { // [_item,_cargoType] call _addItemCargo;
