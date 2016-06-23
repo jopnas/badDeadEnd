@@ -35,23 +35,23 @@ fnc_spawnLoot = {
 
 	  _building setVariable["hasLoot",1,true];
 
-      if(typeOf _building in militaryBuildings)then {
+      if(typeOf _building in militaryBuildings2)then {
         _buildingType = "MilitaryBuilding";
       };
 
-      if(typeOf _building in airportBuildings)then {
+      if(typeOf _building in airportBuildings2)then {
         _buildingType = "AirportBuilding";
       };
 
-      if(typeOf _building in researchBuildings)then {
+      if(typeOf _building in researchBuildings2)then {
         _buildingType = "ResearchBuilding";
       };
 
-      if(typeOf _building in constructBuildings)then {
+      if(typeOf _building in constructBuildings2)then {
         _buildingType = "ConstructionBuilding";
       };
 
-      if(!(typeOf _building in (researchBuildings+constructBuildings+militaryBuildings+airportBuildings)))then {
+      if(!(typeOf _building in (researchBuildings2+constructBuildings2+militaryBuildings2+airportBuildings2)))then {
         _buildingType = "CivilianBuilding";
       };
 
