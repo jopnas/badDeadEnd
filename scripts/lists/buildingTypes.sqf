@@ -8,13 +8,21 @@ militaryBuildings2  = [];
 researchBuildings2  = [];
 constructBuildings2 = [];
 
-/*
+/*  https://configs.arma3.ru/
     vehicleClass:
-        Structures_Town
-        Structures_Military
-        Structures_Transport
-        Structures_Infrastructure (z.B. Hospitals)
         Structures_Commercial (z.B. Land_Dome_Small_F)
+        Structures_Cultural
+        Structures_Industrial
+        Structures_Infrastructure (z.B. Hospitals)
+        Structures_Military
+        Structures_Town
+        Structures_Transport
+        Structures_Village
+        Structures_Walls
+        Structures_Fences
+        Structures_Slums
+        Structures_Airport
+        Structures_Sports
         Ruins
 
     editorSubcategory:
@@ -36,10 +44,10 @@ _vecList = (configFile >> "cfgVehicles") call BIS_fnc_getCfgSubClasses;
             if(_vehicleClass == "Structures_Military")then{
                 militaryBuildings2 pushBackUnique _x;
             };
-            if(_editorSubcategory == "EdSubcat_Airports")then{
+            if(_vehicleClass == "Structures_Sports")then{
                 airportBuildings2 pushBackUnique _x;
             };
-            if(_editorSubcategory == "Structures_Infrastructure")then{
+            if(_vehicleClass == "Structures_Infrastructure")then{
                 researchBuildings2 pushBackUnique _x;
             };
         }else{

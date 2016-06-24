@@ -1,4 +1,4 @@
-// Fetch available Weapons
+// Fetch available Weapons https://configs.arma3.ru/
 
 private["_hardestHitPossible"];
 lightWeapons    = [];
