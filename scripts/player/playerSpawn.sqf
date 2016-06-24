@@ -28,7 +28,8 @@ playerWet = 0;
 playerSick = 0;
 playerInfected = 0;
 
-sleep _respawnTime;
+//sleep _respawnTime;
+waitUntil { !(isNil{_playerUnit getVariable "db"}) };
 _db = (_playerUnit getVariable["db",[]]);
 
 if(count _db > 0)then{
@@ -73,7 +74,6 @@ if(count _db > 0)then{
 	_playerDirection		= _playerStats select 30;
 	_currentWeapon			= _playerStats select 31;
 	_playerDamage			= _playerStats select 32;
-	_playerLoadout			= _playerStats select 33;
 
 	// Player Variables
 	playerHunger = _hunger;
@@ -89,7 +89,7 @@ if(count _db > 0)then{
 	_playerUnit setDir _playerDirection;
 
 	// Set Uniform
-	/*if(count _playerUniform > 2)then{
+	if(count _playerUniform > 2)then{
 		_playerUnit forceAddUniform _playerUniform;
 	};
 
@@ -180,9 +180,7 @@ if(count _db > 0)then{
       };
 	};
 
-    _playerUnit selectWeapon _currentWeapon;*/
-
-    _playerUnit setUnitLoadout _playerLoadout;
+    _playerUnit selectWeapon _currentWeapon;
 
     switch(_playerStance)do{
 		case "CROUCH": {

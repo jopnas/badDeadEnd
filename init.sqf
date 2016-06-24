@@ -1,3 +1,6 @@
+if(!isDedicated)then{
+    cutText ["Welcome to BadDeadEnd ...", "BLACK FADED"];
+};
 if(isServer)then{
     [] execVM "scripts\server\registerDBdata.sqf";
     [] execVM "scripts\server\MySQLPlayerData.sqf";
