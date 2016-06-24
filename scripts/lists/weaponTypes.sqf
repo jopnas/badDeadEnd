@@ -1,12 +1,12 @@
 // Fetch available Weapons https://configs.arma3.ru/
 
-private["_hardestHitPossible"];
+private["_hardestHitPossible","_ammo","_cal","_hitVal"];
 lightWeapons    = [];
 mediumWeapons   = [];
 heavyWeapons    = [];
 
-weaponCaliber   = [];
-weaponHitVal    = [];
+//weaponCaliber   = [];
+//weaponHitVal    = [];
 
 _allWeaponTypes = ["AssaultRifle","Handgun","MachineGun","Shotgun","Rifle","SubmachineGun","SniperRifle"];
 // AssaultRifle,BombLauncher,Cannon,GrenadeLauncher,Handgun,Launcher,MachineGun,Magazine,MissileLauncher,Mortar,RocketLauncher,Shotgun,Throw,Rifle,SubmachineGun,SniperRifle
@@ -32,8 +32,8 @@ _wpList = (configFile >> "cfgWeapons") call BIS_fnc_getCfgSubClasses;
                     if(_hitVal > _hardestHitPossible)then{
                         _hardestHitPossible = _hitVal;
                     };
-                    weaponCaliber pushBackUnique _cal;
-                    weaponHitVal pushBackUnique _cal;
+                    //weaponCaliber pushBackUnique _cal;
+                    //weaponHitVal pushBackUnique _cal;
                 }forEach _weaponMagazines;
 
                 // Sort Weapon to Array

@@ -9,9 +9,10 @@ _description    = lbText [_idc, _selectedIndex];
 _index          = lbValue [_idc, _selectedIndex];
 _pic 	        = lbPicture [_idc, _selectedIndex];
 
-_magazinesDetailBackpack = magazinesDetailBackpack player;
 
-systemChat format["_idcData: %1, _magazinesDetailBackpack: %2",_idcData,_magazinesDetailBackpack];
+//_magazinesDetailBackpack = magazinesDetailBackpack player;
+
+//systemChat format["_idcData: %1, _magazinesDetailBackpack: %2",_idcData,_magazinesDetailBackpack];
 
 // Functions
 _addItemCargo = { // [_item,_cargoType] call _addItemCargo;
