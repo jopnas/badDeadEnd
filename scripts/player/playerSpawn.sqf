@@ -28,9 +28,11 @@ playerWet = 0;
 playerSick = 0;
 playerInfected = 0;
 
+ - sleep _respawnTime;
 //sleep _respawnTime;
-waitUntil { !(isNil{_playerUnit getVariable "db"}) };
+//waitUntil { !(isNil{_playerUnit getVariable "db"}) };
 _db = (_playerUnit getVariable["db",[]]);
+
 
 if(count _db > 0)then{
 	_playerStats 			= _db;

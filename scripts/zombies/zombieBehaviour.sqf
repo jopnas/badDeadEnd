@@ -127,13 +127,15 @@ _zBehaviour = [_z] spawn {
                 };
             };
         } forEach (allPlayers - entities "HeadlessClient_F");
+        
+        if(_closestPlayerAliveDistance > 800 || count _alivePlayers == 0)then{
+            systemChat "delete z <-";
+            deleteVehicle _z;
+            deleteMarker format["zMarker%1",_z];
+        };            
 
-        if(count _alivePlayers > 0)then{
-            if(_closestPlayerAlive distance _z > zSpawnRange)then{
-                deleteVehicle _z;
-                deleteMarker format["zMarker%1",_z];
-            };
-
+        
+        if(count _alivePlayers > 0)then{        
             if(_closestPlayerAliveDistance > agroRange)then{
                 _z forceWalk true;
                 _z forceSpeed 0.3;

@@ -17,7 +17,7 @@ while {true} do {
     {
         _thisPlayer     = _x;
         _thisPlayerPos  = position _thisPlayer;
-
+        
         _buildings      = nearestObjects [_thisPlayer,["Building"], zSpawnRange];
         _buildingsCount = count _buildings;
 
@@ -36,7 +36,7 @@ while {true} do {
 
             _safeSpawnPoint = [_thisPlayer, zMinSpawnRange, zSpawnRange, 1, 0, 20, 0] call BIS_fnc_findSafePos;
         */
-
+        
         if ({alive _x} count (units groupZ) < _zCount) then {
             _randomBuilding = selectRandom _buildings;
 
@@ -56,7 +56,7 @@ while {true} do {
             _pos = [((_rdmLocPos select 0) + floor (random 10)) - floor (random 10), ((_rdmLocPos select 1) + floor (random 10)) - floor (random 10), _rdmLocPos select 2];
 
             _relDir         = _thisPlayer getRelDir _pos;
-            _inViewAngle    = abs(_relDir - 180);
+            _inViewAngle    = abs(_relDir - 180);        
 
             if([objNull, "VIEW"] checkVisibility [eyePos _thisPlayer, [_pos select 0,_pos select 1,(_pos select 2) + 1]] == 0 && _thisPlayer distance _pos > zMinSpawnRange /*&& _inViewAngle < 100*/)then{
                 _z = selectRandom _useZlist;
