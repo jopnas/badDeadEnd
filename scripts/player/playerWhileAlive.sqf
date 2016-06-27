@@ -60,8 +60,40 @@ carRepair = {
         repairActionIDs = repairActionIDs - [_action];
     };
 };
+
 // Wood
-nearestTree  			= [];
+chopWoodActionAvailable = false;
+chopWood = {
+    _theTree = _this select 0;
+    _theTreePos = getPosATL _theTree;
+    player playActionNow "Medic";
+    [player,"buildSound0",500,1] remoteExec ["bde_fnc_say3d",0,false];
+    sleep 5;
+    _theTree setDamage 1;
+    sleep 2;
+    _woodHolder = createVehicle ["groundWeaponHolder",_theTreePos,[],0,"can_collide"];
+    _woodHolder setVehiclePosition [_theTreePos select 0,_theTreePos select 1,(_theTreePos select 2) + 0.2];
+
+    _woodHolder addMagazineCargoGlobal ["jii_wood",1];
+    sleep 2;
+    _woodHolder addMagazineCargoGlobal ["jii_wood",1];
+    sleep 2;
+    _woodHolder addMagazineCargoGlobal ["jii_wood",1];
+    sleep 2;
+    _woodHolder addMagazineCargoGlobal ["jii_wood",1];
+    sleep 2;
+    _woodHolder addMagazineCargoGlobal ["jii_wood",1];
+    sleep 2;
+    _woodHolder addMagazineCargoGlobal ["jii_wood",1];
+    sleep 2;
+    _woodHolder addMagazineCargoGlobal ["jii_wood",1];
+    sleep 2;
+    _woodHolder addMagazineCargoGlobal ["jii_wood",1];
+    sleep 2;
+    _woodHolder addMagazineCargoGlobal ["jii_wood",1];
+
+    cutText ["choped wood", "PLAIN DOWN"];
+};
 
 // Watersources
 nearOpenWater           = false;
@@ -180,7 +212,10 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 		[getPos player] remoteExec ["fnc_spawnLoot",2,false];
 	};
 
-	waitUntil {time - t > 0.1};
+    [] spawn checkSick;
+	[] spawn checkNoise;
+	[] spawn updateUI;
+	[] spawn checkAnimals;
 
     _cursorObject       = cursorObject;
 	_cursorObjectType   = typeOf _cursorObject;
@@ -203,11 +238,6 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 
     //[_isInside,_closestBuilding] call getBarricadeables;
 
-	[] spawn checkSick;
-	[] spawn checkNoise;
-	[] spawn updateUI;
-	[] spawn checkAnimals;
-
 	// Everything in 2 meters around player
 	/*_things = nearestObjects [player,[],5];   //!DON'T NEED IT AT MOMENT!
 	{
@@ -218,11 +248,18 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 		};
 	} forEach _things;*/
 
-    nearestTree = [];
-    if(str (getModelInfo _cursorObject) find ": t_" > -1)then{
-        nearestTree = [_cursorObjectType];
+    if(str (_cursorObject) find ": t_" > -1)then{
+        if(!chopWoodActionAvailable)then{
+            chopWoodAction = player addAction["chop wood",{
+                [_this select 3] call chopWood;
+            },_cursorObject];
+            chopWoodActionAvailable = true;
+        }
     }else{
-        nearestTree = [];
+        if(chopWoodActionAvailable)then{
+            chopWoodActionAvailable = false;
+            player removeAction chopWoodAction;
+        };
     };
 
     if(str (getModelInfo _cursorObject) find "watertank" > -1 || str (getModelInfo _cursorObject) find "waterbarrel" > -1 || str (getModelInfo _cursorObject) find "barrelwater" > -1 || str (getModelInfo _cursorObject) find "stallwater" > -1 || str (getModelInfo _cursorObject) find "watersource" > -1)then{

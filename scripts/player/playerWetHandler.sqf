@@ -6,8 +6,6 @@ _nearestFireplaces 	= _this select 3;
 
 _playerWetness  = playerWet;
 
-systemChat format["wetHandler _nearestFireplaces: %1",count _nearestFireplaces];
-
 if(rain > 0 && !_isUnderCover && !_isInCar)then{
 	_playerWetness = _playerWetness + 0.2;
 };

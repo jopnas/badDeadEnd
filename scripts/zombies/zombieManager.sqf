@@ -1,3 +1,4 @@
+private["_rdmLocPos","_thisPlayer","_thisPlayersZs","_zPerPlayer","_zPerPlayerDef"];
 _fnc_zombieBehaviour = compile preprocessFile "scripts\zombies\zombieBehaviour.sqf";
 
 _zUnitsCivStd1  = ["C_man_1","C_man_1_1_F","C_man_1_2_F","C_man_1_3_F","C_man_polo_1_F","C_man_polo_1_F_afro","C_man_polo_1_F_euro","C_man_polo_1_F_asia","C_man_polo_2_F","C_man_polo_2_F_afro","C_man_polo_2_F_euro","C_man_polo_2_F_asia","C_man_polo_3_F","C_man_polo_3_F_afro","C_man_polo_3_F_euro","C_man_polo_3_F_asia","C_man_polo_4_F","C_man_polo_4_F_afro","C_man_polo_4_F_euro","C_man_polo_4_F_asia","C_man_polo_5_F","C_man_polo_5_F_afro","C_man_polo_5_F_euro","C_man_polo_5_F_asia"];
@@ -35,7 +36,7 @@ while {true} do {
         };
 
         if (count _thisPlayersZs < _zPerPlayer) then {
-            if(count _buildings > 0)then{
+            if(_countBuildings > 0)then{
                 // choose type of zombie by bulding type
                 _randomBuilding = selectRandom _buildings;
 
@@ -60,7 +61,7 @@ while {true} do {
             };
 
             _pos = [(_rdmLocPos select 0) + 10 - floor (random 20), (_rdmLocPos select 1) + 10 - floor (random 20), _rdmLocPos select 2];
-            if([objNull, "VIEW"] checkVisibility [eyePos _thisPlayer, [_pos select 0,_pos select 1,(_pos select 2) + 1]] == 0 && _thisPlayer distance _pos > zMinSpawnRange)then{
+            if(!isNil(_thisPlayer) && [objNull, "VIEW"] checkVisibility [eyePos _thisPlayer, [_pos select 0,_pos select 1,(_pos select 2) + 1]] == 0 && _thisPlayer distance _pos > zMinSpawnRange)then{
                 _z = selectRandom _useZlist;
                 _z createUnit [_pos, groupZ,"[this] call _fnc_zombieBehaviour", 0, "NONE"];
                 _z setVariable ["creatorPlayer", _thisPlayer, false];

@@ -103,9 +103,11 @@ _ctrlHunger ctrlSetText "images\gui\val_" + str ( floor(_hungerVal/10)*10 ) + ".
 _ctrlNoise = _namespaceUI displayCtrl 1212;
 _ctrlNoise ctrlSetText "images\gui\inner\gui_noise_inner_" + (str playerNoise) + ".paa";
 
-if(lastUIBlinkCheck - time > 1)then{
+//systemChat str lastUIBlinkCheck;
+
+if(time - lastUIBlinkCheck > 3)then{
     // Indicators
-    if(_infectedVal > 0.8)then{
+    if(_infectedVal > 80)then{
         if(_infectedBlink)then{
             _ctrlInfected ctrlSetTextColor [1,1 - _uiInfectedVal,1 - _uiInfectedVal,0.2];
             _infectedBlink = false;
@@ -117,7 +119,7 @@ if(lastUIBlinkCheck - time > 1)then{
         _ctrlInfected ctrlSetTextColor [1,1 - _uiInfectedVal,1 - _uiInfectedVal,1];
     };
 
-    if(_sickVal > 0.8)then{
+    if(_sickVal > 80)then{
         if(_sickBlink)then{
             _ctrlSick ctrlSetTextColor [1,1 - _uiSickVal,1 - _uiSickVal,0.2];
             _sickBlink = false;
@@ -129,9 +131,9 @@ if(lastUIBlinkCheck - time > 1)then{
         _ctrlSick ctrlSetTextColor [1,1 - _uiSickVal,1 - _uiSickVal,1];
     };
 
-    if(_wetVal > 0.8)then{
+    if(_wetVal > 80)then{
         if(_wetBlink)then{
-            _ctrlWet ctrlSetTextColor [1,1 - _uiWetVal,1 - _uiWetVal,0.2];
+            _ctrlWet ctrlSetTextColor [1,1 - _uiWetVal,1 - _uiWetVal,0];
             _wetBlink = false;
         }else{
             _ctrlWet ctrlSetTextColor [1,1 - _uiWetVal,1 - _uiWetVal,1];

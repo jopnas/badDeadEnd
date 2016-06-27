@@ -9,32 +9,32 @@ if(count _eventParam > 0) then {
 
     switch(_actionName)do{
         case "FireInFlame": {
-            _hasLighter = "jii_zippo" in (magazines player);
-            _hasMatches = "jii_matches" in (magazines player);
+            _hasLighter = "jii_zippo" in magazines player;
+            _hasMatches = "jii_matches" in magazines player;
             if(_hasLighter || _hasMatches)then{
                 if(rain < 0.5)then{
-                    false
+                    false;
                 }else{
                     if(_hasLighter)then{
                         if(rain > 0.8)then{
                             cutText ["It rains too much, even for a lighter", "PLAIN DOWN"];
-                            true
-                        }
-                        false
+                            true;
+                        };
+                        false;
                     }else{
                         cutText ["It rains. you need a lighter", "PLAIN DOWN"];
-                        true
+                        true;
                     };
                 };
             }else{
                 cutText ["You need a lighter or matches", "PLAIN DOWN"];
-                true
+                true;
             };
         };
         default {
-            false
+            false;
         };
     };
 }else{
-    false
+    false;
 };

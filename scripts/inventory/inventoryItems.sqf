@@ -274,32 +274,6 @@ switch(_classname) do {
 	};
 
     // Tools
-    case "jii_hatchet": {
-		if(count nearestTree > 0)then{
-			_theTree = nearestTree select 0;
-			_theTreePos = getPosATL _theTree;
-			player playActionNow "Medic";
-			//player say3D "buildSound0";
-            [player,"buildSound0",500,1] remoteExec ["bde_fnc_say3d",0,false];
-			sleep 10;
-			_theTree setDamage 1;
-			sleep 2;
-			_woodHolder = createVehicle ["groundWeaponHolder",_theTreePos,[],0,"can_collide"];
-			_woodHolder addMagazineCargoGlobal ["jii_wood",1];
-			sleep 2;
-			_woodHolder addMagazineCargoGlobal ["jii_wood",1];
-			sleep 2;
-			_woodHolder addMagazineCargoGlobal ["jii_wood",1];
-			sleep 2;
-			_woodHolder addMagazineCargoGlobal ["jii_wood",1];
-			sleep 2;
-			_woodHolder addMagazineCargoGlobal ["jii_wood",1];
-			cutText ["choped wood", "PLAIN DOWN"];
-		}else{
-			cutText ["need tree", "PLAIN DOWN"];
-		};
-	};
-
     case "jii_stone": {
         [] call _buildFireplace;
     };
