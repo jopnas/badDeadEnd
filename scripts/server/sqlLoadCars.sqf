@@ -34,7 +34,7 @@ waitUntil { _CarsQueryStatus > 0 };
         _hitPointsCount = count _hitPointNames;
         for "_i" from 0 to _hitPointsCount do {
             if(count(_hitPointNames select _i) > 0)then{
-                _spawnedCar setHit [_hitPointNames select _i, 0.3 + (random 0.7)];
+                _spawnedCar setHitPointDamage [_hitPointNames select _i, 0.3 + (random 0.7)];
             };
         };
 

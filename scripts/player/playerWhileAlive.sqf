@@ -1,4 +1,5 @@
 // GUI
+lastUIBlinkCheck    = time;
 updateUI   			= compile preprocessFile "scripts\player\playerUpdateUI.sqf";
 checkNoise 			= compile preprocessFile "scripts\player\playerNoiseCheck.sqf";
 handleWet 			= compile preprocessFile "scripts\player\playerWetHandler.sqf";
@@ -7,6 +8,7 @@ checkBoundingBox    = compile preprocessFile "scripts\tools\checkBoundingBox.sqf
 checkAnimals		= compile preprocessFile "scripts\animals\checkAnimals.sqf";
 footFuncs			= compile preprocessFile "scripts\foot\foot_funcs.sqf";
 checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
+
 //getBarricadeables	= compile preprocessFile "scripts\barricading\getBarricadeables.sqf";
 
 hungerWaitTime = 10;

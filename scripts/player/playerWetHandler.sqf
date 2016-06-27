@@ -1,3 +1,4 @@
+// [_isUnderCover,_isInside,_isInCar,_inflamedFireplaces]
 _isUnderCover 		= _this select 0;
 _isInside 		    = _this select 1;
 _isInCar 			= _this select 2;
@@ -5,15 +6,17 @@ _nearestFireplaces 	= _this select 3;
 
 _playerWetness  = playerWet;
 
+systemChat format["wetHandler _nearestFireplaces: %1",count _nearestFireplaces];
+
 if(rain > 0 && !_isUnderCover && !_isInCar)then{
 	_playerWetness = _playerWetness + 0.2;
 };
 
-if(_isUnderCover || _isInCar)then{
-	_playerWetness = _playerWetness - 0.01;
+if((_isUnderCover && _isInside) || _isInCar)then{
+	_playerWetness = _playerWetness - 0.05;
 };
 
-if(count _nearestFireplaces > 0 && _isInCar)then{
+if(count _nearestFireplaces > 0 && !(_isInCar))then{
 	_playerWetness = _playerWetness - (count(_nearestFireplaces) / 2);
 };
 

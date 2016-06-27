@@ -2,6 +2,10 @@ private["_playerUnit","_respawnTime","_db"];
 _playerUnit     = _this select 0;
 _respawnTime    = _this select 1;
 
+// Player Setup
+_playerUnit enableFatigue false;
+enableCamShake true;
+
 _PlayerUID	= getPlayerUID _playerUnit;
 
 _isRespawn = false;
@@ -15,8 +19,6 @@ removeHeadgear _playerUnit;
 removeGoggles _playerUnit;
 removeUniform _playerUnit;
 
-// Player Setup
-_playerUnit enableFatigue false;
 
 // Player Default Variables
 playerHunger = 100;
@@ -185,7 +187,7 @@ if(count _db > 0)then{
 
 	for "_i" from 0 to _hitPointsCount do {
 		if(count(_hitPointNames select _i) > 0)then{
-			_playerUnit setHit [_hitPointNames select _i, _hitPointValues select _i];
+			_playerUnit setHitPointDamage [_hitPointNames select _i, _hitPointValues select _i];
 		};
 
       if(_i >= _hitPointsCount)then{
@@ -209,7 +211,6 @@ waitUntil{_playerUnit getVariable["playerSetupReady",false]};
 
 // Inventory Items Actions
 inventoryItemAction = compile preprocessFile "scripts\inventory\inventoryItems.sqf";
-
 actionsEventHandler = [] spawn {
 	fnc_coordinateItemActions = {
         _idcData = _this select 0;
@@ -238,10 +239,9 @@ inGameUISetEventHandler ["Action", "[_this] call actionHandler"];
 
 // Player Init Situation
 if(_isRespawn)then{
-    enableCamShake true;
 	_playerUnit switchMove "AmovPpneMstpSnonWnonDnon";
 	playSound "feeepSound0";
-	addCamShake [(_respawnTime + 7), 10, 50];
+    addCamShake [10, _respawnTime + 7, 50];
 };
 
 // Init Barricading
