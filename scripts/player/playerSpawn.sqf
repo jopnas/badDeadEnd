@@ -28,9 +28,9 @@ playerWet = 0;
 playerSick = 0;
 playerInfected = 0;
 
- - sleep _respawnTime;
-//sleep _respawnTime;
+sleep _respawnTime;
 //waitUntil { !(isNil{_playerUnit getVariable "db"}) };
+
 _db = (_playerUnit getVariable["db",[]]);
 
 
@@ -86,9 +86,20 @@ if(count _db > 0)then{
 	playerSick = _sick;
 	playerInfected = _infected;
 
+    switch(_playerStance)do{
+        case "CROUCH": {
+            _playerUnit switchMove "AmovPcrhMstpSrasWpstDnon_AadjPcrhMstpSrasWpstDdown";
+        };
+        case "PRONE": {
+            sleep 0.1;
+            _playerUnit switchMove "AmovPpneMstpSnonWnonDnon";
+        };
+    };
+
+
 	// Set Position
-	_playerUnit setVehiclePosition [_playerPosition, [], 0, "NONE"];
-	_playerUnit setDir _playerDirection;
+    _playerUnit setDir _playerDirection;
+    _playerUnit setVehiclePosition [_playerPosition, [], 0, "NONE"];
 
 	// Set Uniform
 	if(count _playerUniform > 2)then{
@@ -172,6 +183,8 @@ if(count _db > 0)then{
 	_hitPointValues	= _playerDamage select 1;
 	_hitPointsCount = count _hitPointNames;
 
+    _playerUnit selectWeapon _currentWeapon;
+
 	for "_i" from 0 to _hitPointsCount do {
 		if(count(_hitPointNames select _i) > 0)then{
 			_playerUnit setHit [_hitPointNames select _i, _hitPointValues select _i];
@@ -180,18 +193,6 @@ if(count _db > 0)then{
       if(_i >= _hitPointsCount)then{
         _playerUnit setVariable["playerSetupReady",true];
       };
-	};
-
-    _playerUnit selectWeapon _currentWeapon;
-
-    switch(_playerStance)do{
-		case "CROUCH": {
-			_playerUnit switchMove "AmovPcrhMstpSrasWpstDnon_AadjPcrhMstpSrasWpstDdown";
-		};
-		case "PRONE": {
-			sleep 0.1;
-			_playerUnit switchMove "AmovPpneMstpSnonWnonDnon";
-		};
 	};
 
 }else{

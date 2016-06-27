@@ -4,5 +4,7 @@ _oldUnit = _this select 1;
 _respawn = _this select 2;
 _respawnDelay = _this select 3;
 
-[_newUnit,getPlayerUID _newUnit] remoteExecCall ["fnc_loadPlayerStats",2];
+_newUnitUID = getPlayerUID _newUnit;
+[_newUnit,_newUnitUID] remoteExecCall ["fnc_loadPlayerStats",2];
+sleep 2;
 [_newUnit,_respawnDelay] execVM "scripts\player\playerSpawn.sqf";
