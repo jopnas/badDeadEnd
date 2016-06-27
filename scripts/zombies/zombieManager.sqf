@@ -9,61 +9,63 @@ _zUnitsCiv      = _zUnitsCivStd1 + _zUnitsCivStd2 + _zUnitsCivStd3 + _zUnitsCivS
 
 _zUnitsMilInf   = ["I_G_Soldier_F","I_G_Soldier_lite_F","I_G_Soldier_A_F","I_Soldier_02_F","I_Soldier_M_F","I_medic_F","I_Soldier_repair_F","I_engineer_F","i_soldier_unarmed_f","I_Spotter_F","I_Sniper_F","I_support_AMort_F"];
 _zUnitsMilPil   = ["I_Soldier_04_F","I_helipilot_F","I_pilot_F","I_helicrew_F"];
-_zPerPlayer	    = 30;
-_zMax           = _zPerPlayer;
-_zCount         = 0;
+_zPerPlayerDef  = 30;
+_zPerPlayer	    = _zPerPlayerDef;
 
 while {true} do {
     {
         _thisPlayer     = _x;
-        _thisPlayerPos  = position _thisPlayer;
-        
         _buildings      = nearestObjects [_thisPlayer,["Building"], zSpawnRange];
-        _buildingsCount = count _buildings;
+        _countBuildings = count _buildings;
+        _useZlist       = _zUnitsCiv;
 
-        _useZlist = _zUnitsCiv;
+        // count zombies spawned cause this player
+        _thisPlayersZs  = [];
+        {
+            _zombie  = _x;
+            if(_zombie getVariable "creatorPlayer" == _thisPlayer)then{
+                _thisPlayersZs pushBackUnique _zombie;
+            };
+        }forEach (units groupZ);
 
-        _zCount = floor (_buildingsCount/2);
-
-        _zMax = (count allPlayers) * _zPerPlayer;
-        if (_zCount > _zMax) then {
-            _zCount = _zMax;
+        if(_countBuildings == 0)then{
+            _zPerPlayer = 5;
+        }else{
+            _zPerPlayer = _zPerPlayerDef;
         };
 
-        /*
-            BIS_fnc_findSafePos
-            https://community.bistudio.com/wiki/BIS_fnc_findSafePos
+        if (count _thisPlayersZs < _zPerPlayer) then {
+            if(count _buildings > 0)then{
+                // choose type of zombie by bulding type
+                _randomBuilding = selectRandom _buildings;
 
-            _safeSpawnPoint = [_thisPlayer, zMinSpawnRange, zSpawnRange, 1, 0, 20, 0] call BIS_fnc_findSafePos;
-        */
-        
-        if ({alive _x} count (units groupZ) < _zCount) then {
-            _randomBuilding = selectRandom _buildings;
+                if(typeOf _randomBuilding in militaryBuildings)then{
+                    _useZlist = _zUnitsMilInf;
+                };
 
-            if(typeOf _randomBuilding in militaryBuildings)then{
-                _useZlist = _zUnitsMilInf;
+                if(typeOf _randomBuilding in airportBuildings)then{
+                    _useZlist = _zUnitsMilPil;
+                };
+
+                if(typeOf _randomBuilding in researchBuildings)then{
+                    _useZlist = _zUnitsCivSci + _zUnitsCivSer;
+                };
+
+                // random position arround random building
+                _rdmLocPos = getPos _randomBuilding;
+            }else{
+                _useZlist       = selectRandom [_zUnitsCiv,_zUnitsMilInf,_zUnitsMilPil];
+                _thisPlayerPos  = getPos _thisPlayer;
+                _rdmLocPos      = [(_thisPlayerPos select 0) + 200 - floor (random 400), (_thisPlayerPos select 1) + 200 - floor (random 400), _thisPlayerPos select 2];
             };
 
-            if(typeOf _randomBuilding in airportBuildings)then{
-                _useZlist = _zUnitsMilPil;
-            };
-
-            if(typeOf _randomBuilding in researchBuildings)then{
-                _useZlist = _zUnitsCivSci + _zUnitsCivSer;
-            };
-
-            _rdmLocPos = getPos _randomBuilding;
-            _pos = [((_rdmLocPos select 0) + floor (random 10)) - floor (random 10), ((_rdmLocPos select 1) + floor (random 10)) - floor (random 10), _rdmLocPos select 2];
-
-            _relDir         = _thisPlayer getRelDir _pos;
-            _inViewAngle    = abs(_relDir - 180);        
-
-            if([objNull, "VIEW"] checkVisibility [eyePos _thisPlayer, [_pos select 0,_pos select 1,(_pos select 2) + 1]] == 0 && _thisPlayer distance _pos > zMinSpawnRange /*&& _inViewAngle < 100*/)then{
+            _pos = [(_rdmLocPos select 0) + 10 - floor (random 20), (_rdmLocPos select 1) + 10 - floor (random 20), _rdmLocPos select 2];
+            if([objNull, "VIEW"] checkVisibility [eyePos _thisPlayer, [_pos select 0,_pos select 1,(_pos select 2) + 1]] == 0 && _thisPlayer distance _pos > zMinSpawnRange)then{
                 _z = selectRandom _useZlist;
                 _z createUnit [_pos, groupZ,"[this] call _fnc_zombieBehaviour", 0, "NONE"];
-
-                sleep 0.2;
+                _z setVariable ["creatorPlayer", _thisPlayer, false];
             };
         };
     } forEach allPlayers;
+    sleep 0.2;
 };

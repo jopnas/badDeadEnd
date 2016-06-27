@@ -29,11 +29,9 @@ playerSick = 0;
 playerInfected = 0;
 
 sleep _respawnTime;
-//waitUntil { !(isNil{_playerUnit getVariable "db"}) };
+//waitUntil { !isNil(_playerUnit getVariable "db") };
 
 _db = (_playerUnit getVariable["db",[]]);
-
-
 if(count _db > 0)then{
 	_playerStats 			= _db;
 	_playerWeapons			= _playerStats select 2;
@@ -197,6 +195,7 @@ if(count _db > 0)then{
 
 }else{
     _isRespawn = true;
+    _playerUnit setDamage 0;
 	[_playerUnit] execVM "scripts\player\playerSpawnPosition.sqf";
 };
 
