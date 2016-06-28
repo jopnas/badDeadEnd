@@ -76,6 +76,8 @@ BIS_fn_createFireEffect = {
 	if (_effect in ["FIRE_BIG","FIRE_MEDIUM"]) then {
 		deleteVehicle _light;
 	};
+
+    sleep _timer;
 	if (_smoke != "") then {
 		deleteVehicle _eSmoke;
 	};
@@ -84,23 +86,23 @@ BIS_fn_createFireEffect = {
 // Burn Zombie
 fnc_burnDeadZ = {
     if(!isDedicated)then{
+        private["_deadZ","_skeletton"];
         _deadZ = _this select 0;
-        if(!(_deadZ getVariable["burning",false]))then{
-            [getPosATL _deadZ,"FIRE_MEDIUM",22] spawn BIS_fn_createFireEffect;
-            _deadZ setVariable["burning",true,true];
-            {
-                if(_x distance _deadZ < 5 && group _x == groupZ)then{
-                    [_x] remoteExec ["fnc_burnDeadZ",0,false];
-                    [_x] remoteExec ["bde_fnc_removeBurnAction",0,false];
-                };
-            } forEach allDeadMen;
 
-            sleep 20;
-            _skeletton = createVehicle ["Land_HumanSkeleton_F", getPos _deadZ, [], 0, "CAN_COLLIDE"];
-            _skeletton setDir (getDir _deadZ);
-            hideBody _deadZ;
-            sleep 2;
-            deleteVehicle _deadZ;
-        };
+        [getPosATL _deadZ,"FIRE_MEDIUM",22] spawn BIS_fn_createFireEffect;
+        _deadZ setVariable["burning",true,true];
+        {
+            if(_x distance _deadZ < 5 && group _x == groupZ && !(_x getVariable["burning",false]) )then{
+                [_x] remoteExec ["fnc_burnDeadZ",0,false];
+                [_x] remoteExec ["bde_fnc_removeBurnAction",0,false];
+            };
+        } forEach allDeadMen;
+
+        sleep 20;
+        _skeletton = createVehicle ["Land_HumanSkeleton_F", getPos _deadZ, [], 0, "CAN_COLLIDE"];
+        _skeletton setDir (getDir _deadZ);
+        hideBody _deadZ;
+        sleep 2;
+        deleteVehicle _deadZ;
     };
 };
