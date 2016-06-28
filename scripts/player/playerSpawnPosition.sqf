@@ -1,8 +1,9 @@
 _playerUnit = _this select 0;
 _towns = nearestLocations [[16000,16000], ["NameVillage","NameCity","NameCityCapital"], 12000];
-_rdmTown = _towns call BIS_fnc_selectRandom;
+_rdmTown = selectRandom _towns;
 _roadsNearRdmTown = getPos _rdmTown nearRoads 1000;
 
-_rdmSpawnPos = _roadsNearRdmTown call BIS_fnc_selectRandom;
+_rdmSpawnPos = selectRandom _roadsNearRdmTown;
 _playerUnit setPosATL getPos(_rdmSpawnPos);
-_playerUnit setVariable["playerSetupReady",true];
+
+_playerUnit setVariable["playerSetupReady",true,false];

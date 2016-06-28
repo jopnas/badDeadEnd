@@ -1,4 +1,7 @@
 private["_playerUnit","_respawnTime","_db"];
+
+cutText ["Welcome to BadDeadEnd ...", "BLACK FADED"];
+
 _playerUnit     = _this select 0;
 _respawnTime    = _this select 1;
 
@@ -191,7 +194,7 @@ if(count _db > 0)then{
 		};
 
       if(_i >= _hitPointsCount)then{
-        _playerUnit setVariable["playerSetupReady",true];
+        _playerUnit setVariable["playerSetupReady",true,false];
       };
 	};
 
@@ -236,6 +239,11 @@ actionsEventHandler = [] spawn {
 // Action Eventhandler
 actionHandler = compile preprocessFile "scripts\player\actionHandler.sqf";
 inGameUISetEventHandler ["Action", "[_this] call actionHandler"];
+
+_playerUnit addAction ["Weapon on back", {
+    _thisPlayer = _this select 1;
+    _thisPlayer action ["WeaponOnBack",_thisPlayer];
+}];
 
 // Player Init Situation
 if(_isRespawn)then{

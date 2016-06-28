@@ -1,6 +1,3 @@
-if(!isDedicated)then{
-    cutText ["Welcome to BadDeadEnd ...", "BLACK FADED"];
-};
 if(isServer)then{
     [] execVM "scripts\server\registerDBdata.sqf";
     [] execVM "scripts\server\MySQLPlayerData.sqf";
@@ -19,3 +16,6 @@ if(isServer)then{
 
 [] execVM "scripts\tools\burnObject.sqf";
 [] execVM "scripts\tools\globalFuncs.sqf";
+
+// REMOVE BEFORE RELEASE !!!!!!!!!!!
+[] execVM "scripts\tools\dev_helper.sqf";
