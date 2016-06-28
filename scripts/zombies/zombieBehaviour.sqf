@@ -154,6 +154,7 @@ _zBehaviour = [_z] spawn {
                     if(!_hasTarget)then{
                         [_z,format["zpunch%1",floor random 4],50,_speechPitch] remoteExec ["bde_fnc_say3d",0,false];
                         _z setVariable["hasTarget",true, false];
+                        _z setVariable["lastPlayerHeard",[], true];
                     };
 
                    if(_closestPlayerAliveDistance > attackRangeDef)then{
