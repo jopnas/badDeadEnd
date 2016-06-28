@@ -20,11 +20,11 @@ while {true} do {
         _countBuildings = count _buildings;
         _useZlist       = _zUnitsCiv;
 
-        // count zombies spawned cause this player
+        // count zombies spawned by this player
         _thisPlayersZs  = [];
         {
             _zombie  = _x;
-            if(_zombie getVariable "creatorPlayer" == _thisPlayer)then{
+            if(_zombie getVariable "creatorPlayer" == _thisPlayer && _zombie distance _thisPlayer < zSpawnRange)then{
                 _thisPlayersZs pushBackUnique _zombie;
             };
         }forEach (units groupZ);
