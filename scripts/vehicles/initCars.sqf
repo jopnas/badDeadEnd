@@ -1,2 +1,2 @@
-fnc_loadCars = compile preprocessFile "scripts\server\sqlLoadCars.sqf";
-[] call fnc_loadCars;
+loadedCarsList = ["empty"];
+[] call compile preprocessFile "scripts\server\sqlLoadCars.sqf";

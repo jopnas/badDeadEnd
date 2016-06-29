@@ -61,7 +61,7 @@ while {true} do {
             };
 
             _pos = [(_rdmLocPos select 0) + 10 - floor (random 20), (_rdmLocPos select 1) + 10 - floor (random 20), _rdmLocPos select 2];
-            if(!isNil(_thisPlayer) && [objNull, "VIEW"] checkVisibility [eyePos _thisPlayer, [_pos select 0,_pos select 1,(_pos select 2) + 1]] == 0 && _thisPlayer distance _pos > zMinSpawnRange)then{
+            if([objNull, "VIEW"] checkVisibility [eyePos _thisPlayer, [_pos select 0,_pos select 1,(_pos select 2) + 1]] == 0 && _thisPlayer distance _pos > zMinSpawnRange)then{
                 _z = selectRandom _useZlist;
                 _z createUnit [_pos, groupZ,"[this] call _fnc_zombieBehaviour", 0, "NONE"];
                 _z setVariable ["creatorPlayer", _thisPlayer, false];

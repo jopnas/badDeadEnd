@@ -2,7 +2,6 @@ fnc_spawnLoot = {
   private ["_buildingType"];
 
   _playerPosition 	= _this select 0;
-  _isPlayerSpawn 	= _this select 1;
 
   // Military Lootlists
   _itemBackpacksMil     = ["B_AssaultPack_blk","B_AssaultPack_dgtl","B_AssaultPack_khk","B_AssaultPack_rgr","B_AssaultPack_sgg","B_AssaultPack_cbr","B_AssaultPack_mcamo","B_Bergen_mcamo","B_Carryall_oucamo","B_Carryall_ocamo","B_Carryall_mcamo","B_FieldPack_oucamo","B_FieldPack_ocamo","B_Kitbag_mcamo"];
@@ -30,11 +29,10 @@ fnc_spawnLoot = {
     _building       = _x;
     _position       = getPos _building;
     _strHouseType   = str(typeOf _building);
-    _enterable      = [_building] call BIS_fnc_isBuildingEnterable;
 
-    if ( !(typeOf _building in _BuildingsExclude) && _building getVariable["hasLoot",false] && !(str _building find  "ruins" > -1)) then {
+    if ( !(typeOf _building in _BuildingsExclude) && (_building getVariable["hasLoot",0]) == 0 && !(str _building find  "ruins" > -1)) then {
 
-	  _building setVariable["hasLoot",true,true];
+	  _building setVariable["hasLoot",1,true];
 
       if(typeOf _building in militaryBuildings2)then {
         _buildingType = "MilitaryBuilding";
@@ -67,7 +65,7 @@ fnc_spawnLoot = {
 
 			// Options
             _spawn setDir round(random 360);
-            _spawn setVehiclePosition [_holderPos, [], 0, "NONE"];
+            //_spawn setVehiclePosition [_holderPos select 0,_holderPos select 1,(_holderPos select 2) + 0.1];
 
               switch(_buildingType) do {
                 case "MilitaryBuilding":{
@@ -185,21 +183,6 @@ fnc_spawnLoot = {
                 default {};
                 };
 
-            };
-        }else{
-            if(_enterable)then{
-                _spawn = "groundWeaponHolder" createVehicle _position;
-
-      			// Options
-                _spawn setDir round(random 360);
-                _spawn setVehiclePosition [_position, [], 0, "NONE"];
-
-                // Food
-                for "_i" from 0 to 20 step 1 do {
-                    if(random 100 < 50) then {
-                      _spawn addMagazineCargoGlobal [selectRandom _foodItems, 1)];
-                    };
-                };
             };
         };
     };

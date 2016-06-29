@@ -1,10 +1,10 @@
 private["_spawnedCar"];
-loadedCarsList = [];
 _CarsQuery        = call compile ("extDB2" callExtension "0:SQL_VH_LOAD:SELECT id FROM vehicles");
 _CarsQueryStatus  = _CarsQuery select 0;
 _CarsInDB         = _CarsQuery select 1;
 
 waitUntil { _CarsQueryStatus > 0 };
+loadedCarsList = loadedCarsList - ["empty"];
 {
 	_id = _x select 0;
 	_classname = ((call compile ("extDB2" callExtension format["0:SQL_VH_LOAD:SELECT classname FROM vehicles WHERE id='%1'",_id]) select 1) select 0) select 0;
@@ -89,7 +89,7 @@ waitUntil { _CarsQueryStatus > 0 };
         _spawnedCar setVehiclePosition [[_position select 0,_position select 1,(_position select 2) + 1], [], 0, "NONE"];
     };
 
-	loadedCarsList pushBack _classname;
+	loadedCarsList pushBackUnique _classname;
 
     _markerstr = createMarker [format["car %1",_id] , _position];
 	_markerstr setMarkerShape "ICON";

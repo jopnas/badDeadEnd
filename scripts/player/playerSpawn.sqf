@@ -240,10 +240,10 @@ actionsEventHandler = [] spawn {
 actionHandler = compile preprocessFile "scripts\player\actionHandler.sqf";
 inGameUISetEventHandler ["Action", "[_this] call actionHandler"];
 
-_playerUnit addAction ["Weapon on back", {
+/*_playerUnit addAction ["Weapon on back", {
     _thisPlayer = _this select 1;
     _thisPlayer action ["WeaponOnBack",_thisPlayer];
-}];
+}];*/
 
 // Player Init Situation
 if(_isRespawn)then{

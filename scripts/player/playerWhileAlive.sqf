@@ -11,12 +11,6 @@ checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
 
 //getBarricadeables	= compile preprocessFile "scripts\barricading\getBarricadeables.sqf";
 
-saveWaitTime        = 1;
-nextSave            = saveWaitTime;
-
-lootWaitTime        = 5;
-nextLootCheck       = lootWaitTime;
-
 hungerWaitTime      = 10;
 nextHungerDecr      = hungerWaitTime;
 
@@ -78,7 +72,6 @@ chopWood = {
     _theTree setDamage 1;
     sleep 2;
     _woodHolder = createVehicle ["groundWeaponHolder",_theTreePos,[],0,"can_collide"];
-    _woodHolder setVehiclePosition [_theTreePos select 0,_theTreePos select 1,(_theTreePos select 2) + 0.2];
 
     _woodHolder addMagazineCargoGlobal ["jii_wood",1];
     sleep 2;
@@ -208,17 +201,15 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 		nextHealthDecr = time + healthWaitTime;
 	};
 
-	if(t > nextSave)then{
-		// Save Spawn Stats
+    if(t > 0.1)then{
+        // Save Spawn Stats
         [player,[playerHunger,playerThirst,playerHealth,playerTemperature,playerWet,playerSick,playerInfected]] remoteExec ["fnc_savePlayerStats",2,false];
-        nextSave = time + saveWaitTime;
-	};
+    };
 
-	if(t > nextLootCheck)then{
-		// Spawn Loot
-		[getPos player] remoteExec ["fnc_spawnLoot",2,false];
-        nextLootCheck = time + lootWaitTime;
-	};
+    if(t > 5)then{
+        // Spawn Loot
+        [getPos player] remoteExec ["fnc_spawnLoot",2,false];
+    };
 
     [] spawn checkSick;
 	[] spawn checkNoise;
@@ -261,7 +252,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 		};
 	} forEach _things;*/
 
-    if(str (_cursorObject) find ": t_" > -1)then{
+    if(cursorObject distance2D player < 3 && str (_cursorObject) find ": t_" > -1)then{
         if(!chopWoodActionAvailable)then{
             chopWoodAction = player addAction["chop wood",{
                 [_this select 3] call chopWood;
@@ -275,7 +266,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         };
     };
 
-    if(str (getModelInfo _cursorObject) find "watertank" > -1 || str (getModelInfo _cursorObject) find "waterbarrel" > -1 || str (getModelInfo _cursorObject) find "barrelwater" > -1 || str (getModelInfo _cursorObject) find "stallwater" > -1 || str (getModelInfo _cursorObject) find "watersource" > -1)then{
+    if( cursorObject distance2D player < 3 && str (getModelInfo _cursorObject) find "watertank" > -1 || str (getModelInfo _cursorObject) find "waterbarrel" > -1 || str (getModelInfo _cursorObject) find "barrelwater" > -1 || str (getModelInfo _cursorObject) find "stallwater" > -1 || str (getModelInfo _cursorObject) find "watersource" > -1)then{
         if(!drinkActionAvailable)then{
             drinkAction = player addAction["drink clean water",{
                 [] call drinkWater;
@@ -345,7 +336,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         player removeAction eatCookedFoodAction;
     };
 
-    if("ToolKit" in Items Player && vehicle player == player && _cursorObject isKindOf "Car" && cursorObject distance player < 5)then{
+    if(cursorObject distance2D player < 3 && "ToolKit" in Items Player && vehicle player == player && _cursorObject isKindOf "Car")then{
         _nearestCarObj = _cursorObject;
         _carDamages = getAllHitPointsDamage _nearestCarObj;
         {
@@ -523,5 +514,5 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         };
     };
 
-    hint format["cursorObjectType: %1\ncarryingMass: %2",_cursorObjectType,_carryingMass];
+    hint format["cursorObjectType: %1\ncursorObject distance:%2\ncarryingMass: %3",_cursorObjectType,_cursorObject distance2D player,_carryingMass];
 };

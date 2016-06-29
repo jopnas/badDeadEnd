@@ -1,4 +1,4 @@
-while {true} do {
+while {count allPlayers > 0} do {
     _allHCs = entities "HeadlessClient_F";
     _allHPs = allPlayers - _allHCs;
     _allAliveHPs = [];
@@ -11,13 +11,11 @@ while {true} do {
     } forEach allPlayers;
 
     // save car data to mysql if player close
-    if(!(isNil loadedCarsList))then{
-        if(count loadedCarsList > 0 && count _allAliveHPs > 0)then{
-            _nearestCars = nearestObjects[[16000,16000],loadedCarsList,16000];
-            {
-                [_x] call fnc_saveCar;
-            } forEach _nearestCars;
-        };
+    if(count _allAliveHPs > 0)then{
+        _nearestCars = nearestObjects[[16000,16000],loadedCarsList,16000];
+        {
+            [_x] call fnc_saveCar;
+        } forEach _nearestCars;
     };
     sleep 1;
 };
