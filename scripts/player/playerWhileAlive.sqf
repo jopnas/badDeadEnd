@@ -11,14 +11,20 @@ checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
 
 //getBarricadeables	= compile preprocessFile "scripts\barricading\getBarricadeables.sqf";
 
-hungerWaitTime = 10;
-nextHungerDecr = hungerWaitTime;
+saveWaitTime        = 1;
+nextSave            = saveWaitTime;
 
-thirstWaitTime = 20;
-nextThirstDecr = thirstWaitTime;
+lootWaitTime        = 5;
+nextLootCheck       = lootWaitTime;
 
-healthWaitTime = 30;
-nextHealthDecr = healthWaitTime;
+hungerWaitTime      = 10;
+nextHungerDecr      = hungerWaitTime;
+
+thirstWaitTime      = 20;
+nextThirstDecr      = thirstWaitTime;
+
+healthWaitTime      = 30;
+nextHealthDecr      = healthWaitTime;
 
 // Cook & Boil
 boilWaterAvailable      = false;
@@ -202,20 +208,27 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 		nextHealthDecr = time + healthWaitTime;
 	};
 
-	if(t > 0.1)then{
+	if(t > nextSave)then{
 		// Save Spawn Stats
         [player,[playerHunger,playerThirst,playerHealth,playerTemperature,playerWet,playerSick,playerInfected]] remoteExec ["fnc_savePlayerStats",2,false];
+        nextSave = time + saveWaitTime;
 	};
 
-	if(t > 5)then{
+	if(t > nextLootCheck)then{
 		// Spawn Loot
 		[getPos player] remoteExec ["fnc_spawnLoot",2,false];
+        nextLootCheck = time + lootWaitTime;
 	};
 
     [] spawn checkSick;
 	[] spawn checkNoise;
 	[] spawn updateUI;
 	[] spawn checkAnimals;
+
+    _carryingMass       = loadAbs player;
+    //_calcFatigue        = _carryingMass / 500;
+    //player setFatigue _calcFatigue;
+
 
     _cursorObject       = cursorObject;
 	_cursorObjectType   = typeOf _cursorObject;
@@ -510,5 +523,5 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         };
     };
 
-    hint format["cursorObject: %1\ncursorObjectType: %2\nisUnderCover: %3",_cursorObject,_cursorObjectType,_isUnderCover];
+    hint format["cursorObjectType: %1\ncarryingMass: %2",_cursorObjectType,_carryingMass];
 };
