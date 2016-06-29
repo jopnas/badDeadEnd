@@ -117,13 +117,13 @@ _zBehaviour = [_z] spawn {
             _player = _x;
             if(_player distance _z < zSpawnRange)then{
                 if(alive _player)then{
-                    _alivePlayers = _alivePlayers + [_player];
+                    _alivePlayers pushBackUnique _player;
                     if(_player distance _z < _closestPlayerAliveDistance)then{
                         _closestPlayerAliveDistance = _player distance _z;
                         _closestPlayerAlive         = _player;
                     };
                 }else{
-                    _deadPlayers = _deadPlayers + [_player];
+                    _deadPlayers pushBackUnique _player;
                 };
             };
         } forEach (allPlayers - entities "HeadlessClient_F");
@@ -157,17 +157,17 @@ _zBehaviour = [_z] spawn {
                         _z setVariable["lastPlayerHeard",[], true];
                     };
 
-                   if(_closestPlayerAliveDistance > attackRangeDef)then{
+                    if(_closestPlayerAliveDistance > attackRangeDef)then{
                         _z doMove (position _closestPlayerAlive);
                     };
 
-                   // if player in attack range
+                    // if player in attack range
                     if(_closestPlayerAliveDistance < attackRangeDef)then{
                         doStop _z;
                         _z playMove "AwopPercMstpSgthWnonDnon_end";
                         sleep 1;
                         [_z,format["zpunch%1",floor random 4],50,_speechPitch] remoteExec ["bde_fnc_say3d",0,false];
-                        if(_closestPlayerAliveDistance < attackRangeDef && [_z,_closestPlayerAlive] call canSeePlayer)then{
+                        if([_z,_closestPlayerAlive] call canSeePlayer && alive _closestPlayerAlive)then{
                             _closestPlayerAlive setDamage (damage _closestPlayerAlive + zombiedamage);
                         };
                     };
