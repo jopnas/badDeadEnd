@@ -3,78 +3,85 @@ _playerUnit  = player;
 _noise	= _this select 0;
 _noiseLevel = 1;
 
-// Player Position
-switch(stance _playerUnit)do{
-    case "PRONE": {
-        _stanceLevel = 1;
+if(vehicle _playerUnit == _playerUnit)then{
+    // Player Position
+    switch(stance _playerUnit)do{
+        case "PRONE": {
+            _stanceLevel = 1;
+        };
+        case "CROUCH": {
+            _stanceLevel = 2;
+        };
+        case "STAND": {
+            _stanceLevel = 3;
+        };
+        default {
+            _stanceLevel = 1;
+        };
     };
-    case "CROUCH": {
-        _stanceLevel = 2;
-    };
-    case "STAND": {
-        _stanceLevel = 3;
-    };
-    default {
-        _stanceLevel = 1;
-    };
-};
 
-// Player Speed
-_playerVelocity = velocityModelSpace _playerUnit;
+    // Player Speed
+    _playerVelocity = velocityModelSpace _playerUnit;
 
-_speedLevel1	=  abs (floor(_playerVelocity select 0));
-_speedLevel2	=  abs (floor(_playerVelocity select 1));
+    _speedLevel1	=  abs (floor(_playerVelocity select 0));
+    _speedLevel2	=  abs (floor(_playerVelocity select 1));
 
-if(_speedLevel1 > _speedLevel2)then{
-	_speedLevel = round _speedLevel1;
-}else{
-	_speedLevel = round _speedLevel2;
-};
-
-// Surfaces
-_type = surfaceType getPosATL _playerUnit;
-_typeA = toArray _type;
-_typeA set [0,"DEL"];
-_typeA = _typeA - ["DEL"];
-_type = toString _typeA;
-_soundType = getText (configFile >> "CfgSurfaces" >> _type >> "soundEnviron");
-_soundVal = getArray (configFile >> "CfgVehicles" >> "CAManBase" >> "SoundEnvironExt" >> _soundType);
-
-_surfaceLevelBySpeed = 0;
-if(_speedLevel == 1)then{
-    _surfaceLevelBySpeed = 60;
-};
-if(_speedLevel >= 2 && _speedLevel <= 3)then{
-    _surfaceLevelBySpeed = 44;
-};
-if(_speedLevel == 4)then{
-    _surfaceLevelBySpeed = 36;
-};
-if(_speedLevel == 5)then{
-    _surfaceLevelBySpeed = 52;
-};
-if(_surfaceLevelBySpeed > 0)then{
-    if(isOnRoad player)then{
-        _surfaceLevel = 6;
+    if(_speedLevel1 > _speedLevel2)then{
+    	_speedLevel = round _speedLevel1;
     }else{
-        _surfaceLevel = ((_soundVal select _surfaceLevelBySpeed) select 1) select 3;
-        _surfaceLevel = _surfaceLevel/10;
+    	_speedLevel = round _speedLevel2;
     };
+
+    // Surfaces
+    _type = surfaceType getPosATL _playerUnit;
+    _typeA = toArray _type;
+    _typeA set [0,"DEL"];
+    _typeA = _typeA - ["DEL"];
+    _type = toString _typeA;
+    _soundType = getText (configFile >> "CfgSurfaces" >> _type >> "soundEnviron");
+    _soundVal = getArray (configFile >> "CfgVehicles" >> "CAManBase" >> "SoundEnvironExt" >> _soundType);
+
+    _surfaceLevelBySpeed = 0;
+    if(_speedLevel == 1)then{
+        _surfaceLevelBySpeed = 60;
+    };
+    if(_speedLevel >= 2 && _speedLevel <= 3)then{
+        _surfaceLevelBySpeed = 44;
+    };
+    if(_speedLevel == 4)then{
+        _surfaceLevelBySpeed = 36;
+    };
+    if(_speedLevel == 5)then{
+        _surfaceLevelBySpeed = 52;
+    };
+    if(_surfaceLevelBySpeed > 0)then{
+        if(isOnRoad player)then{
+            _surfaceLevel = 6;
+        }else{
+            _surfaceLevel = ((_soundVal select _surfaceLevelBySpeed) select 1) select 3;
+            _surfaceLevel = _surfaceLevel/10;
+        };
+    }else{
+        _surfaceLevel = 1;
+    };
+
+    // Calculate Noise
+    _noiseLevel = round(_surfaceLevel * _stanceLevel * _speedLevel);
+    _noiseLevel = (_noiseLevel/64)*10;
+    _noiseLevel = floor(_noiseLevel) * 10;
+
 }else{
-    _surfaceLevel = 1;
+    _noiseLevel = 100;//vehicle _playerUnit getSoundController "thrust";
+    systemChat str (getAllSoundControllers vehicle _playerUnit);
 };
 
-// Calculate Noise
-_noiseLevel = round(_surfaceLevel * _stanceLevel * _speedLevel);
-_noiseLevel = (_noiseLevel/64)*10;
-_noiseLevel = floor(_noiseLevel) * 10;
-
+// Limitations cause GUI-Values
 if(_noiseLevel < 0)then{
-	_noiseLevel = 0;
+    _noiseLevel = 0;
 };
 
 if(_noiseLevel > 100)then{
-	_noiseLevel = 100;
+    _noiseLevel = 100;
 };
 
 playerNoise = _noiseLevel;
