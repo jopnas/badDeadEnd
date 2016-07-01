@@ -15,11 +15,9 @@ class Header {
 onCheat = "hint str 'Fuck you, man!'";
 
 forceRotorLibSimulation = 2;
-showGroupIndicator = 1;
 disableRandomization[] = {"AllVehicles"};
 skipLobby = 1;
 saving = 0;
-showMap = 0;
 
 // Removes all playable units which do not have a human player.
 disabledAI = 1;
@@ -40,7 +38,7 @@ debriefing = 0;
 enableItemsDropping = 0;
 
 respawn = "BASE"; // Respawn type. 0:"NONE", 1:"BIRD", 2:"INSTANT", 3:"BASE", 4:"GROUP", 5:"SIDE"
-respawndelay = 120; // Delay in seconds before playable unit respawns.
+respawndelay = 10; // Delay in seconds before playable unit respawns.
 respawnVehicleDelay = 10; // Delay in seconds before vehicle respawns.
 respawnDialog = 0; // 0 to disable the score table (it can still be opened manually by pressing 'P' key).
 respawnTemplates[] = {"Base","Counter","Revive"}; // Respawn templates from CfgRespawnTemplates. You can combine any number of them together.
@@ -49,7 +47,7 @@ aikills = 0; // When 1, the score table contains score of all playable units as 
 
 reviveDelay = 10;
 reviveForceRespawnDelay = 3;
-reviveBleedOutDelay = 120;
+reviveBleedOutDelay = 11;
 
 showGroupIndicator = 0;
 enableTeamSwitch = 0;

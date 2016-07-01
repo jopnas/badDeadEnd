@@ -65,7 +65,7 @@ fnc_spawnLoot = {
 
 			// Options
             _spawn setDir round(random 360);
-            _spawn setVehiclePosition [_holderPos, [], 0, "CAN_COLLIDE"];
+            _spawn setVehiclePosition [[_holderPos select 0,_holderPos select 1,(_holderPos select 2) + 0.1], [], 0, "CAN_COLLIDE"];
 
           switch(_buildingType) do {
             case "MilitaryBuilding":{

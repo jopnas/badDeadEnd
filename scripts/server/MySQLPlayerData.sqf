@@ -113,6 +113,7 @@ fnc_savePlayerStats = {
 };
 
 fnc_saveCar = {
+    private["_damages"];
 	_car 		= _this select 0;
     _id         = _car getVariable "id";
 	_position	= getPos _car;

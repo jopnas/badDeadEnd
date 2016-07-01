@@ -22,7 +22,6 @@ removeHeadgear _playerUnit;
 removeGoggles _playerUnit;
 removeUniform _playerUnit;
 
-
 // Player Default Variables
 playerHunger = 100;
 playerThirst = 100;

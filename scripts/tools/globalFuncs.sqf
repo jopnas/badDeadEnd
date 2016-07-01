@@ -9,7 +9,7 @@ bde_fnc_say3d = { // [_sayobject,_audioclip,_maxdistance,_audiopitch] remoteExec
 };
 
 bde_fnc_playSound3D = { // [player,"eat01","configVol" or 0.5,"randomPitch" or "configPitch",max. distance] spawn bde_fnc_playSound3D;
-    private["_usePitch"];
+    private["_usePitch","_useVol"];
 
     _source         = _this select 0;
     _audioClip      = _this select 1;

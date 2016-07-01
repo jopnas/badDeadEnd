@@ -20,10 +20,10 @@ if(vehicle _playerUnit == _playerUnit)then{
         };
     };
 
-    _speed	=  speed (vehicle _playerUnit);
+    _speed	=  abs floor(speed (vehicle _playerUnit));
 
     // Surfaces
-    _type = surfaceType getPosATL _playerUnit;
+    _type = surfaceType (getPosATL _playerUnit);
     _typeA = toArray _type;
     _typeA set [0,"DEL"];
     _typeA = _typeA - ["DEL"];
@@ -60,10 +60,10 @@ if(vehicle _playerUnit == _playerUnit)then{
     _noiseLevel = (_noiseLevel/64)*10;
     _noiseLevel = floor(_noiseLevel) * 10;
 
-}else{
-    _noiseLevel = 100;//vehicle _playerUnit getSoundController "thrust";
-    systemChat str (getAllSoundControllers vehicle _playerUnit);
-};
+};/*else{
+    _noiseLevel = 100; //vehicle _playerUnit getSoundController "thrust";
+    systemChat str (getAllSoundControllers (vehicle _playerUnit));
+};*/
 
 // Limitations cause GUI-Values
 if(_noiseLevel < 0)then{

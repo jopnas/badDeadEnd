@@ -118,7 +118,7 @@ eatCookedFoodAction = {
     _trashPos = [_pPos select 0,_pPos select 1,(_pPos select 2) + 1];
     _wph = "groundWeaponHolder" createVehicle _trashPos;
     _wph setDir round(random 360);
-    _wph setVehiclePosition [_trashPos, [], 0, "CAN_COLLIDE"];
+    _wph setVehiclePosition [_trashPos, [], 0, ""];
     _wph addMagazineCargoGlobal ["jii_emptycanunknown", 1];
 
     _tastes =  ["salty","sweet","bitter","sour","flavorless"];
@@ -516,5 +516,5 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         };
     };
 
-    hint format["cursorObjectType: %1\ncursorObject distance:%2\ncarryingMass: %3\n_speed: %4",_cursorObjectType,_cursorObject distance2D player,_carryingMass,_speed];
+    hint format["cursorObjectType: %1\ncursorObject distance:%2\ncarryingMass: %3\n_speed: %4",_cursorObjectType,_cursorObject distance2D player,_carryingMass,floor _speed];
 };

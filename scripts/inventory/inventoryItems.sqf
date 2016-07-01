@@ -41,7 +41,7 @@ _addItemFloor = { // [_item] call _addItemFloor;
     _trashPos   = [_pPos select 0,_pPos select 1,(_pPos select 2) + 1];
     _trashWph   = "groundWeaponHolder" createVehicle _trashPos;
     _trashWph setDir round(random 360);
-    _trashWph setVehiclePosition [_trashPos, [], 0, "CAN_COLLIDE"];
+    _trashWph setVehiclePosition [_trashPos, [], 0, ""];
     _trashWph addMagazineCargoGlobal [_itemClass, 1];
 };
 
