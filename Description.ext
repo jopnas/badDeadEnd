@@ -1,26 +1,34 @@
 author="NotSure & Grandmaster-G";
 OnLoadName = "Bad Dead End v0.4";
-OnLoadIntro = "";
-OnLoadIntroTime = 0;
-OnLoadMissionTime = 0;
+OnLoadMission = "You wake up in the forest ... everytime you die. (OnLoadMission)";
+OnLoadIntro = "You wake up in the forest ... everytime you die. (OnLoadIntro)";
+OnLoadIntroTime = false;
+OnLoadMissionTime = false;
 loadScreen = "images\BadDeadEndLoadingScreen.paa";
 
 class Header {
-    gameType=COOP;
+    gameType=Sandbox;
     minPlayers=1;
     maxPlayers=4;
 };
 
+onCheat = "hint str 'Fuck you, man!'";
+
+forceRotorLibSimulation = 2;
+showGroupIndicator = 1;
+disableRandomization[] = {"AllVehicles"};
+skipLobby = 1;
+saving = 0;
+showMap = 0;
+
 // Removes all playable units which do not have a human player.
 disabledAI = 1;
 
-// Automatically take a free slot in lobby
-joinUnassigned = 1;
+// By default a new player is not auto assigned a free playable slot in the mission lobby in Multiplayer. Set it to 0 to make him auto assigned to the side with least players.
+joinUnassigned = 0;
 
 // When scripted player is enabled, game no longer shows "No player select" error message upon mission start when no player unit is present.
 scriptedPlayer = 1;
-
-saving = 0;
 
 // Briefing will still be displayed until all clients are connected and done loading :(
 briefing = 0;
@@ -31,14 +39,13 @@ debriefing = 0;
 // Disable dropping items while swimming
 enableItemsDropping = 0;
 
-respawn = 3; // Respawn type. 0:"NONE", 1:"BIRD", 2:"INSTANT", 3:"BASE", 4:"GROUP", 5:"SIDE"
-respawndelay = 5; // Delay in seconds before playable unit respawns.
+respawn = "BASE"; // Respawn type. 0:"NONE", 1:"BIRD", 2:"INSTANT", 3:"BASE", 4:"GROUP", 5:"SIDE"
+respawndelay = 120; // Delay in seconds before playable unit respawns.
 respawnVehicleDelay = 10; // Delay in seconds before vehicle respawns.
 respawnDialog = 0; // 0 to disable the score table (it can still be opened manually by pressing 'P' key).
-//respawnTemplates[] = {"Base","Counter","Revive"}; // Respawn templates from CfgRespawnTemplates. You can combine any number of them together.
+respawnTemplates[] = {"Base","Counter","Revive"}; // Respawn templates from CfgRespawnTemplates. You can combine any number of them together.
 respawnOnStart = 0; // 1 to respawn player when he joins the game. Available only for INSTANT and BASE respawn types.
 aikills = 0; // When 1, the score table contains score of all playable units as opposed to players only.
-respawnButton = 1;
 
 reviveDelay = 10;
 reviveForceRespawnDelay = 3;
@@ -48,10 +55,10 @@ showGroupIndicator = 0;
 enableTeamSwitch = 0;
 disableChannels[] = {0,2,3,4}; //0 = Global, 1 = Side, 2 = Command, 3 = Group, 4 = Vehicle, 5 = Direct, 6 = System
 
-corpseManagerMode = 1;
-corpseLimit = 30;
-corpseRemovalMinTime = 1800;
-corpseRemovalMaxTime = 3600;
+corpseManagerMode = 2;
+corpseLimit = 0;
+corpseRemovalMinTime = 0;
+corpseRemovalMaxTime = 0;
 
 allowFunctionsRecompile = 0;
 
@@ -498,6 +505,48 @@ class RscTitles
             };
         };
     };
+};
+
+class CfgIdentities
+{
+	/*class MyLittleSoldier
+	{
+		name="Givens";
+                nameSound = "Givens"; // Arma 3 only!
+		face="whiteHead_06";
+		glasses="None";
+		speaker="Male05ENG";
+		pitch=1.1;
+	};*/
+};
+
+class Params
+{
+	/*class AISkill
+	{
+		title = "AI Skill"; // Param name visible in the list
+		values[] = {20,60,100}; // Values; must be integers; has to have the same number of elements as 'texts'
+		texts[] = {"Recruit","Regular","Veteran"}; // Description of each selectable item
+		default = 60; // Default value; must be listed in 'values' array, otherwise 0 is used
+               // Default values that are not whole numbers do not work. Param will default to 0 (or 1 if defined)
+	};
+	class Daytime
+	{
+		title = "Time";
+		texts[] = {"Morning","Day","Evening","Night"};
+		values[] = {6,12,18,0};
+		default = 12;
+		function = "BIS_fnc_paramDaytime"; // (Optional) Function called when player joins, selected value is passed as an argument
+ 		isGlobal = 1; // (Optional) 1 to execute script / function locally for every player who joins, 0 to do it only on server
+	};
+	class ViewDistance
+	{
+		title = "View distance (in metres)";
+		values[] = {500,1000,2000,5000};
+		// When 'texts' are missing, values will be displayed directly instead
+		default = 1000;
+		file = "setViewDistance.sqf"; // (Optional) Script called when player joins, selected value is passed as an argument
+	};*/
 };
 
 class cfgFunctions

@@ -216,6 +216,8 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 	[] spawn updateUI;
 	[] spawn checkAnimals;
 
+    _speed              = speed (vehicle player);
+
     _carryingMass       = loadAbs player;
     //_calcFatigue        = _carryingMass / 500;
     //player setFatigue _calcFatigue;
@@ -336,7 +338,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         player removeAction eatCookedFoodAction;
     };
 
-    if(cursorObject distance2D player < 3 && "ToolKit" in Items Player && vehicle player == player && _cursorObject isKindOf "Car")then{
+    if(cursorObject distance2D player < 3 && "ToolKit" in Items Player && !(_isInCar) && _cursorObject isKindOf "Car")then{
         _nearestCarObj = _cursorObject;
         _carDamages = getAllHitPointsDamage _nearestCarObj;
         {
@@ -514,5 +516,5 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         };
     };
 
-    hint format["cursorObjectType: %1\ncursorObject distance:%2\ncarryingMass: %3",_cursorObjectType,_cursorObject distance2D player,_carryingMass];
+    hint format["cursorObjectType: %1\ncursorObject distance:%2\ncarryingMass: %3\n_speed: %4",_cursorObjectType,_cursorObject distance2D player,_carryingMass,_speed];
 };

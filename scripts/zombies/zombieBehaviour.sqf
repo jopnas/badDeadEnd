@@ -52,10 +52,12 @@ _z addeventhandler ["HandleDamage",{
             switch(_selectionName) do {
                 case "head": {
                     _amountOfDamage = _amountOfDamage * 1000000;
+                    // http://soundbible.com/944-Stab.html
+                    // http://soundbible.com/tags-blood.html
+                    [_unit,"headshot0","configVol","randomPitch",50] spawn bde_fnc_playSound3D;
                 };
                 case "legs": {
                     _amountOfDamage = 0;
-                    [_unit,"headshot0",50,_speechPitch] remoteExec ["bde_fnc_say3d",0,false];
                 };
                 default {
                     _amountOfDamage = 0.005;

@@ -1,4 +1,4 @@
-private["_playerUnit","_noiseLevel","_surfaceName","_surfaceLevel","_stanceLevel","_playerVelocity","_speedLevel"];
+private["_playerUnit","_noise","_noiseLevel","_surfaceName","_surfaceLevel","_stanceLevel","_speed"];
 _playerUnit  = player;
 _noise	= _this select 0;
 _noiseLevel = 1;
@@ -20,17 +20,7 @@ if(vehicle _playerUnit == _playerUnit)then{
         };
     };
 
-    // Player Speed
-    _playerVelocity = velocityModelSpace _playerUnit;
-
-    _speedLevel1	=  abs (floor(_playerVelocity select 0));
-    _speedLevel2	=  abs (floor(_playerVelocity select 1));
-
-    if(_speedLevel1 > _speedLevel2)then{
-    	_speedLevel = round _speedLevel1;
-    }else{
-    	_speedLevel = round _speedLevel2;
-    };
+    _speed	=  speed (vehicle _playerUnit);
 
     // Surfaces
     _type = surfaceType getPosATL _playerUnit;
@@ -42,20 +32,20 @@ if(vehicle _playerUnit == _playerUnit)then{
     _soundVal = getArray (configFile >> "CfgVehicles" >> "CAManBase" >> "SoundEnvironExt" >> _soundType);
 
     _surfaceLevelBySpeed = 0;
-    if(_speedLevel == 1)then{
+    if(_speed == 1)then{
         _surfaceLevelBySpeed = 60;
     };
-    if(_speedLevel >= 2 && _speedLevel <= 3)then{
+    if(_speed >= 2 && _speed <= 3)then{
         _surfaceLevelBySpeed = 44;
     };
-    if(_speedLevel == 4)then{
+    if(_speed == 4)then{
         _surfaceLevelBySpeed = 36;
     };
-    if(_speedLevel == 5)then{
+    if(_speed == 5)then{
         _surfaceLevelBySpeed = 52;
     };
     if(_surfaceLevelBySpeed > 0)then{
-        if(isOnRoad player)then{
+        if(isOnRoad _playerUnit)then{
             _surfaceLevel = 6;
         }else{
             _surfaceLevel = ((_soundVal select _surfaceLevelBySpeed) select 1) select 3;
@@ -66,7 +56,7 @@ if(vehicle _playerUnit == _playerUnit)then{
     };
 
     // Calculate Noise
-    _noiseLevel = round(_surfaceLevel * _stanceLevel * _speedLevel);
+    _noiseLevel = round(_surfaceLevel * _stanceLevel * _speed);
     _noiseLevel = (_noiseLevel/64)*10;
     _noiseLevel = floor(_noiseLevel) * 10;
 
