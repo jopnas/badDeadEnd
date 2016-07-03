@@ -38,7 +38,7 @@ loadedCarsList = loadedCarsList - ["empty"];
             };
         };
 
-        _spawnedCar setVehiclePosition [[_roadPosition select 0,_roadPosition select 1,(_roadPosition select 2) + 1], [], 0, ""];
+        _spawnedCar setVehiclePosition [[_roadPosition select 0,_roadPosition select 1,(_roadPosition select 2) + 1], [], 0, "NONE"];
 
         clearWeaponCargoGlobal _spawnedCar;
         clearMagazineCargoGlobal _spawnedCar;
@@ -86,7 +86,7 @@ loadedCarsList = loadedCarsList - ["empty"];
                 _spawnedCar setHitPointDamage [_hitPointNames select _i, _hitPointValues select _i];
     		};
     	};
-        _spawnedCar setVehiclePosition [[_position select 0,_position select 1,(_position select 2) + 1], [], 0, ""];
+        _spawnedCar setVehiclePosition [[_position select 0,_position select 1,(_position select 2) + 1], [], 0, "NONE"];
     };
 
 	loadedCarsList pushBackUnique _classname;

@@ -5,6 +5,11 @@ cutText ["Welcome to BadDeadEnd ...", "BLACK FADED"];
 _playerUnit     = _this select 0;
 _respawnTime    = _this select 1;
 
+//DEBUG
+_playerPos = getPos _playerUnit;
+_wp = "bde_tentDome" createVehicle _playerPos;
+_wp addMagazineCargoGlobal ["bde_tentDomePacked",1];
+
 // Player Setup
 _playerUnit enableFatigue false;
 enableCamShake true;

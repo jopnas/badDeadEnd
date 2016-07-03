@@ -1,4 +1,5 @@
 if(isServer)then{
+    loadedCarsList = [];
     [] execVM "scripts\server\registerDBdata.sqf";
     [] execVM "scripts\server\MySQLPlayerData.sqf";
 

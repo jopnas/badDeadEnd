@@ -113,14 +113,15 @@ fnc_savePlayerStats = {
 };
 
 fnc_saveCar = {
-    private["_damages"];
+    private["_car","_id","_position","_rotation","_fuel","_damages","_damage","_items","_weapons","_magazines","_backpacks","_destroyed","_QuerySave","_saveIs"];
 	_car 		= _this select 0;
-    _id         = _car getVariable "id";
+    _id         = _car getVariable["id",-1];
 	_position	= getPos _car;
 	_rotation	= getDir _car;
 	_fuel		= fuel _car;
 	_damages	= getAllHitPointsDamage _car;
-	_damage		= [_damages select 0,_damages select 2];
+    //systemChat str _car;
+    _damage		= [_damages select 0, _damages select 2];
 	_items		= getItemCargo _car;
 	_weapons	= getWeaponCargo _car;
 	_magazines	= getMagazineCargo _car;
@@ -131,7 +132,21 @@ fnc_saveCar = {
     };
 
     // Car Save
-    _QuerySave 	= format["0:SQL_VH_SAVE:UPDATE vehicles SET position='%2', rotation='%3', fuel='%4', damage='%5', destroyed='0', items='%6', weapons='%7', magazines='%8', backpacks='%9', destroyed='%10' WHERE id='%1'",_id,_position,_rotation,_fuel,_damage,_items,_weapons,_magazines,_backpacks,_destroyed];
-    _saveIs = "extDB2" callExtension _QuerySave;
+    _QuerySave 	= format["0:SQL_VH_SAVE:UPDATE vehicles SET position='%2', rotation='%3', fuel='%4', damage='%5', items='%6', weapons='%7', magazines='%8', backpacks='%9', destroyed='%10' WHERE id='%1'",_id,_position,_rotation,_fuel,_damage,_items,_weapons,_magazines,_backpacks,_destroyed];
+    _saveIs     = "extDB2" callExtension _QuerySave;
+};
 
+    // Tent Save
+fnc_saveTent = {
+    _tent       = _this select 0;
+    _id         = _tent getVariable["id",floor(random 1000)];
+    _position	= getPos _tent;
+	_rotation	= getDir _tent;
+    _items		= getItemCargo _tent;
+	_weapons	= getWeaponCargo _tent;
+	_magazines	= getMagazineCargo _tent;
+	_backpacks	= getBackpackCargo _tent;
+    //_QuerySave 	= format["0:SQL_TE_SAVE:UPDATE tents SET pos='%2', rot='%3', items='%5', weapons='%6', magazines='%7', backpacks='%8' WHERE id='%1'",_id,_position,_rotation,_items,_weapons,_magazines,_backpacks];
+    _QuerySaveTent = format["0:SQL_TE_SAVE:INSERT INTO tents (owner,name,pos,rot) VALUES('%1','%2','%3','%4','%5','%6','%7') ON DUPLICATE KEY UPDATE SET pos='%2', rot='%3'",_id,_position,_rotation,_items,_weapons,_magazines,_backpacks];
+    _saveIs     = "extDB2" callExtension _QuerySaveTent;
 };

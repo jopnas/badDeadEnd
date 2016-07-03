@@ -34,14 +34,14 @@ _addItemCargo = { // [_item,_cargoType] call _addItemCargo;
     };
 };
 
-_addItemFloor = { // [_item] call _addItemFloor;
+addItemFloor = { // [_item] call addItemFloor;
     _itemClass  = _this select 0;
 
     _pPos       = getPos player;
     _trashPos   = [_pPos select 0,_pPos select 1,(_pPos select 2) + 1];
     _trashWph   = "groundWeaponHolder" createVehicle _trashPos;
     _trashWph setDir round(random 360);
-    _trashWph setVehiclePosition [_trashPos, [], 0, ""];
+    _trashWph setVehiclePosition [_trashPos, [], 0, "CAN_COLLIDE"];
     _trashWph addMagazineCargoGlobal [_itemClass, 1];
 };
 
@@ -175,7 +175,7 @@ switch(_classname) do {
 	    sleep 1;
 		playerThirst = playerThirst + 10;
 		player removeMagazine _classname;
-		["jii_canempty"] call _addItemFloor;
+		["jii_canempty"] call addItemFloor;
 		cutText ["drank can of Spirit", "PLAIN DOWN"];
 	};
 
@@ -185,7 +185,7 @@ switch(_classname) do {
 	    sleep 1;
 		playerHunger = playerHunger + (random(20)+20);
 		player removeMagazine _classname;
-		["jii_emptycanunknown"] call _addItemFloor;
+		["jii_emptycanunknown"] call addItemFloor;
 		_tastes =  ["salty","sweet","bitter","sour","flavorless"];
 		cutText [format["ate somthing %1",selectRandom _tastes], "PLAIN DOWN"];
 	};
@@ -195,7 +195,7 @@ switch(_classname) do {
 	    sleep 1;
 		playerHunger = playerHunger + 20;
 		player removeMagazine _classname;
-		["jii_emptycanpasta"] call _addItemFloor;
+		["jii_emptycanpasta"] call addItemFloor;
 		cutText ["ate pasta", "PLAIN DOWN"];
 	};
 	case "jii_bakedbeans": {
@@ -204,7 +204,7 @@ switch(_classname) do {
 	    sleep 1;
 		playerHunger = playerHunger + 25;
 		player removeMagazine _classname;
-		["jii_emptycanunknown"] call _addItemFloor;
+		["jii_emptycanunknown"] call addItemFloor;
 		cutText ["ate baked beans", "PLAIN DOWN"];
 	};
 	case "jii_tacticalbacon": {
@@ -213,7 +213,7 @@ switch(_classname) do {
 	    sleep 1;
 		playerHunger = playerHunger + 15;
 		player removeMagazine _classname;
-		["jii_emptycanunknown"] call _addItemFloor;
+		["jii_emptycanunknown"] call addItemFloor;
 		cutText ["ate tactical bacon", "PLAIN DOWN"];
 	};
 
@@ -254,7 +254,6 @@ switch(_classname) do {
 
 	// Medical
 	case "jii_vitamines": {
-		//player say3D "swallowSound0";
         [player,"swallowSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 		sleep 1;
 		playerHealth = playerHealth + 10;
@@ -263,7 +262,6 @@ switch(_classname) do {
 	};
 
 	case "jii_antibiotics": {
-		//player say3D "swallowSound0";
         [player,"swallowSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 		sleep 1;
 		playerInfected = 0;
@@ -271,6 +269,26 @@ switch(_classname) do {
 		playerHealth = playerHealth + 20;
 		player removeMagazine _classname;
 		cutText ["took antibiotics", "PLAIN DOWN"];
+	};
+
+    // Tents
+    case "bde_tentDomePacked": {
+        [player,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
+		sleep 3;
+		player removeMagazine _classname;
+        _pitchedTent = "bde_tentDome" createVehicle getPosATL player;
+        _pitchedTent addAction ["Pack Tent", {
+            _targetObject = _this select 0;
+            _caller = _this select 1;
+
+            [_caller,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
+    		sleep 3;
+
+            _caller addMagazineCargoGlobal ["bde_tentDomePacked",1];
+            deleteVehicle _targetObject;
+        }, _pitchedTent,6,true,true,"","_target distance _this < 4"];
+
+        [_pitchedTent] call fnc_saveTent;
 	};
 
     // Tools

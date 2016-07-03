@@ -11,6 +11,9 @@ checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
 
 //getBarricadeables	= compile preprocessFile "scripts\barricading\getBarricadeables.sqf";
 
+// current GUI blink status
+guiBlink            = false;
+
 hungerWaitTime      = 10;
 nextHungerDecr      = hungerWaitTime;
 
@@ -201,20 +204,20 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 		nextHealthDecr = time + healthWaitTime;
 	};
 
-    if(t > 0.1)then{
+    if(t > 2)then{
+        [] spawn checkNoise;
+        [] spawn checkAnimals;
+    };
+    if(t > 5)then{
         // Save Spawn Stats
         [player,[playerHunger,playerThirst,playerHealth,playerTemperature,playerWet,playerSick,playerInfected]] remoteExec ["fnc_savePlayerStats",2,false];
-    };
-
-    if(t > 5)then{
         // Spawn Loot
         [getPos player] remoteExec ["fnc_spawnLoot",2,false];
+        [] spawn checkSick;
     };
-
-    [] spawn checkSick;
-	[] spawn checkNoise;
-	[] spawn updateUI;
-	[] spawn checkAnimals;
+    if(t > 10)then{
+        [] spawn updateUI;
+    };
 
     _speed              = speed (vehicle player);
 
@@ -254,7 +257,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 		};
 	} forEach _things;*/
 
-    if(cursorObject distance2D player < 3 && str (_cursorObject) find ": t_" > -1)then{
+    if(cursorObject distance2D player < 3 && "jii_hatchet" in magazines player && str (_cursorObject) find ": t_" > -1)then{
         if(!chopWoodActionAvailable)then{
             chopWoodAction = player addAction["chop wood",{
                 [_this select 3] call chopWood;
