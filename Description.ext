@@ -15,7 +15,7 @@ class Header {
 onCheat = "hint str 'Fuck you, man!'";
 
 forceRotorLibSimulation = 2;
-disableRandomization[] = {"AllVehicles"};
+//disableRandomization[] = {"AllVehicles"};
 skipLobby = 1;
 saving = 0;
 
@@ -494,48 +494,6 @@ class RscTitles
             };
         };
     };
-};
-
-class CfgIdentities
-{
-	/*class MyLittleSoldier
-	{
-		name="Givens";
-                nameSound = "Givens"; // Arma 3 only!
-		face="whiteHead_06";
-		glasses="None";
-		speaker="Male05ENG";
-		pitch=1.1;
-	};*/
-};
-
-class Params
-{
-	/*class AISkill
-	{
-		title = "AI Skill"; // Param name visible in the list
-		values[] = {20,60,100}; // Values; must be integers; has to have the same number of elements as 'texts'
-		texts[] = {"Recruit","Regular","Veteran"}; // Description of each selectable item
-		default = 60; // Default value; must be listed in 'values' array, otherwise 0 is used
-               // Default values that are not whole numbers do not work. Param will default to 0 (or 1 if defined)
-	};
-	class Daytime
-	{
-		title = "Time";
-		texts[] = {"Morning","Day","Evening","Night"};
-		values[] = {6,12,18,0};
-		default = 12;
-		function = "BIS_fnc_paramDaytime"; // (Optional) Function called when player joins, selected value is passed as an argument
- 		isGlobal = 1; // (Optional) 1 to execute script / function locally for every player who joins, 0 to do it only on server
-	};
-	class ViewDistance
-	{
-		title = "View distance (in metres)";
-		values[] = {500,1000,2000,5000};
-		// When 'texts' are missing, values will be displayed directly instead
-		default = 1000;
-		file = "setViewDistance.sqf"; // (Optional) Script called when player joins, selected value is passed as an argument
-	};*/
 };
 
 class cfgFunctions

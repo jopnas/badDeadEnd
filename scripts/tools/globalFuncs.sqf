@@ -56,14 +56,14 @@ bde_fnc_addBurnAction = {
     burnAction = _targetObject addAction [ "Burn dead body", {
         _targetObject = _this select 0;
         _caller = _this select 1;
-        if(("jii_zippo" in Magazines _caller || (rain < 0.2 && "jii_matches" in Magazines _caller))/* && "jii_fuelcan" in Magazines _caller*/)then{
+        if(("bde_zippo" in Magazines _caller || (rain < 0.2 && "bde_matches" in Magazines _caller))/* && "bde_fuelcan" in Magazines _caller*/)then{
             [_targetObject] remoteExec ["bde_fnc_removeBurnAction",0,false];
             [_targetObject] remoteExec ["fnc_burnDeadZ",0,false];
         }else{
-            if(!("jii_zippo" in Magazines _caller) || !("jii_matches" in Magazines _caller))then{
+            if(!("bde_zippo" in Magazines _caller) || !("bde_matches" in Magazines _caller))then{
                 [] remoteExec ["cutText ['need matches or lighter', 'PLAIN DOWN'];", _caller, false];
             };
-            if(rain > 0.2 && !("jii_zippo" in Magazines _caller))then{
+            if(rain > 0.2 && !("bde_zippo" in Magazines _caller))then{
                 [] remoteExec ["cutText ['need zippo while raining', 'PLAIN DOWN'];", _caller, false];
             };
         };

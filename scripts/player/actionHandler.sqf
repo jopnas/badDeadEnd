@@ -61,7 +61,7 @@ if(count _eventParam > 0) then {
         };
 
         case "TakeWeapon": {
-            systemChat format["TAKEWEAPON-> target: 1% ||| caller: 2% >-DO TAKEMAGAZINE-<",_actionTarget,_actionCaller];
+            //systemChat format["TAKEWEAPON-> target: 1% ||| caller: 2% >-DO TAKEMAGAZINE-<",_actionTarget,_actionCaller];
         };
 
         default {

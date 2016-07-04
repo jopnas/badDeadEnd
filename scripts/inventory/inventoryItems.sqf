@@ -34,7 +34,7 @@ _addItemCargo = { // [_item,_cargoType] call _addItemCargo;
     };
 };
 
-addItemFloor = { // [_item] call addItemFloor;
+_addItemFloor = { // [_item] call _addItemFloor;
     _itemClass  = _this select 0;
 
     _pPos       = getPos player;
@@ -64,6 +64,7 @@ _buildFireplace = {
       };
     	cutText ["build fireplace", "PLAIN DOWN"];
         fireplace = createVehicle ["Land_FirePlace_F",position player,[],0,"can_collide"];
+        fireplace setObjectTexture [0,'#(argb,8,8,3)color(0,0,0,0.5)'];
     	fireplace setDir (getDir player);
         fireplace attachTo [player, [0,2,0]];
     	releaseFireplace = player addAction ["Release Fireplace", { detach fireplace; player removeAction releaseFireplace;}, name player];
@@ -80,6 +81,21 @@ _buildFireplace = {
     };
     cutText [ format["need %1 more wood and %2 more stone to build fireplace",_needCountOfWood,_needCountOfStone], "PLAIN DOWN"];
   };
+};
+
+packTent = {
+    _targetObject   = _this select 0;
+    _caller         = _this select 1;
+    _tentPos        = getPosATL _targetObject;
+
+    [_caller,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
+    sleep 5;
+
+    deleteVehicle _targetObject;
+    _tentWph = createVehicle ["groundWeaponHolder",_tentPos,[],0,"can_collide"];
+    _tentWph setVehiclePosition [[_tentPos select 0,_tentPos select 1,(_tentPos select 2) + 1], [], 0, "can_collide"];
+    _tentWph addMagazineCargoGlobal [ "jii_tentDomePacked",1];
+
 };
 
 switch(_classname) do {
@@ -175,7 +191,7 @@ switch(_classname) do {
 	    sleep 1;
 		playerThirst = playerThirst + 10;
 		player removeMagazine _classname;
-		["jii_canempty"] call addItemFloor;
+		["jii_canempty"] call _addItemFloor;
 		cutText ["drank can of Spirit", "PLAIN DOWN"];
 	};
 
@@ -185,7 +201,7 @@ switch(_classname) do {
 	    sleep 1;
 		playerHunger = playerHunger + (random(20)+20);
 		player removeMagazine _classname;
-		["jii_emptycanunknown"] call addItemFloor;
+		["jii_emptycanunknown"] call _addItemFloor;
 		_tastes =  ["salty","sweet","bitter","sour","flavorless"];
 		cutText [format["ate somthing %1",selectRandom _tastes], "PLAIN DOWN"];
 	};
@@ -195,7 +211,7 @@ switch(_classname) do {
 	    sleep 1;
 		playerHunger = playerHunger + 20;
 		player removeMagazine _classname;
-		["jii_emptycanpasta"] call addItemFloor;
+		["jii_emptycanpasta"] call _addItemFloor;
 		cutText ["ate pasta", "PLAIN DOWN"];
 	};
 	case "jii_bakedbeans": {
@@ -204,7 +220,7 @@ switch(_classname) do {
 	    sleep 1;
 		playerHunger = playerHunger + 25;
 		player removeMagazine _classname;
-		["jii_emptycanunknown"] call addItemFloor;
+		["jii_emptycanunknown"] call _addItemFloor;
 		cutText ["ate baked beans", "PLAIN DOWN"];
 	};
 	case "jii_tacticalbacon": {
@@ -213,7 +229,7 @@ switch(_classname) do {
 	    sleep 1;
 		playerHunger = playerHunger + 15;
 		player removeMagazine _classname;
-		["jii_emptycanunknown"] call addItemFloor;
+		["jii_emptycanunknown"] call _addItemFloor;
 		cutText ["ate tactical bacon", "PLAIN DOWN"];
 	};
 
@@ -272,23 +288,20 @@ switch(_classname) do {
 	};
 
     // Tents
-    case "bde_tentDomePacked": {
+    case "jii_tentDomePacked": {
         [player,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
-		sleep 3;
+		sleep 5;
 		player removeMagazine _classname;
-        _pitchedTent = "bde_tentDome" createVehicle getPosATL player;
+        _pitchedTent = "jii_tentDome" createVehicle getPosATL player;
+
         _pitchedTent addAction ["Pack Tent", {
-            _targetObject = _this select 0;
-            _caller = _this select 1;
+            _targetObject   = _this select 0;
+            _caller         = _this select 1;
 
-            [_caller,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
-    		sleep 3;
+            [_targetObject,_caller] call packTent;
+        }, [],10,true,true,"","_target distance _this < 3.5"];
 
-            _caller addMagazineCargoGlobal ["bde_tentDomePacked",1];
-            deleteVehicle _targetObject;
-        }, _pitchedTent,6,true,true,"","_target distance _this < 4"];
-
-        [_pitchedTent] call fnc_saveTent;
+        //[_pitchedTent] call fnc_saveTent;
 	};
 
     // Tools

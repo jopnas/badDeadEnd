@@ -42,10 +42,10 @@ _fnc_cookCannedFood = {
 
 _fnc_cookMeat = {
     player setUnitPos "MIDDLE";
-	
+
 	_meatSmallCount  		= {_x == "jii_meat_small"} count magazines player;
 	_meatBigCount  			= {_x == "jii_meat_big"} count magazines player;
-	
+
 	for "_a" from 0 to _meatSmallCount step 1 do {
 		player say3D "frySound0";
 		sleep 3;
@@ -53,7 +53,7 @@ _fnc_cookMeat = {
 		player addMagazine ["jii_meat_big_cooked",1];
 		cutText ["Cooked big peace of meat", "PLAIN DOWN"];
 	};
-	
+
 	for "_b" from 0 to _meatBigCount step 1 do {
 		player say3D "frySound0";
 		sleep 3;
@@ -61,7 +61,7 @@ _fnc_cookMeat = {
 		player addMagazine ["jii_meat_small_cooked",1];
 		cutText ["Cooked small peace of meat", "PLAIN DOWN"];
 	};
-	
+
 };
 
 switch(_action) do {

@@ -35,7 +35,7 @@ while {true} do {
             _zPerPlayer = _zPerPlayerDef;
         };
 
-        if (count _thisPlayersZs < _zPerPlayer) then {
+        if (count _thisPlayersZs < _zPerPlayer && _thisPlayer distance getMarkerPos "respawn_civilian" > 200) then {
             if(_countBuildings > 0)then{
                 // choose type of zombie by bulding type
                 _randomBuilding = selectRandom _buildings;
