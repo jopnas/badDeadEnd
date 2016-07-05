@@ -14,8 +14,8 @@ if(count _eventParam > 0) then {
 
     //Fireplace
     /*if(_actionName == "FireInFlame") then {
-        _hasLighter  = "jii_zippo" in magazines _actionCaller;
-        _hasMatches  = "jii_matches" in magazines _actionCaller;
+        _hasLighter  = "bde_zippo" in magazines _actionCaller;
+        _hasMatches  = "bde_matches" in magazines _actionCaller;
         if(_hasLighter || _hasMatches)then{
             if(rain < 0.3 || _hasLighter)then{
                 if(rain > 0.8)then{ // if _hasLighter
@@ -39,8 +39,8 @@ if(count _eventParam > 0) then {
     switch (_actionName) do {
         case "FireInFlame": {
 
-            _hasLighter  = "jii_zippo" in magazines _actionCaller;
-            _hasMatches  = "jii_matches" in magazines _actionCaller;
+            _hasLighter  = "bde_zippo" in magazines _actionCaller;
+            _hasMatches  = "bde_matches" in magazines _actionCaller;
             if(_hasLighter || _hasMatches)then{
                 if(rain < 0.3 || _hasLighter)then{
                     if(rain > 0.8)then{ // if _hasLighter

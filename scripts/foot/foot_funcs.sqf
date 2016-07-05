@@ -5,8 +5,8 @@ _fnc_boilWater = {
     player setUnitPos "MIDDLE";
     player say3D "boilSound0";
     sleep 3;
-    player removeMagazine "jii_bottlefilled";
-    player addMagazine ["jii_bottleclean",1];
+    player removeMagazine "bde_bottlefilled";
+    player addMagazine ["bde_bottleclean",1];
     cutText ["boiled some water", "PLAIN DOWN"];
 };
 
@@ -26,8 +26,8 @@ _fnc_cookCannedFood = {
             player playActionNow "PutDown";
             player  say3D "eatSound0";
             sleep 1;
-            player removeMagazine "jii_bakedbeans";
-            player addMagazine ["jii_emptycanunknown",1];
+            player removeMagazine "bde_bakedbeans";
+            player addMagazine ["bde_emptycanunknown",1];
             cutText ["ate cooked baked beans", "PLAIN DOWN"];
 
             [30] spawn fnc_increaseHunger;
@@ -43,22 +43,22 @@ _fnc_cookCannedFood = {
 _fnc_cookMeat = {
     player setUnitPos "MIDDLE";
 
-	_meatSmallCount  		= {_x == "jii_meat_small"} count magazines player;
-	_meatBigCount  			= {_x == "jii_meat_big"} count magazines player;
+	_meatSmallCount  		= {_x == "bde_meat_small"} count magazines player;
+	_meatBigCount  			= {_x == "bde_meat_big"} count magazines player;
 
 	for "_a" from 0 to _meatSmallCount step 1 do {
 		player say3D "frySound0";
 		sleep 3;
-		player removeMagazine "jii_meat_big";
-		player addMagazine ["jii_meat_big_cooked",1];
+		player removeMagazine "bde_meat_big";
+		player addMagazine ["bde_meat_big_cooked",1];
 		cutText ["Cooked big peace of meat", "PLAIN DOWN"];
 	};
 
 	for "_b" from 0 to _meatBigCount step 1 do {
 		player say3D "frySound0";
 		sleep 3;
-		player removeMagazine "jii_meat_small";
-		player addMagazine ["jii_meat_small_cooked",1];
+		player removeMagazine "bde_meat_small";
+		player addMagazine ["bde_meat_small_cooked",1];
 		cutText ["Cooked small peace of meat", "PLAIN DOWN"];
 	};
 

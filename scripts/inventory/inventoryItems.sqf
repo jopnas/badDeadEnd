@@ -49,18 +49,18 @@ _buildFireplace = {
     private["_minWood","_minStone","_needCountOfWood","_needCountOfStone","_woodCount","_stoneCount"];
     _minWood = 2;
     _minStone = 4;
-    _woodCount  = {_x == "jii_wood"} count magazines player;
-    _stoneCount = {_x == "jii_stone"} count magazines player;
+    _woodCount  = {_x == "bde_wood"} count magazines player;
+    _stoneCount = {_x == "bde_stone"} count magazines player;
   if(_woodCount >= _minWood && _stoneCount >= _minStone)then{
     player playActionNow "Medic";
     //player say3D "buildSound0";
     [player,"buildSound0",300,1] remoteExec ["bde_fnc_say3d",0,false];
     sleep 5;
       for "_w" from 0 to _minWood step 1 do {
-          player removeMagazine "jii_wood";
+          player removeMagazine "bde_wood";
       };
       for "_s" from 0 to _minStone step 1 do {
-          player removeMagazine "jii_stone";
+          player removeMagazine "bde_stone";
       };
     	cutText ["build fireplace", "PLAIN DOWN"];
         fireplace = createVehicle ["Land_FirePlace_F",position player,[],0,"can_collide"];
@@ -94,35 +94,35 @@ packTent = {
     deleteVehicle _targetObject;
     _tentWph = createVehicle ["groundWeaponHolder",_tentPos,[],0,"can_collide"];
     _tentWph setVehiclePosition [[_tentPos select 0,_tentPos select 1,(_tentPos select 2) + 1], [], 0, "can_collide"];
-    _tentWph addMagazineCargoGlobal [ "jii_tentDomePacked",1];
+    _tentWph addMagazineCargoGlobal [ "bde_tentDomePacked",1];
 
 };
 
 switch(_classname) do {
     // Food
-	case "jii_bottleuseless": {
-        if("jii_ducttape" in Magazines Player)then{
+	case "bde_bottleuseless": {
+        if("bde_ducttape" in Magazines Player)then{
         	player playActionNow "Medic";
 			//player say3D "toolSound0";
             [player,"toolSound0",100,1] remoteExec ["bde_fnc_say3d",0,false];
 	        sleep 1;
             player removeMagazine _classname;
-            ["jii_bottleempty",_cargoType] call _addItemCargo;
-            //player addMagazine ["jii_bottleempty",1];
+            ["bde_bottleempty",_cargoType] call _addItemCargo;
+            //player addMagazine ["bde_bottleempty",1];
 		    cutText ["fixed damaged bottle", "PLAIN DOWN"];
         }else{
             cutText ["need Ducttape to fix it", "PLAIN DOWN"];
         };
 	};
-	case "jii_bottleempty": {
+	case "bde_bottleempty": {
 		if(drinkActionAvailable)then{
         	player playActionNow "PutDown";
     	    //player say3D "fillSound0";
             [player,"fillSound0",20,1] remoteExec ["bde_fnc_say3d",0,false];
     	    sleep 1;
 			player removeMagazine _classname;
-            ["jii_bottleclean",_cargoType] call _addItemCargo;
-			//player addMagazine ["jii_bottleclean",1];
+            ["bde_bottleclean",_cargoType] call _addItemCargo;
+			//player addMagazine ["bde_bottleclean",1];
 			cutText ["filled bottle with clean water", "PLAIN DOWN"];
 		}else{
 			if(nearOpenWater)then{
@@ -131,109 +131,109 @@ switch(_classname) do {
                 [player,"fillSound0",20,1] remoteExec ["bde_fnc_say3d",0,false];
         	    sleep 1;
 			    player removeMagazine _classname;
-                ["jii_bottlefilled",_cargoType] call _addItemCargo;
-                //player addMagazine ["jii_bottlefilled",1];
+                ["bde_bottlefilled",_cargoType] call _addItemCargo;
+                //player addMagazine ["bde_bottlefilled",1];
 			    cutText ["filled bottle with dirty water", "PLAIN DOWN"];
 			}else{
 			    cutText ["not close to water source", "PLAIN DOWN"];
 			};
 		};
 	};
-	case "jii_bottlefilled": {
-		if("jii_waterpurificationtablets" in Magazines player)then{
+	case "bde_bottlefilled": {
+		if("bde_waterpurificationtablets" in Magazines player)then{
         	player playActionNow "Medic";
 	        sleep 1;
 			player removeMagazine _classname;
-			player removeMagazine "jii_waterpurificationtablets";
-            ["jii_bottleclean",_cargoType] call _addItemCargo;
-            //player addMagazine ["jii_bottleclean",1];
+			player removeMagazine "bde_waterpurificationtablets";
+            ["bde_bottleclean",_cargoType] call _addItemCargo;
+            //player addMagazine ["bde_bottleclean",1];
 			cutText ["purified dirty water", "PLAIN DOWN"];
 		}else{
 			cutText ["need water purification tablets", "PLAIN DOWN"];
 		};
 	};
-	case "jii_bottleclean": {
+	case "bde_bottleclean": {
 	    //player say3D "drinkSound0";
         [player,"drinkSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerThirst = playerThirst + 50;
 		player removeMagazine _classname;
-        ["jii_bottleempty",_cargoType] call _addItemCargo;
-        //player addMagazine ["jii_bottleempty",1];
+        ["bde_bottleempty",_cargoType] call _addItemCargo;
+        //player addMagazine ["bde_bottleempty",1];
 		cutText ["drank clean water", "PLAIN DOWN"];
 	};
-	case "jii_canteenempty":  {
+	case "bde_canteenempty":  {
 		if(drinkActionAvailable)then{
     	    //player say3D "fillSound0";
             [player,"fillSound0",20,1] remoteExec ["bde_fnc_say3d",0,false];
     	    sleep 1;
 			player removeMagazine _classname;
-            ["jii_canteenfilled",_cargoType] call _addItemCargo;
-            //player addMagazine ["jii_canteenfilled",1];
+            ["bde_canteenfilled",_cargoType] call _addItemCargo;
+            //player addMagazine ["bde_canteenfilled",1];
 			cutText ["filled canteen with clean water", "PLAIN DOWN"];
 		}else{
 	        cutText ["not close to clean water source", "PLAIN DOWN"];
 		};
 	};
-	case "jii_canteenfilled": {
+	case "bde_canteenfilled": {
 	    //player say3D "drinkSound0";
         [player,"drinkSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerThirst = playerThirst + 30;
 		player removeMagazine _classname;
-        ["jii_canteenempty",_cargoType] call _addItemCargo;
-        //player addMagazine ["jii_canteenempty",1];
+        ["bde_canteenempty",_cargoType] call _addItemCargo;
+        //player addMagazine ["bde_canteenempty",1];
 		cutText ["drank clean water", "PLAIN DOWN"];
 	};
-	case "jii_canrusty": {
+	case "bde_canrusty": {
 	    //player say3D "drinkSound0";
         [player,"drinkSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerThirst = playerThirst + 10;
 		player removeMagazine _classname;
-		["jii_canempty"] call _addItemFloor;
+		["bde_canempty"] call _addItemFloor;
 		cutText ["drank can of Spirit", "PLAIN DOWN"];
 	};
 
-	case "jii_canunknown": {
+	case "bde_canunknown": {
 	    //player  say3D "eatSound0";
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerHunger = playerHunger + (random(20)+20);
 		player removeMagazine _classname;
-		["jii_emptycanunknown"] call _addItemFloor;
+		["bde_emptycanunknown"] call _addItemFloor;
 		_tastes =  ["salty","sweet","bitter","sour","flavorless"];
 		cutText [format["ate somthing %1",selectRandom _tastes], "PLAIN DOWN"];
 	};
-	case "jii_canpasta": {
+	case "bde_canpasta": {
 	    //player  say3D "eatSound0";
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerHunger = playerHunger + 20;
 		player removeMagazine _classname;
-		["jii_emptycanpasta"] call _addItemFloor;
+		["bde_emptycanpasta"] call _addItemFloor;
 		cutText ["ate pasta", "PLAIN DOWN"];
 	};
-	case "jii_bakedbeans": {
+	case "bde_bakedbeans": {
 	    //player  say3D "eatSound0";
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerHunger = playerHunger + 25;
 		player removeMagazine _classname;
-		["jii_emptycanunknown"] call _addItemFloor;
+		["bde_emptycanunknown"] call _addItemFloor;
 		cutText ["ate baked beans", "PLAIN DOWN"];
 	};
-	case "jii_tacticalbacon": {
+	case "bde_tacticalbacon": {
 	    //player say3D "eatSound0";
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerHunger = playerHunger + 15;
 		player removeMagazine _classname;
-		["jii_emptycanunknown"] call _addItemFloor;
+		["bde_emptycanunknown"] call _addItemFloor;
 		cutText ["ate tactical bacon", "PLAIN DOWN"];
 	};
 
-	case "jii_meat_big": {
+	case "bde_meat_big": {
 	    //player say3D "eatSound0";
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
@@ -242,7 +242,7 @@ switch(_classname) do {
 		player removeMagazine _classname;
 		cutText ["ate big peace of raw meat", "PLAIN DOWN"];
 	};
-	case "jii_meat_big_cooked": {
+	case "bde_meat_big_cooked": {
 	    //player say3D "eatSound0";
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
@@ -250,7 +250,7 @@ switch(_classname) do {
 		player removeMagazine _classname;
 		cutText ["ate big peace of cooked meat", "PLAIN DOWN"];
 	};
-	case "jii_meat_small": {
+	case "bde_meat_small": {
 	    //player say3D "eatSound0";
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
@@ -259,7 +259,7 @@ switch(_classname) do {
 		player removeMagazine _classname;
 		cutText ["ate small peace of raw meat", "PLAIN DOWN"];
 	};
-	case "jii_meat_small_cooked": {
+	case "bde_meat_small_cooked": {
 	    //player say3D "eatSound0";
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
@@ -269,7 +269,7 @@ switch(_classname) do {
 	};
 
 	// Medical
-	case "jii_vitamines": {
+	case "bde_vitamines": {
         [player,"swallowSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 		sleep 1;
 		playerHealth = playerHealth + 10;
@@ -277,7 +277,7 @@ switch(_classname) do {
 		cutText ["took vitamines", "PLAIN DOWN"];
 	};
 
-	case "jii_antibiotics": {
+	case "bde_antibiotics": {
         [player,"swallowSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 		sleep 1;
 		playerInfected = 0;
@@ -288,11 +288,11 @@ switch(_classname) do {
 	};
 
     // Tents
-    case "jii_tentDomePacked": {
+    case "bde_tentDomePacked": {
         [player,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
 		sleep 5;
 		player removeMagazine _classname;
-        _pitchedTent = "jii_tentDome" createVehicle getPosATL player;
+        _pitchedTent = "bde_tentDome" createVehicle getPosATL player;
 
         _pitchedTent addAction ["Pack Tent", {
             _targetObject   = _this select 0;
@@ -305,11 +305,11 @@ switch(_classname) do {
 	};
 
     // Tools
-    case "jii_stone": {
+    case "bde_stone": {
         [] call _buildFireplace;
     };
 
-    case "jii_wood": {
+    case "bde_wood": {
         [] call _buildFireplace;
     };
 

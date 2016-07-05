@@ -11,10 +11,10 @@ _animals = nearestObjects[player,["Rabbit_F","Goat_random_F","Sheep_random_F","H
 
 			_animalType = typeOf _animal;
 			if(_animalType in ["Sheep_random_F","Goat_random_F"])then{
-				_gwh addMagazineCargoGlobal["jii_meat_big",2];
+				_gwh addMagazineCargoGlobal["bde_meat_big",2];
 			};
 			if(_animalType in ["Rabbit_F","Hen_random_F","Cock_random_F"])then{
-				_gwh addMagazineCargoGlobal["jii_meat_small",2];
+				_gwh addMagazineCargoGlobal["bde_meat_small",2];
 			};
 		};
     };

@@ -40,14 +40,14 @@ carRepair = {
     _action     = _this select 4;
 
     _allineed = false;
-    if(_partName find "Wheel" > -1 && "jii_tire" in Magazines Player)then{
+    if(_partName find "Wheel" > -1 && "bde_tire" in Magazines Player)then{
         _allineed = true;
-        player removeMagazine "jii_tire";
+        player removeMagazine "bde_tire";
     };
 
-    if(_partName find "Fuel" > -1 && "jii_ducttape" in Magazines Player)then{
+    if(_partName find "Fuel" > -1 && "bde_ducttape" in Magazines Player)then{
         _allineed = true;
-        player removeMagazine "jii_ducttape";
+        player removeMagazine "bde_ducttape";
     };
 
     // Fallback if condition to repair vehiclepart is not set
@@ -76,23 +76,23 @@ chopWood = {
     sleep 2;
     _woodHolder = createVehicle ["groundWeaponHolder",_theTreePos,[],0,"can_collide"];
 
-    _woodHolder addMagazineCargoGlobal ["jii_wood",1];
+    _woodHolder addMagazineCargoGlobal ["bde_wood",1];
     sleep 2;
-    _woodHolder addMagazineCargoGlobal ["jii_wood",1];
+    _woodHolder addMagazineCargoGlobal ["bde_wood",1];
     sleep 2;
-    _woodHolder addMagazineCargoGlobal ["jii_wood",1];
+    _woodHolder addMagazineCargoGlobal ["bde_wood",1];
     sleep 2;
-    _woodHolder addMagazineCargoGlobal ["jii_wood",1];
+    _woodHolder addMagazineCargoGlobal ["bde_wood",1];
     sleep 2;
-    _woodHolder addMagazineCargoGlobal ["jii_wood",1];
+    _woodHolder addMagazineCargoGlobal ["bde_wood",1];
     sleep 2;
-    _woodHolder addMagazineCargoGlobal ["jii_wood",1];
+    _woodHolder addMagazineCargoGlobal ["bde_wood",1];
     sleep 2;
-    _woodHolder addMagazineCargoGlobal ["jii_wood",1];
+    _woodHolder addMagazineCargoGlobal ["bde_wood",1];
     sleep 2;
-    _woodHolder addMagazineCargoGlobal ["jii_wood",1];
+    _woodHolder addMagazineCargoGlobal ["bde_wood",1];
     sleep 2;
-    _woodHolder addMagazineCargoGlobal ["jii_wood",1];
+    _woodHolder addMagazineCargoGlobal ["bde_wood",1];
 
     cutText ["choped wood", "PLAIN DOWN"];
 };
@@ -115,14 +115,14 @@ eatCookedFoodAction = {
     sleep 1;
     playerHunger = playerHunger + (random(20)+30);
     playerTemperature = playerTemperature + 20;
-    player removeMagazine "jii_canunknown";
+    player removeMagazine "bde_canunknown";
 
     _pPos     = getPos player;
     _trashPos = [_pPos select 0,_pPos select 1,(_pPos select 2) + 1];
     _wph = "groundWeaponHolder" createVehicle _trashPos;
     _wph setDir round(random 360);
     _wph setVehiclePosition [_trashPos, [], 0, ""];
-    _wph addMagazineCargoGlobal ["jii_emptycanunknown", 1];
+    _wph addMagazineCargoGlobal ["bde_emptycanunknown", 1];
 
     _tastes =  ["salty","sweet","bitter","sour","flavorless"];
     cutText [format["ate somthing cooked %1",selectRandom _tastes], "PLAIN DOWN"];
@@ -257,7 +257,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 		};
 	} forEach _things;*/
 
-    if(cursorObject distance2D player < 3 && "jii_hatchet" in magazines player && str (_cursorObject) find ": t_" > -1)then{
+    if(cursorObject distance2D player < 3 && "bde_hatchet" in magazines player && str (_cursorObject) find ": t_" > -1)then{
         if(!chopWoodActionAvailable)then{
             chopWoodAction = player addAction["chop wood",{
                 [_this select 3] call chopWood;
@@ -287,19 +287,19 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 
 	// Fireplace Check
 	if(inflamed _cursorObject) then {
-		_emptyPastaCanCount     = {_x == "jii_emptycanpasta"} count magazines player;
-		_emptyUnknownCanCount   = {_x == "jii_emptycanunknown"} count magazines player;
+		_emptyPastaCanCount     = {_x == "bde_emptycanpasta"} count magazines player;
+		_emptyUnknownCanCount   = {_x == "bde_emptycanunknown"} count magazines player;
 		_emptyCanCount 			= _emptyPastaCanCount + _emptyUnknownCanCount;
 
-		_bottlefilledCount  	= {_x == "jii_bottlefilled"} count magazines player;
+		_bottlefilledCount  	= {_x == "bde_bottlefilled"} count magazines player;
 
-		_canBeansCount  		= {_x == "jii_bakedbeans"} count magazines player;
-		_canUnknownCount  		= {_x == "jii_canunknown"} count magazines player;
-		_canPastaCount  		= {_x == "jii_canpasta"} count magazines player;
+		_canBeansCount  		= {_x == "bde_bakedbeans"} count magazines player;
+		_canUnknownCount  		= {_x == "bde_canunknown"} count magazines player;
+		_canPastaCount  		= {_x == "bde_canpasta"} count magazines player;
 		_canCount				= _canBeansCount + _canUnknownCount + _canPastaCount;
 
-		_meatSmallCount  		= {_x == "jii_meat_small"} count magazines player;
-		_meatBigCount  			= {_x == "jii_meat_big"} count magazines player;
+		_meatSmallCount  		= {_x == "bde_meat_small"} count magazines player;
+		_meatBigCount  			= {_x == "bde_meat_big"} count magazines player;
 		_meatCount				= _meatSmallCount + _meatBigCount;
 
 		if(!boilWaterAvailable && _emptyCanCount > 0 && _bottlefilledCount > 0) then {
