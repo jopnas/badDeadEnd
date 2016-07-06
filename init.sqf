@@ -1,3 +1,17 @@
+/*
+worldCenter     = getArray(configFile >> "CfgWorlds" >> worldName >> "safePositionAnchor");
+worldHalfSize   = getNumber (configFile >> "CfgWorlds" >> worldName >> "safePositionRadius");
+
+safePositionAnchor[] = {15667,15791.3};
+safePositionRadius = 7000;
+*/
+
+//worldHalfSize   = worldSize/2;
+//worldCenter     = [worldHalfSize/2, worldHalfSize/2, 0];
+
+worldCenter     = getArray(configFile >> "CfgWorlds" >> worldName >> "safePositionAnchor");
+worldHalfSize   = getNumber (configFile >> "CfgWorlds" >> worldName >> "safePositionRadius");
+
 if(isServer)then{
     loadedCarsList = [];
     [] execVM "scripts\server\registerDBdata.sqf";

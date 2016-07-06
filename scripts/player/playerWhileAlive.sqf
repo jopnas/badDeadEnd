@@ -211,8 +211,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
     if(t > 5)then{
         // Save Spawn Stats
         [player,[playerHunger,playerThirst,playerHealth,playerTemperature,playerWet,playerSick,playerInfected]] remoteExec ["fnc_savePlayerStats",2,false];
-        // Spawn Loot
-        [getPos player] remoteExec ["fnc_spawnLoot",2,false];
+        [getPos player] remoteExecCall ["fnc_spawnLoot",2,false];
         [] spawn checkSick;
     };
     if(t > 10)then{
@@ -224,7 +223,6 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
     _carryingMass       = loadAbs player;
     //_calcFatigue        = _carryingMass / 500;
     //player setFatigue _calcFatigue;
-
 
     _cursorObject       = cursorObject;
 	_cursorObjectType   = typeOf _cursorObject;

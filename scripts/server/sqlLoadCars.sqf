@@ -19,7 +19,7 @@ loadedCarsList = loadedCarsList - ["empty"];
 	_backpacks = ((call compile ("extDB2" callExtension format["0:SQL_VH_LOAD:SELECT backpacks FROM vehicles WHERE id='%1'",_id]) select 1) select 0) select 0;
 
     if(_destroyed > 0)then{
-        _towns = nearestLocations [[16000,16000], ["NameVillage","NameCity","NameCityCapital"], 12000];
+        _towns = nearestLocations [worldCenter, ["NameVillage","NameCity","NameCityCapital"], worldHalfSize];
         _roads = getPos selectRandom(_towns) nearRoads 1000;
         _roadPosition = getPos selectRandom(_roads);
 
