@@ -31,6 +31,25 @@ _z setVariable["lastPlayerSeen",[false,[]], false];
 _z setVariable["lastPlayerHeard",[], true];
 doStop _z;
 
+// Check Hatgear Armor
+_headgear   = headgear _z;
+_descrShort = getText (configFile >> "CfgWeapons" >> _headgear >> "descriptionShort");
+
+headArmor = 0;
+if(_headgear find "Helmet")then {
+    headArmor = headArmor + 1;
+};
+if(_descrShort find "Armor Level I")then {
+    headArmor = headArmor + 1;
+};
+if(_descrShort find "Armor Level II")then {
+    headArmor = headArmor + 2;
+};
+if(_descrShort find "Armor Level III")then {
+    headArmor = headArmor + 3;
+};
+
+
 _z addeventhandler ["HandleDamage",{
     _unit = _this select 0;
     _selectionName = _this select 1;
@@ -51,10 +70,15 @@ _z addeventhandler ["HandleDamage",{
             };
             switch(_selectionName) do {
                 case "head": {
-                    _amountOfDamage = _amountOfDamage * 1000000;
-                    // http://soundbible.com/944-Stab.html
-                    // http://soundbible.com/tags-blood.html
-                    [_unit,"headshot0","configVol","randomPitch",50] spawn bde_fnc_playSound3D;
+                    if(headArmor < 1)then{
+                        _amountOfDamage = _amountOfDamage * 1000000;
+                        // http://soundbible.com/944-Stab.html
+                        // http://soundbible.com/tags-blood.html
+                        [_unit,"headshot0","configVol","randomPitch",50] spawn bde_fnc_playSound3D;
+                    }else{
+                        _amountOfDamage = 0;
+                        headArmor = headArmor - 1;
+                    };
                 };
                 case "legs": {
                     _amountOfDamage = 0;
@@ -145,7 +169,8 @@ _zBehaviour = [_z] spawn {
                     _z doMove (_lastPlayerHeard);
                 };
                 if(t > nextGrowl)then{
-                    [_z,format["zidle%1",floor random 8],50,_speechPitch] remoteExec ["bde_fnc_say3d",0,false];
+                    //[_z,format["zidle%1",floor random 8],50,_speechPitch] remoteExec ["bde_fnc_say3d",0,false];
+                    [_z,format["zidle%1",floor random 8],"configVol",_speechPitch,50] spawn bde_fnc_playSound3D;
                     nextGrowl = time + 30 + random 60;
                 };
             }else{
@@ -154,7 +179,8 @@ _zBehaviour = [_z] spawn {
                     _z forceSpeed 10;
 
                     if(!_hasTarget)then{
-                        [_z,format["zpunch%1",floor random 4],50,_speechPitch] remoteExec ["bde_fnc_say3d",0,false];
+                        //[_z,format["zpunch%1",floor random 4],50,_speechPitch] remoteExec ["bde_fnc_say3d",0,false];
+                        [_z,format["zpunch%1",floor random 4],"configVol",_speechPitch,50] spawn bde_fnc_playSound3D;
                         _z setVariable["hasTarget",true, false];
                         _z setVariable["lastPlayerHeard",[], true];
                     };
@@ -168,7 +194,8 @@ _zBehaviour = [_z] spawn {
                         doStop _z;
                         _z playMove "AwopPercMstpSgthWnonDnon_end";
                         sleep 1;
-                        [_z,format["zpunch%1",floor random 4],50,_speechPitch] remoteExec ["bde_fnc_say3d",0,false];
+                        //[_z,format["zpunch%1",floor random 4],50,_speechPitch] remoteExec ["bde_fnc_say3d",0,false];
+                        [_z,format["zpunch%1",floor random 4],"configVol",_speechPitch,50] spawn bde_fnc_playSound3D;
                         if([_z,_closestPlayerAlive] call canSeePlayer && alive _closestPlayerAlive)then{
                             _closestPlayerAlive setDamage (damage _closestPlayerAlive + zombiedamage);
                         };

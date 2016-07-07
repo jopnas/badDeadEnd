@@ -30,38 +30,35 @@ constructBuildings  = ["Land_u_Shed_Ind_F","Land_Unfinished_Building_02_F","Land
         EdSubcat_Residential_City
 */
 
-airportBuildings2   = [];
-militaryBuildings2  = [];
-researchBuildings2  = [];
-constructBuildings2 = [];
+airportBuildings   = [];
+militaryBuildings  = [];
+researchBuildings  = [];
+constructBuildings = [];
+buildingsListReady = false;
 
-_buildings = nearestObjects [worldCenter, ["Building"], worldHalfSize];
-
-
-waitUntil {count _buildings > 0};
 _vecList = (configFile >> "cfgVehicles") call BIS_fnc_getCfgSubClasses;
 {
     if(getnumber (configFile >> "cfgVehicles" >> _x >> "scope") == 2)then{
         _vehicleClass = getText (configFile >> "cfgVehicles" >> _x >> "vehicleClass");
-        if(_vehicleClass in _buildings)then{
-            _displayName        = getText (configFile >> "cfgVehicles" >> _x >> "displayName");
-            _editorSubcategory  = getText (configFile >> "cfgVehicles" >> _x >> "editorSubcategory");
-            if(_vehicleClass != "Ruins" && _editorSubcategory != "EdCat_Ruins" && _displayName find "Unfinished" < 0)then{
-                if(_vehicleClass == "Structures_Military")then{
-                    militaryBuildings2 pushBackUnique _x;
-                };
-                if(_vehicleClass == "Structures_Sports")then{
-                    airportBuildings2 pushBackUnique _x;
-                };
-                if(_vehicleClass == "Structures_Infrastructure")then{
-                    researchBuildings2 pushBackUnique _x;
-                };
-            }else{
-                if(_displayName find "Unfinished" > -1 && _vehicleClass != "Ruins" && _editorSubcategory != "EdCat_Ruins")then{
-                    constructBuildings2 pushBackUnique _x;
-                };
+        _displayName        = getText (configFile >> "cfgVehicles" >> _x >> "displayName");
+        _editorSubcategory  = getText (configFile >> "cfgVehicles" >> _x >> "editorSubcategory");
+        if(_vehicleClass != "Ruins" && _editorSubcategory != "EdCat_Ruins" && _displayName find "Unfinished" < 0)then{
+            if(_vehicleClass == "Structures_Military")then{
+                militaryBuildings pushBackUnique _x;
             };
-
+            if(_vehicleClass == "Structures_Sports")then{
+                airportBuildings pushBackUnique _x;
+            };
+            if(_vehicleClass == "Structures_Infrastructure")then{
+                researchBuildings pushBackUnique _x;
+            };
+        }else{
+            if(_displayName find "Unfinished" > -1 && _vehicleClass != "Ruins" && _editorSubcategory != "EdCat_Ruins")then{
+                constructBuildings pushBackUnique _x;
+            };
         };
+    };
+    if(count _vecList == (_forEachIndex + 1))then{
+        buildingsListReady = true;
     };
 } forEach _vecList;

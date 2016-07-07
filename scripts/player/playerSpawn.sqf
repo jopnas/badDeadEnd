@@ -1,7 +1,5 @@
 private["_playerUnit","_respawnTime","_db"];
 
-cutText ["Welcome to BadDeadEnd ...", "BLACK FADED"];
-
 _playerUnit     = _this select 0;
 _respawnTime    = _this select 1;
 
@@ -136,6 +134,7 @@ if(count _db > 0)then{
 		_playerUnit addWeapon _x;
 	}forEach _playerWeapons;
 
+
 	_playerUnit setAmmo [primaryWeapon _playerUnit, _primWeapAmmo];
 	_playerUnit setAmmo [secondaryWeapon _playerUnit, _secWeapAmmo];
 	_playerUnit setAmmo [handgunWeapon _playerUnit, _handgunAmmo];
@@ -180,6 +179,7 @@ if(count _db > 0)then{
 	{
 		_playerUnit addItemToUniform _x;
 	}forEach _playerItemsUniform;
+
 
   	_hitPointNames	= _playerDamage select 0;
 	_hitPointValues	= _playerDamage select 1;

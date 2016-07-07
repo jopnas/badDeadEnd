@@ -40,15 +40,15 @@ while {true} do {
                 // choose type of zombie by bulding type
                 _randomBuilding = selectRandom _buildings;
 
-                if(typeOf _randomBuilding in militaryBuildings2)then{
+                if(typeOf _randomBuilding in militaryBuildings)then{
                     _useZlist = _zUnitsMilInf;
                 };
 
-                if(typeOf _randomBuilding in airportBuildings2)then{
+                if(typeOf _randomBuilding in airportBuildings)then{
                     _useZlist = _zUnitsMilPil;
                 };
 
-                if(typeOf _randomBuilding in researchBuildings2)then{
+                if(typeOf _randomBuilding in researchBuildings)then{
                     _useZlist = _zUnitsCivSci + _zUnitsCivSer;
                 };
 
