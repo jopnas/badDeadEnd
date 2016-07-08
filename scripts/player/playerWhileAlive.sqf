@@ -8,8 +8,41 @@ checkBoundingBox    = compile preprocessFile "scripts\tools\checkBoundingBox.sqf
 checkAnimals		= compile preprocessFile "scripts\animals\checkAnimals.sqf";
 footFuncs			= compile preprocessFile "scripts\foot\foot_funcs.sqf";
 checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
-
+inventoryItemAction = compile preprocessFile "scripts\inventory\inventoryItems.sqf";
 //getBarricadeables	= compile preprocessFile "scripts\barricading\getBarricadeables.sqf";
+
+fnc_coordinateItemActions = {
+    _idcData = _this select 0;
+    _bagType = _this select 1;
+
+	_idc = ctrlIDC (_idcData select 0);
+	_selectedIndex = _idcData select 1;
+
+    // open the dialog
+    createDialog "Dlg";
+    // get the control for the listbox
+    _list = (findDisplay 20000) displayCtrl 20000;
+    // populate the list with vehicle classes
+    _list lbFillVehicleClass ["veh",""];
+
+	[_idc,_selectedIndex,_bagType,_idcData] spawn inventoryItemAction;
+	false
+};
+
+itemEventHandlerSet = false;
+fnc_setItemEventHandler = {
+    // Backpack
+    ((findDisplay 602) displayCtrl 619) ctrlSetEventHandler ["LBDblClick", "[_this,'Backpack'] call fnc_coordinateItemActions"];
+    // Vest
+    ((findDisplay 602) displayCtrl 638) ctrlSetEventHandler ["LBDblClick", "[_this,'Vest'] call fnc_coordinateItemActions"];
+    // Uniform
+    ((findDisplay 602) displayCtrl 633) ctrlSetEventHandler ["LBDblClick", "[_this,'Uniform'] call fnc_coordinateItemActions"];
+};
+
+player addEventHandler ["InventoryClosed", {
+    itemEventHandlerSet = false;
+    closeDialog 20000;
+}];
 
 // current GUI blink status
 guiBlink            = false;
@@ -213,8 +246,6 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         [player,[playerHunger,playerThirst,playerHealth,playerTemperature,playerWet,playerSick,playerInfected]] remoteExec ["fnc_savePlayerStats",2,false];
         [getPos player] remoteExecCall ["fnc_spawnLoot",2,false];
         [] spawn checkSick;
-    };
-    if(t > 10)then{
         [] spawn updateUI;
     };
 
@@ -255,11 +286,22 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 		};
 	} forEach _things;*/
 
-    if(cursorObject distance2D player < 3 && "bde_hatchet" in magazines player && str (_cursorObject) find ": t_" > -1)then{
+    if( str (_cursorObject) find ": t_" > -1)then{
+        if( _cursorObject getVariable ["noActionSet",true] )then{
+            _cursorObject addAction["chop wood",{
+                _target = _this select 0 // Object - the object which the action is assigned to
+                _caller = _this select 1 // Object - the unit that activated the action
+                [_target] call chopWood;
+            },[],6,true,true,"","'bde_hatchet' in magazines _this ",3];
+            _cursorObject setVariable ["noActionSet",false,false];
+        };
+    };
+
+    /*if(cursorObject distance2D player < 3 && "bde_hatchet" in magazines player && str (_cursorObject) find ": t_" > -1)then{
         if(!chopWoodActionAvailable)then{
             chopWoodAction = player addAction["chop wood",{
                 [_this select 3] call chopWood;
-            },_cursorObject];
+            },_cursorObject,6,true,true,"",""];
             chopWoodActionAvailable = true;
         }
     }else{
@@ -267,13 +309,13 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
             chopWoodActionAvailable = false;
             player removeAction chopWoodAction;
         };
-    };
+    };*/
 
     if( cursorObject distance2D player < 3 && str (getModelInfo _cursorObject) find "watertank" > -1 || str (getModelInfo _cursorObject) find "waterbarrel" > -1 || str (getModelInfo _cursorObject) find "barrelwater" > -1 || str (getModelInfo _cursorObject) find "stallwater" > -1 || str (getModelInfo _cursorObject) find "watersource" > -1)then{
         if(!drinkActionAvailable)then{
             drinkAction = player addAction["drink clean water",{
                 [] call drinkWater;
-            }];
+            },_cursorObject,6,true,true,"",""];
             drinkActionAvailable = true;
         }
     }else{
@@ -515,6 +557,12 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
                 repairActionIDs = repairActionIDs - [_x];
             }forEach repairActionIDs;
         };
+    };
+
+    // Items Action
+    if( !(isnull (finddisplay 602)) && !(itemEventHandlerSet) )then{
+        itemEventHandlerSet = true;
+        [] call fnc_setItemEventHandler;
     };
 
     hint format["cursorObjectType: %1\ncursorObject distance:%2\ncarryingMass: %3\n_speed: %4",_cursorObjectType,_cursorObject distance2D player,_carryingMass,floor _speed];

@@ -10,6 +10,7 @@ safePositionRadius = 7000;
 //worldCenter     = [worldHalfSize/2, worldHalfSize/2, 0];
 
 worldCenter     = getArray(configFile >> "CfgWorlds" >> worldName >> "safePositionAnchor");
+worldCenter pushBack 0;
 worldHalfSize   = getNumber (configFile >> "CfgWorlds" >> worldName >> "safePositionRadius");
 
 if(isServer)then{
@@ -31,6 +32,3 @@ if(isServer)then{
 
 [] execVM "scripts\tools\burnObject.sqf";
 [] execVM "scripts\tools\globalFuncs.sqf";
-
-// REMOVE BEFORE RELEASE !!!!!!!!!!!
-[] execVM "scripts\tools\dev_helper.sqf";

@@ -1,1 +1,1 @@
-cutText ["Welcome to BadDeadEnd ...", "BLACK FADED"];
+cutText ["Welcome to BadDeadEnd ...", "BLACK"];

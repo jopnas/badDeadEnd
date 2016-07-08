@@ -496,6 +496,44 @@ class RscTitles
     };
 };
 
+// Inventory Item Action List
+
+/*
+    // open the dialog
+    createDialog "Dlg";
+
+    // get the control for the listbox
+    _list = (findDisplay 20000) displayCtrl 20000;
+
+    // populate the list with vehicle classes
+    _list lbFillVehicleClass ["veh",""];
+*/
+
+class Dlg {
+  idd = 20000;
+  movingEnable = 0;
+
+  class controls {
+    class LIST {
+      idc = 20000;
+      type = 5;       // CT_LISTBOX
+      style = 0;      // ST_LEFT
+      x = 0.4; y = 0.4;
+      w = 0.4; h = 0.4;
+      rowHeight = 0;  // row height
+      color[] = {1, 0, 0, 1};                 // outline and scrollbars
+      colorText[] = {1, 1, 0, 1};             // unselected text
+      colorSelect[] = {1, 1, 1, 1};           // selected text
+      colorSelect2[] = {1, 1, 1, 1};          // alternating text color
+      colorSelectBackground[] = {0, 0, 0, 1}; // background for selected line(s)
+      colorSelectBackground2[] = {1, 0, 0, 1};// alternating background color
+      soundSelect[] = {};
+      font = "vbs_unicode_lite";
+      sizeEx = .04;
+    };
+  };
+};
+
 class cfgFunctions
 {
 	class skipBriefingClass

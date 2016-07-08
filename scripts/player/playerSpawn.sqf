@@ -134,6 +134,7 @@ if(count _db > 0)then{
 		_playerUnit addWeapon _x;
 	}forEach _playerWeapons;
 
+    _playerUnit selectWeapon _currentWeapon;
 
 	_playerUnit setAmmo [primaryWeapon _playerUnit, _primWeapAmmo];
 	_playerUnit setAmmo [secondaryWeapon _playerUnit, _secWeapAmmo];
@@ -185,8 +186,6 @@ if(count _db > 0)then{
 	_hitPointValues	= _playerDamage select 1;
 	_hitPointsCount = count _hitPointNames;
 
-    _playerUnit selectWeapon _currentWeapon;
-
 	for "_i" from 0 to _hitPointsCount do {
 		if(count(_hitPointNames select _i) > 0)then{
 			_playerUnit setHitPointDamage [_hitPointNames select _i, _hitPointValues select _i];
@@ -199,8 +198,8 @@ if(count _db > 0)then{
 
 }else{
     _isRespawn = true;
-    _playerUnit setDamage 0;
 	[_playerUnit] execVM "scripts\player\playerSpawnPosition.sqf";
+    _playerUnit setDamage 0;
 };
 
 waitUntil{_playerUnit getVariable["playerSetupReady",false]};
@@ -210,30 +209,6 @@ waitUntil{_playerUnit getVariable["playerSetupReady",false]};
 
 // Init Player UI
 3 cutRsc ['playerStatusGUI', 'PLAIN',3];
-
-// Inventory Items Actions
-inventoryItemAction = compile preprocessFile "scripts\inventory\inventoryItems.sqf";
-actionsEventHandler = [] spawn {
-	fnc_coordinateItemActions = {
-        _idcData = _this select 0;
-        _bagType = _this select 1;
-
-		_idc = ctrlIDC (_idcData select 0);
-		_selectedIndex = _idcData select 1;
-
-		[_idc,_selectedIndex,_bagType,_idcData] spawn inventoryItemAction;
-		false
-    };
-
-	while {true} do {
-		waituntil {!(isnull (finddisplay 602))};
-        // Items Action
-        ((findDisplay 602) displayCtrl 619) ctrlSetEventHandler ["LBDblClick", "[_this,'Backpack'] call fnc_coordinateItemActions"]; // Backpack
-        ((findDisplay 602) displayCtrl 638) ctrlSetEventHandler ["LBDblClick", "[_this,'Vest'] call fnc_coordinateItemActions"]; // Vest
-        ((findDisplay 602) displayCtrl 633) ctrlSetEventHandler ["LBDblClick", "[_this,'Uniform'] call fnc_coordinateItemActions"]; // Uniform
-		waituntil {isnull (finddisplay 602)};
-	};
-};
 
 // Action Eventhandler
 actionHandler = compile preprocessFile "scripts\player\actionHandler.sqf";
@@ -251,4 +226,4 @@ if(_isRespawn)then{
 
 _respawnTime fadeSound 3;
 _respawnTime fadeMusic 3;
-titleCut ["", "BLACK IN", _respawnTime];
+cutText ["", "BLACK IN", _respawnTime];

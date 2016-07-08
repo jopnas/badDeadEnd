@@ -26,3 +26,8 @@ if(_playerUnitTemperature > 100)then{
 };
 
 playerTemperature = _playerUnitTemperature;
+
+
+if(_playerUnitTemperature < 20)then{
+    addCamShake [2,1,80];
+};
