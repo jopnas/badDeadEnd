@@ -36,19 +36,33 @@ if(_isInside)then{
                     _canBarricade = true;
                 };
 
-                if(_canBarricade)then{
-                    if(barricadeAction < 0)then{
-                        barricadeAction = player addAction["Start barricading",{
-                            _vars = _this select 3;
-                            [_vars select 0,_vars select 1,_vars select 2] call buildBarricade;
-                        },["the type",_realRelDir,_x]];
-                    };
-                }else{
-                    if(barricadeAction >= 0)then{
-                        player removeAction barricadeAction;
-                        barricadeAction = -1;
-                    };
-                };
+                barricadeAction = player addAction["Create Barricade Element",{
+                    barricade = createVehicle ["Land_Pallet_vertical_F",position player,[],0,"can_collide"];
+                    isBarricading = true;
+                    barricade setDir (getDir player);
+                    barricade attachTo [player, [0,2,2]];
+                },"",6,true,false,"","_canBarricade && isNil barricade"];
+
+                raiseBarricade = player addAction ["Raise Barricade", {
+                    _curPos = getPosATL barricade;
+                    barricade setPosATL [_curPos select 0,_curPos select 1,(_curPos select 2) + 0.1];
+                },"",6,true,false,"","!(isNil barricade)"];
+
+                lowerBarricade = player addAction ["Lower Barricade", {
+                    _curPos = getPosATL barricade;
+                    barricade setPosATL [_curPos select 0,_curPos select 1,(_curPos select 2) - 0.1];
+                },"",6,true,false,"","!(isNil barricade)"];
+
+                cancleBarricading = player addAction ["Cancle Barricading", {
+                    deleteVehicle barricade;
+                    barricade = nil;
+                },"",6,true,false,"","!(isNil barricade)"];
+
+                releaseBarricade = player addAction ["Release Barricade", {
+                    detach barricade;
+                    barricade = nil;
+                },"",6,true,false,"","!(isNil barricade)"];
+
             };
 
         }forEach (_building buildingPos -1);

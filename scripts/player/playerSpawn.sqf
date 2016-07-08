@@ -222,7 +222,7 @@ if(_isRespawn)then{
 };
 
 // Init Barricading
-//[] execVM "scripts\barricading\initBarricading.sqf";
+[] execVM "scripts\barricading\initBarricading.sqf";
 
 _respawnTime fadeSound 3;
 _respawnTime fadeMusic 3;

@@ -9,7 +9,7 @@ checkAnimals		= compile preprocessFile "scripts\animals\checkAnimals.sqf";
 footFuncs			= compile preprocessFile "scripts\foot\foot_funcs.sqf";
 checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
 inventoryItemAction = compile preprocessFile "scripts\inventory\inventoryItems.sqf";
-//getBarricadeables	= compile preprocessFile "scripts\barricading\getBarricadeables.sqf";
+getBarricadeables	= compile preprocessFile "scripts\barricading\getBarricadeables.sqf";
 
 fnc_coordinateItemActions = {
     _idcData = _this select 0;
