@@ -36,16 +36,16 @@ _headgear   = headgear _z;
 _descrShort = getText (configFile >> "CfgWeapons" >> _headgear >> "descriptionShort");
 
 headArmor = 0;
-if(_headgear find "Helmet")then {
+if(_headgear find "Helmet" > -1)then {
     headArmor = headArmor + 1;
 };
-if(_descrShort find "Armor Level I")then {
+if(_descrShort find "Armor Level I" > -1)then {
     headArmor = headArmor + 1;
 };
-if(_descrShort find "Armor Level II")then {
+if(_descrShort find "Armor Level II" > -1)then {
     headArmor = headArmor + 2;
 };
-if(_descrShort find "Armor Level III")then {
+if(_descrShort find "Armor Level III" > -1)then {
     headArmor = headArmor + 3;
 };
 

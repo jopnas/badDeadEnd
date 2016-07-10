@@ -83,9 +83,10 @@ _buildFireplace = {
   };
 };
 
-packTent = {
+/*packTent = {
     _targetObject   = _this select 0;
     _caller         = _this select 1;
+
     _tentPos        = getPosATL _targetObject;
 
     [_caller,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
@@ -94,9 +95,9 @@ packTent = {
     deleteVehicle _targetObject;
     _tentWph = createVehicle ["groundWeaponHolder",_tentPos,[],0,"can_collide"];
     _tentWph setVehiclePosition [[_tentPos select 0,_tentPos select 1,(_tentPos select 2) + 1], [], 0, "can_collide"];
-    _tentWph addMagazineCargoGlobal [ "bde_tentDomePacked",1];
+    _tentWph addMagazineCargoGlobal [ format["%1Packed",typeOf _targetObject],1];
 
-};
+};*/
 
 switch(_classname) do {
     // Food
@@ -292,14 +293,52 @@ switch(_classname) do {
         [player,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
 		sleep 5;
 		player removeMagazine _classname;
-        _pitchedTent = "bde_tentDome" createVehicle getPosATL player;
+        _pos            = getPosATL player;
+        _pitchedTent    = "bde_tentDome" createVehicle _pos;
+
+        _tentPos        = getPosAtL _pitchedTent;
+        _tentRot        = getDir _pitchedTent;
+
+        _tentID         = format["%1%2",getPlayerUID player,floor(_tentPos select 0),floor(_tentPos select 1),floor(_tentPos select 2)];
+        _tentOwner      = getPlayerUID player;
+
+        _pitchedTent setVariable["tentID",_tentID,true];
+        _pitchedTent setVariable["tentOwner",_tentOwner,true];
+        [_pitchedTent] remoteExec ["fnc_saveTent",2,false];
 
         _pitchedTent addAction ["Pack Tent", {
             _targetObject   = _this select 0;
             _caller         = _this select 1;
 
             [_targetObject,_caller] call packTent;
-        }, [],10,true,true,"","_target distance _this < 3.5"];
+        }, [],0,true,true,"","_target distance _this < 3"];
+
+        //[_pitchedTent] call fnc_saveTent;
+	};
+
+    case "bde_tentCamoPacked": {
+        [player,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
+		sleep 5;
+		player removeMagazine _classname;
+        _pos            = getPosATL player;
+        _pitchedTent    = "bde_tentCamo" createVehicle _pos;
+
+        _tentPos        = getPosAtL _pitchedTent;
+        _tentRot        = getDir _pitchedTent;
+
+        _tentID         = format["%1%2",getPlayerUID player,floor(_tentPos select 0),floor(_tentPos select 1),floor(_tentPos select 2)];
+        _tentOwner      = getPlayerUID player;
+
+        _pitchedTent setVariable["tentID",_tentID,true];
+        _pitchedTent setVariable["tentOwner",_tentOwner,true];
+        [_pitchedTent] remoteExec ["fnc_saveTent",2,false];
+
+        _pitchedTent addAction ["Pack Tent", {
+            _targetObject   = _this select 0;
+            _caller         = _this select 1;
+
+            [_targetObject,_caller] call packTent;
+        }, [],0,true,true,"","_target distance _this < 3"];
 
         //[_pitchedTent] call fnc_saveTent;
 	};

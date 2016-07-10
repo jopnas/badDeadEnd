@@ -7,7 +7,7 @@ _nearestFireplaces 	= _this select 3;
 _playerWetness  = playerWet;
 
 if(rain > 0 && !_isUnderCover && !_isInCar)then{
-	_playerWetness = _playerWetness + 0.2;
+	_playerWetness = _playerWetness + 0.1;
 };
 
 if((_isUnderCover && _isInside) || _isInCar)then{
@@ -16,6 +16,10 @@ if((_isUnderCover && _isInside) || _isInCar)then{
 
 if(count _nearestFireplaces > 0 && !(_isInCar))then{
 	_playerWetness = _playerWetness - (count(_nearestFireplaces) / 2);
+};
+
+if(rain == 0)then{
+    _playerWetness = _playerWetness - 0.02;
 };
 
 if(_playerWetness < 0)then{

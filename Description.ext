@@ -485,10 +485,10 @@ class RscTitles
             {
                 idc = 1212;
                 text = "images\gui\noise\gui_noise_100.paa";
-				colorBackground[] = {0,0,0,0};
+				colorBackground[] = {0,0,0,1};
 				colorText[] = {1,1,1,1};
-                x = safezoneW + safezoneX - 0.5;
-                y = safezoneH + safezoneY - 0.8;
+                x = safezoneW + safezoneX - 1;
+                y = safezoneH + safezoneY - 1;
                 w = 0.5;
                 h = 0.8;
             };

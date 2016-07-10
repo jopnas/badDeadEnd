@@ -8,41 +8,18 @@ checkBoundingBox    = compile preprocessFile "scripts\tools\checkBoundingBox.sqf
 checkAnimals		= compile preprocessFile "scripts\animals\checkAnimals.sqf";
 footFuncs			= compile preprocessFile "scripts\foot\foot_funcs.sqf";
 checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
-inventoryItemAction = compile preprocessFile "scripts\inventory\inventoryItems.sqf";
-getBarricadeables	= compile preprocessFile "scripts\barricading\getBarricadeables.sqf";
+//getBarricadeables	= compile preprocessFile "scripts\barricading\getBarricadeables.sqf";
 
-fnc_coordinateItemActions = {
-    _idcData = _this select 0;
-    _bagType = _this select 1;
+destroyBarricadeSelf = nil;
+raiseBarricade = nil;
+lowerBarricade = nil;
+releaseBarricade = nil;
+cancleBarricading = nil;
 
-	_idc = ctrlIDC (_idcData select 0);
-	_selectedIndex = _idcData select 1;
+isInside = false;
+actionBarricadeActive = false;
 
-    // open the dialog
-    createDialog "Dlg";
-    // get the control for the listbox
-    _list = (findDisplay 20000) displayCtrl 20000;
-    // populate the list with vehicle classes
-    _list lbFillVehicleClass ["veh",""];
-
-	[_idc,_selectedIndex,_bagType,_idcData] spawn inventoryItemAction;
-	false
-};
-
-itemEventHandlerSet = false;
-fnc_setItemEventHandler = {
-    // Backpack
-    ((findDisplay 602) displayCtrl 619) ctrlSetEventHandler ["LBDblClick", "[_this,'Backpack'] call fnc_coordinateItemActions"];
-    // Vest
-    ((findDisplay 602) displayCtrl 638) ctrlSetEventHandler ["LBDblClick", "[_this,'Vest'] call fnc_coordinateItemActions"];
-    // Uniform
-    ((findDisplay 602) displayCtrl 633) ctrlSetEventHandler ["LBDblClick", "[_this,'Uniform'] call fnc_coordinateItemActions"];
-};
-
-player addEventHandler ["InventoryClosed", {
-    itemEventHandlerSet = false;
-    closeDialog 20000;
-}];
+barricadeHeight = 1;
 
 // current GUI blink status
 guiBlink            = false;
@@ -259,7 +236,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 	_cursorObjectType   = typeOf _cursorObject;
 
 	_closestBuilding    = nearestBuilding player;
-	_isInside           = [_closestBuilding,player,false,false] call checkBoundingBox;
+	isInside           = [_closestBuilding,player,false,false] call checkBoundingBox;
     _isInCar            = (vehicle player != player);
     _isUnderCover       = [player] call bde_fnc_underCover;
 
@@ -271,10 +248,10 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         };
     } forEach _nearestFireplaces;
 
-	[_isUnderCover,_isInside,_isInCar,_inflamedFireplaces] spawn handleWet;
-	[_isUnderCover,_isInside,_isInCar,_inflamedFireplaces] spawn handleTemperature;
+	[_isUnderCover,isInside,_isInCar,_inflamedFireplaces] spawn handleWet;
+	[_isUnderCover,isInside,_isInCar,_inflamedFireplaces] spawn handleTemperature;
 
-    //[_isInside,_closestBuilding] call getBarricadeables;
+    //[isInside,_closestBuilding] call getBarricadeables;
 
 	// Everything in 2 meters around player
 	/*_things = nearestObjects [player,[],5];   //!DON'T NEED IT AT MOMENT!
@@ -286,18 +263,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 		};
 	} forEach _things;*/
 
-    if( str (_cursorObject) find ": t_" > -1)then{
-        if( _cursorObject getVariable ["noActionSet",true] )then{
-            _cursorObject addAction["chop wood",{
-                _target = _this select 0 // Object - the object which the action is assigned to
-                _caller = _this select 1 // Object - the unit that activated the action
-                [_target] call chopWood;
-            },[],6,true,true,"","'bde_hatchet' in magazines _this ",3];
-            _cursorObject setVariable ["noActionSet",false,false];
-        };
-    };
-
-    /*if(cursorObject distance2D player < 3 && "bde_hatchet" in magazines player && str (_cursorObject) find ": t_" > -1)then{
+    if(cursorObject distance2D player < 3 && "bde_hatchet" in magazines player && str (_cursorObject) find ": t_" > -1)then{
         if(!chopWoodActionAvailable)then{
             chopWoodAction = player addAction["chop wood",{
                 [_this select 3] call chopWood;
@@ -309,7 +275,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
             chopWoodActionAvailable = false;
             player removeAction chopWoodAction;
         };
-    };*/
+    };
 
     if( cursorObject distance2D player < 3 && str (getModelInfo _cursorObject) find "watertank" > -1 || str (getModelInfo _cursorObject) find "waterbarrel" > -1 || str (getModelInfo _cursorObject) find "barrelwater" > -1 || str (getModelInfo _cursorObject) find "stallwater" > -1 || str (getModelInfo _cursorObject) find "watersource" > -1)then{
         if(!drinkActionAvailable)then{
@@ -559,11 +525,71 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         };
     };
 
-    // Items Action
-    if( !(isnull (finddisplay 602)) && !(itemEventHandlerSet) )then{
-        itemEventHandlerSet = true;
-        [] call fnc_setItemEventHandler;
+    if(isInside && !actionBarricadeActive)then{
+        actionBarricadeActive = true;
+        barricadeAction = player addAction["Create Barricade Element",{
+            //_isInside   = _this select 3;
+            _caller     = _this select 1;
+            _actionID   = _this select 2;
+            barricade = createVehicle ["Land_Pallet_vertical_F",position player,[],0,"can_collide"];
+            barricade enableSimulation false;
+            barricade setDir (getDir player);
+            barricade attachTo [player, [0,2,barricadeHeight]];
+
+            destroyBarricadeSelf = barricade addAction ["Destroy Barricade", {
+                sleep 0.5;
+                deleteVehicle (_this select 0);
+            },"",0,true,true,"",""];
+
+            raiseBarricade = player addAction ["Raise Barricade", {
+                _curPos = getPosATL barricade;
+                barricadeHeight = barricadeHeight + 0.1;
+                barricade attachTo [player, [0,2,barricadeHeight]];
+            },"",0,true,false,"",""];
+
+            lowerBarricade = player addAction ["Lower Barricade", {
+                _curPos = getPosATL barricade;
+                barricadeHeight = barricadeHeight - 0.1;
+                barricade attachTo [player, [0,2,barricadeHeight]];
+            },"",0,true,false,"",""];
+
+            cancleBarricading = player addAction ["Cancle Barricading", {
+                deleteVehicle barricade;
+                barricade = nil;
+                barricadeHeight = 1;
+                player removeAction raiseBarricade;
+                player removeAction lowerBarricade;
+                player removeAction cancleBarricading;
+                player removeAction releaseBarricade;
+            },"",0,true,false,"",""];
+
+            releaseBarricade = player addAction ["Release Barricade", {
+                detach barricade;
+                barricade = nil;
+                barricadeHeight = 1;
+                player removeAction raiseBarricade;
+                player removeAction lowerBarricade;
+                player removeAction cancleBarricading;
+                player removeAction releaseBarricade;
+            },"",0,true,false,"",""];
+
+        },"",0,false,false,""];
     };
 
-    hint format["cursorObjectType: %1\ncursorObject distance:%2\ncarryingMass: %3\n_speed: %4",_cursorObjectType,_cursorObject distance2D player,_carryingMass,floor _speed];
+    if(!isInside && actionBarricadeActive)then{
+        actionBarricadeActive = false;
+        player removeAction raiseBarricade;
+        player removeAction lowerBarricade;
+        player removeAction cancleBarricading;
+        player removeAction releaseBarricade;
+        player removeAction barricadeAction;
+    };
+
+    if(_cursorObjectType == "bde_tentCamo" || _cursorObjectType == "bde_tentDome")then{
+        _id     = _cursorObject getVariable["tentID","0"];
+        _owner  = _cursorObject getVariable["tentOwner","nobody"];
+        _pos    = getPosATL _cursorObject;
+        _rot    = getDir _cursorObject;
+        hint format["type: %1\nowner: %2\nitems: %3",_cursorObjectType,_owner];
+    };
 };

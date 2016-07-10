@@ -1,22 +1,22 @@
 private["_spawnedCar"];
-_CarsQuery        = call compile ("extDB2" callExtension "0:SQL_VH_LOAD:SELECT id FROM vehicles");
+_CarsQuery        = call compile ("extDB2" callExtension "0:SQL_VH_LOAD:SELECT id,classname,position,rotation,fuel,damage,destroyed,items,weapons,magazines,backpacks FROM vehicles");
 _CarsQueryStatus  = _CarsQuery select 0;
 _CarsInDB         = _CarsQuery select 1;
 
 waitUntil { _CarsQueryStatus > 0 };
 loadedCarsList = loadedCarsList - ["empty"];
 {
-	_id = _x select 0;
-	_classname = ((call compile ("extDB2" callExtension format["0:SQL_VH_LOAD:SELECT classname FROM vehicles WHERE id='%1'",_id]) select 1) select 0) select 0;
-	_position  = ((call compile ("extDB2" callExtension format["0:SQL_VH_LOAD:SELECT position FROM vehicles WHERE id='%1'",_id]) select 1) select 0) select 0;
-	_rotation  = ((call compile ("extDB2" callExtension format["0:SQL_VH_LOAD:SELECT rotation FROM vehicles WHERE id='%1'",_id]) select 1) select 0) select 0;
-	_fuel      = ((call compile ("extDB2" callExtension format["0:SQL_VH_LOAD:SELECT fuel FROM vehicles WHERE id='%1'",_id]) select 1) select 0) select 0;
-	_damage    = ((call compile ("extDB2" callExtension format["0:SQL_VH_LOAD:SELECT damage FROM vehicles WHERE id='%1'",_id]) select 1) select 0) select 0;
-	_destroyed = ((call compile ("extDB2" callExtension format["0:SQL_VH_LOAD:SELECT destroyed FROM vehicles WHERE id='%1'",_id]) select 1) select 0) select 0;
-	_items     = ((call compile ("extDB2" callExtension format["0:SQL_VH_LOAD:SELECT items FROM vehicles WHERE id='%1'",_id]) select 1) select 0) select 0;
-	_weapons   = ((call compile ("extDB2" callExtension format["0:SQL_VH_LOAD:SELECT weapons FROM vehicles WHERE id='%1'",_id]) select 1) select 0) select 0;
-	_magazines = ((call compile ("extDB2" callExtension format["0:SQL_VH_LOAD:SELECT magazines FROM vehicles WHERE id='%1'",_id]) select 1) select 0) select 0;
-	_backpacks = ((call compile ("extDB2" callExtension format["0:SQL_VH_LOAD:SELECT backpacks FROM vehicles WHERE id='%1'",_id]) select 1) select 0) select 0;
+	_id        = _x select 0;
+	_classname = _x select 1;
+	_position  = _x select 2;
+	_rotation  = _x select 3;
+	_fuel      = _x select 4;
+	_damage    = _x select 5;
+	_destroyed = _x select 6;
+	_items     = _x select 7;
+	_weapons   = _x select 8;
+	_magazines = _x select 9;
+	_backpacks = _x select 10;
 
     if(_destroyed > 0)then{
         _towns = nearestLocations [worldCenter, ["NameVillage","NameCity","NameCityCapital"], worldHalfSize];

@@ -214,6 +214,38 @@ waitUntil{_playerUnit getVariable["playerSetupReady",false]};
 actionHandler = compile preprocessFile "scripts\player\actionHandler.sqf";
 inGameUISetEventHandler ["Action", "[_this] call actionHandler"];
 
+// Inventory Items Actions
+inventoryItemAction = compile preprocessFile "scripts\inventory\inventoryItems.sqf";
+actionsEventHandler = [] spawn {
+	fnc_coordinateItemActions = {
+        _idcData = _this select 0;
+        _bagType = _this select 1;
+
+		_idc = ctrlIDC (_idcData select 0);
+		_selectedIndex = _idcData select 1;
+
+		[_idc,_selectedIndex,_bagType,_idcData] spawn inventoryItemAction;
+		false
+    };
+
+	while {true} do {
+		waituntil {!(isnull (finddisplay 602))};
+        // Items Action
+        ((findDisplay 602) displayCtrl 619) ctrlSetEventHandler ["LBDblClick", "[_this,'Backpack'] call fnc_coordinateItemActions"]; // Backpack
+        ((findDisplay 602) displayCtrl 638) ctrlSetEventHandler ["LBDblClick", "[_this,'Vest'] call fnc_coordinateItemActions"]; // Vest
+        ((findDisplay 602) displayCtrl 633) ctrlSetEventHandler ["LBDblClick", "[_this,'Uniform'] call fnc_coordinateItemActions"]; // Uniform
+		waituntil {isnull (finddisplay 602)};
+	};
+};
+
+// Save Tent Inventory
+_playerUnit addEventHandler ["InventoryClosed", {
+    params["_unit","_container"];
+    if(typeOf _container == "bde_tentCamo" || typeOf _container == "bde_tentDome")then{
+        [_container] remoteExec ["fnc_saveTent",2,false];
+    };
+}];
+
 // Player Init Situation
 if(_isRespawn)then{
 	_playerUnit switchMove "AmovPpneMstpSnonWnonDnon";
@@ -222,8 +254,10 @@ if(_isRespawn)then{
 };
 
 // Init Barricading
-[] execVM "scripts\barricading\initBarricading.sqf";
+initBarricading_handler = [] execVM "scripts\barricading\initBarricading.sqf";
+waitUntil { scriptDone initBarricading_handler };
 
 _respawnTime fadeSound 3;
 _respawnTime fadeMusic 3;
-cutText ["", "BLACK IN", _respawnTime];
+
+cutText ["Welcome to BadDeadEnd ...", "BLACK IN", _respawnTime];

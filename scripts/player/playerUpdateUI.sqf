@@ -136,52 +136,52 @@ if(time - lastUIBlinkCheck > 1)then{
     // Values
     if(_temperatureVal < 20)then{
         if(guiBlink)then{
-            _ctrlTemperature ctrlSetTextColor [0.5,0.5,1,0.2];
+            _ctrlTemperatureIcon ctrlSetTextColor [0.5,0.5,1,0.2];
         }else{
-            _ctrlTemperature ctrlSetTextColor [0.5,0.5,1,1];
+            _ctrlTemperatureIcon ctrlSetTextColor [0.5,0.5,1,1];
         };
     }else{
-        _ctrlTemperature ctrlSetTextColor [1,1,1,1];
+        _ctrlTemperatureIcon ctrlSetTextColor [1,1,1,1];
     };
 
     if(_healthVal < 20)then{
         if(guiBlink)then{
-            _ctrlHealth ctrlSetTextColor [1,0.5,0.5,0.2];
+            _ctrlHealthIcon ctrlSetTextColor [1,0.5,0.5,0.2];
         }else{
-            _ctrlHealth ctrlSetTextColor [1,0.5,0.5,1];
+            _ctrlHealthIcon ctrlSetTextColor [1,0.5,0.5,1];
         };
     }else{
-        _ctrlHealth ctrlSetTextColor [1,1,1,1];
+        _ctrlHealthIcon ctrlSetTextColor [1,1,1,1];
     };
 
     if(_hungerVal < 20)then{
         if(guiBlink)then{
-            _ctrlHunger ctrlSetTextColor [1,1,1,0.2];
+            _ctrlHungerIcon ctrlSetTextColor [1,1,1,0.2];
         }else{
-            _ctrlHunger ctrlSetTextColor [1,1,1,1];
+            _ctrlHungerIcon ctrlSetTextColor [1,1,1,1];
         };
     }else{
-        _ctrlHunger ctrlSetTextColor [1,1,1,1];
+        _ctrlHungerIcon ctrlSetTextColor [1,1,1,1];
     };
 
     if(_thirstVal < 20)then{
         if(guiBlink)then{
-            _ctrlThirst ctrlSetTextColor [1,1,1,0.2];
+            _ctrlThirstIcon ctrlSetTextColor [1,1,1,0.2];
         }else{
-            _ctrlThirst ctrlSetTextColor [1,1,1,1];
+            _ctrlThirstIcon ctrlSetTextColor [1,1,1,1];
         };
     }else{
-        _ctrlThirst ctrlSetTextColor [1,1,1,1];
+        _ctrlThirstIcon ctrlSetTextColor [1,1,1,1];
     };
 
     if(_hungerVal < 20)then{
         if(guiBlink)then{
-            _ctrlHunger ctrlSetTextColor [1,1,1,0.2];
+            _ctrlHungerIcon ctrlSetTextColor [1,1,1,0.2];
         }else{
-            _ctrlHunger ctrlSetTextColor [1,1,1,1];
+            _ctrlHungerIcon ctrlSetTextColor [1,1,1,1];
         };
     }else{
-        _ctrlHunger ctrlSetTextColor [1,1,1,1];
+        _ctrlHungerIcon ctrlSetTextColor [1,1,1,1];
     };
     lastUIBlinkCheck = time;
 };

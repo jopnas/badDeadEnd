@@ -1,4 +1,3 @@
-waitUntil {buildingsListReady};
 fnc_spawnLoot = {
   private ["_buildingType"];
 
@@ -31,7 +30,7 @@ fnc_spawnLoot = {
     _position     = getPos _building;
     _strHouseType = str(typeOf _building);
 
-    if ( !(typeOf _building in _BuildingsExclude) && (_building getVariable["hasLoot",0]) == 0 && !(str _building find  "ruins" > -1)) then {
+    if ( buildingsListReady && !(typeOf _building in _BuildingsExclude) && (_building getVariable["hasLoot",0]) == 0 && !(str _building find  "ruins" > -1)) then {
 
 	  _building setVariable["hasLoot",1,true];
 

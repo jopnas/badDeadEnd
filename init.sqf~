@@ -37,10 +37,10 @@ if(!isDedicated)then{
         _targetObject   = _this select 0;
         _caller         = _this select 1;
         _tentPos        = getPosATL _targetObject;
-        _tentID         = _targetObject getVariable["tentID","0"];
+        _tentID         = _targetObject getVariable["tentID","000"];
 
         [_caller,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
-        [_tentID] remoteExec ["fnc_deleteTent",2,false];
+        [_targetObject] remoteExec ["fnc_deleteTent",2,false];
 
         sleep 5;
         deleteVehicle _targetObject;

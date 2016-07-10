@@ -139,14 +139,30 @@ fnc_saveCar = {
     // Tent Save
 fnc_saveTent = {
     _tent       = _this select 0;
-    _id         = _tent getVariable["id",floor(random 1000)];
-    _position	= getPos _tent;
-	_rotation	= getDir _tent;
+    _tentID     = _tent getVariable ["tentID","0"];
+    _owner  = _tent getVariable ["tentOwner","0"];
+    _position    = getPosAtL _tent;
+    _rotation    = getDir _tent;
+    _type       = typeOf _tent;
     _items		= getItemCargo _tent;
-	_weapons	= getWeaponCargo _tent;
-	_magazines	= getMagazineCargo _tent;
-	_backpacks	= getBackpackCargo _tent;
-    //_QuerySave 	= format["0:SQL_TE_SAVE:UPDATE tents SET pos='%2', rot='%3', items='%5', weapons='%6', magazines='%7', backpacks='%8' WHERE id='%1'",_id,_position,_rotation,_items,_weapons,_magazines,_backpacks];
-    _QuerySaveTent = format["0:SQL_TE_SAVE:INSERT INTO tents (owner,name,pos,rot) VALUES('%1','%2','%3','%4','%5','%6','%7') ON DUPLICATE KEY UPDATE SET pos='%2', rot='%3'",_id,_position,_rotation,_items,_weapons,_magazines,_backpacks];
+    _weapons	= getWeaponCargo _tent;
+    _magazines	= getMagazineCargo _tent;
+    _backpacks	= getBackpackCargo _tent;
+    _QuerySaveTent = format["0:SQL_TE_SAVE:INSERT INTO tents (tentid,owner,pos,rot,type,items,weapons,magazines,backpacks) VALUES('""%1""','""%2""','%3','%4','""%5""','%6','%7','%8','%9') ON DUPLICATE KEY UPDATE owner='""%2""',pos='%3',rot='%4',type='""%5""',items='%6',weapons='%7',magazines='%8',backpacks='%9'",_tentID,_owner,_position,_rotation,_type,_items,_weapons,_magazines,_backpacks];
     _saveIs     = "extDB2" callExtension _QuerySaveTent;
+};
+
+// Tent Load
+fnc_loadTents = {
+    _result             = call compile ("extDB2" callExtension "0:SQL_TE_LOAD:SELECT id,tentid,owner,pos,rot,type,items,weapons,magazines,backpacks FROM tents");
+    _resultQueryStatus  = _result select 0;
+    _resultInDB         = _result select 1;
+    waitUntil { _resultQueryStatus > 0 };
+    _resultInDB
+};
+
+fnc_deleteTent = {
+    params["_tentID"];
+    systemChat str _tentID;
+	"extDB2" callExtension format["0:SQL_TE_DEL:DELETE FROM tents WHERE tentid='""%1""'",_tentID];
 };

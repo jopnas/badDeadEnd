@@ -9,6 +9,10 @@ if(playerWet > 0)then{
 	_playerUnitTemperature = _playerUnitTemperature - (playerWet/100);
 };
 
+if(playerWet == 0)then{
+    _playerUnitTemperature = _playerUnitTemperature + 0.5;
+};
+
 if(_isInside || _isInCar)then{
 	_playerUnitTemperature = _playerUnitTemperature + 0.1;
 };
@@ -29,5 +33,5 @@ playerTemperature = _playerUnitTemperature;
 
 
 if(_playerUnitTemperature < 20)then{
-    addCamShake [2,1,80];
+    addCamShake [2,1,5];
 };
