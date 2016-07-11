@@ -39,7 +39,7 @@ buildingsListReady = false;
 _vecList = (configFile >> "cfgVehicles") call BIS_fnc_getCfgSubClasses;
 {
     if(getnumber (configFile >> "cfgVehicles" >> _x >> "scope") == 2)then{
-        _vehicleClass = getText (configFile >> "cfgVehicles" >> _x >> "vehicleClass");
+        _vehicleClass       = getText (configFile >> "cfgVehicles" >> _x >> "vehicleClass");
         _displayName        = getText (configFile >> "cfgVehicles" >> _x >> "displayName");
         _editorSubcategory  = getText (configFile >> "cfgVehicles" >> _x >> "editorSubcategory");
         if(_vehicleClass != "Ruins" && _editorSubcategory != "EdCat_Ruins" && _displayName find "Unfinished" < 0)then{

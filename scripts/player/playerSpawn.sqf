@@ -30,8 +30,7 @@ playerWet = 0;
 playerSick = 0;
 playerInfected = 0;
 
-sleep _respawnTime;
-//waitUntil { !isNil(_playerUnit getVariable "db") };
+//sleep _respawnTime;
 
 _db = (_playerUnit getVariable["db",[]]);
 if(count _db > 0)then{
@@ -252,10 +251,6 @@ if(_isRespawn)then{
 	playSound "feeepSound0";
     addCamShake [10, _respawnTime + 7, 50];
 };
-
-// Init Barricading
-initBarricading_handler = [] execVM "scripts\barricading\initBarricading.sqf";
-waitUntil { scriptDone initBarricading_handler };
 
 _respawnTime fadeSound 3;
 _respawnTime fadeMusic 3;

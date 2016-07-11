@@ -4,5 +4,5 @@ _killer 		= _this select 1;
 _respawn 		= _this select 2;
 _respawnDelay 	= _this select 3;
 
-cutText ["You died ... Prepare for Respawn ...", "BLACK"];
+cutText ["You died ...", "BLACK"];
 [_oldUnit] remoteExec ["fnc_deletePlayerStats",2,false];

@@ -8,18 +8,18 @@ checkBoundingBox    = compile preprocessFile "scripts\tools\checkBoundingBox.sqf
 checkAnimals		= compile preprocessFile "scripts\animals\checkAnimals.sqf";
 footFuncs			= compile preprocessFile "scripts\foot\foot_funcs.sqf";
 checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
-//getBarricadeables	= compile preprocessFile "scripts\barricading\getBarricadeables.sqf";
 
-destroyBarricadeSelf = nil;
-raiseBarricade = nil;
-lowerBarricade = nil;
-releaseBarricade = nil;
-cancleBarricading = nil;
 
-isInside = false;
-actionBarricadeActive = false;
+raiseBarricade          = nil;
+lowerBarricade          = nil;
+releaseBarricade        = nil;
+cancleBarricading       = nil;
 
-barricadeHeight = 1;
+isInside                = false;
+hasBarricade            = false;
+actionBarricadeActive   = false;
+
+barricadeHeight         = 1;
 
 // current GUI blink status
 guiBlink            = false;
@@ -250,8 +250,6 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 
 	[_isUnderCover,isInside,_isInCar,_inflamedFireplaces] spawn handleWet;
 	[_isUnderCover,isInside,_isInCar,_inflamedFireplaces] spawn handleTemperature;
-
-    //[isInside,_closestBuilding] call getBarricadeables;
 
 	// Everything in 2 meters around player
 	/*_things = nearestObjects [player,[],5];   //!DON'T NEED IT AT MOMENT!
@@ -528,15 +526,16 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
     if(isInside && !actionBarricadeActive)then{
         actionBarricadeActive = true;
         barricadeAction = player addAction["Create Barricade Element",{
-            //_isInside   = _this select 3;
             _caller     = _this select 1;
-            _actionID   = _this select 2;
+
             barricade = createVehicle ["Land_Pallet_vertical_F",position player,[],0,"can_collide"];
             barricade enableSimulation false;
             barricade setDir (getDir player);
             barricade attachTo [player, [0,2,barricadeHeight]];
 
-            destroyBarricadeSelf = barricade addAction ["Destroy Barricade", {
+            hasBarricade = true;
+
+            barricade addAction ["Destroy Barricade", {
                 sleep 0.5;
                 deleteVehicle (_this select 0);
             },"",0,true,true,"",""];
@@ -561,6 +560,8 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
                 player removeAction lowerBarricade;
                 player removeAction cancleBarricading;
                 player removeAction releaseBarricade;
+
+                hasBarricade = false;
             },"",0,true,false,"",""];
 
             releaseBarricade = player addAction ["Release Barricade", {
@@ -571,25 +572,27 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
                 player removeAction lowerBarricade;
                 player removeAction cancleBarricading;
                 player removeAction releaseBarricade;
+
+                hasBarricade = false;
             },"",0,true,false,"",""];
 
-        },"",0,false,false,""];
+        },"",0,false,false,"!(hasBarricade)"];
     };
 
     if(!isInside && actionBarricadeActive)then{
-        actionBarricadeActive = false;
         player removeAction raiseBarricade;
         player removeAction lowerBarricade;
         player removeAction cancleBarricading;
         player removeAction releaseBarricade;
         player removeAction barricadeAction;
+        actionBarricadeActive = false;
     };
 
-    if(_cursorObjectType == "bde_tentCamo" || _cursorObjectType == "bde_tentDome")then{
+    /*if(_cursorObjectType == "bde_tentCamo" || _cursorObjectType == "bde_tentDome")then{
         _id     = _cursorObject getVariable["tentID","0"];
         _owner  = _cursorObject getVariable["tentOwner","nobody"];
         _pos    = getPosATL _cursorObject;
         _rot    = getDir _cursorObject;
         hint format["type: %1\nowner: %2\nitems: %3",_cursorObjectType,_owner];
-    };
+    };*/
 };
