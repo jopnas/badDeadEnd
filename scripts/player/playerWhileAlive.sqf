@@ -9,14 +9,12 @@ checkAnimals		= compile preprocessFile "scripts\animals\checkAnimals.sqf";
 footFuncs			= compile preprocessFile "scripts\foot\foot_funcs.sqf";
 checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
 
-
 raiseBarricade          = nil;
 lowerBarricade          = nil;
 releaseBarricade        = nil;
 cancleBarricading       = nil;
 
 isInside                = false;
-hasBarricade            = false;
 actionBarricadeActive   = false;
 
 barricadeHeight         = 1;
@@ -528,12 +526,12 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         barricadeAction = player addAction["Create Barricade Element",{
             _caller     = _this select 1;
 
+            player removeAction barricadeAction;
             barricade = createVehicle ["Land_Pallet_vertical_F",position player,[],0,"can_collide"];
             barricade enableSimulation false;
             barricade setDir (getDir player);
             barricade attachTo [player, [0,2,barricadeHeight]];
 
-            hasBarricade = true;
 
             barricade addAction ["Destroy Barricade", {
                 sleep 0.5;
@@ -554,40 +552,39 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 
             cancleBarricading = player addAction ["Cancle Barricading", {
                 deleteVehicle barricade;
-                barricade = nil;
                 barricadeHeight = 1;
                 player removeAction raiseBarricade;
                 player removeAction lowerBarricade;
                 player removeAction cancleBarricading;
                 player removeAction releaseBarricade;
 
-                hasBarricade = false;
+                actionBarricadeActive = false;
             },"",0,true,false,"",""];
 
             releaseBarricade = player addAction ["Release Barricade", {
                 detach barricade;
-                barricade = nil;
                 barricadeHeight = 1;
                 player removeAction raiseBarricade;
                 player removeAction lowerBarricade;
                 player removeAction cancleBarricading;
                 player removeAction releaseBarricade;
 
-                hasBarricade = false;
+                actionBarricadeActive = false;
             },"",0,true,false,"",""];
 
-        },"",0,false,false,"!(hasBarricade)"];
+        },"",0,false,false,""];
     };
 
     if(!isInside && actionBarricadeActive)then{
-        deleteVehicle barricade;
+        if(barricade != objNull )then{
+            deleteVehicle barricade;
+        };
+        player removeAction barricadeAction;
         player removeAction raiseBarricade;
         player removeAction lowerBarricade;
         player removeAction cancleBarricading;
         player removeAction releaseBarricade;
-        barricade = nil;
         barricadeHeight = 1;
-        hasBarricade = false;
         actionBarricadeActive = false;
     };
 
