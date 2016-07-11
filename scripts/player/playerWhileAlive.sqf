@@ -580,11 +580,14 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
     };
 
     if(!isInside && actionBarricadeActive)then{
+        deleteVehicle barricade;
         player removeAction raiseBarricade;
         player removeAction lowerBarricade;
         player removeAction cancleBarricading;
         player removeAction releaseBarricade;
-        player removeAction barricadeAction;
+        barricade = nil;
+        barricadeHeight = 1;
+        hasBarricade = false;
         actionBarricadeActive = false;
     };
 
