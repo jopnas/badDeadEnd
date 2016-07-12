@@ -536,7 +536,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
             barricade addAction ["Destroy Barricade", {
                 sleep 0.5;
                 deleteVehicle (_this select 0);
-            },"",0,true,true,"",""];
+            },"",0,true,true,"","isNull(attachedTo _target)",3];
 
             raiseBarricade = player addAction ["Raise Barricade", {
                 _curPos = getPosATL barricade;
