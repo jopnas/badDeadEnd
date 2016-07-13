@@ -25,7 +25,6 @@ _wpList = (configFile >> "cfgWeapons") call BIS_fnc_getCfgSubClasses;
                 // Get Magazines List
                 _hardestHitPossible = 0;
                 _weaponMagazines    = getArray (configFile >> "CfgWeapons" >> _x >> "magazines");
-                _aiRateOfFire       = getArray (configFile >> "CfgWeapons" >> _x >> "aiRateOfFire");
                 {
                     _ammo       = getText (configFile >> "CfgMagazines" >> _x >> "ammo");
                     _cal        = getNumber (configFile >> "CfgAmmo" >> _ammo >> "caliber");
