@@ -570,7 +570,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
                 player removeAction releaseBarricade;
 
                 actionBarricadeActive = false;
-            },"",0,true,false,"","!([player, 'VIEW'] intersect [eyePos player, getPos barricade])"];
+            },"",0,true,false,"",""];
 
         },"",0,false,false,""];
     };
@@ -588,11 +588,6 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         actionBarricadeActive = false;
     };
 
-    /*if(_cursorObjectType == "bde_tentCamo" || _cursorObjectType == "bde_tentDome")then{
-        _id     = _cursorObject getVariable["tentID","0"];
-        _owner  = _cursorObject getVariable["tentOwner","nobody"];
-        _pos    = getPosATL _cursorObject;
-        _rot    = getDir _cursorObject;
-        hint format["type: %1\nowner: %2\nitems: %3",_cursorObjectType,_owner];
-    };*/
+    hint format["barricadeHeight: %1",barricadeHeight];
+
 };
