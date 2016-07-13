@@ -31,8 +31,9 @@ fnc_spawnLoot = {
     _building     = _x;
     _position     = getPos _building;
     _strHouseType = str(typeOf _building);
+    _posBuilPos = count(_building call BIS_fnc_buildingPositions);
 
-    if ( buildingsListReady && !(typeOf _building in _BuildingsExclude) && (_building getVariable["hasLoot",0]) == 0) then {
+    if ( buildingsListReady && _posBuilPos > 0 && !(typeOf _building in _BuildingsExclude) && (_building getVariable["hasLoot",0]) == 0) then {
 
 	  _building setVariable["hasLoot",1,false];
 
@@ -52,11 +53,10 @@ fnc_spawnLoot = {
         _buildingType = "ConstructionBuilding";
       };
 
-      if( !(typeOf _building in (researchBuildings+constructBuildings+militaryBuildings+airportBuildings)) )then {
+      if( !(typeOf _building in (researchBuildings + constructBuildings + militaryBuildings + airportBuildings)) )then {
         _buildingType = "CivilianBuilding";
       };
 
-      _posBuilPos = count(_building call BIS_fnc_buildingPositions);
       if(_posBuilPos > 0) then {
         for "_i" from 0 to _posBuilPos step 1 do {
 
@@ -157,7 +157,7 @@ fnc_spawnLoot = {
 
                 case "CivilianBuilding":{
                   // Food
-                  if(random 100 < 40) then {
+                  if(random 100 < 50) then {
                     _spawn addMagazineCargoGlobal [selectRandom _foodItems, 1];
                   };
                   // Attachments & Items

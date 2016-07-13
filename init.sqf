@@ -30,6 +30,7 @@ if(isServer)then{
 	[] execVM "scripts\server\whilePlayerOnline.sqf";
     [] execVM "scripts\zombies\initZombies.sqf";
     [] execVM "scripts\server\sqlLoadTents.sqf";
+    [] execVM "scripts\server\sqlLoadBarricades.sqf";
 };
 
 [] execVM "scripts\tools\burnObject.sqf";

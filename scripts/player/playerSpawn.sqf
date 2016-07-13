@@ -1,7 +1,7 @@
 private["_playerUnit","_respawnTime","_db"];
 _playerUnit     = _this select 0;
 _respawnTime    = _this select 1;
-waitUntil { player != objNull };
+
 
 // Player Setup
 _playerUnit enableFatigue false;
@@ -30,7 +30,7 @@ playerWet = 0;
 playerSick = 0;
 playerInfected = 0;
 
-//sleep _respawnTime;
+sleep _respawnTime;
 
 _db = (_playerUnit getVariable["db",[]]);
 if(count _db > 0)then{

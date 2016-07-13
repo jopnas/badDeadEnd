@@ -13,7 +13,6 @@ _dbResult = call fnc_loadTents;
     _backpacks  = _x select 9;
 
     _tent       = _type createVehicle _pos;
-    _tent setDir _rot;
 
     {
         _count_items = (_items select 1) select _foreachindex;
@@ -38,7 +37,7 @@ _dbResult = call fnc_loadTents;
     _tent setPosAtL _pos;
     _tent setDir _rot;
 
-    systemChat str _tentid;
+    systemChat format["create %1",_type];
 
     _tent setVariable["tentID", _tentid,true];
     _tent setVariable["tentOwner", _owner,true];

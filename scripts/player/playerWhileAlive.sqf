@@ -9,15 +9,15 @@ checkAnimals		= compile preprocessFile "scripts\animals\checkAnimals.sqf";
 footFuncs			= compile preprocessFile "scripts\foot\foot_funcs.sqf";
 checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
 
-raiseBarricade          = nil;
-lowerBarricade          = nil;
-releaseBarricade        = nil;
-cancleBarricading       = nil;
-
-isInside                = false;
+raiseBarricade          = -1;
+lowerBarricade          = -1;
+releaseBarricade        = -1;
+cancleBarricading       = -1;
+barricade               = player;
+barricadeHeight         = 1;
 actionBarricadeActive   = false;
 
-barricadeHeight         = 1;
+isInside                = false;
 
 // current GUI blink status
 guiBlink            = false;
@@ -535,8 +535,9 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 
             barricade addAction ["Destroy Barricade", {
                 sleep 0.5;
+                [_this select 3] remoteExec ["fnc_deleteBarricade",2,false];
                 deleteVehicle (_this select 0);
-            },"",0,true,true,"","isNull(attachedTo _target)",3];
+            },barricade getVariable["barricadeID","0"],0,true,true,"","isNull(attachedTo _target)",3];
 
             raiseBarricade = player addAction ["Raise Barricade", {
                 _curPos = getPosATL barricade;
@@ -551,33 +552,42 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
             },"",0,true,false,"",""];
 
             cancleBarricading = player addAction ["Cancle Barricading", {
-                deleteVehicle barricade;
-                barricadeHeight = 1;
                 player removeAction raiseBarricade;
                 player removeAction lowerBarricade;
                 player removeAction cancleBarricading;
                 player removeAction releaseBarricade;
-
+                deleteVehicle barricade;
+                barricadeHeight       = 1;
+                barricade             = player;
                 actionBarricadeActive = false;
             },"",0,true,false,"",""];
 
             releaseBarricade = player addAction ["Release Barricade", {
-                detach barricade;
-                barricadeHeight = 1;
+
+                _barricadePos   = getPosATL barricade;
+                _barricadeID    = format["%1%2",getPlayerUID player,floor(_barricadePos select 0),floor(_barricadePos select 1),floor(_barricadePos select 2)];
+                barricade setVariable["barricadeID",_barricadeID,true];
+                barricade setVariable["health",1000,true];
+                [barricade] remoteExec ["fnc_saveBarricade",2,false];
+
                 player removeAction raiseBarricade;
                 player removeAction lowerBarricade;
                 player removeAction cancleBarricading;
                 player removeAction releaseBarricade;
-
+                detach barricade;
+                barricadeHeight       = 1;
+                barricade             = player;
                 actionBarricadeActive = false;
+
             },"",0,true,false,"",""];
 
         },"",0,false,false,""];
     };
 
     if(!isInside && actionBarricadeActive)then{
-        if(barricade != objNull )then{
+        if((typeOf barricade) isEqualTo "Land_Pallet_vertical_F")then{
             deleteVehicle barricade;
+            barricade = player;
         };
         player removeAction barricadeAction;
         player removeAction raiseBarricade;
@@ -588,6 +598,6 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         actionBarricadeActive = false;
     };
 
-    hint format["barricadeHeight: %1",barricadeHeight];
+    hint format["barricade: %1",(typeOf barricade) isEqualTo "Land_Pallet_vertical_F"];
 
 };
