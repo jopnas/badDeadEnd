@@ -25,6 +25,7 @@ _wpList = (configFile >> "cfgWeapons") call BIS_fnc_getCfgSubClasses;
                 // Get Magazines List
                 _hardestHitPossible = 0;
                 _weaponMagazines    = getArray (configFile >> "CfgWeapons" >> _x >> "magazines");
+                _aiRateOfFire       = getArray (configFile >> "CfgWeapons" >> _x >> "aiRateOfFire");
                 {
                     _ammo       = getText (configFile >> "CfgMagazines" >> _x >> "ammo");
                     _cal        = getNumber (configFile >> "CfgAmmo" >> _ammo >> "caliber");
@@ -37,13 +38,13 @@ _wpList = (configFile >> "cfgWeapons") call BIS_fnc_getCfgSubClasses;
                 }forEach _weaponMagazines;
 
                 // Sort Weapon to Array
-                if(_cal <= 1 /*_hardestHitPossible < 10*/)then {
+                if(_cal < 1 /*_hardestHitPossible < 10*/)then {
                     lightWeapons pushBack _x;
                 };
-                if(_cal > 1 && _cal <= 2/*_hardestHitPossible >= 10 && _hardestHitPossible < 15*/)then {
+                if(_cal >= 1 && _cal < 2/*_hardestHitPossible >= 10 && _hardestHitPossible < 15*/)then {
                     mediumWeapons pushBack _x;
                 };
-                if(_cal > 2/*_hardestHitPossible >= 15*/)then {
+                if(_cal >= 2/*_hardestHitPossible >= 15*/)then {
                     heavyWeapons pushBack _x;
                 };
             };
@@ -53,11 +54,11 @@ _wpList = (configFile >> "cfgWeapons") call BIS_fnc_getCfgSubClasses;
 } forEach _wpList;
 
 /* Caliber
-0.1,0.4,0.7,1,
+0.1,0.4,0.7,
 
-1.6,1.8,2,
+1,1.6,1.8,
 
-2.2,2.4,2.8,3.6,4.6,
+2,2.2,2.4,2.8,3.6,4.6,
 */
 
 /* HitDamage

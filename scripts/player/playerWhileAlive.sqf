@@ -570,7 +570,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
                 player removeAction releaseBarricade;
 
                 actionBarricadeActive = false;
-            },"",0,true,false,"",""];
+            },"",0,true,false,"","!([player, 'VIEW'] intersect [eyePos player, getPos barricade])"];
 
         },"",0,false,false,""];
     };
