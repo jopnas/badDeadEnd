@@ -164,12 +164,8 @@ player addEventHandler ["Fired", {
 
     _dist       = round((_aud/_sil) * 100 );
 
-    {
-        _zombie = _x;
-        if(_unit distance _zombie < _dist)then{
-            _zombie setVariable["lastPlayerHeard",getPos _unit,true];
-        };
-    }forEach (units groupZ);
+    [_unit,getPos _unit,_dist] remoteExec ["bde_fnc_receivePlayersNoise",2,false];
+
 }];
 
 
