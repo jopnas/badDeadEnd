@@ -2,6 +2,10 @@ private["_playerUnit","_respawnTime","_db"];
 _playerUnit     = _this select 0;
 _respawnTime    = _this select 1;
 
+if (!isServer && (player != player)) then {
+    waitUntil {player == player};
+    waitUntil {time > 10};
+};
 
 // Player Setup
 _playerUnit enableFatigue false;
@@ -29,8 +33,6 @@ playerNoise = 0;
 playerWet = 0;
 playerSick = 0;
 playerInfected = 0;
-
-sleep _respawnTime;
 
 _db = (_playerUnit getVariable["db",[]]);
 if(count _db > 0)then{
