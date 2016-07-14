@@ -14,4 +14,8 @@ attackRangeDef 		= 1.5;
 zombiedamage        = 0.1;
 
 waitUntil {buildingsListReady};
-//[] execVM "scripts\zombies\zombieManager.sqf";
+[] execVM "scripts\zombies\zombieManager.sqf";
+
+bde_fnc_receivePlayersNoise = {
+
+};

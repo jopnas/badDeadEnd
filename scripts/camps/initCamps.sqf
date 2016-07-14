@@ -2,7 +2,7 @@ _campLocats         = selectBestPlaces [[16000,16000],12000,"(5 * forest) + (4 *
 _campLocatsRdm      = _campLocats call BIS_fnc_arrayShuffle;
 
 // Camp Components
-_tents              = ["Land_TentA_F","Land_TentDome_F"];
+_tents              = ["bde_tentCamo","bde_tentDome"];
 _fireplaces         = ["Land_Campfire_F","Land_FirePlace_F"];
 _campstuff          = ["Land_WoodPile_large_F","Land_WoodenLog_F","Land_CampingTable_small_F","Land_CampingChair_V2_F","Land_CampingChair_V1_folded_F","Land_CampingChair_V1_F","Land_WoodPile_F","Land_Camping_Light_off_F"];
 _garbageTypes       = ["Land_Garbage_square3_F","Land_Garbage_square5_F"];
@@ -43,35 +43,33 @@ for "_a" from 0 to _minCamps step 1 do {
 	_campSelf          = _campLocatsRdm select _a;
 	_campCenter        = (_campSelf select 0) findEmptyPosition [0, 100, "Land_House_Big_01_V1_ruins_F"];
 
-	_tent              = createVehicle [selectRandom _tents,_campCenter,[],0,"NONE"];
+	_tent              = createVehicle [selectRandom _tents,_campCenter,[],0];
 	_garbage           = createVehicle [selectRandom _garbageTypes,_campCenter,[],0,"CAN_COLLIDE"];
 
-    _tentWeaponHolder  = createVehicle ["GroundWeaponHolder", getPos _tent, [], 0, "NONE"];
-    _tentWeaponHolder attachTo [_tent, [0,0,0]];
-
 	// Add Items to Tent
-    // Weapon
-    _rdmWeapon      = selectRandom _weaponsList;
-    _rdmWeaponMags  = getArray(configfile >> "cfgWeapons" >> _rdmWeapon >> "magazines");
-    _tentWeaponHolder addWeaponCargoGlobal [_rdmWeapon,1];
-    _tentWeaponHolder addMagazineCargoGlobal [selectRandom _rdmWeaponMags, round(random 2)+1];
-    // Backpack
-    _tentWeaponHolder addBackpackCargoGlobal [selectRandom _backpacksList,1];
-    // Items
-    _tentWeaponHolder addItemCargoGlobal [selectRandom _itemsList, round(random 1)+1];
-    // Equipment
-    _tentWeaponHolder addItemCargoGlobal [selectRandom _equipmentList,round(random 1)+1];
+    for "_i" from 0 to round(random 3) step 1 do {
+        // Weapon
+        _rdmWeapon      = selectRandom _weaponsList;
+        _rdmWeaponMags  = getArray(configfile >> "cfgWeapons" >> _rdmWeapon >> "magazines");
+        _tent addWeaponCargoGlobal [_rdmWeapon,1];
+        _tent addMagazineCargoGlobal [selectRandom _rdmWeaponMags, round(random 2)+1];
+        // Backpack
+        _tent addBackpackCargoGlobal [selectRandom _backpacksList,1];
+        // Items
+        _tent addItemCargoGlobal [selectRandom _itemsList, round(random 1)+1];
+        // Equipment
+        _tent addItemCargoGlobal [selectRandom _equipmentList,round(random 1)+1];
+    };
 
     // Add Fireplace
 	_fireplacePos  = [(_campCenter select 0)+6+(random 2),(_campCenter select 1)+6+(random 2)];
-	_fireplace     = createVehicle [selectRandom _fireplaces,_fireplacePos,[],0,"NONE"];
-	//_tent setPos _fireplacePos;
+	_fireplace     = createVehicle [selectRandom _fireplaces,_fireplacePos,[],0];
+	_tent setPos _fireplacePos;
 
 	_markerstr  = createMarker ["camp" + str _a, _campCenter];
 	_markerstr setMarkerShape "ICON";
 	_markerstr setMarkerType "hd_dot";
     _markerstr setMarkerColor "ColorBrown";
-	//_markerstr setMarkerAlpha 0;
 
     _addedDeadHumans    = 0;
     _maxRdmDeadHumans   = floor(random 6) + 1;
@@ -104,7 +102,7 @@ for "_a" from 0 to _minCamps step 1 do {
             };
     	    default{};
     	};
-		_stuff = createVehicle [selectRandom _campstuff,_stuffPos,[],0,"NONE"];
+		_stuff = createVehicle [selectRandom _campstuff,_stuffPos,[],0];
         _stuff setDir random 40;
 		//_tent setPos _stuffPos;
 
@@ -115,7 +113,7 @@ for "_a" from 0 to _minCamps step 1 do {
         };
 
         // Add Items on Camp Ground
-        _loot = createVehicle ["GroundWeaponHolder",[((_stuffPos select 0)-1)+random 1,((_stuffPos select 1)-1)+random 1],[],0,"NONE"];
+        _loot = createVehicle ["GroundWeaponHolder",[((_stuffPos select 0)-1)+random 1,((_stuffPos select 1)-1)+random 1],[],0];
         for "_l" from 1 to (1+round(random 3)) step 1 do {
             _loot addMagazineCargoGlobal[selectRandom _foodItems,1];
         };
