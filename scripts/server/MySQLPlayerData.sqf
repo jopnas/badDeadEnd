@@ -174,13 +174,13 @@ fnc_saveBarricade = {
     _position       = getPosAtL _barricade;
     _rotation       = getDir _barricade;
     _type           = typeOf _barricade;
-    _QuerySaveBarricade  = format["0:SQL_BC_SAVE:INSERT INTO barricades (barricadeID,pos,rot,type,health) VALUES('""%1""','%2','%3','""%4""','%5') ON DUPLICATE KEY UPDATE pos='%2',rot='%3',type='""%4""',health='%5'",_barricadeID,_position,_rotation,_type,_health];
+    _QuerySaveBarricade  = format["0:SQL_BC_SAVE:INSERT INTO barricades (barricadeid,pos,rot,type,health) VALUES('""%1""','%2','%3','""%4""','%5') ON DUPLICATE KEY UPDATE pos='%2',rot='%3',type='""%4""',health='%5'",_barricadeID,_position,_rotation,_type,_health];
     _saveIs         = "extDB2" callExtension _QuerySaveBarricade;
 };
 
 // Barricades Load
 fnc_loadBarricades = {
-    _result             = call compile ("extDB2" callExtension "0:SQL_BC_LOAD:SELECT id,barricadeID,pos,rot,type,health FROM barricades");
+    _result             = call compile ("extDB2" callExtension "0:SQL_BC_LOAD:SELECT id,barricadeid,pos,rot,type,health FROM barricades");
     _resultQueryStatus  = _result select 0;
     _resultInDB         = _result select 1;
     waitUntil { _resultQueryStatus > 0 };
@@ -188,7 +188,7 @@ fnc_loadBarricades = {
 };
 
 fnc_deleteBarricade = {
-    params["barricadeID"];
+    params["_barricadeID"];
     systemChat str _barricadeID;
-	"extDB2" callExtension format["0:SQL_BC_DEL:DELETE FROM barricades WHERE barricadeID='""%1""'",_barricadeID];
+	"extDB2" callExtension format["0:SQL_BC_DEL:DELETE FROM barricades WHERE barricadeid='""%1""'",_barricadeID];
 };

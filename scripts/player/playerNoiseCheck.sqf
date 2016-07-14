@@ -50,9 +50,11 @@ if(vehicle _playerUnit == _playerUnit)then{
     _soundType = getText (configFile >> "CfgSurfaces" >> _type >> "soundEnviron");
     _soundVal = getArray (configFile >> "CfgVehicles" >> "CAManBase" >> "SoundEnvironExt" >> _soundType);
 
-    {
-        _
-    }forEach _soundVal;
+    hint format["_movementType: %1",_movementType];
+
+    /*{
+        systemChat str _x;
+    }forEach _soundVal;*/
 
     /*_surfaceLevelBySpeed = 0;
     if(_speed == 1)then{
@@ -86,7 +88,7 @@ if(vehicle _playerUnit == _playerUnit)then{
 }else{
     _speed	=  abs floor(speed (vehicle _playerUnit));
     _noiseLevel = floor(100 + (_speed / 2));
-    systemChat str (getAllSoundControllers (vehicle _playerUnit));
+    //systemChat str (getAllSoundControllers (vehicle _playerUnit));
 };
 
 // Limitations cause GUI-Values

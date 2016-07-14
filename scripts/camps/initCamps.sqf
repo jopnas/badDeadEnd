@@ -43,7 +43,7 @@ for "_a" from 0 to _minCamps step 1 do {
 	_campSelf          = _campLocatsRdm select _a;
 	_campCenter        = (_campSelf select 0) findEmptyPosition [0, 100, "Land_House_Big_01_V1_ruins_F"];
 
-	_tent              = createVehicle [selectRandom _tents,_campCenter,[],0];
+	_tent              = createVehicle [selectRandom _tents,_campCenter,[],0,""];
 	_garbage           = createVehicle [selectRandom _garbageTypes,_campCenter,[],0,"CAN_COLLIDE"];
 
 	// Add Items to Tent
@@ -63,7 +63,7 @@ for "_a" from 0 to _minCamps step 1 do {
 
     // Add Fireplace
 	_fireplacePos  = [(_campCenter select 0)+6+(random 2),(_campCenter select 1)+6+(random 2)];
-	_fireplace     = createVehicle [selectRandom _fireplaces,_fireplacePos,[],0];
+	_fireplace     = createVehicle [selectRandom _fireplaces,_fireplacePos,[],0,""];
 	_tent setPos _fireplacePos;
 
 	_markerstr  = createMarker ["camp" + str _a, _campCenter];
@@ -102,18 +102,18 @@ for "_a" from 0 to _minCamps step 1 do {
             };
     	    default{};
     	};
-		_stuff = createVehicle [selectRandom _campstuff,_stuffPos,[],0];
-        _stuff setDir random 40;
+		_stuff = createVehicle [selectRandom _campstuff,_stuffPos,[],0,""];
+        _stuff setDir (random 40);
 		//_tent setPos _stuffPos;
 
         if(floor(random 8) == _i && _addedDeadHumans < _maxRdmDeadHumans)then{
             _deadType = selectRandom  ["Land_HumanSkeleton_F","Land_HumanSkull_F"];
-            _deadType createVehicle (_stuffPos findEmptyPosition [0, 10, _deadType]);
+             createVehicle [_deadType,_stuffPos findEmptyPosition [0, 10, _deadType],[],0,""];
             _addedDeadHumans = _addedDeadHumans + 1;
         };
 
         // Add Items on Camp Ground
-        _loot = createVehicle ["GroundWeaponHolder",[((_stuffPos select 0)-1)+random 1,((_stuffPos select 1)-1)+random 1],[],0];
+        _loot = createVehicle ["GroundWeaponHolder",[((_stuffPos select 0)-1)+random 1,((_stuffPos select 1)-1)+random 1],[],0,""];
         for "_l" from 1 to (1+round(random 3)) step 1 do {
             _loot addMagazineCargoGlobal[selectRandom _foodItems,1];
         };

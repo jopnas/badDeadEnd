@@ -528,13 +528,6 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
             barricade setDir (getDir player);
             barricade attachTo [player, [0,2,barricadeHeight]];
 
-
-            barricade addAction ["Destroy Barricade", {
-                sleep 0.5;
-                [_this select 3] remoteExec ["fnc_deleteBarricade",2,false];
-                deleteVehicle (_this select 0);
-            },barricade getVariable["barricadeID","0"],0,true,true,"","isNull(attachedTo _target)",3];
-
             raiseBarricade = player addAction ["Raise Barricade", {
                 _curPos = getPosATL barricade;
                 barricadeHeight = barricadeHeight + 0.1;
@@ -566,6 +559,12 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
                 barricade setVariable["health",1000,true];
                 [barricade] remoteExec ["fnc_saveBarricade",2,false];
 
+                barricade addAction ["Destroy Barricade", {
+                    sleep 0.5;
+                    [_this select 3] remoteExec ["fnc_deleteBarricade",2,false];
+                    deleteVehicle (_this select 0);
+                },_barricadeID,0,true,true,"","isNull(attachedTo _target)",3];
+
                 player removeAction raiseBarricade;
                 player removeAction lowerBarricade;
                 player removeAction cancleBarricading;
@@ -594,6 +593,6 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         actionBarricadeActive = false;
     };
 
-    hint format["barricade: %1",(typeOf barricade) isEqualTo "Land_Pallet_vertical_F"];
+    //hint format["barricade: %1",(typeOf barricade) isEqualTo "Land_Pallet_vertical_F"];
 
 };
