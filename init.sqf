@@ -14,12 +14,12 @@ worldCenter     = getArray(configFile >> "CfgWorlds" >> worldName >> "safePositi
 worldCenter pushBack 0;
 worldHalfSize   = getNumber (configFile >> "CfgWorlds" >> worldName >> "safePositionRadius");
 
-_markerstr = createMarker ["centerMarker", [worldCenter select 0,worldCenter select 1]];
-_markerstr setMarkerColor "ColorYellow";
-_markerstr setMarkerBrush "FDiagonal";
-_markerstr setMarkerAlpha 0.5;
-_markerstr setMarkerShape "ELLIPSE";
-_markerstr setMarkerSize [worldHalfSize,worldHalfSize];
+_centerMarker = createMarker ["centerMarker", [worldCenter select 0,worldCenter select 1]];
+_centerMarker setMarkerColor "ColorYellow";
+_centerMarker setMarkerBrush "FDiagonal";
+_centerMarker setMarkerAlpha 0.5;
+_centerMarker setMarkerShape "ELLIPSE";
+_centerMarker setMarkerSize [worldHalfSize,worldHalfSize];
 
 if(isServer)then{
     loadedCarsList = [];
