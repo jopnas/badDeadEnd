@@ -239,7 +239,7 @@ actionsEventHandler = [] spawn {
 	};
 };
 
-// Save Tent Inventory
+// Save Tent Inventory, ToDO: Save Player Stats
 _playerUnit addEventHandler ["InventoryClosed", {
     params["_unit","_container"];
     if(typeOf _container == "bde_tentCamo" || typeOf _container == "bde_tentDome")then{

@@ -1,5 +1,4 @@
 // GUI
-lastUIBlinkCheck    = time;
 updateUI   			= compile preprocessFile "scripts\player\playerUpdateUI.sqf";
 checkNoise 			= compile preprocessFile "scripts\player\playerNoiseCheck.sqf";
 handleWet 			= compile preprocessFile "scripts\player\playerWetHandler.sqf";
@@ -8,6 +7,8 @@ checkBoundingBox    = compile preprocessFile "scripts\tools\checkBoundingBox.sqf
 checkAnimals		= compile preprocessFile "scripts\animals\checkAnimals.sqf";
 footFuncs			= compile preprocessFile "scripts\foot\foot_funcs.sqf";
 checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
+
+nextEverySecond     = 0;
 
 barricadeWoodElements       = ["Land_Pallet_vertical_F","Land_Shoot_House_Wall_F","Land_Shoot_House_Wall_Stand_F","Land_Shoot_House_Wall_Crouch_F","Land_Shoot_House_Wall_Prone_F","Land_Shoot_House_Wall_Long_F","Land_Shoot_House_Wall_Long_Stand_F","Land_Shoot_House_Wall_Long_Crouch_F","Land_Shoot_House_Wall_Long_Prone_F"];
 barricadeSandElements       = ["Land_BagFence_Corner_F","Land_BagFence_End_F","Land_BagFence_Long_F","Land_BagFence_Round_F","Land_BagFence_Short_Fm"];
@@ -187,7 +188,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 		}else{
 			playerHunger = 0;
 		};
-		nextHungerDecr = time + hungerWaitTime;
+		nextHungerDecr = t + hungerWaitTime;
 	};
 
 	if(t > nextThirstDecr)then{
@@ -198,7 +199,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 		}else{
 			playerThirst = 0;
 		};
-		nextThirstDecr = time + thirstWaitTime;
+		nextThirstDecr = t + thirstWaitTime;
 	};
 
 	if(t > nextHealthDecr)then{
@@ -212,7 +213,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 			playerHealth = 0;
 		};
 
-		nextHealthDecr = time + healthWaitTime;
+		nextHealthDecr = t + healthWaitTime;
 	};
 
     if(t > 2)then{
@@ -220,11 +221,14 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         [] spawn checkAnimals;
     };
     if(t > 5)then{
-        // Save Spawn Stats
-        [player,[playerHunger,playerThirst,playerHealth,playerTemperature,playerWet,playerSick,playerInfected]] remoteExec ["fnc_savePlayerStats",2,false];
-        [getPos player] remoteExecCall ["fnc_spawnLoot",2,false];
         [] spawn checkSick;
+        [getPos player] remoteExec ["fnc_spawnLoot",2,false];
+    };
+
+    if(t > nextEverySecond)then{
         [] spawn updateUI;
+        [player,[playerHunger,playerThirst,playerHealth,playerTemperature,playerWet,playerSick,playerInfected]] remoteExec ["fnc_savePlayerStats",2,false];
+        nextEverySecond = t + 1;
     };
 
     _speed              = speed (vehicle player);

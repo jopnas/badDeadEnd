@@ -96,92 +96,90 @@ _ctrlNoise ctrlSetText "images\gui\noise\gui_noise_" + (str playerNoise) + ".paa
 
 //systemChat str lastUIBlinkCheck;
 
-if(time - lastUIBlinkCheck > 1)then{
+
+if(guiBlink)then{
+    guiBlink = false;
+}else{
+    guiBlink = true;
+};
+// Indicators
+if(_infectedVal > 80)then{
     if(guiBlink)then{
-        guiBlink = false;
-    }else{
-        guiBlink = true;
-    };
-    // Indicators
-    if(_infectedVal > 80)then{
-        if(guiBlink)then{
-            _ctrlInfected ctrlSetTextColor [1,1 - _uiInfectedVal,1 - _uiInfectedVal,1];
-        }else{
-            _ctrlInfected ctrlSetTextColor [1,1 - _uiInfectedVal,1 - _uiInfectedVal,0];
-        };
-    }else{
         _ctrlInfected ctrlSetTextColor [1,1 - _uiInfectedVal,1 - _uiInfectedVal,1];
-    };
-
-    if(_sickVal > 80)then{
-        if(guiBlink)then{
-            _ctrlSick ctrlSetTextColor [1,1 - _uiSickVal,1 - _uiSickVal,1];
-        }else{
-            _ctrlSick ctrlSetTextColor [1,1 - _uiSickVal,1 - _uiSickVal,0];
-        };
     }else{
+        _ctrlInfected ctrlSetTextColor [1,1 - _uiInfectedVal,1 - _uiInfectedVal,0];
+    };
+}else{
+    _ctrlInfected ctrlSetTextColor [1,1 - _uiInfectedVal,1 - _uiInfectedVal,1];
+};
+
+if(_sickVal > 80)then{
+    if(guiBlink)then{
         _ctrlSick ctrlSetTextColor [1,1 - _uiSickVal,1 - _uiSickVal,1];
-    };
-
-    if(_wetVal > 80)then{
-        if(guiBlink)then{
-            _ctrlWet ctrlSetTextColor [1 - _uiWetVal,1 - _uiWetVal,1,1];
-        }else{
-            _ctrlWet ctrlSetTextColor [1 - _uiWetVal,1 - _uiWetVal,1,0];
-        };
     }else{
+        _ctrlSick ctrlSetTextColor [1,1 - _uiSickVal,1 - _uiSickVal,0];
+    };
+}else{
+    _ctrlSick ctrlSetTextColor [1,1 - _uiSickVal,1 - _uiSickVal,1];
+};
+
+if(_wetVal > 80)then{
+    if(guiBlink)then{
         _ctrlWet ctrlSetTextColor [1 - _uiWetVal,1 - _uiWetVal,1,1];
-    };
-
-    // Values
-    if(_temperatureVal < 20)then{
-        if(guiBlink)then{
-            _ctrlTemperatureIcon ctrlSetTextColor [0.5,0.5,1,0.2];
-        }else{
-            _ctrlTemperatureIcon ctrlSetTextColor [0.5,0.5,1,1];
-        };
     }else{
-        _ctrlTemperatureIcon ctrlSetTextColor [1,1,1,1];
+        _ctrlWet ctrlSetTextColor [1 - _uiWetVal,1 - _uiWetVal,1,0];
     };
+}else{
+    _ctrlWet ctrlSetTextColor [1 - _uiWetVal,1 - _uiWetVal,1,1];
+};
 
-    if(_healthVal < 20)then{
-        if(guiBlink)then{
-            _ctrlHealthIcon ctrlSetTextColor [1,0.5,0.5,0.2];
-        }else{
-            _ctrlHealthIcon ctrlSetTextColor [1,0.5,0.5,1];
-        };
+// Values
+if(_temperatureVal < 20)then{
+    if(guiBlink)then{
+        _ctrlTemperatureIcon ctrlSetTextColor [0.5,0.5,1,0.2];
     }else{
-        _ctrlHealthIcon ctrlSetTextColor [1,1,1,1];
+        _ctrlTemperatureIcon ctrlSetTextColor [0.5,0.5,1,1];
     };
+}else{
+    _ctrlTemperatureIcon ctrlSetTextColor [1,1,1,1];
+};
 
-    if(_hungerVal < 20)then{
-        if(guiBlink)then{
-            _ctrlHungerIcon ctrlSetTextColor [1,1,1,0.2];
-        }else{
-            _ctrlHungerIcon ctrlSetTextColor [1,1,1,1];
-        };
+if(_healthVal < 20)then{
+    if(guiBlink)then{
+        _ctrlHealthIcon ctrlSetTextColor [1,0.5,0.5,0.2];
+    }else{
+        _ctrlHealthIcon ctrlSetTextColor [1,0.5,0.5,1];
+    };
+}else{
+    _ctrlHealthIcon ctrlSetTextColor [1,1,1,1];
+};
+
+if(_hungerVal < 20)then{
+    if(guiBlink)then{
+        _ctrlHungerIcon ctrlSetTextColor [1,1,1,0.2];
     }else{
         _ctrlHungerIcon ctrlSetTextColor [1,1,1,1];
     };
+}else{
+    _ctrlHungerIcon ctrlSetTextColor [1,1,1,1];
+};
 
-    if(_thirstVal < 20)then{
-        if(guiBlink)then{
-            _ctrlThirstIcon ctrlSetTextColor [1,1,1,0.2];
-        }else{
-            _ctrlThirstIcon ctrlSetTextColor [1,1,1,1];
-        };
+if(_thirstVal < 20)then{
+    if(guiBlink)then{
+        _ctrlThirstIcon ctrlSetTextColor [1,1,1,0.2];
     }else{
         _ctrlThirstIcon ctrlSetTextColor [1,1,1,1];
     };
+}else{
+    _ctrlThirstIcon ctrlSetTextColor [1,1,1,1];
+};
 
-    if(_hungerVal < 20)then{
-        if(guiBlink)then{
-            _ctrlHungerIcon ctrlSetTextColor [1,1,1,0.2];
-        }else{
-            _ctrlHungerIcon ctrlSetTextColor [1,1,1,1];
-        };
+if(_hungerVal < 20)then{
+    if(guiBlink)then{
+        _ctrlHungerIcon ctrlSetTextColor [1,1,1,0.2];
     }else{
         _ctrlHungerIcon ctrlSetTextColor [1,1,1,1];
     };
-    lastUIBlinkCheck = time;
+}else{
+    _ctrlHungerIcon ctrlSetTextColor [1,1,1,1];
 };

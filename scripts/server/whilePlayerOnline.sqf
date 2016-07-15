@@ -12,7 +12,7 @@ while {count allPlayers > 0} do {
 
     // save car data to mysql if player close
     if(count _allAliveHPs > 0 && count loadedCarsList > 0)then{
-        _nearestCars = nearestObjects[[16000,16000],loadedCarsList,16000];
+        _nearestCars = nearestObjects[[worldCenter select 0,worldCenter select 1],loadedCarsList,worldHalfSize];
         {
             [_x] call fnc_saveCar;
         } forEach _nearestCars;

@@ -4,6 +4,13 @@ _isInside 		    = _this select 1;
 _isInCar 			= _this select 2;
 _nearestFireplaces 	= _this select 3;
 
+_player             = player;
+
+_PlayerUniform		= uniform _player;
+_PlayerVest			= vest _player;
+_PlayerBackpack		= backpack _player;
+_headgear 		    = headgear _player;
+
 _playerWetness  = playerWet;
 
 if(rain > 0 && !_isUnderCover && !_isInCar)then{
