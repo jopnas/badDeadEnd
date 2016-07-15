@@ -9,11 +9,12 @@ checkAnimals		= compile preprocessFile "scripts\animals\checkAnimals.sqf";
 footFuncs			= compile preprocessFile "scripts\foot\foot_funcs.sqf";
 checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
 
-barricadeDefenceElements    = ["Land_Razorwire_F"];
-barricadeSandElements       = ["Land_BagFence_Corner_F","Land_BagFence_End_F","Land_BagFence_Long_F","Land_BagFence_Round_F","Land_BagFence_Short_Fm"];
 barricadeWoodElements       = ["Land_Pallet_vertical_F","Land_Shoot_House_Wall_F","Land_Shoot_House_Wall_Stand_F","Land_Shoot_House_Wall_Crouch_F","Land_Shoot_House_Wall_Prone_F","Land_Shoot_House_Wall_Long_F","Land_Shoot_House_Wall_Long_Stand_F","Land_Shoot_House_Wall_Long_Crouch_F","Land_Shoot_House_Wall_Long_Prone_F"];
-barricadeAllElements        = barricadeDefenceElements + barricadeSandElements + barricadeWoodElements;
+barricadeSandElements       = ["Land_BagFence_Corner_F","Land_BagFence_End_F","Land_BagFence_Long_F","Land_BagFence_Round_F","Land_BagFence_Short_Fm"];
+barricadeDefenceElements    = ["Land_Razorwire_F"];
+barricadeAllElements        = barricadeWoodElements + barricadeSandElements + barricadeDefenceElements;
 
+changeBarricade         = -1;
 raiseBarricade          = -1;
 lowerBarricade          = -1;
 releaseBarricade        = -1;
@@ -567,8 +568,10 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
                 player removeAction lowerBarricade;
                 player removeAction cancleBarricading;
                 player removeAction releaseBarricade;
+                player removeAction changeBarricade;
                 deleteVehicle barricade;
                 barricadeHeight       = 1;
+                barricadeElementIndex = 0;
                 barricade             = player;
                 actionBarricadeActive = false;
             },"",0,true,false,"",""];
@@ -591,8 +594,10 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
                 player removeAction lowerBarricade;
                 player removeAction cancleBarricading;
                 player removeAction releaseBarricade;
+                player removeAction changeBarricade;
                 detach barricade;
                 barricadeHeight       = 1;
+                barricadeElementIndex = 0;
                 barricade             = player;
                 actionBarricadeActive = false;
 
@@ -611,7 +616,9 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         player removeAction lowerBarricade;
         player removeAction cancleBarricading;
         player removeAction releaseBarricade;
+        player removeAction changeBarricade;
         barricadeHeight = 1;
+        barricadeElementIndex = 0;
         actionBarricadeActive = false;
     };
 
