@@ -64,7 +64,11 @@ _buildFireplace = {
       };
     	cutText ["build fireplace", "PLAIN DOWN"];
         fireplace = createVehicle ["Land_FirePlace_F",position player,[],0,"can_collide"];
-        //fireplace setObjectTexture [0,'#(argb,8,8,3)color(0,0,0,0.5)'];
+        _fireplaceTextures = getObjectTextures fireplace;
+        {
+            fireplace setObjectTextureGlobal [_forEachIndex, "#(rgb,8,8,3)color(0,0,1,1)"];
+        } forEach _fireplaceTextures;
+
     	fireplace setDir (getDir player);
         fireplace attachTo [player, [0,2,0]];
     	releaseFireplace = player addAction ["Release Fireplace", { detach fireplace; player removeAction releaseFireplace;}, name player];

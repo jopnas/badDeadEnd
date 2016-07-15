@@ -9,12 +9,18 @@ checkAnimals		= compile preprocessFile "scripts\animals\checkAnimals.sqf";
 footFuncs			= compile preprocessFile "scripts\foot\foot_funcs.sqf";
 checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
 
+barricadeDefenceElements    = ["Land_Razorwire_F"];
+barricadeSandElements       = ["Land_BagFence_Corner_F","Land_BagFence_End_F","Land_BagFence_Long_F","Land_BagFence_Round_F","Land_BagFence_Short_Fm"];
+barricadeWoodElements       = ["Land_Pallet_vertical_F","Land_Shoot_House_Wall_F","Land_Shoot_House_Wall_Stand_F","Land_Shoot_House_Wall_Crouch_F","Land_Shoot_House_Wall_Prone_F","Land_Shoot_House_Wall_Long_F","Land_Shoot_House_Wall_Long_Stand_F","Land_Shoot_House_Wall_Long_Crouch_F","Land_Shoot_House_Wall_Long_Prone_F"];
+barricadeAllElements        = barricadeDefenceElements + barricadeSandElements + barricadeWoodElements;
+
 raiseBarricade          = -1;
 lowerBarricade          = -1;
 releaseBarricade        = -1;
 cancleBarricading       = -1;
 barricade               = player;
 barricadeHeight         = 1;
+barricadeElementIndex   = 0;
 actionBarricadeActive   = false;
 
 isInside                = false;
@@ -528,6 +534,22 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
             barricade setDir (getDir player);
             barricade attachTo [player, [0,2,barricadeHeight]];
 
+            changeBarricade = player addAction ["Change Barricade Element", {
+                deleteVehicle barricade;
+
+                if(barricadeElementIndex + 1 == count barricadeAllElements)then{
+                    barricadeElementIndex = 0;
+                }else{
+                    barricadeElementIndex = barricadeElementIndex + 1;
+                };
+
+                barricade = createVehicle [barricadeAllElements select barricadeElementIndex,position player,[],0,"can_collide"];
+                barricade enableSimulation false;
+                barricade setDir (getDir player);
+                barricade attachTo [player, [0,2,barricadeHeight]];
+
+            },"",1,true,false,"",""];
+
             raiseBarricade = player addAction ["Raise Barricade", {
                 _curPos = getPosATL barricade;
                 barricadeHeight = barricadeHeight + 0.1;
@@ -563,7 +585,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
                     sleep 0.5;
                     [_this select 3] remoteExec ["fnc_deleteBarricade",2,false];
                     deleteVehicle (_this select 0);
-                },_barricadeID,0,true,true,"","isNull(attachedTo _target)",3];
+                },_barricadeID,0,true,true,"","",3];
 
                 player removeAction raiseBarricade;
                 player removeAction lowerBarricade;
@@ -580,7 +602,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
     };
 
     if(!isInside && actionBarricadeActive)then{
-        if((typeOf barricade) isEqualTo "Land_Pallet_vertical_F")then{
+        if((typeOf barricade) in barricadeAllElements)then{
             deleteVehicle barricade;
             barricade = player;
         };
@@ -593,6 +615,6 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         actionBarricadeActive = false;
     };
 
-    //hint format["barricade: %1",(typeOf barricade) isEqualTo "Land_Pallet_vertical_F"];
+    //hint format["barricade: %1",(typeOf barricade) in barricadeAllElements];
 
 };

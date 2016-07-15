@@ -105,9 +105,9 @@ if(time - lastUIBlinkCheck > 1)then{
     // Indicators
     if(_infectedVal > 80)then{
         if(guiBlink)then{
-            _ctrlInfected ctrlSetTextColor [1,1 - _uiInfectedVal,1 - _uiInfectedVal,0.2];
-        }else{
             _ctrlInfected ctrlSetTextColor [1,1 - _uiInfectedVal,1 - _uiInfectedVal,1];
+        }else{
+            _ctrlInfected ctrlSetTextColor [1,1 - _uiInfectedVal,1 - _uiInfectedVal,0];
         };
     }else{
         _ctrlInfected ctrlSetTextColor [1,1 - _uiInfectedVal,1 - _uiInfectedVal,1];
@@ -115,9 +115,9 @@ if(time - lastUIBlinkCheck > 1)then{
 
     if(_sickVal > 80)then{
         if(guiBlink)then{
-            _ctrlSick ctrlSetTextColor [1,1 - _uiSickVal,1 - _uiSickVal,0.2];
-        }else{
             _ctrlSick ctrlSetTextColor [1,1 - _uiSickVal,1 - _uiSickVal,1];
+        }else{
+            _ctrlSick ctrlSetTextColor [1,1 - _uiSickVal,1 - _uiSickVal,0];
         };
     }else{
         _ctrlSick ctrlSetTextColor [1,1 - _uiSickVal,1 - _uiSickVal,1];
@@ -125,12 +125,12 @@ if(time - lastUIBlinkCheck > 1)then{
 
     if(_wetVal > 80)then{
         if(guiBlink)then{
-            _ctrlWet ctrlSetTextColor [1,1 - _uiWetVal,1 - _uiWetVal,0];
+            _ctrlWet ctrlSetTextColor [1 - _uiWetVal,1 - _uiWetVal,1,1];
         }else{
-            _ctrlWet ctrlSetTextColor [1,1 - _uiWetVal,1 - _uiWetVal,1];
+            _ctrlWet ctrlSetTextColor [1 - _uiWetVal,1 - _uiWetVal,1,0];
         };
     }else{
-        _ctrlWet ctrlSetTextColor [1,1 - _uiWetVal,1 - _uiWetVal,1];
+        _ctrlWet ctrlSetTextColor [1 - _uiWetVal,1 - _uiWetVal,1,1];
     };
 
     // Values
