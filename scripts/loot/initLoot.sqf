@@ -19,7 +19,7 @@ fnc_spawnLoot = {
   _medicalItems	        = ["bde_waterpurificationtablets","bde_antibiotics","bde_vitamines"];
   _toolItems            = ["bde_matches","bde_lock","bde_hatchet","bde_stone","bde_wood","bde_ducttape"];
 
-  _garageStuff          = ["bde_tentCamoPacked","bde_tentDomePacked","bde_tire","bde_fuelCanisterEmpty","bde_fuelCanisterFilled"];
+  _garageStuff          = ["bde_tentCamoPacked","bde_tentDomePacked","bde_wheel","bde_fuelCanisterEmpty","bde_fuelCanisterFilled"];
 
   _garagesNames         = ["Land_i_Garage_V1_F","Land_i_Garage_V1_dam_F","Land_i_Garage_V2_F","Land_i_Garage_V2_dam_F"];
   _pierNames         	= ["Land_Pier_F","Land_Pier_Box_F","Land_Pier_wall_F"];
@@ -132,7 +132,7 @@ fnc_spawnLoot = {
                     };
 
                     // Food
-                    if(random 100 < 40) then {
+                    if(random 100 < 60) then {
                       _spawn addMagazineCargoGlobal [selectRandom _foodItems, 1];
                     };
                 };
@@ -157,7 +157,7 @@ fnc_spawnLoot = {
 
                 case "CivilianBuilding":{
                   // Food
-                  if(random 100 < 50) then {
+                  if(random 100 < 60) then {
                     _spawn addMagazineCargoGlobal [selectRandom _foodItems, 1];
                   };
                   // Attachments & Items

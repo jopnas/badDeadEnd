@@ -15,11 +15,13 @@ barricadeSandElements       = ["Land_BagFence_Corner_F","Land_BagFence_End_F","L
 barricadeDefenceElements    = ["Land_Razorwire_F"];
 barricadeAllElements        = barricadeWoodElements + barricadeSandElements + barricadeDefenceElements;
 
-changeBarricade         = -1;
+changeBarricadeNext     = -1;
+changeBarricadePrev     = -1;
 raiseBarricade          = -1;
 lowerBarricade          = -1;
 releaseBarricade        = -1;
 cancleBarricading       = -1;
+resetHeightBarricade    = -1;
 barricade               = player;
 barricadeHeight         = 1;
 barricadeElementIndex   = 0;
@@ -56,9 +58,9 @@ carRepair = {
     _action     = _this select 4;
 
     _allineed = false;
-    if(_partName find "Wheel" > -1 && "bde_tire" in Magazines Player)then{
+    if(_partName find "Wheel" > -1 && "bde_wheel" in Magazines Player)then{
         _allineed = true;
-        player removeMagazine "bde_tire";
+        player removeMagazine "bde_wheel";
     };
 
     if(_partName find "Fuel" > -1 && "bde_ducttape" in Magazines Player)then{
@@ -228,7 +230,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
     if(t > nextEverySecond)then{
         [] spawn updateUI;
         [player,[playerHunger,playerThirst,playerHealth,playerTemperature,playerWet,playerSick,playerInfected]] remoteExec ["fnc_savePlayerStats",2,false];
-        nextEverySecond = t + 1;
+        nextEverySecond = t + 2;
     };
 
     _speed              = speed (vehicle player);
@@ -534,7 +536,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
             _caller     = _this select 1;
 
             player removeAction barricadeAction;
-            barricade = createVehicle ["Land_Pallet_vertical_F",position player,[],0,"can_collide"];
+            barricade = createVehicle [barricadeAllElements select barricadeElementIndex,position player,[],0,"can_collide"];
             barricade enableSimulation false;
             barricade setDir (getDir player);
             barricade attachTo [player, [0,2,barricadeHeight]];
@@ -583,17 +585,19 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
                 barricade attachTo [player, [0,2,barricadeHeight]];
             },"",0,true,false,"",""];
 
+            resetHeightBarricade = player addAction ["Reset Barricade Height", {
+                barricadeHeight = 0;
+            },"",0,true,false,"",""];
+
             cancleBarricading = player addAction ["Cancle Barricading", {
                 player removeAction changeBarricadePrev;
                 player removeAction changeBarricadeNext;
                 player removeAction raiseBarricade;
                 player removeAction lowerBarricade;
+                player removeAction resetHeightBarricade;
                 player removeAction cancleBarricading;
                 player removeAction releaseBarricade;
-                player removeAction changeBarricade;
                 deleteVehicle barricade;
-                barricadeHeight       = 1;
-                barricadeElementIndex = 0;
                 barricade             = player;
                 actionBarricadeActive = false;
             },"",0,true,false,"",""];
@@ -615,12 +619,10 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
                 player removeAction changeBarricadeNext;
                 player removeAction raiseBarricade;
                 player removeAction lowerBarricade;
+                player removeAction resetHeightBarricade;
                 player removeAction cancleBarricading;
                 player removeAction releaseBarricade;
-                player removeAction changeBarricade;
                 detach barricade;
-                barricadeHeight       = 1;
-                barricadeElementIndex = 0;
                 barricade             = player;
                 actionBarricadeActive = false;
 
@@ -639,11 +641,9 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         player removeAction barricadeAction;
         player removeAction raiseBarricade;
         player removeAction lowerBarricade;
+        player removeAction resetHeightBarricade;
         player removeAction cancleBarricading;
         player removeAction releaseBarricade;
-        player removeAction changeBarricade;
-        barricadeHeight = 1;
-        barricadeElementIndex = 0;
         actionBarricadeActive = false;
     };
 

@@ -94,10 +94,6 @@ _ctrlHunger ctrlSetText "images\gui\val_" + str ( floor(_hungerVal/10)*10 ) + ".
 _ctrlNoise = _namespaceUI displayCtrl 1212;
 _ctrlNoise ctrlSetText "images\gui\noise\gui_noise_" + (str playerNoise) + ".paa";
 
-//systemChat str lastUIBlinkCheck;
-hint format["_uiSickVal: %1",_uiSickVal];
-
-
 if(guiBlink)then{
     guiBlink = false;
 }else{
