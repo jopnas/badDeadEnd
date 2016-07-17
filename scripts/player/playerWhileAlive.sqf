@@ -539,13 +539,29 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
             barricade setDir (getDir player);
             barricade attachTo [player, [0,2,barricadeHeight]];
 
-            changeBarricade = player addAction ["Change Barricade Element", {
+            changeBarricadeNext = player addAction ["Next Barricade Element", {
                 deleteVehicle barricade;
 
                 if(barricadeElementIndex + 1 == count barricadeAllElements)then{
                     barricadeElementIndex = 0;
                 }else{
                     barricadeElementIndex = barricadeElementIndex + 1;
+                };
+
+                barricade = createVehicle [barricadeAllElements select barricadeElementIndex,position player,[],0,"can_collide"];
+                barricade enableSimulation false;
+                barricade setDir (getDir player);
+                barricade attachTo [player, [0,2,barricadeHeight]];
+
+            },"",1,true,false,"",""];
+
+            changeBarricadePrev = player addAction ["Previous Barricade Element", {
+                deleteVehicle barricade;
+
+                if(barricadeElementIndex == 0)then{
+                    barricadeElementIndex = count barricadeAllElements - 1;
+                }else{
+                    barricadeElementIndex = barricadeElementIndex - 1;
                 };
 
                 barricade = createVehicle [barricadeAllElements select barricadeElementIndex,position player,[],0,"can_collide"];
@@ -568,6 +584,8 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
             },"",0,true,false,"",""];
 
             cancleBarricading = player addAction ["Cancle Barricading", {
+                player removeAction changeBarricadePrev;
+                player removeAction changeBarricadeNext;
                 player removeAction raiseBarricade;
                 player removeAction lowerBarricade;
                 player removeAction cancleBarricading;
@@ -593,7 +611,8 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
                     [_this select 3] remoteExec ["fnc_deleteBarricade",2,false];
                     deleteVehicle (_this select 0);
                 },_barricadeID,0,true,true,"","",3];
-
+                player removeAction changeBarricadePrev;
+                player removeAction changeBarricadeNext;
                 player removeAction raiseBarricade;
                 player removeAction lowerBarricade;
                 player removeAction cancleBarricading;
@@ -607,7 +626,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 
             },"",0,true,false,"",""];
 
-        },"",0,false,false,""];
+        },"",1,false,false,""];
     };
 
     if(!isInside && actionBarricadeActive)then{
@@ -615,6 +634,8 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
             deleteVehicle barricade;
             barricade = player;
         };
+        player removeAction changeBarricadePrev;
+        player removeAction changeBarricadeNext;
         player removeAction barricadeAction;
         player removeAction raiseBarricade;
         player removeAction lowerBarricade;

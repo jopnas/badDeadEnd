@@ -100,7 +100,7 @@ if(count _db > 0)then{
 
 	// Set Position
     _playerUnit setDir _playerDirection;
-    _playerUnit setVehiclePosition [_playerPosition, [], 0, "NONE"];
+    _playerUnit setPosATl _playerPosition;
 
 	// Set Uniform
 	if(count _playerUniform > 2)then{

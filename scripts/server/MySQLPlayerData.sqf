@@ -25,7 +25,7 @@ fnc_loadPlayerStats = {
 };
 
 fnc_savePlayerStats = {
-	private["_player","_PlayerUID","_PlayerPosition","_PlayerWeapons","_PlayerUniformItems","_PlayerVestItems","_PlayerBackpackItems","_QueryCheck","_QuerySave","_QueryAdd"];
+	private["_player","_PlayerUID","_PlayerPosition","_sick","_PlayerWeapons","_PlayerUniformItems","_PlayerVestItems","_PlayerBackpackItems","_QueryCheck","_QuerySave","_QueryAdd"];
 	_player 				= _this select 0;
 	_playerStats			= _this select 1;
 	_PlayerUID  			= getPlayerUID _player;

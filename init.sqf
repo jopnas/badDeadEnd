@@ -12,14 +12,14 @@ cutText ["Welcome to BadDeadEnd ...", "BLACK FADED"];
 
 worldCenter     = getArray(configFile >> "CfgWorlds" >> worldName >> "safePositionAnchor");
 worldCenter pushBack 0;
-worldHalfSize   = getNumber (configFile >> "CfgWorlds" >> worldName >> "safePositionRadius");
+worldHalfSize   = (getNumber (configFile >> "CfgWorlds" >> worldName >> "mapSize") / 2);
 
-_centerMarker = createMarker ["centerMarker", [worldCenter select 0,worldCenter select 1]];
+/*_centerMarker = createMarker ["centerMarker", [worldCenter select 0,worldCenter select 1]];
 _centerMarker setMarkerColor "ColorYellow";
 _centerMarker setMarkerBrush "FDiagonal";
 _centerMarker setMarkerAlpha 0.5;
 _centerMarker setMarkerShape "ELLIPSE";
-_centerMarker setMarkerSize [worldHalfSize,worldHalfSize];
+_centerMarker setMarkerSize [worldHalfSize,worldHalfSize];*/
 
 if(isServer)then{
     loadedCarsList = [];

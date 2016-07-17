@@ -59,15 +59,15 @@ if(_temperatureVal<0)then{
 _namespaceUI = uiNamespace getVariable "bde_gui_display";
 
 // "infected"
-_uiInfectedVal = _infectedVal/2;
+_uiInfectedVal = (_infectedVal/100) / 2;
 _ctrlInfected = _namespaceUI displayCtrl 1200;
 
 // "sick"
-_uiSickVal = _sickVal/2;
+_uiSickVal = (_sickVal/100) / 2;
 _ctrlSick = _namespaceUI displayCtrl 1201;
 
 // "wet"
-_uiWetVal = _wetVal/2;
+_uiWetVal =  (_wetVal/100) / 2;
 _ctrlWet = _namespaceUI displayCtrl 1202;
 
 // "temperature"
@@ -95,6 +95,7 @@ _ctrlNoise = _namespaceUI displayCtrl 1212;
 _ctrlNoise ctrlSetText "images\gui\noise\gui_noise_" + (str playerNoise) + ".paa";
 
 //systemChat str lastUIBlinkCheck;
+hint format["_uiSickVal: %1",_uiSickVal];
 
 
 if(guiBlink)then{
@@ -105,9 +106,9 @@ if(guiBlink)then{
 // Indicators
 if(_infectedVal > 80)then{
     if(guiBlink)then{
-        _ctrlInfected ctrlSetTextColor [1,1 - _uiInfectedVal,1 - _uiInfectedVal,1];
-    }else{
         _ctrlInfected ctrlSetTextColor [1,1 - _uiInfectedVal,1 - _uiInfectedVal,0];
+    }else{
+        _ctrlInfected ctrlSetTextColor [1,1 - _uiInfectedVal,1 - _uiInfectedVal,1];
     };
 }else{
     _ctrlInfected ctrlSetTextColor [1,1 - _uiInfectedVal,1 - _uiInfectedVal,1];
@@ -115,9 +116,9 @@ if(_infectedVal > 80)then{
 
 if(_sickVal > 80)then{
     if(guiBlink)then{
-        _ctrlSick ctrlSetTextColor [1,1 - _uiSickVal,1 - _uiSickVal,1];
-    }else{
         _ctrlSick ctrlSetTextColor [1,1 - _uiSickVal,1 - _uiSickVal,0];
+    }else{
+        _ctrlSick ctrlSetTextColor [1,1 - _uiSickVal,1 - _uiSickVal,1];
     };
 }else{
     _ctrlSick ctrlSetTextColor [1,1 - _uiSickVal,1 - _uiSickVal,1];
@@ -125,9 +126,9 @@ if(_sickVal > 80)then{
 
 if(_wetVal > 80)then{
     if(guiBlink)then{
-        _ctrlWet ctrlSetTextColor [1 - _uiWetVal,1 - _uiWetVal,1,1];
-    }else{
         _ctrlWet ctrlSetTextColor [1 - _uiWetVal,1 - _uiWetVal,1,0];
+    }else{
+        _ctrlWet ctrlSetTextColor [1 - _uiWetVal,1 - _uiWetVal,1,1];
     };
 }else{
     _ctrlWet ctrlSetTextColor [1 - _uiWetVal,1 - _uiWetVal,1,1];

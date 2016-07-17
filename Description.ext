@@ -365,7 +365,7 @@ class RscPicGUI
     lineSpacing = 0;
     text = "";
     style = 2096;
-	x = safezoneX + safezoneW - 0.1;
+	x = safezoneX + safezoneW - 0.12;
     y = 0;
 	w = 0.1;
 	h = 0.1;
@@ -483,7 +483,7 @@ class RscTitles
             class guiNoiseValue: RscValGUI
             {
                 idc = 1212;
-                text = "images\gui\noise\gui_noise_100.paa";
+                text = "images\gui\noise\gui_noise_0.paa";
 				colorBackground[] = {0,0,0,0};
 				colorText[] = {0,0,0,1};
                 x = safezoneW + safezoneX - 0.5;

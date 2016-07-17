@@ -32,14 +32,14 @@ if(vehicle _playerUnit == _playerUnit)then{
     // Surfaces
 
     // run,walk,sprint,crawl
-    _movementType = "stand";
+    /*_movementType = "stand";
     if(isWalking _playerUnit && _stanceLevel != 1)then{
         _movementType = "walk";
     };
 
     if(isWalking _playerUnit && _stanceLevel == 1)then{
         _movementType = "crawl";
-    };
+    };*/
 
     _type = surfaceType (getPosATL _playerUnit);
     _typeA = toArray _type;
@@ -50,7 +50,7 @@ if(vehicle _playerUnit == _playerUnit)then{
     _soundType = getText (configFile >> "CfgSurfaces" >> _type >> "soundEnviron");
     _soundVal = getArray (configFile >> "CfgVehicles" >> "CAManBase" >> "SoundEnvironExt" >> _soundType);
 
-    hint format["_movementType: %1",_movementType];
+    //hint format["isWalking: %1",isWalking _playerUnit];
 
     /*{
         systemChat str _x;
