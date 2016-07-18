@@ -112,26 +112,26 @@ fnc_savePlayerStats = {
     _saveIs = "extDB2" callExtension _QueryInsUpd;
 };
 
-fnc_saveCar = {
-    private["_car","_id","_position","_rotation","_fuel","_damages","_damage","_items","_weapons","_magazines","_backpacks","_destroyed","_QuerySave","_saveIs"];
-	_car 		= _this select 0;
-    _id         = _car getVariable["id",-1];
-	_position	= getPos _car;
-	_rotation	= getDir _car;
-	_fuel		= fuel _car;
-	_damages	= getAllHitPointsDamage _car;
-    //systemChat str _car;
+fnc_saveVehicle = {
+    private["_vehicle","_id","_position","_rotation","_fuel","_damages","_damage","_items","_weapons","_magazines","_backpacks","_destroyed","_QuerySave","_saveIs"];
+	_vehicle 		= _this select 0;
+    _id         = _vehicle getVariable["id",-1];
+	_position	= getPos _vehicle;
+	_rotation	= getDir _vehicle;
+	_fuel		= fuel _vehicle;
+	_damages	= getAllHitPointsDamage _vehicle;
+    //systemChat str _vehicle;
     _damage		= [_damages select 0, _damages select 2];
-	_items		= getItemCargo _car;
-	_weapons	= getWeaponCargo _car;
-	_magazines	= getMagazineCargo _car;
-	_backpacks	= getBackpackCargo _car;
+	_items		= getItemCargo _vehicle;
+	_weapons	= getWeaponCargo _vehicle;
+	_magazines	= getMagazineCargo _vehicle;
+	_backpacks	= getBackpackCargo _vehicle;
     _destroyed  = 0;
-    if(!(alive _car))then{
+    if(!(alive _vehicle))then{
         _destroyed = 1;
     };
 
-    // Car Save
+    // Vehicle Save
     _QuerySave 	= format["0:SQL_VH_SAVE:UPDATE vehicles SET position='%2', rotation='%3', fuel='%4', damage='%5', items='%6', weapons='%7', magazines='%8', backpacks='%9', destroyed='%10' WHERE id='%1'",_id,_position,_rotation,_fuel,_damage,_items,_weapons,_magazines,_backpacks,_destroyed];
     _saveIs     = "extDB2" callExtension _QuerySave;
 };
@@ -140,21 +140,20 @@ fnc_saveCar = {
 fnc_saveTent = {
     _tent       = _this select 0;
     _tentID     = _tent getVariable ["tentID","0"];
-    _owner  = _tent getVariable ["tentOwner","0"];
-    _position    = getPosAtL _tent;
-    _rotation    = getDir _tent;
+    _position   = getPosATL _tent;
+    _rotation   = getDir _tent;
     _type       = typeOf _tent;
     _items		= getItemCargo _tent;
     _weapons	= getWeaponCargo _tent;
     _magazines	= getMagazineCargo _tent;
     _backpacks	= getBackpackCargo _tent;
-    _QuerySaveTent = format["0:SQL_TE_SAVE:INSERT INTO tents (tentid,owner,pos,rot,type,items,weapons,magazines,backpacks) VALUES('""%1""','""%2""','%3','%4','""%5""','%6','%7','%8','%9') ON DUPLICATE KEY UPDATE owner='""%2""',pos='%3',rot='%4',type='""%5""',items='%6',weapons='%7',magazines='%8',backpacks='%9'",_tentID,_owner,_position,_rotation,_type,_items,_weapons,_magazines,_backpacks];
+    _QuerySaveTent = format["0:SQL_TE_SAVE:INSERT INTO tents (tentid,pos,rot,type,items,weapons,magazines,backpacks) VALUES('""%1""','%2','%3','""%4""','%5','%6','%7','%8') ON DUPLICATE KEY UPDATE pos='%2',rot='%3',type='""%4""',items='%5',weapons='%6',magazines='%7',backpacks='%8'",_tentID,_position,_rotation,_type,_items,_weapons,_magazines,_backpacks];
     _saveIs     = "extDB2" callExtension _QuerySaveTent;
 };
 
 // Tent Load
 fnc_loadTents = {
-    _result             = call compile ("extDB2" callExtension "0:SQL_TE_LOAD:SELECT id,tentid,owner,pos,rot,type,items,weapons,magazines,backpacks FROM tents");
+    _result             = call compile ("extDB2" callExtension "0:SQL_TE_LOAD:SELECT id,tentid,pos,rot,type,items,weapons,magazines,backpacks FROM tents");
     _resultQueryStatus  = _result select 0;
     _resultInDB         = _result select 1;
     waitUntil { _resultQueryStatus > 0 };

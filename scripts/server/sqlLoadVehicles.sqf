@@ -4,7 +4,6 @@ _CarsQueryStatus  = _CarsQuery select 0;
 _CarsInDB         = _CarsQuery select 1;
 
 waitUntil { _CarsQueryStatus > 0 };
-loadedCarsList = loadedCarsList - ["empty"];
 {
 	_id        = _x select 0;
 	_classname = _x select 1;
@@ -18,7 +17,7 @@ loadedCarsList = loadedCarsList - ["empty"];
 	_magazines = _x select 9;
 	_backpacks = _x select 10;
 
-    if(_destroyed > 0)then{
+    if(_destroyed == 1)then{
         _towns = nearestLocations [worldCenter, ["NameVillage","NameCity","NameCityCapital"], worldHalfSize];
         _roads = getPos selectRandom(_towns) nearRoads 1000;
         _roadPosition = getPos selectRandom(_roads);
@@ -38,7 +37,7 @@ loadedCarsList = loadedCarsList - ["empty"];
             };
         };
 
-        _spawnedCar setVehiclePosition [[_roadPosition select 0,_roadPosition select 1,(_roadPosition select 2) + 1], [], 0, "NONE"];
+        _spawnedCar setVehiclePosition [[_roadPosition select 0,_roadPosition select 1,(_roadPosition select 2) + 1], [], 0, ""];
 
         clearWeaponCargoGlobal _spawnedCar;
         clearMagazineCargoGlobal _spawnedCar;
@@ -86,15 +85,35 @@ loadedCarsList = loadedCarsList - ["empty"];
                 _spawnedCar setHitPointDamage [_hitPointNames select _i, _hitPointValues select _i];
     		};
     	};
-        _spawnedCar setVehiclePosition [[_position select 0,_position select 1,(_position select 2) + 1], [], 0, "NONE"];
+        _spawnedCar setPosATL _position;
     };
 
-	loadedCarsList pushBackUnique _classname;
+    // EventHandlers for saving vehicle to db
+    _spawnedCar addEventHandler ["ContainerClosed", {
+        params["_container","_player"];
+        [_container] call fnc_saveVehicle;
+        systemChat format["closed inventory of %1",typeOf _container];
+    }];
+    _spawnedCar addEventHandler ["Dammaged", {
+        params["_unit","_selectionName","_damage"];
+        [_unit] call fnc_saveVehicle;
+        systemChat format["damaged %1",typeOf _unit];
+    }];
+    _spawnedCar addEventHandler ["Fuel", {
+        params["_vehicle","_fuelState"];
+        [_vehicle] call fnc_saveVehicle;
+        systemChat format["fuel state changed from %1",typeOf _vehicle];
+    }];
+    _spawnedCar addEventHandler ["GetOut", {
+        params["_vehicle","_position","_unit","_turret"];
+        [_vehicle] call fnc_saveVehicle;
+        systemChat format["%1 exit %2",_unit,typeOf _vehicle];
+    }];
 
+    // Debug Marker
     _markerstr = createMarker [format["car %1",_id] , _position];
 	_markerstr setMarkerShape "ICON";
 	_markerstr setMarkerType "c_car";
 	_markerstr setMarkerColor "ColorGreen";
 
-    sleep 0.5;
 } forEach _CarsInDB;

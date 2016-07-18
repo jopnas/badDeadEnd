@@ -4,8 +4,9 @@ _respawnTime    = _this select 1;
 
 if (!isServer && (player != player)) then {
     waitUntil {player == player};
-    waitUntil {time > 10};
 };
+sleep 5;
+_db = (_playerUnit getVariable["db",[]]);
 
 // Player Setup
 _playerUnit enableFatigue false;
@@ -34,7 +35,6 @@ playerWet = 0;
 playerSick = 0;
 playerInfected = 0;
 
-_db = (_playerUnit getVariable["db",[]]);
 if(count _db > 0)then{
 	_playerStats 			= _db;
 	_playerWeapons			= _playerStats select 2;
@@ -232,20 +232,15 @@ actionsEventHandler = [] spawn {
 	while {true} do {
 		waituntil {!(isnull (finddisplay 602))};
         // Items Action
-        ((findDisplay 602) displayCtrl 619) ctrlSetEventHandler ["LBDblClick", "[_this,'Backpack'] call fnc_coordinateItemActions"]; // Backpack
-        ((findDisplay 602) displayCtrl 638) ctrlSetEventHandler ["LBDblClick", "[_this,'Vest'] call fnc_coordinateItemActions"]; // Vest
+        // MouseHolding statt LBDblClick?
         ((findDisplay 602) displayCtrl 633) ctrlSetEventHandler ["LBDblClick", "[_this,'Uniform'] call fnc_coordinateItemActions"]; // Uniform
+        ((findDisplay 602) displayCtrl 638) ctrlSetEventHandler ["LBDblClick", "[_this,'Vest'] call fnc_coordinateItemActions"]; // Vest
+        ((findDisplay 602) displayCtrl 619) ctrlSetEventHandler ["LBDblClick", "[_this,'Backpack'] call fnc_coordinateItemActions"]; // Backpack
+
+        //((findDisplay 602) displayCtrl ???) ctrlSetEventHandler ["LBDblClick", "[_this,'Ground'] call fnc_coordinateItemActions"]; // Ground
 		waituntil {isnull (finddisplay 602)};
 	};
 };
-
-// Save Tent Inventory, ToDO: Save Player Stats
-_playerUnit addEventHandler ["InventoryClosed", {
-    params["_unit","_container"];
-    if(typeOf _container == "bde_tentCamo" || typeOf _container == "bde_tentDome")then{
-        [_container] remoteExec ["fnc_saveTent",2,false];
-    };
-}];
 
 // Player Init Situation
 if(_isRespawn)then{

@@ -79,6 +79,7 @@ carRepair = {
         _car setHit [_part, 0];
         player removeAction _action;
         repairActionIDs = repairActionIDs - [_action];
+        [_car] call fnc_saveVehicle;
     };
 };
 

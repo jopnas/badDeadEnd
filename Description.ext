@@ -334,7 +334,7 @@ class RscText
     font="TahomaB";
     SizeEx = 0.03921;
     colorText[] = {1,1,1,1};
-    colorBackground[] = {0, 0, 0, 0.7};
+    colorBackground[] = {0, 0, 0, 1};
     linespacing = 1;
     shadow = 1;
 };

@@ -9,11 +9,6 @@ _description    = lbText [_idc, _selectedIndex];
 _index          = lbValue [_idc, _selectedIndex];
 _pic 	        = lbPicture [_idc, _selectedIndex];
 
-
-//_magazinesDetailBackpack = magazinesDetailBackpack player;
-
-//systemChat format["_idcData: %1, _magazinesDetailBackpack: %2",_idcData,_magazinesDetailBackpack];
-
 // Functions
 _addItemCargo = { // [_item,_cargoType] call _addItemCargo;
     _itemClass = _this select 0;
@@ -86,22 +81,6 @@ _buildFireplace = {
     cutText [ format["need %1 more wood and %2 more stone to build fireplace",_needCountOfWood,_needCountOfStone], "PLAIN DOWN"];
   };
 };
-
-/*packTent = {
-    _targetObject   = _this select 0;
-    _caller         = _this select 1;
-
-    _tentPos        = getPosATL _targetObject;
-
-    [_caller,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
-    sleep 5;
-
-    deleteVehicle _targetObject;
-    _tentWph = createVehicle ["groundWeaponHolder",_tentPos,[],0,"can_collide"];
-    _tentWph setVehiclePosition [[_tentPos select 0,_tentPos select 1,(_tentPos select 2) + 1], [], 0, "can_collide"];
-    _tentWph addMagazineCargoGlobal [ format["%1Packed",typeOf _targetObject],1];
-
-};*/
 
 switch(_classname) do {
     // Food
@@ -307,7 +286,6 @@ switch(_classname) do {
         _tentOwner      = getPlayerUID player;
 
         _pitchedTent setVariable["tentID",_tentID,true];
-        _pitchedTent setVariable["tentOwner",_tentOwner,true];
         [_pitchedTent] remoteExec ["fnc_saveTent",2,false];
 
         _pitchedTent addAction ["Pack Tent", {
@@ -317,7 +295,10 @@ switch(_classname) do {
             [_targetObject,_caller] call packTent;
         }, [],0,true,true,"","_target distance _this < 3"];
 
-        //[_pitchedTent] call fnc_saveTent;
+        _pitchedTent addEventHandler ["ContainerClosed", {
+            params["_container","_player"];
+            [_container] remoteExec ["fnc_saveTent",2,false];
+        }];
 	};
 
     case "bde_tentCamoPacked": {
@@ -334,7 +315,6 @@ switch(_classname) do {
         _tentOwner      = getPlayerUID player;
 
         _pitchedTent setVariable["tentID",_tentID,true];
-        _pitchedTent setVariable["tentOwner",_tentOwner,true];
         [_pitchedTent] remoteExec ["fnc_saveTent",2,false];
 
         _pitchedTent addAction ["Pack Tent", {
@@ -344,7 +324,10 @@ switch(_classname) do {
             [_targetObject,_caller] call packTent;
         }, [],0,true,true,"","_target distance _this < 3"];
 
-        //[_pitchedTent] call fnc_saveTent;
+        _pitchedTent addEventHandler ["ContainerClosed", {
+            params["_container","_player"];
+            [_container] remoteExec ["fnc_saveTent",2,false];
+        }];
 	};
 
     // Tools
@@ -356,7 +339,5 @@ switch(_classname) do {
         [] call _buildFireplace;
     };
 
-    default {
-        //cutText [format["what can i do with %1?",_description], "PLAIN DOWN"];
-    };
+    default {};
 };

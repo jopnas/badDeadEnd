@@ -3,14 +3,13 @@ _dbResult = call fnc_loadTents;
     //systemChat str _x;
     _id         = _x select 0;
     _tentid     = _x select 1;
-    _owner      = _x select 2;
-    _pos        = _x select 3;
-    _rot        = _x select 4;
-    _type       = _x select 5;
-    _items      = _x select 6;
-    _weapons    = _x select 7;
-    _magazines  = _x select 8;
-    _backpacks  = _x select 9;
+    _pos        = _x select 2;
+    _rot        = _x select 3;
+    _type       = _x select 4;
+    _items      = _x select 5;
+    _weapons    = _x select 6;
+    _magazines  = _x select 7;
+    _backpacks  = _x select 8;
 
     _tent       = _type createVehicle _pos;
 
@@ -40,7 +39,6 @@ _dbResult = call fnc_loadTents;
     systemChat format["create %1",_type];
 
     _tent setVariable["tentID", _tentid,true];
-    _tent setVariable["tentOwner", _owner,true];
 
     _tent addAction ["Pack Tent", {
         _targetObject   = _this select 0;
@@ -48,5 +46,10 @@ _dbResult = call fnc_loadTents;
 
         [_targetObject,_caller] call packTent;
     }, [],0,true,true,"","_target distance _this < 3"];
+
+    _tent addEventHandler ["ContainerClosed", {
+        params["_container","_player"];
+        [_container] remoteExec ["fnc_saveTent",2,false];
+    }];
 
 } forEach _dbResult;

@@ -1,14 +1,6 @@
-/*
-worldCenter     = getArray(configFile >> "CfgWorlds" >> worldName >> "safePositionAnchor");
-worldHalfSize   = getNumber (configFile >> "CfgWorlds" >> worldName >> "safePositionRadius");
-
-safePositionAnchor[] = {15667,15791.3};
-safePositionRadius = 7000;
-*/
-
-//worldHalfSize   = worldSize/2;
-//worldCenter     = [worldHalfSize/2, worldHalfSize/2, 0];
-cutText ["Welcome to BadDeadEnd ...", "BLACK FADED"];
+if(!isDedicated)then{
+    cutText ["Welcome to BadDeadEnd ...", "BLACK FADED"];
+};
 
 worldCenter     = getArray(configFile >> "CfgWorlds" >> worldName >> "safePositionAnchor");
 worldCenter pushBack 0;
@@ -22,7 +14,7 @@ _centerMarker setMarkerShape "ELLIPSE";
 _centerMarker setMarkerSize [worldHalfSize,worldHalfSize];*/
 
 if(isServer)then{
-    loadedCarsList = [];
+    //loadedCarsList = [];
     [] execVM "scripts\server\registerDBdata.sqf";
     [] execVM "scripts\server\MySQLPlayerData.sqf";
 
@@ -32,10 +24,10 @@ if(isServer)then{
 	[] execVM "scripts\anomaly\initAnomaly.sqf";
 	[] execVM "scripts\camps\initCamps.sqf";
 	[] execVM "scripts\loot\initLoot.sqf";
-	[] execVM "scripts\vehicles\initCars.sqf";
 	[] execVM "scripts\animals\spawnAnimals.sqf";
 	[] execVM "scripts\server\whilePlayerOnline.sqf";
     [] execVM "scripts\zombies\initZombies.sqf";
+    [] execVM "scripts\server\sqlLoadVehicles.sqf";
     [] execVM "scripts\server\sqlLoadTents.sqf";
     [] execVM "scripts\server\sqlLoadBarricades.sqf";
 };
