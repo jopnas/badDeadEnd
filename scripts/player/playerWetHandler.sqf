@@ -1,4 +1,3 @@
-// [_isUnderCover,_isInside,_isInCar,_inflamedFireplaces]
 params["_isUnderCover","_isInside","_isInCar","_nearestFireplaces", /* private ->*/ "_getWetVal"];
 /*_isUnderCover 		= _this select 0;
 _isInside 		    = _this select 1;
@@ -7,26 +6,26 @@ _nearestFireplaces 	= _this select 3;*/
 
 _player             = player;
 
-_PlayerUniform		= uniform _player;
-_PlayerVest			= vest _player;
-_PlayerBackpack		= backpack _player;
+_playerUniform		= uniform _player;
+_playerVest			= vest _player;
+_playerBackpack		= backpack _player;
 _headgear 		    = headgear _player;
 
 _playerWetness  = playerWet;
 
 if(rain > 0 && !_isUnderCover && !_isInCar)then{
-    _getWetVal = 0.1;
-    if(_PlayerUniform != "U_BasicBody")then{
-	   _getWetVal = _getWetVal - 0.02;
+    _getWetVal = 0.2;
+    if(_playerUniform != "U_BasicBody")then{
+	   _getWetVal = _getWetVal - 0.04;
     };
-    if(_PlayerVest != "")then{
-	   _getWetVal = _getWetVal - 0.02;
+    if(_playerVest != "")then{
+	   _getWetVal = _getWetVal - 0.04;
     };
-    if(_PlayerBackpack != "")then{
-	   _getWetVal = _getWetVal - 0.02;
+    if(_playerBackpack != "")then{
+	   _getWetVal = _getWetVal - 0.04;
     };
     if(_headgear != "")then{
-	   _getWetVal = _getWetVal - 0.02;
+	   _getWetVal = _getWetVal - 0.04;
     };
 
     _playerWetness = _playerWetness + _getWetVal;
