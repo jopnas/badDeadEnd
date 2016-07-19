@@ -249,6 +249,13 @@ if(_isRespawn)then{
     addCamShake [10, _respawnTime + 7, 50];
 };
 
+_playerUnit addEventHandler ["Respawn", {
+    // _unit: Object - Object the event handler is assigned to
+    // _corpse: Object - Object the event handler was assigned to, aka the corpse/unit player was previously controlling
+    params["_unit","_corpse"];
+    systemChat format["Respawn/_corpse uniform: %1",uniform  _corpse];
+}];
+
 _respawnTime fadeSound 3;
 _respawnTime fadeMusic 3;
 

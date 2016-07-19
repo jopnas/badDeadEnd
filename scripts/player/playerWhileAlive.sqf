@@ -5,7 +5,7 @@ handleWet 			= compile preprocessFile "scripts\player\playerWetHandler.sqf";
 handleTemperature 	= compile preprocessFile "scripts\player\playerTemperatureHandler.sqf";
 checkBoundingBox    = compile preprocessFile "scripts\tools\checkBoundingBox.sqf";
 checkAnimals		= compile preprocessFile "scripts\animals\checkAnimals.sqf";
-footFuncs			= compile preprocessFile "scripts\foot\foot_funcs.sqf";
+foodFuncs			= compile preprocessFile "scripts\food\food_funcs.sqf";
 checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
 
 nextEverySecond     = 0;
@@ -146,6 +146,14 @@ eatCookedFoodAction = {
     _tastes =  ["salty","sweet","bitter","sour","flavorless"];
     cutText [format["ate somthing cooked %1",selectRandom _tastes], "PLAIN DOWN"];
 };
+
+player addEventHandler ["Take", {
+    // _unit: Object - Unit to which the event handler is assigned
+    // _container: Object - The container from which the item was taken (vehicle, box, etc.)
+    // _item: String - The class name of the taken item
+    params["_unit","_container","_item"];
+    systemChat format["Take/_item: %1, _container: %2",_item,_container];
+}];
 
 // broadcast shot to zombie
 player addEventHandler ["Fired", {
@@ -316,19 +324,19 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 
 		if(!boilWaterAvailable && _emptyCanCount > 0 && _bottlefilledCount > 0) then {
 			boilWaterAction = player addAction["Boil water",{
-				["boilWater"] call footFuncs;
+				["boilWater"] call foodFuncs;
 			}];
 			boilWaterAvailable = true;
 		};
 		if(!cookCannedFoodAvailable && cannedFoodCooldownCountdown == 0 && _canCount > 0) then {
 			cookCannedFoodAction = player addAction["Cook baked beans",{
-				["cookCannedFood"] call footFuncs;
+				["cookCannedFood"] call foodFuncs;
 			}];
 			cookCannedFoodAvailable = true;
 		};
 		if(!cookMeatAvailable && _meatCount > 0) then {
 			cookMeatAction = player addAction["Cook meat",{
-				["cookMeat"] call footFuncs;
+				["cookMeat"] call foodFuncs;
 			}];
 			cookMeatAvailable = true;
 		};
