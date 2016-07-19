@@ -316,19 +316,19 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 
 		if(!boilWaterAvailable && _emptyCanCount > 0 && _bottlefilledCount > 0) then {
 			boilWaterAction = player addAction["Boil water",{
-				["boilWater"] spawn footFuncs;
+				["boilWater"] call footFuncs;
 			}];
 			boilWaterAvailable = true;
 		};
 		if(!cookCannedFoodAvailable && cannedFoodCooldownCountdown == 0 && _canCount > 0) then {
 			cookCannedFoodAction = player addAction["Cook baked beans",{
-				["cookCannedFood"] spawn footFuncs;
+				["cookCannedFood"] call footFuncs;
 			}];
 			cookCannedFoodAvailable = true;
 		};
 		if(!cookMeatAvailable && _meatCount > 0) then {
 			cookMeatAction = player addAction["Cook meat",{
-				["cookMeat"] spawn footFuncs;
+				["cookMeat"] call footFuncs;
 			}];
 			cookMeatAvailable = true;
 		};
@@ -375,150 +375,12 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
             };
 
             if(_carDamageName != "" && _carDamageValue > 0 && repairableParts find _carDamageName < 0)then{
-                repairableParts = repairableParts + [_carDamageName];
-
-                switch (_i) do {
-                    default { // = 0
-                        repair00 = player addAction[_actionText,{
-                            _params = _this select 3;
-                            [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
-                        },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
-                        repairActionIDs = repairActionIDs + [repair00];
-                    };
-                    case 1: {
-                        repair01 = player addAction[_actionText,{
-                            _params = _this select 3;
-                            [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
-                        },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
-                        repairActionIDs = repairActionIDs + [repair01];
-                    };
-                    case 2: {
-                        repair02 = player addAction[_actionText,{
-                            _params = _this select 3;
-                            [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
-                        },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
-                        repairActionIDs = repairActionIDs + [repair02];
-                    };
-                    case 3: {
-                        repair03 = player addAction[_actionText,{
-                            _params = _this select 3;
-                            [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
-                        },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
-                        repairActionIDs = repairActionIDs + [repair03];
-                    };
-                    case 4: {
-                        repair04 = player addAction[_actionText,{
-                            _params = _this select 3;
-                            [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
-                        },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
-                        repairActionIDs = repairActionIDs + [repair04];
-                    };
-                    case 5: {
-                        repair05 = player addAction[_actionText,{
-                            _params = _this select 3;
-                            [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
-                        },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
-                        repairActionIDs = repairActionIDs + [repair05];
-                    };
-                    case 6: {
-                        repair06 = player addAction[_actionText,{
-                            _params = _this select 3;
-                            [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
-                        },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
-                        repairActionIDs = repairActionIDs + [repair06];
-                    };
-                    case 7: {
-                        repair07 = player addAction[_actionText,{
-                            _params = _this select 3;
-                            [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
-                        },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
-                        repairActionIDs = repairActionIDs + [repair07];
-                    };
-                    case 8: {
-                        repair08 = player addAction[_actionText,{
-                            _params = _this select 3;
-                            [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
-                        },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
-                        repairActionIDs = repairActionIDs + [repair08];
-                    };
-                    case 9: {
-                        repair09 = player addAction[_actionText,{
-                            _params = _this select 3;
-                            [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
-                        },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
-                        repairActionIDs = repairActionIDs + [repair09];
-                    };
-                    case 10: {
-                        repair10 = player addAction[_actionText,{
-                            _params = _this select 3;
-                            [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
-                        },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
-                        repairActionIDs = repairActionIDs + [repair10];
-                    };
-                    case 11: {
-                        repair11 = player addAction[_actionText,{
-                            _params = _this select 3;
-                            [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
-                        },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
-                        repairActionIDs = repairActionIDs + [repair11];
-                    };
-                    case 12: {
-                        repair12 = player addAction[_actionText,{
-                            _params = _this select 3;
-                            [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
-                        },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
-                        repairActionIDs = repairActionIDs + [repair12];
-                    };
-                    case 13: {
-                        repair13 = player addAction[_actionText,{
-                            _params = _this select 3;
-                            [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
-                        },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
-                        repairActionIDs = repairActionIDs + [repair13];
-                    };
-                    case 14: {
-                        repair14 = player addAction[_actionText,{
-                            _params = _this select 3;
-                            [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
-                        },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
-                        repairActionIDs = repairActionIDs + [repair14];
-                    };
-                    case 15: {
-                        repair15 = player addAction[_actionText,{
-                            _params = _this select 3;
-                            [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
-                        },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
-                        repairActionIDs = repairActionIDs + [repair15];
-                    };
-                    case 16: {
-                        repair16 = player addAction[_actionText,{
-                            _params = _this select 3;
-                            [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
-                        },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
-                        repairActionIDs = repairActionIDs + [repair16];
-                    };
-                    case 17: {
-                        repair17 = player addAction[_actionText,{
-                            _params = _this select 3;
-                            [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
-                        },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
-                        repairActionIDs = repairActionIDs + [repair17];
-                    };
-                    case 18: {
-                        repair18 = player addAction[_actionText,{
-                            _params = _this select 3;
-                            [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
-                        },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
-                        repairActionIDs = repairActionIDs + [repair18];
-                    };
-                    case 19: {
-                        repair19 = player addAction[_actionText,{
-                            _params = _this select 3;
-                            [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] spawn carRepair;
-                        },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
-                        repairActionIDs = repairActionIDs + [repair19];
-                    };
-                };
+                repairableParts = repairableParts pushBack _carDamageName;
+                _repairAction = player addAction[_actionText,{
+                    _params = _this select 3;
+                    [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] call carRepair;
+                },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
+                repairActionIDs = repairActionIDs pushBack _repairAction;
             };
         }forEach(_carDamages select 0);
     }else{
