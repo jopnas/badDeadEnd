@@ -198,9 +198,13 @@ if(count _db > 0)then{
 	};
 
 }else{
-    _isRespawn = true;
-	[_playerUnit] execVM "scripts\player\playerSpawnPosition.sqf";
     _playerUnit setDamage 0;
+    _isRespawn = true;
+    _forests = selectBestPlaces [worldCenter, worldHalfSize, "(1 + forest + trees) * (1 - sea) * (1 - houses) * (1 -  meadow) * (1 - deadBody)", 30, 20];
+    _forestPlaces = _forests apply {_x select 0};
+    _rdmSpawnPos = (_forestPlaces select 0) findEmptyPosition [0, 10, "C_man_1"];
+    _playerUnit setPosATL _rdmSpawnPos;
+    _playerUnit setVariable["playerSetupReady",true,false];
 };
 
 waitUntil{_playerUnit getVariable["playerSetupReady",false]};
@@ -229,16 +233,15 @@ actionsEventHandler = [] spawn {
 		false
     };
 
-	while {true} do {
+	while {alive _playerUnit} do {
 		waituntil {!(isnull (finddisplay 602))};
         // Items Action
         // MouseHolding statt LBDblClick?
         ((findDisplay 602) displayCtrl 633) ctrlSetEventHandler ["LBDblClick", "[_this,'Uniform'] call fnc_coordinateItemActions"]; // Uniform
         ((findDisplay 602) displayCtrl 638) ctrlSetEventHandler ["LBDblClick", "[_this,'Vest'] call fnc_coordinateItemActions"]; // Vest
         ((findDisplay 602) displayCtrl 619) ctrlSetEventHandler ["LBDblClick", "[_this,'Backpack'] call fnc_coordinateItemActions"]; // Backpack
-
-        //((findDisplay 602) displayCtrl ???) ctrlSetEventHandler ["LBDblClick", "[_this,'Ground'] call fnc_coordinateItemActions"]; // Ground
 		waituntil {isnull (finddisplay 602)};
+        if(!(alive _playerUnit)) exitWith {};
 	};
 };
 
@@ -250,8 +253,6 @@ if(_isRespawn)then{
 };
 
 _playerUnit addEventHandler ["Respawn", {
-    // _unit: Object - Object the event handler is assigned to
-    // _corpse: Object - Object the event handler was assigned to, aka the corpse/unit player was previously controlling
     params["_unit","_corpse"];
     systemChat format["Respawn/_corpse uniform: %1",uniform  _corpse];
 }];

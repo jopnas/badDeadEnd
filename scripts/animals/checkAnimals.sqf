@@ -7,10 +7,11 @@ _animals = nearestObjects[player,["Rabbit_F","Goat_random_F","Sheep_random_F","H
         _animal addEventHandler ["AnimDone",{
             params["_unit","_anim"];
             if(_unit getVariable["animalHasLoot",0] == 0)then{
-                systemChat format["_unit: %1, _anim: %2",_unit,_anim];
+                _unit setVariable["animalHasLoot",1,true];
                 if(_anim == "rabbit_die")then{
+                    sleep 1;
                     _gwh = createVehicle ["ContainerSupply",position _unit,[],0,"can_collide"];
-                    _gwh modelToWorld [0,0.3,0];
+
                     _animalType = typeOf _unit;
                     if(_animalType in ["Sheep_random_F","Goat_random_F"])then{
                         _gwh addMagazineCargoGlobal["bde_meat_big",2];
@@ -18,13 +19,14 @@ _animals = nearestObjects[player,["Rabbit_F","Goat_random_F","Sheep_random_F","H
                     if(_animalType in ["Rabbit_F","Hen_random_F","Cock_random_F"])then{
                         _gwh addMagazineCargoGlobal["bde_meat_small",2];
                     };
-                    _unit setVariable["animalHasLoot",1,true];
+                    _gwh setPosATL (getPosATL _unit);
+                    _gwh attachTo [_unit, [0,0,0]];
                 };
             };
         }];
     };
 
-	if(random 100 < 5)then{
+	if(random 100 < 2)then{
 		switch (typeOf _animal) do {
 			case "Sheep_random_F":{
 				_rdmSheep = floor(random 2);
