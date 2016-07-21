@@ -5,6 +5,7 @@ handleWet 			= compile preprocessFile "scripts\player\playerWetHandler.sqf";
 handleTemperature 	= compile preprocessFile "scripts\player\playerTemperatureHandler.sqf";
 checkBoundingBox    = compile preprocessFile "scripts\tools\checkBoundingBox.sqf";
 checkAnimals		= compile preprocessFile "scripts\animals\checkAnimals.sqf";
+gutAnimal		    = compile preprocessFile "scripts\animals\gutAnimal.sqf";
 foodFuncs			= compile preprocessFile "scripts\food\food_funcs.sqf";
 checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
 
@@ -40,6 +41,9 @@ nextThirstDecr      = thirstWaitTime;
 
 healthWaitTime      = 30;
 nextHealthDecr      = healthWaitTime;
+
+// Gut Animal
+gutAnimalActionAvailable = false;
 
 // Cook & Boil
 boilWaterAvailable      = false;
@@ -277,13 +281,31 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 		};
 	} forEach _things;*/
 
+    // Gut Animals
+    if( cursorObject distance2D player < 3 &&
+        _cursorObjectType in ["Rabbit_F","Goat_random_F","Sheep_random_F","Hen_random_F","Cock_random_F"] &&
+        !(alive _cursorObject) &&
+        _cursorObject getVariable["animalHasLoot",0] == 0)then{
+        if(!gutAnimalActionAvailable)then{
+            gutAnimalAction = player addAction["chop wood",{
+                [_this select 3] call gutAnimal;
+            },_cursorObject,6,true,true,"",""];
+            gutAnimalActionAvailable = true;
+        };
+    }else{
+        if(gutAnimalActionAvailable)then{
+            gutAnimalActionAvailable = false;
+            player removeAction gutAnimalAction;
+        };
+    };
+
     if(cursorObject distance2D player < 3 && "bde_hatchet" in magazines player && str (_cursorObject) find ": t_" > -1)then{
         if(!chopWoodActionAvailable)then{
             chopWoodAction = player addAction["chop wood",{
                 [_this select 3] call chopWood;
             },_cursorObject,6,true,true,"",""];
             chopWoodActionAvailable = true;
-        }
+        };
     }else{
         if(chopWoodActionAvailable)then{
             chopWoodActionAvailable = false;
@@ -297,7 +319,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
                 [] call drinkWater;
             },_cursorObject,6,true,true,"",""];
             drinkActionAvailable = true;
-        }
+        };
     }else{
         if(drinkActionAvailable)then{
             drinkActionAvailable = false;

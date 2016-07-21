@@ -3,7 +3,7 @@ _animals = nearestObjects[player,["Rabbit_F","Goat_random_F","Sheep_random_F","H
 {
 	_animal = _x;
 
-	if(!(alive _animal) && _animal getVariable["animalHasLoot",0] == 0)then{
+	/*if(!(alive _animal) && _animal getVariable["animalHasLoot",0] == 0)then{
         _animal addEventHandler ["AnimDone",{
             params["_unit","_anim"];
             if(_unit getVariable["animalHasLoot",0] == 0)then{
@@ -24,7 +24,7 @@ _animals = nearestObjects[player,["Rabbit_F","Goat_random_F","Sheep_random_F","H
                 };
             };
         }];
-    };
+    };*/
 
 	if(random 100 < 2)then{
 		switch (typeOf _animal) do {

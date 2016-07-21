@@ -194,6 +194,8 @@ if(count _db > 0)then{
 
       if(_i >= _hitPointsCount)then{
         _playerUnit setVariable["playerSetupReady",true,false];
+        _dogList = ["Fin_sand_F","Fin_blackwhite_F","Fin_ocherwhite_F","Fin_tricolour_F","Alsatian_Sand_F","Alsatian_Black_F","Alsatian_Sandblack_F"];
+        (selectRandom _dogList) createVehicle _playerUnit;
       };
 	};
 
