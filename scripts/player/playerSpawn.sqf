@@ -35,6 +35,8 @@ playerWet = 0;
 playerSick = 0;
 playerInfected = 0;
 
+playersDogType = "";
+
 if(count _db > 0)then{
 	_playerStats 			= _db;
 	_playerWeapons			= _playerStats select 2;
@@ -86,6 +88,8 @@ if(count _db > 0)then{
 	playerWet = _wet;
 	playerSick = _sick;
 	playerInfected = _infected;
+
+    playersDogType = "Fin_tricolour_F";
 
     switch(_playerStance)do{
         case "CROUCH": {
@@ -182,6 +186,15 @@ if(count _db > 0)then{
 		_playerUnit addItemToUniform _x;
 	}forEach _playerItemsUniform;
 
+    if(playersDogType != "")then{
+        _playersDog = playersDogType createVehicle _playerUnit;
+        _playerUnit addAction ["whistle after dog", {
+            // TODO: play whistle sound
+            _caller = _this select 1;
+            _dog    = _this select 3;
+            _dog doMove (getPos _caller);
+        }, _playersDog];
+    };
 
   	_hitPointNames	= _playerDamage select 0;
 	_hitPointValues	= _playerDamage select 1;
@@ -194,8 +207,6 @@ if(count _db > 0)then{
 
       if(_i >= _hitPointsCount)then{
         _playerUnit setVariable["playerSetupReady",true,false];
-        _dogList = ["Fin_sand_F","Fin_blackwhite_F","Fin_ocherwhite_F","Fin_tricolour_F","Alsatian_Sand_F","Alsatian_Black_F","Alsatian_Sandblack_F"];
-        (selectRandom _dogList) createVehicle _playerUnit;
       };
 	};
 

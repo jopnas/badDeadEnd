@@ -105,7 +105,7 @@ canSeePlayer = {
     _p      = _this select 1;
     _canSee = false;
 
-    _relDir         = _z getRelDir (position _p);
+    _relDir         = _z getRelDir (getPos _p);
     _inViewAngle    = abs(_relDir - 180);
     if([objNull, "VIEW"] checkVisibility [eyePos _z, eyePos _p] > 0.9 && _inViewAngle > 100) then{
          _canSee = true;
@@ -186,7 +186,7 @@ _zBehaviour = [_z] spawn {
                     };
 
                     if(_closestPlayerAliveDistance > attackRangeDef)then{
-                        _z doMove (position _closestPlayerAlive);
+                        _z doMove (getPos _closestPlayerAlive);
                     };
 
                     // if player in attack range
@@ -206,7 +206,7 @@ _zBehaviour = [_z] spawn {
                         _z doMove (_lastPlayerSeenPos);
                         _z setVariable["hasTarget",false, false];
                         if(
-                            (position _z) distance _lastPlayerSeenPos < 2 &&
+                            (getPos _z) distance _lastPlayerSeenPos < 2 &&
                             (!(terrainIntersectASL [_lastPlayerSeenPos, eyePos _z]) && !(lineIntersects [ _lastPlayerSeenPos, eyePos _z])) &&
                             !([_z,_closestPlayerAlive] call canSeePlayer)
                         )then{

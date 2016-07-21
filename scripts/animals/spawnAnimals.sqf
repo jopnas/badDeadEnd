@@ -6,7 +6,7 @@ fnc_spawnAnimals = {
   _pos    = _this select 3;
   for "_i" from 1 to _number do {
     _spawnPos = [((_pos select 0)-_radius) + random (_radius*2),((_pos select 1)-_radius) + random (_radius*2),0];
-    _animal = civGroup createUnit [_type,_spawnPos, [], 5, "CAN_COLLIDE"];
+    _animal = civGroup createUnit [_type,_spawnPos, [], 5, ""];
   };
 };
 
