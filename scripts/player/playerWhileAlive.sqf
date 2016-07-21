@@ -287,7 +287,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         !(alive _cursorObject) &&
         _cursorObject getVariable["animalHasLoot",0] == 0)then{
         if(!gutAnimalActionAvailable)then{
-            gutAnimalAction = player addAction["chop wood",{
+            gutAnimalAction = player addAction["Gut Animal",{
                 [_this select 3] call gutAnimal;
             },_cursorObject,6,true,true,"",""];
             gutAnimalActionAvailable = true;
@@ -405,12 +405,13 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
             };
 
             if(_carDamageName != "" && _carDamageValue > 0 && repairableParts find _carDamageName < 0)then{
-                repairableParts = repairableParts pushBack _carDamageName;
+                private["_repairAction"];
+                repairableParts = repairableParts + [_carDamageName];
                 _repairAction = player addAction[_actionText,{
                     _params = _this select 3;
                     [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] call carRepair;
                 },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
-                repairActionIDs = repairActionIDs pushBack _repairAction;
+                repairActionIDs = repairActionIDs + [_repairAction];
             };
         }forEach(_carDamages select 0);
     }else{

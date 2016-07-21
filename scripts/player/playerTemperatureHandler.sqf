@@ -3,6 +3,8 @@ _isInside 		    = _this select 1;
 _isInCar 			= _this select 2;
 _nearestFireplaces 	= _this select 3;
 
+_player             = player;
+
 _playerUniform		= uniform _player;
 _playerVest			= vest _player;
 _playerBackpack		= backpack _player;

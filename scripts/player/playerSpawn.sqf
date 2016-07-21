@@ -1,4 +1,4 @@
-private["_playerUnit","_respawnTime","_db"];
+private["_respawnTime","_db"];
 _playerUnit     = _this select 0;
 _respawnTime    = _this select 1;
 
@@ -187,12 +187,13 @@ if(count _db > 0)then{
 	}forEach _playerItemsUniform;
 
     if(playersDogType != "")then{
-        _playersDog = playersDogType createVehicle _playerUnit;
+        _playersDog = createAgent [playersDogType, getPos _playerUnit, [], 5, "CAN_COLLIDE"];
         _playerUnit addAction ["whistle after dog", {
             // TODO: play whistle sound
             _caller = _this select 1;
             _dog    = _this select 3;
-            _dog doMove (getPos _caller);
+            _dog playMove "Dog_Sprint";
+            _dog moveTo (getPos _caller);
         }, _playersDog];
     };
 
@@ -246,7 +247,7 @@ actionsEventHandler = [] spawn {
 		false
     };
 
-	while {alive _playerUnit} do {
+	while {alive player} do {
 		waituntil {!(isnull (finddisplay 602))};
         // Items Action
         // MouseHolding statt LBDblClick?
@@ -254,7 +255,7 @@ actionsEventHandler = [] spawn {
         ((findDisplay 602) displayCtrl 638) ctrlSetEventHandler ["LBDblClick", "[_this,'Vest'] call fnc_coordinateItemActions"]; // Vest
         ((findDisplay 602) displayCtrl 619) ctrlSetEventHandler ["LBDblClick", "[_this,'Backpack'] call fnc_coordinateItemActions"]; // Backpack
 		waituntil {isnull (finddisplay 602)};
-        if(!(alive _playerUnit)) exitWith {};
+        if(!(alive player)) exitWith {};
 	};
 };
 
@@ -265,10 +266,10 @@ if(_isRespawn)then{
     addCamShake [10, _respawnTime + 7, 50];
 };
 
-_playerUnit addEventHandler ["Respawn", {
+/*_playerUnit addEventHandler ["Respawn", {
     params["_unit","_corpse"];
     systemChat format["Respawn/_corpse uniform: %1",uniform  _corpse];
-}];
+}];*/
 
 _respawnTime fadeSound 3;
 _respawnTime fadeMusic 3;
