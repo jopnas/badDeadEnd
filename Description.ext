@@ -495,44 +495,69 @@ class RscTitles
     };
 };
 
-// Inventory Item Action List
+// TODO: Inventory Item Action List (lb ListBox)
+class RscListBoxInv {
+    access = 0;
+    idc = -1;
+    type = 5;
+    style = 0;
+    w = 0.4;
+    h = 0.4;
+    x = 0;
+    y = 0;
+    font = "TahomaB";
+    sizeEx = 0.04;
+    rowHeight = 0;
+    colorText[] = {1,1,1,1};
+    colorScrollbar[] = {1,1,1,1};
+    colorSelect[] = {0,0,0,1};
+    colorSelect2[] = {1,0.5,0,1};
+    colorSelectBackground[] = {0.6,0.6,0.6,1};
+    colorSelectBackground2[] = {0.2,0.2,0.2,1};
+    colorBackground[] = {0,0,0,1};
+    maxHistoryDelay = 1.0;
+    soundSelect[] = {"",0.1,1};
+    period = 1;
+    autoScrollSpeed = -1;
+    autoScrollDelay = 5;
+    autoScrollRewind = 0;
+    arrowEmpty = "#(argb,8,8,3)color(1,1,1,1)";
+    arrowFull = "#(argb,8,8,3)color(1,1,1,1)";
+    shadow = 0;
 
-/*
-    // open the dialog
-    createDialog "Dlg";
-
-    // get the control for the listbox
-    _list = (findDisplay 20000) displayCtrl 20000;
-
-    // populate the list with vehicle classes
-    _list lbFillVehicleClass ["veh",""];
-*/
-
-class Dlg {
-  idd = 20000;
-  movingEnable = 0;
-
-  class controls {
-    class LIST {
-      idc = 20000;
-      type = 5;       // CT_LISTBOX
-      style = 0;      // ST_LEFT
-      x = 0.4; y = 0.4;
-      w = 0.4; h = 0.4;
-      rowHeight = 0;  // row height
-      color[] = {1, 0, 0, 1};                 // outline and scrollbars
-      colorText[] = {1, 1, 0, 1};             // unselected text
-      colorSelect[] = {1, 1, 1, 1};           // selected text
-      colorSelect2[] = {1, 1, 1, 1};          // alternating text color
-      colorSelectBackground[] = {0, 0, 0, 1}; // background for selected line(s)
-      colorSelectBackground2[] = {1, 0, 0, 1};// alternating background color
-      soundSelect[] = {};
-      font = "vbs_unicode_lite";
-      sizeEx = .04;
+    class ListScrollBar : ScrollBar {
+        color[] = {1,1,1,0.6};
+        colorActive[] = {1,1,1,1};
+        colorDisabled[] = {1,1,1,0.3};
+        thumb = "#(argb,8,8,3)color(1,1,1,1)";
+        arrowEmpty = "#(argb,8,8,3)color(1,1,1,1)";
+        arrowFull = "#(argb,8,8,3)color(1,1,1,1)";
+        border = "#(argb,8,8,3)color(1,1,1,1)";
+        shadow = 0;
     };
-  };
+
+    onCanDestroy = "systemChat str ['onCanDestroy',_this]; true";
+    onDestroy = "systemChat str ['onDestroy',_this]; false";
+    onSetFocus = "systemChat str ['onSetFocus',_this]; false";
+    onKillFocus = "systemChat str ['onKillFocus',_this]; false";
+    onKeyDown = "systemChat str ['onKeyDown',_this]; false";
+    onKeyUp = "systemChat str ['onKeyUp',_this]; false";
+    onMouseButtonDown = "systemChat str ['onMouseButtonDown',_this]; false";
+    onMouseButtonUp = "systemChat str ['onMouseButtonUp',_this]; false";
+    onMouseButtonClick = "systemChat str ['onMouseButtonClick',_this]; false";
+    onMouseButtonDblClick = "systemChat str ['onMouseButtonDblClick',_this]; false";
+    onMouseZChanged = "systemChat str ['onMouseZChanged',_this]; false";
+    onMouseMoving = "";
+    onMouseHolding = "";
+
+    onLBSelChanged = "systemChat str ['onLBSelChanged',_this]; false";
+    onLBDblClick = "systemChat str ['onLBDblClick',_this]; false";
+    onLBDrag = "systemChat str ['onLBDrag',_this]; false";
+    onLBDragging = "systemChat str ['onLBDragging',_this]; false";
+    onLBDrop = "systemChat str ['onLBDrop',_this]; false";
 };
 
+// Functions
 class cfgFunctions
 {
 	class skipBriefingClass

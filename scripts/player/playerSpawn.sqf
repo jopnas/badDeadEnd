@@ -187,13 +187,20 @@ if(count _db > 0)then{
 	}forEach _playerItemsUniform;
 
     if(playersDogType != "")then{
-        _playersDog = createAgent [playersDogType, getPos _playerUnit, [], 5, "CAN_COLLIDE"];
-        _playerUnit addAction ["whistle after dog", {
+        _playersDog = createAgent [playersDogType, getPos _playerUnit, [], 5, "CAN_COLLIDE"]; //"[this] call _fnc_zombieBehaviour"
+        _playersDog setVariable ["BIS_fnc_animalBehaviour_disable", true];
+        _playerUnit addAction ["call dog", {
             // TODO: play whistle sound
             _caller = _this select 1;
             _dog    = _this select 3;
             _dog playMove "Dog_Sprint";
-            _dog moveTo (getPos _caller);
+            while {alive _caller} do {
+                if(_dog distance _caller < 5 || !(alive _caller)) exitWith {
+                    _playersDog setVariable ["BIS_fnc_animalBehaviour_disable", false];
+                };
+                _dog moveTo (getPos _caller);
+                sleep 0.5;
+            };
         }, _playersDog];
     };
 

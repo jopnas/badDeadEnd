@@ -48,7 +48,7 @@ _buildFireplace = {
     _stoneCount = {_x == "bde_stone"} count magazines player;
   if(_woodCount >= _minWood && _stoneCount >= _minStone)then{
     player playActionNow "Medic";
-    [player,"buildSound0",300,1] remoteExec ["bde_fnc_say3d",0,false];
+    [player,"buildSound0","configVol","randomPitch",300] spawn bde_fnc_playSound3D;
     sleep 5;
       for "_w" from 0 to _minWood step 1 do {
           player removeMagazine "bde_wood";
