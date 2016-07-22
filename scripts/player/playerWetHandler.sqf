@@ -31,6 +31,10 @@ if(rain > 0 && !_isUnderCover && !_isInCar)then{
     _playerWetness = _playerWetness + _getWetVal;
 };
 
+if(_isUnderCover)then{
+	_playerWetness = _playerWetness - 0.02;
+};
+
 if((_isUnderCover && _isInside) || _isInCar)then{
 	_playerWetness = _playerWetness - 0.05;
 };
