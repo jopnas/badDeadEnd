@@ -89,7 +89,7 @@ if(count _db > 0)then{
 	playerSick = _sick;
 	playerInfected = _infected;
 
-    playersDogType = "Fin_tricolour_F";
+    playersDogType = "Alsatian_Sandblack_F";
 
     switch(_playerStance)do{
         case "CROUCH": {
@@ -188,15 +188,18 @@ if(count _db > 0)then{
 
     if(playersDogType != "")then{
         _playersDog = createAgent [playersDogType, getPos _playerUnit, [], 5, "CAN_COLLIDE"]; //"[this] call _fnc_zombieBehaviour"
-        _playersDog setVariable ["BIS_fnc_animalBehaviour_disable", true];
         _playerUnit addAction ["call dog", {
             // TODO: play whistle sound
             _caller = _this select 1;
             _dog    = _this select 3;
+            [player,"dogwhistle0","configVol","randomPitch",300] spawn bde_fnc_playSound3D;
+            _dog setVariable ["BIS_fnc_animalBehaviour_disable", true];
             _dog playMove "Dog_Sprint";
             while {alive _caller} do {
                 if(_dog distance _caller < 5 || !(alive _caller)) exitWith {
-                    _playersDog setVariable ["BIS_fnc_animalBehaviour_disable", false];
+                    _dog setVariable ["BIS_fnc_animalBehaviour_disable", false];
+                    _dog playMove "Dog_Idle_Stop";
+                    //_dog playMove "Dog_Sit";
                 };
                 _dog moveTo (getPos _caller);
                 sleep 0.5;

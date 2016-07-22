@@ -173,6 +173,12 @@ class CfgSounds {
         sound[] = {"\sound\headshot0.ogg", 1, 1};
         titles[] = {};
     };
+    class dogwhistle0
+    {
+        name = "dogwhistle0";
+        sound[] = {"\sound\dogwhistle0.ogg",1, 1};
+        titles[] = {};
+    };
 
     // Zombie AI Sounds
     class zidle0 {
@@ -496,66 +502,6 @@ class RscTitles
 };
 
 // TODO: Inventory Item Action List (lb ListBox)
-class RscListBoxInv {
-    access = 0;
-    idc = -1;
-    type = 5;
-    style = 0;
-    w = 0.4;
-    h = 0.4;
-    x = 0;
-    y = 0;
-    font = "TahomaB";
-    sizeEx = 0.04;
-    rowHeight = 0;
-    colorText[] = {1,1,1,1};
-    colorScrollbar[] = {1,1,1,1};
-    colorSelect[] = {0,0,0,1};
-    colorSelect2[] = {1,0.5,0,1};
-    colorSelectBackground[] = {0.6,0.6,0.6,1};
-    colorSelectBackground2[] = {0.2,0.2,0.2,1};
-    colorBackground[] = {0,0,0,1};
-    maxHistoryDelay = 1.0;
-    soundSelect[] = {"",0.1,1};
-    period = 1;
-    autoScrollSpeed = -1;
-    autoScrollDelay = 5;
-    autoScrollRewind = 0;
-    arrowEmpty = "#(argb,8,8,3)color(1,1,1,1)";
-    arrowFull = "#(argb,8,8,3)color(1,1,1,1)";
-    shadow = 0;
-
-    class ListScrollBar : ScrollBar {
-        color[] = {1,1,1,0.6};
-        colorActive[] = {1,1,1,1};
-        colorDisabled[] = {1,1,1,0.3};
-        thumb = "#(argb,8,8,3)color(1,1,1,1)";
-        arrowEmpty = "#(argb,8,8,3)color(1,1,1,1)";
-        arrowFull = "#(argb,8,8,3)color(1,1,1,1)";
-        border = "#(argb,8,8,3)color(1,1,1,1)";
-        shadow = 0;
-    };
-
-    onCanDestroy = "systemChat str ['onCanDestroy',_this]; true";
-    onDestroy = "systemChat str ['onDestroy',_this]; false";
-    onSetFocus = "systemChat str ['onSetFocus',_this]; false";
-    onKillFocus = "systemChat str ['onKillFocus',_this]; false";
-    onKeyDown = "systemChat str ['onKeyDown',_this]; false";
-    onKeyUp = "systemChat str ['onKeyUp',_this]; false";
-    onMouseButtonDown = "systemChat str ['onMouseButtonDown',_this]; false";
-    onMouseButtonUp = "systemChat str ['onMouseButtonUp',_this]; false";
-    onMouseButtonClick = "systemChat str ['onMouseButtonClick',_this]; false";
-    onMouseButtonDblClick = "systemChat str ['onMouseButtonDblClick',_this]; false";
-    onMouseZChanged = "systemChat str ['onMouseZChanged',_this]; false";
-    onMouseMoving = "";
-    onMouseHolding = "";
-
-    onLBSelChanged = "systemChat str ['onLBSelChanged',_this]; false";
-    onLBDblClick = "systemChat str ['onLBDblClick',_this]; false";
-    onLBDrag = "systemChat str ['onLBDrag',_this]; false";
-    onLBDragging = "systemChat str ['onLBDragging',_this]; false";
-    onLBDrop = "systemChat str ['onLBDrop',_this]; false";
-};
 
 // Functions
 class cfgFunctions
