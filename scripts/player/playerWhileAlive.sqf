@@ -156,7 +156,7 @@ player addEventHandler ["Take", {
     // _container: Object - The container from which the item was taken (vehicle, box, etc.)
     // _item: String - The class name of the taken item
     params["_unit","_container","_item"];
-    systemChat format["Take/_item: %1, _container: %2",_item,_container];
+    //systemChat format["Take/_item: %1, _container: %2",_item,_container];
 }];
 
 // broadcast shot to zombie

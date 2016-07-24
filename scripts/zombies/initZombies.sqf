@@ -1,3 +1,5 @@
+_fnc_zombieBehaviour = compile preprocessFile "scripts\zombies\zombieBehaviour.sqf";
+waitUntil {buildingsListReady};
 sideZ 			= createCenter Resistance;
 groupZ 			= createGroup Resistance;
 
@@ -22,5 +24,4 @@ bde_fnc_receivePlayersNoise = {
     }forEach (units groupZ);
 };
 
-waitUntil {buildingsListReady};
 //[] execVM "scripts\zombies\zombieManager.sqf";

@@ -35,8 +35,6 @@ playerWet = 0;
 playerSick = 0;
 playerInfected = 0;
 
-playersDogType = "";
-
 if(count _db > 0)then{
 	_playerStats 			= _db;
 	_playerWeapons			= _playerStats select 2;
@@ -79,6 +77,7 @@ if(count _db > 0)then{
 	_playerDirection		= _playerStats select 30;
 	_currentWeapon			= _playerStats select 31;
 	_playerDamage			= _playerStats select 32;
+    _playersDog			    = _playerStats select 33;
 
 	// Player Variables
 	playerHunger = _hunger;

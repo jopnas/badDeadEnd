@@ -26,6 +26,8 @@ fnc_spawnLoot = {
   _bridgeNames         	= ["Land_Bridge_01_PathLod_F","Land_Bridge_Asphalt_PathLod_F","Land_Bridge_Concrete_PathLod_F","Land_Bridge_HighWay_PathLod_F"];
   _BuildingsExclude     = _pierNames + _bridgeNames;
 
+  _furnituresCivil      =["Land_ChairWood_F","Land_Metal_rack_F","Land_Rack_F","Land_Metal_wooden_rack_F"];
+
   _buildings = nearestObjects [_playerPosition, ["Building"], 50];
   {
     _building     = _x;
@@ -156,39 +158,48 @@ fnc_spawnLoot = {
                 };
 
                 case "CivilianBuilding":{
-                  // Food
-                  if(random 100 < 60) then {
-                    _spawn addMagazineCargoGlobal [selectRandom _foodItems, 1];
-                  };
-                  // Attachments & Items
-                  if(random 100 < 5) then {
-                    _spawn addItemCargoGlobal [selectRandom _itemsCiv,1];
-                  };
+                    // Furnitures
+                    if(random 100 < 50) then {
+                        _furniture = (selectRandom _furnituresCivil) createVehicle _holderPos;
+                        _furniture setDir round(random 360);
+                        _furniture setVehiclePosition [[_holderPos select 0,_holderPos select 1,(_holderPos select 2) + 0.1], [], 0, ""];
+                    }else{
 
-                  // Ammo only
-                  if(random 100 < 10) then {
-                    _rdmWeaponAmmoCiv  = selectRandom lightWeapons;
-                    _rmags      = getArray(configfile >> "cfgWeapons" >> _rdmWeaponAmmoCiv >> "magazines");
-                    _spawn addMagazineCargoGlobal [selectRandom _rmags, round(random 3)+1];
-                  };
+                        // Food
+                        if(random 100 < 60) then {
+                            _spawn addMagazineCargoGlobal [selectRandom _foodItems, 1];
+                        };
 
-                  // Backpacks
-                  if(random 100 < 5) then {
-                    _spawn addBackpackCargoGlobal [selectRandom _itemBackpacksCiv,1];
-                  };
+                        // Attachments & Items
+                        if(random 100 < 5) then {
+                            _spawn addItemCargoGlobal [selectRandom _itemsCiv,1];
+                        };
 
-                  // Cloth
-                  if(random 100 < 10) then {
-                    _spawn addItemCargoGlobal [selectRandom _equipmentCiv,1];
-                  };
+                        // Ammo only
+                        if(random 100 < 10) then {
+                            _rdmWeaponAmmoCiv  = selectRandom lightWeapons;
+                            _rmags      = getArray(configfile >> "cfgWeapons" >> _rdmWeaponAmmoCiv >> "magazines");
+                            _spawn addMagazineCargoGlobal [selectRandom _rmags, round(random 3)+1];
+                        };
 
-                  // Weapons
-                  if(random 100 < 10) then {
-                    _rdmWeaponWeapCiv = selectRandom lightWeapons;
-                    _spawn addWeaponCargoGlobal [_rdmWeaponWeapCiv,1];
-                    _rmags = getArray(configfile >> "cfgWeapons" >> _rdmWeaponWeapCiv >> "magazines");
-                    _spawn addMagazineCargoGlobal [selectRandom _rmags, round(random 3)];
-                  };
+                        // Backpacks
+                        if(random 100 < 5) then {
+                            _spawn addBackpackCargoGlobal [selectRandom _itemBackpacksCiv,1];
+                        };
+
+                        // Cloth
+                        if(random 100 < 10) then {
+                            _spawn addItemCargoGlobal [selectRandom _equipmentCiv,1];
+                        };
+
+                        // Weapons
+                        if(random 100 < 10) then {
+                            _rdmWeaponWeapCiv = selectRandom lightWeapons;
+                            _spawn addWeaponCargoGlobal [_rdmWeaponWeapCiv,1];
+                            _rmags = getArray(configfile >> "cfgWeapons" >> _rdmWeaponWeapCiv >> "magazines");
+                            _spawn addMagazineCargoGlobal [selectRandom _rmags, round(random 3)];
+                        };
+                    };
                 };
 
                 default {};

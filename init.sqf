@@ -26,6 +26,7 @@ if(isServer)then{
 	[] execVM "scripts\loot\initLoot.sqf";
 	[] execVM "scripts\animals\spawnAnimals.sqf";
 	[] execVM "scripts\server\whilePlayerOnline.sqf";
+    //[] execVM "scripts\zombies\spawnZombie.sqf";
     [] execVM "scripts\zombies\initZombies.sqf";
     [] execVM "scripts\server\sqlLoadVehicles.sqf";
     [] execVM "scripts\server\sqlLoadTents.sqf";
