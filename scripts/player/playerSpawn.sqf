@@ -77,7 +77,10 @@ if(count _db > 0)then{
 	_playerDirection		= _playerStats select 30;
 	_currentWeapon			= _playerStats select 31;
 	_playerDamage			= _playerStats select 32;
-    _playersDog			    = _playerStats select 33;
+    _loadout                = _playerStats select 33;
+    _playersDog			    = _playerStats select 34;
+
+    systemChat str _loadout;
 
 	// Player Variables
 	playerHunger = _hunger;
@@ -88,7 +91,7 @@ if(count _db > 0)then{
 	playerSick = _sick;
 	playerInfected = _infected;
 
-    playersDogType = "Alsatian_Sandblack_F";
+    playersDogType = _playersDog;
 
     switch(_playerStance)do{
         case "CROUCH": {

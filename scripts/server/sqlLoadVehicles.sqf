@@ -1,9 +1,10 @@
 private["_spawnedCar"];
-_CarsQuery        = call compile ("extDB2" callExtension "0:SQL_VH_LOAD:SELECT id,classname,position,rotation,fuel,damage,destroyed,items,weapons,magazines,backpacks FROM vehicles");
-_CarsQueryStatus  = _CarsQuery select 0;
-_CarsInDB         = _CarsQuery select 1;
+_result = call compile ("extDB2" callExtension "0:SQL_VH_LOAD:SELECT * FROM vehicles");
 
-waitUntil { _CarsQueryStatus > 0 };
+waitUntil{count _result > 0 && _result select 0 > 0};
+_CarsQueryStatus  = _result select 0;
+_CarsInDB         = _result select 1;
+
 {
 	_id        = _x select 0;
 	_classname = _x select 1;
@@ -16,6 +17,7 @@ waitUntil { _CarsQueryStatus > 0 };
 	_weapons   = _x select 8;
 	_magazines = _x select 9;
 	_backpacks = _x select 10;
+	_type      = _x select 11;
 
     if(_destroyed == 1)then{
         _towns = nearestLocations [worldCenter, ["NameVillage","NameCity","NameCityCapital"], worldHalfSize];
@@ -111,9 +113,16 @@ waitUntil { _CarsQueryStatus > 0 };
     }];
 
     // Debug Marker
-    _markerstr = createMarker [format["car %1",_id] , _position];
-	_markerstr setMarkerShape "ICON";
-	_markerstr setMarkerType "c_car";
-	_markerstr setMarkerColor "ColorGreen";
+    if(_type == "heli")then{
+        _markerstr = createMarker [format["heli %1",_id] , _position];
+        _markerstr setMarkerType "c_air";
+        _markerstr setMarkerShape "ICON";
+    	_markerstr setMarkerColor "ColorGreen";
+    }else{
+        _markerstr = createMarker [format["car %1",_id] , _position];
+        _markerstr setMarkerType "c_car";
+        _markerstr setMarkerShape "ICON";
+    	_markerstr setMarkerColor "ColorBlue";
+    };
 
 } forEach _CarsInDB;
