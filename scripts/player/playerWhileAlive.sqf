@@ -83,7 +83,9 @@ carRepair = {
         _car setHit [_part, 0];
         player removeAction _action;
         repairActionIDs = repairActionIDs - [_action];
+        sleep 1;
         [_car] call fnc_saveVehicle;
+        systemChat format["repaired %1s %2",typeOf _car,_part];
     };
 };
 

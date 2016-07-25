@@ -1,4 +1,4 @@
-private["_spawnedCar"];
+private["_spawnedCar","_type"];
 _result = call compile ("extDB2" callExtension "0:SQL_VH_LOAD:SELECT * FROM vehicles");
 
 waitUntil{count _result > 0 && _result select 0 > 0};
@@ -26,6 +26,7 @@ _CarsInDB         = _result select 1;
 
         _spawnedCar = _classname createVehicle _roadPosition;
         _spawnedCar setVariable["id",_id,true];
+        _spawnedCar setVariable["type",_type,true];
 
         _spawnedCar setDir random 180;
         _spawnedCar setFuel random 1;
@@ -50,6 +51,7 @@ _CarsInDB         = _result select 1;
     }else{
         _spawnedCar = _classname createVehicle _position;
         _spawnedCar setVariable["id",_id,true];
+        _spawnedCar setVariable["type",_type,true];
 
         clearWeaponCargoGlobal _spawnedCar;
         clearMagazineCargoGlobal _spawnedCar;

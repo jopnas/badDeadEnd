@@ -91,8 +91,6 @@ if(count _db > 0)then{
 	playerSick = _sick;
 	playerInfected = _infected;
 
-    playersDogType = _playersDog;
-
     switch(_playerStance)do{
         case "CROUCH": {
             _playerUnit switchMove "AmovPcrhMstpSrasWpstDnon_AadjPcrhMstpSrasWpstDdown";
@@ -188,20 +186,21 @@ if(count _db > 0)then{
 		_playerUnit addItemToUniform _x;
 	}forEach _playerItemsUniform;
 
-    if(playersDogType != "")then{
-        _playersDog = createAgent [playersDogType, getPos _playerUnit, [], 5, "CAN_COLLIDE"]; //"[this] call _fnc_zombieBehaviour"
+    if(_playersDog != "")then{
+        _playersDog = createAgent [_playersDog, getPos _playerUnit, [], 5, "CAN_COLLIDE"]; //"[this] call _fnc_zombieBehaviour"
         _playerUnit addAction ["call dog", {
-            // TODO: play whistle sound
             _caller = _this select 1;
             _dog    = _this select 3;
-            [player,"dogwhistle0","configVol","randomPitch",300] spawn bde_fnc_playSound3D;
+            [_caller,"dogwhistle0","configVol","randomPitch",300] spawn bde_fnc_playSound3D;
+            //[_caller,"dogwhistle0",300,random 2] remoteExec ["bde_fnc_say3d",0,false];
             _dog setVariable ["BIS_fnc_animalBehaviour_disable", true];
             _dog playMove "Dog_Sprint";
             while {alive _caller} do {
                 if(_dog distance _caller < 5 || !(alive _caller)) exitWith {
                     _dog setVariable ["BIS_fnc_animalBehaviour_disable", false];
+                    _dog playMove "Dog_Sit";
+                    sleep 5;
                     _dog playMove "Dog_Idle_Stop";
-                    //_dog playMove "Dog_Sit";
                 };
                 _dog moveTo (getPos _caller);
                 sleep 0.5;
@@ -269,6 +268,11 @@ actionsEventHandler = [] spawn {
 		waituntil {isnull (finddisplay 602)};
         if(!(alive player)) exitWith {};
 	};
+};
+
+for "_i" from 0 to (1 + floor(random 10)) do {
+    _plPos = getPos player;
+    _bird= "Kestrel_random_F" camCreate [_plPos select 0,_plPos select 1,(_plPos select 2) + 4];
 };
 
 // Player Init Situation

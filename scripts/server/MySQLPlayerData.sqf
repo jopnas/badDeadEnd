@@ -113,8 +113,8 @@ fnc_savePlayerStats = {
 };
 
 fnc_saveVehicle = {
-    private["_vehicle","_id","_position","_rotation","_fuel","_damages","_damage","_items","_weapons","_magazines","_backpacks","_destroyed","_QuerySave","_saveIs"];
-	_vehicle 		= _this select 0;
+    private["_vehicle","_id","_position","_rotation","_fuel","_damages","_damage","_items","_weapons","_magazines","_backpacks","_destroyed","_type","_QuerySave","_saveIs"];
+	_vehicle 	= _this select 0;
     _id         = _vehicle getVariable["id",-1];
 	_position	= getPos _vehicle;
 	_rotation	= getDir _vehicle;
@@ -131,10 +131,10 @@ fnc_saveVehicle = {
         _destroyed = 1;
     };
 
-    _type       = typeOf _vehicle;
+    _type       = _vehicle getVariable ["type",""];
 
     // Vehicle Save
-    _QuerySave 	= format["0:SQL_VH_SAVE:UPDATE vehicles SET position='%2', rotation='%3', fuel='%4', damage='%5', items='%6', weapons='%7', magazines='%8', backpacks='%9', destroyed='%10', type,='%11' WHERE id='%1'",_id,_position,_rotation,_fuel,_damage,_items,_weapons,_magazines,_backpacks,_destroyed,_type];
+    _QuerySave 	= format["0:SQL_VH_SAVE:UPDATE vehicles SET position='%2', rotation='%3', fuel='%4', damage='%5', items='%6', weapons='%7', magazines='%8', backpacks='%9', destroyed='%10', type='%11' WHERE id='%1'",_id,_position,_rotation,_fuel,_damage,_items,_weapons,_magazines,_backpacks,_destroyed,_type];
     _saveIs     = "extDB2" callExtension _QuerySave;
 };
 
