@@ -159,10 +159,10 @@ fnc_spawnLoot = {
 
                 case "CivilianBuilding":{
                     // Furnitures
-                    if(random 100 < 50) then {
+                    if(random 100 < 20) then {
                         _furniture = (selectRandom _furnituresCivil) createVehicle _holderPos;
                         _furniture setDir round(random 360);
-                        _furniture setVehiclePosition [[_holderPos select 0,_holderPos select 1,(_holderPos select 2) + 0.1], [], 0, ""];
+                        _furniture setVehiclePosition [[_holderPos select 0,_holderPos select 1,(_holderPos select 2) + 0.1], [], 0, "CAN_COLLIDE"];
                     }else{
 
                         // Food

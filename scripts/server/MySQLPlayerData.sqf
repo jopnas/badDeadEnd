@@ -120,21 +120,22 @@ fnc_saveVehicle = {
 	_rotation	= getDir _vehicle;
 	_fuel		= fuel _vehicle;
 	_damages	= getAllHitPointsDamage _vehicle;
-    //systemChat str _vehicle;
     _damage		= [_damages select 0, _damages select 2];
 	_items		= getItemCargo _vehicle;
 	_weapons	= getWeaponCargo _vehicle;
 	_magazines	= getMagazineCargo _vehicle;
 	_backpacks	= getBackpackCargo _vehicle;
-    _destroyed  = 0;
-    if(!(alive _vehicle))then{
+
+    if(alive _vehicle)then{
+        _destroyed = 0;
+    }else{
         _destroyed = 1;
     };
 
     _type       = _vehicle getVariable ["type",""];
 
     // Vehicle Save
-    _QuerySave 	= format["0:SQL_VH_SAVE:UPDATE vehicles SET position='%2', rotation='%3', fuel='%4', damage='%5', items='%6', weapons='%7', magazines='%8', backpacks='%9', destroyed='%10', type='%11' WHERE id='%1'",_id,_position,_rotation,_fuel,_damage,_items,_weapons,_magazines,_backpacks,_destroyed,_type];
+    _QuerySave 	= format["0:SQL_VH_SAVE:UPDATE vehicles SET position='%2', rotation='%3', fuel='%4', damage='%5', items='%6', weapons='%7', magazines='%8', backpacks='%9', destroyed='%10', type='""%11""' WHERE id='%1'",_id,_position,_rotation,_fuel,_damage,_items,_weapons,_magazines,_backpacks,_destroyed,_type];
     _saveIs     = "extDB2" callExtension _QuerySave;
 };
 
