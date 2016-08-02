@@ -108,7 +108,7 @@ for "_a" from 0 to _minCamps step 1 do {
 
         if((1 + floor(random 8)) == _i && _addedDeadHumans < _maxRdmDeadHumans)then{
             _deadType = selectRandom  ["Land_HumanSkeleton_F","Land_HumanSkull_F"];
-             createVehicle [_deadType,_stuffPos findEmptyPosition [0, 10, _deadType],[],0,""];
+            _deadType createVehicle (_stuffPos findEmptyPosition [0, 100, _deadType]);
             _addedDeadHumans = _addedDeadHumans + 1;
         };
 

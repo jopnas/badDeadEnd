@@ -91,8 +91,9 @@ _ctrlHunger = _namespaceUI displayCtrl 1210;
 _ctrlHunger ctrlSetText "images\gui\val_" + str ( floor(_hungerVal/10)*10 ) + ".paa";
 
 // "noise"
+//systemChat str playerNoise;
 _ctrlNoise = _namespaceUI displayCtrl 1212;
-_ctrlNoise ctrlSetText "images\gui\noise\gui_noise_" + (str playerNoise) + ".paa";
+_ctrlNoise ctrlSetText "images\gui\val_" + str ( floor(playerNoise/10)*10 ) + ".paa";
 
 if(guiBlink)then{
     guiBlink = false;

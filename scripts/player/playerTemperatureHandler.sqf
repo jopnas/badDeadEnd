@@ -1,3 +1,4 @@
+private["_speed","_speedX","_speedY"];
 _isUnderCover 		= _this select 0;
 _isInside 		    = _this select 1;
 _isInCar 			= _this select 2;
@@ -14,22 +15,34 @@ _clothBonus       = 0;
 
 _playerUnitTemperature = playerTemperature;
 
-if(playerWet > 0)then{
+if(playerWet > 20)then{
 	_playerUnitTemperature = _playerUnitTemperature - (playerWet/200);
 };
 
-if(playerWet == 0)then{
+if(playerWet < 20)then{
     _playerUnitTemperature = _playerUnitTemperature + 0.5;
 };
 
-if(_isInside || _isInCar)then{
+if((_isInside || _isInCar) && playerWet < 20)then{
 	_playerUnitTemperature = _playerUnitTemperature + 0.1;
 };
 
-if(count _nearestFireplaces > 0 && !_isInCar)then{
+if(count _nearestFireplaces > 0 && !_isInCar && playerWet < 20)then{
 	_playerUnitTemperature = _playerUnitTemperature + (count(_nearestFireplaces) / 2);
 };
 
+_speed  = 0;
+_speedY	=  (velocityModelSpace player) select 0;
+_speedX	=  (velocityModelSpace player) select 1;
+if(_speedY >= _speedX)then{
+    _speed = _speedY;
+}else{
+    _speed = _speedX;
+};
+_speed = abs floor(3.6 * _speed);
+if(_speed > 0 && !_isInCar)then{
+    _playerUnitTemperature = _playerUnitTemperature + (_speed/20);
+};
 
 if(_playerUniform != "U_BasicBody")then{
    _clothBonus = _clothBonus  + 0.06;

@@ -169,7 +169,6 @@ _zBehaviour = [_z] spawn {
                     _z doMove (_lastPlayerHeard);
                 };
                 if(t > nextGrowl)then{
-                    //[_z,format["zidle%1",floor random 8],50,_speechPitch] remoteExec ["bde_fnc_say3d",0,false];
                     [_z,format["zidle%1",floor random 8],"configVol",_speechPitch,50] spawn bde_fnc_playSound3D;
                     nextGrowl = time + 30 + random 60;
                 };

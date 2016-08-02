@@ -24,4 +24,4 @@ bde_fnc_receivePlayersNoise = {
     }forEach (units groupZ);
 };
 
-//[] execVM "scripts\zombies\zombieManager.sqf";
+[] execVM "scripts\zombies\zombieManager.sqf";

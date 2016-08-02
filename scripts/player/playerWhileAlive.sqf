@@ -10,6 +10,7 @@ foodFuncs			= compile preprocessFile "scripts\food\food_funcs.sqf";
 checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
 
 nextEverySecond     = 0;
+nextEveryHalfSecond = 0;
 
 barricadeWoodElements       = ["Land_Pallet_vertical_F","Land_Shoot_House_Wall_F","Land_Shoot_House_Wall_Stand_F","Land_Shoot_House_Wall_Crouch_F","Land_Shoot_House_Wall_Prone_F","Land_Shoot_House_Wall_Long_F","Land_Shoot_House_Wall_Long_Stand_F","Land_Shoot_House_Wall_Long_Crouch_F","Land_Shoot_House_Wall_Long_Prone_F"];
 barricadeSandElements       = ["Land_BagFence_Corner_F","Land_BagFence_End_F","Land_BagFence_Long_F","Land_BagFence_Round_F","Land_BagFence_Short_Fm"];
@@ -51,13 +52,16 @@ cookCannedFoodAvailable = false;
 cookMeatAvailable  		= false;
 eatCookedFoodAvailable  = false;
 
+// Refuel
+refuelActionAvailable = false;
+
 // Repair
 repairableParts         = [];
 repairActionIDs         = [];
-carRepair = {
+vehicleRepair = {
     _partName   = _this select 0;
     _damage     = _this select 1;
-    _car        = _this select 2;
+    _vehicle    = _this select 2;
     _part       = _this select 3;
     _action     = _this select 4;
 
@@ -80,12 +84,12 @@ carRepair = {
     if(_allineed)then{
         player  say3D (selectRandom ["toolSound0","toolSound1"]);
         sleep 11;
-        _car setHit [_part, 0];
+        _vehicle setHit [_part, 0];
         player removeAction _action;
         repairActionIDs = repairActionIDs - [_action];
         sleep 1;
-        [_car] call fnc_saveVehicle;
-        systemChat format["repaired %1s %2",typeOf _car,_part];
+        [_vehicle] call fnc_saveVehicle;
+        systemChat format["repaired %1s %2",typeOf _vehicle,_part];
     };
 };
 
@@ -158,7 +162,7 @@ player addEventHandler ["Take", {
     // _container: Object - The container from which the item was taken (vehicle, box, etc.)
     // _item: String - The class name of the taken item
     params["_unit","_container","_item"];
-    //systemChat format["Take/_item: %1, _container: %2",_item,_container];
+    systemChat format["Take/_item: %1, _container: %2",_item,typeof _container];
 }];
 
 // broadcast shot to zombie
@@ -193,9 +197,9 @@ player addEventHandler ["Fired", {
 
 }];
 
-
 while{alive player && player getVariable["playerSetupReady",false]}do{
 	t=time;
+    "dog 0" setMarkerPos getPos (player getVariable "playersDog");
 
 	if(t > nextHungerDecr)then{
 		// Hunger
@@ -242,10 +246,14 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         [getPos player] remoteExec ["fnc_spawnLoot",2,false];
     };
 
-    if(t > nextEverySecond)then{
+    if(t > nextEveryHalfSecond)then{
         [] spawn updateUI;
+        nextEveryHalfSecond = t + 0.5;
+    };
+
+    if(t > nextEverySecond)then{
         [player,[playerHunger,playerThirst,playerHealth,playerTemperature,playerWet,playerSick,playerInfected]] remoteExec ["fnc_savePlayerStats",2,false];
-        nextEverySecond = t + 2;
+        nextEverySecond = t + 1;
     };
 
     _speed              = speed (vehicle player);
@@ -284,7 +292,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
 	} forEach _things;*/
 
     // Gut Animals
-    if( cursorObject distance2D player < 3 &&
+    if( _cursorObject distance2D player < 3 &&
         _cursorObjectType in ["Rabbit_F","Goat_random_F","Sheep_random_F","Hen_random_F","Cock_random_F"] &&
         !(alive _cursorObject) &&
         _cursorObject getVariable["animalHasLoot",0] == 0)then{
@@ -301,7 +309,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         };
     };
 
-    if(cursorObject distance2D player < 3 && "bde_hatchet" in magazines player && str (_cursorObject) find ": t_" > -1)then{
+    if(_cursorObject distance2D player < 3 && "bde_hatchet" in magazines player && str (_cursorObject) find ": t_" > -1)then{
         if(!chopWoodActionAvailable)then{
             chopWoodAction = player addAction["chop wood",{
                 [_this select 3] call chopWood;
@@ -315,7 +323,7 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         };
     };
 
-    if( cursorObject distance2D player < 3 && str (getModelInfo _cursorObject) find "watertank" > -1 || str (getModelInfo _cursorObject) find "waterbarrel" > -1 || str (getModelInfo _cursorObject) find "barrelwater" > -1 || str (getModelInfo _cursorObject) find "stallwater" > -1 || str (getModelInfo _cursorObject) find "watersource" > -1)then{
+    if(_cursorObject distance2D player < 3 && str (getModelInfo _cursorObject) find "watertank" > -1 || str (getModelInfo _cursorObject) find "waterbarrel" > -1 || str (getModelInfo _cursorObject) find "barrelwater" > -1 || str (getModelInfo _cursorObject) find "stallwater" > -1 || str (getModelInfo _cursorObject) find "watersource" > -1)then{
         if(!drinkActionAvailable)then{
             drinkAction = player addAction["drink clean water",{
                 [] call drinkWater;
@@ -385,46 +393,48 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         player removeAction eatCookedFoodAction;
     };
 
-    if(cursorObject distance2D player < 3 && "ToolKit" in Items Player && !(_isInCar) && _cursorObject isKindOf "Car")then{
-        _nearestCarObj = _cursorObject;
-        _carDamages = getAllHitPointsDamage _nearestCarObj;
-        {
-            _i = _forEachIndex;
-            _carDamageName  = (_carDamages select 1) select _i;
-            _carDamageValue = (_carDamages select 2) select _i;
-            _carDamageName2 = (_carDamages select 0) select _i;
+    /*if( _cursorObjectType in ["Land_FuelStation_01_pump_F","Land_FuelStation_02_pump_F","Land_FuelStation_Feed_F","Land_fs_feed_F","Land_MetalBarrel_F","Land_Tank_rust_F"] && !(_cursorObject getVariable["refuelAction",false]))then{
+        refuelAction = _cursorObject addAction["fill an empty fuel canister",{
+            _target = _this select 0;
+            _caller = _this select 1;
+            _caller removeMagazine "bde_fuelCanisterEmpty";
+            _caller addMagazine "bde_fuelCanisterFilled";
+            [player,"fillSound0",20,1] remoteExec ["bde_fnc_say3d",0,false];
+            cutText ["filled fuel canister", "PLAIN DOWN"];
+        },[],6,false,false,"","
+            'bde_fuelCanisterEmpty' in Magazines _this;
+        ",3,false];
+        _cursorObject setVariable["refuelAction",true,true];
+    };*/
 
-            _damagePercent  = 100 - floor(_carDamageValue*100);
-            _actionText = "";
-            if(_damagePercent >= 66)then{
-                _actionText = format["<t color='#00FF00'>Repair %1: %2%3</t>",_carDamageName2,_damagePercent,"%"];
+    /*if(_cursorObjectType  == "Land_WaterTower_01_F" && !(_cursorObject getVariable["refillWaterAction",false]))then{
+        refillAction = _cursorObject addAction["refill an empty bottle",{
+            _target = _this select 0;
+            _caller = _this select 1;
+            if(((getPosATL _caller) select 2) > 8)then{
+                if("bde_bottleempty" in Magazines _caller)then{
+                    _caller removeMagazine "bde_bottleempty";
+                    _caller addMagazine "bde_bottleclean";
+                    cutText ["filled bottle", "PLAIN DOWN"];
+                }else{
+                    if("bde_canteenempty" in Magazines _caller)then{
+                        _caller removeMagazine "bde_canteenempty";
+                        _caller addMagazine "bde_canteenfilled";
+                        cutText ["filled canteen", "PLAIN DOWN"];
+                    };
+                };
+            }else{
+                cutText ["get up there", "PLAIN DOWN"];
             };
-            if(_damagePercent >= 33 && _damagePercent < 66 )then{
-                _actionText = format["<t color='#FFFF00'>Repair %1: %2%3</t>",_carDamageName2,_damagePercent,"%"];
+        },[],6,false,false,"","
+            if('bde_bottleempty' in Magazines _this || 'bde_canteenempty' in Magazines _this)then{
+                true
+            }else{
+                false
             };
-            if(_damagePercent < 33 )then{
-                _actionText = format["<t color='#FF0000'>Repair %1: %2%3</t>",_carDamageName2,_damagePercent,"%"];
-            };
-
-            if(_carDamageName != "" && _carDamageValue > 0 && repairableParts find _carDamageName < 0)then{
-                private["_repairAction"];
-                repairableParts = repairableParts + [_carDamageName];
-                _repairAction = player addAction[_actionText,{
-                    _params = _this select 3;
-                    [_params select 0,_params select 1,_params select 2,_params select 3,_this select 2] call carRepair;
-                },[_carDamageName2,_carDamageValue,_nearestCarObj,_carDamageName]];
-                repairActionIDs = repairActionIDs + [_repairAction];
-            };
-        }forEach(_carDamages select 0);
-    }else{
-        if(count repairableParts > 0)then{
-            repairableParts = [];
-            {
-                player removeAction _x;
-                repairActionIDs = repairActionIDs - [_x];
-            }forEach repairActionIDs;
-        };
-    };
+        ",4,false];
+        _cursorObject setVariable["refillWaterAction",true,true];
+    };*/
 
     if(isInside && !actionBarricadeActive)then{
         actionBarricadeActive = true;
@@ -543,6 +553,5 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         actionBarricadeActive = false;
     };
 
-    //hint format["barricade: %1",(typeOf barricade) in barricadeAllElements];
-
+    hint format["_cursorObjectType: %1\nthis is the house: %2\ngetFuelCargo: %3",_cursorObjectType,_cursorObject == nearestBuilding player,getFuelCargo _cursorObject];
 };

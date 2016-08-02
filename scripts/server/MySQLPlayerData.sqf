@@ -29,7 +29,7 @@ fnc_savePlayerStats = {
 	_player 				= _this select 0;
 	_playerStats			= _this select 1;
 	_PlayerUID  			= getPlayerUID _player;
-	_PlayerPosition 		= getPos _player;
+	_PlayerPosition 		= getPosATL _player;
 	_playerDirection 		= getDir _player;
     _PlayerStance			= stance _player;
 
@@ -126,12 +126,7 @@ fnc_saveVehicle = {
 	_magazines	= getMagazineCargo _vehicle;
 	_backpacks	= getBackpackCargo _vehicle;
 
-    if(alive _vehicle)then{
-        _destroyed = 0;
-    }else{
-        _destroyed = 1;
-    };
-
+    _destroyed  = _vehicle getVariable ["destroyed","0"];
     _type       = _vehicle getVariable ["type",""];
 
     // Vehicle Save
@@ -154,6 +149,30 @@ fnc_saveTent = {
     _saveIs     = "extDB2" callExtension _QuerySaveTent;
 };
 
+// Dogs Load
+fnc_loadDogs = {
+    _result             = call compile ("extDB2" callExtension "0:SQL_DOG_LOAD:SELECT id,type,position,bestFriend,alive FROM dogs");
+    _resultQueryStatus  = _result select 0;
+    _resultInDB         = _result select 1;
+    waitUntil { _resultQueryStatus > 0 };
+    _resultInDB
+};
+
+bde_fnc_saveDog = {
+    params ["_dog"/**/,"_alive"];
+
+    _dogID      = _dog getVariable ["dogID",0];
+    _position   = getPosATL _dog;
+    _bestFriend = _dog getVariable ["bestFriend",""];
+    if(alive _dog)then{
+        _alive  = 1;
+    }else{
+        _alive  = 0;
+    };
+    _QuerySaveDog 	= format["0:SQL_DOG_SAVE:UPDATE dogs SET position='%2',bestFriend='""%3""',alive='%4' WHERE id='%1'",_dogID,_position,_bestFriend,_alive];
+    _saveIs     = "extDB2" callExtension _QuerySaveDog;
+};
+
 // Tent Load
 fnc_loadTents = {
     _result             = call compile ("extDB2" callExtension "0:SQL_TE_LOAD:SELECT id,tentid,pos,rot,type,items,weapons,magazines,backpacks FROM tents");
@@ -165,7 +184,6 @@ fnc_loadTents = {
 
 fnc_deleteTent = {
     params["_tentID"];
-    systemChat str _tentID;
 	"extDB2" callExtension format["0:SQL_TE_DEL:DELETE FROM tents WHERE tentid='""%1""'",_tentID];
 };
     // Barricade Save
@@ -191,6 +209,5 @@ fnc_loadBarricades = {
 
 fnc_deleteBarricade = {
     params["_barricadeID"];
-    systemChat str _barricadeID;
 	"extDB2" callExtension format["0:SQL_BC_DEL:DELETE FROM barricades WHERE barricadeid='""%1""'",_barricadeID];
 };

@@ -1,4 +1,4 @@
-private["_respawnTime","_db"];
+private["_respawnTime","_db","_fnc_dogBehaviour"];
 _playerUnit     = _this select 0;
 _respawnTime    = _this select 1;
 
@@ -104,7 +104,7 @@ if(count _db > 0)then{
 
 	// Set Position
     _playerUnit setDir _playerDirection;
-    _playerUnit setPosATl _playerPosition;
+    _playerUnit setPosATL _playerPosition;
 
 	// Set Uniform
 	if(count _playerUniform > 2)then{
@@ -163,7 +163,8 @@ if(count _db > 0)then{
 	};
 
 	{
-		_playerUnit addItem _x;
+		//_playerUnit addItem _x;
+		_playerUnit addWeapon _x;
 		_playerUnit assignItem _x;
 	}forEach _assignedItems;
 
@@ -188,30 +189,53 @@ if(count _db > 0)then{
 
     // Player's Dog
     if(_playersDog != "")then{
-        _playersDog = createAgent [_playersDog, getPos _playerUnit, [], 5, ""]; //"[this] call _fnc_zombieBehaviour"
-        //_dogBag     = createVehicle ["Box_Ammo_F", getPos _playersDog, [], 0, "can_collide"];
-        //_dogBag attachTo [_playersDog, [0,0.5,0]];
-        //_gwhMark = createVehicle ["Sign_Arrow_Large_Cyan_F",getPos _dogBag,[],0,"can_collide"];
+        _playersDog = createAgent [_playersDog, getPos _playerUnit, [], 0, ""];
+        _playersDog setVariable["dogID", 0,false];
+        _playersDog setVariable["bestFriend", "76561197984281873",false];
+        player setVariable["playersDog",_playersDog,false];
+
+        _markerstr = createMarker [format["dog %1",0], getPos _playersDog];
+        _markerstr setMarkerType "c_unknown";
+        _markerstr setMarkerColor "ColorPink";
+        _markerstr setMarkerText format["(DEBUG) _playersDog",_playersDog];
+
+        // Dogbag
+        _dogBag = createVehicle ["bde_dogbag", getPos _playersDog, [], 0, "can_collide"];
+        _dogBag attachTo [_playersDog, [0,-0.7,-0.2],"Head"]; // Works: Head,
+        _dogBag setVectorDirAndUp [[0,0,1],[0,1,0]];
 
         _playerUnit addAction ["call dog", {
             _caller = _this select 1;
             _dog    = _this select 3;
             [_caller,"dogwhistle0",300,random 2] remoteExec ["bde_fnc_say3d",0,false];
-            //sleep 2;
-            //[_caller,"dogwhistle0","configVol","randomPitch",300] spawn bde_fnc_playSound3D;
+
             _dog setVariable ["BIS_fnc_animalBehaviour_disable", true];
             _dog playMove "Dog_Sprint";
             while {alive _caller} do {
                 if(_dog distance _caller < 3 || !(alive _caller)) exitWith {
                     _dog setVariable ["BIS_fnc_animalBehaviour_disable", false];
-                    _dog playMove "Dog_Sit";
-                    sleep 5;
-                    _dog playMove "Dog_Idle_Stop";
+                    //_dog playMove "Dog_Sit";
+                    _dog playMove "Dog_Idle_Bark";
+                    sleep (10 + floor(random 10));
+                    _dog playMove "Dog_Idle_Walk";
                 };
                 _dog moveTo (getPos _caller);
                 sleep 0.5;
             };
         }, _playersDog];
+
+        _playersDog addEventHandler["AnimChanged",{
+            params["_dog","_anim"];
+            //systemChat _anim;
+            if(_anim == "dog_idle_bark")then{
+                [_dog,"dogBarkAniSync",200] remoteExec ["bde_fnc_say3d",0,false];
+            };
+        }];
+
+        _playersDog addEventHandler["Dammaged",{
+            params["_dog"];
+            [_dog,"dogWhine01",200] remoteExec ["bde_fnc_say3d",0,false];
+        }];
     };
 
   	_hitPointNames	= _playerDamage select 0;

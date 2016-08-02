@@ -1,13 +1,13 @@
 author="NotSure & Grandmaster-G";
 OnLoadName = "Bad Dead End v0.4";
-OnLoadMission = "You wake up in the forest everytime you die.";
+OnLoadMission = "WTF?";
 OnLoadIntro = "";
 OnLoadIntroTime = 0;
 OnLoadMissionTime = 0;
 loadScreen = "images\BadDeadEndLoadingScreen.paa";
 
 class Header {
-    gameType=Sandbox;
+    gameType=Survival;
     minPlayers=1;
     maxPlayers=4;
 };
@@ -270,6 +270,28 @@ class CfgSounds {
         titles[] = {};
     };
 
+    // Dog Sounds
+    class dogBark01
+    {
+        name = "goat0";
+        sound[] = {"\sound\dogBark01.ogg",0.5, 1};
+        titles[] = {};
+    };
+
+    class dogBarkAniSync
+    {
+        name = "goat0";
+        sound[] = {"\sound\dogBark02.ogg",0.5, 1};
+        titles[] = {};
+    };
+
+    class dogWhine01
+    {
+        name = "goat0";
+        sound[] = {"\sound\dogWhine01.ogg",0.5, 1};
+        titles[] = {};
+    };
+
 	// Farm Animals
     class goat0
     {
@@ -486,16 +508,19 @@ class RscTitles
                 text = "images\gui\val_100.paa";
                 y = safezoneH + safezoneY - 0.12;
             };
+            class guiNoise: RscPicGUI
+            {
+                idc = 1211;
+                text = "images\gui\icon_noise.paa";
+                x = safezoneX + safezoneW - 0.22;
+                y = safezoneH + safezoneY - 0.12;
+            };
             class guiNoiseValue: RscValGUI
             {
                 idc = 1212;
-                text = "images\gui\noise\gui_noise_0.paa";
-                colorBackground[]={0,0,0,0};
-                colorText[]={0,0,0,1};
-                x = safezoneW + safezoneX - 0.5;
-                y = safezoneH + safezoneY - 0.8;
-                w = 0.5;
-                h = 0.8;
+                text = "images\gui\val_100.paa";
+                x = safezoneX + safezoneW - 0.22;
+                y = safezoneH + safezoneY - 0.12;
             };
         };
     };

@@ -29,12 +29,33 @@ _addItemCargo = { // [_item,_cargoType] call _addItemCargo;
     };
 };
 
+_removeItemCargo = { // [_item,_cargoType] call _removeItemCargo;
+    _itemClass = _this select 0;
+    _cargoType = _this select 1;
+
+    switch(_cargoType) do {
+        case "Backpack": {
+            player removeItemFromBackpack _itemClass;
+        };
+        case "Vest": {
+            player removeItemFromVest _itemClass;
+        };
+        case "Uniform": {
+            player removeItemFromUniform _itemClass;
+        };
+        default {
+        };
+    };
+};
+
 _addItemFloor = { // [_item] call _addItemFloor;
     _itemClass  = _this select 0;
-
     _pPos       = getPos player;
     _trashPos   = [_pPos select 0,_pPos select 1,(_pPos select 2) + 1];
-    _trashWph   = "groundWeaponHolder" createVehicle _trashPos;
+    _trashPos   = [(_trashPos select 0) - 1 + random 2,(_trashPos select 1) - 1 + random 2,_trashPos select 2];
+
+    _trashWph   = createVehicle ["groundWeaponHolder", _trashPos, [], 1, ""];
+
     _trashWph setDir round(random 360);
     _trashWph setVehiclePosition [_trashPos, [], 0, "CAN_COLLIDE"];
     _trashWph addMagazineCargoGlobal [_itemClass, 1];
@@ -51,10 +72,12 @@ _buildFireplace = {
     [player,"buildSound0","configVol","randomPitch",300] spawn bde_fnc_playSound3D;
     sleep 5;
       for "_w" from 0 to _minWood step 1 do {
-          player removeMagazine "bde_wood";
+            //player removeMagazine "bde_wood";
+            ["bde_wood",_cargoType] call _removeItemCargo;
       };
       for "_s" from 0 to _minStone step 1 do {
-          player removeMagazine "bde_stone";
+            //player removeMagazine "bde_stone";
+            ["bde_stone",_cargoType] call _removeItemCargo;
       };
     	cutText ["build fireplace", "PLAIN DOWN"];
         fireplace = createVehicle ["Land_FirePlace_F",position player,[],0,"can_collide"];
@@ -89,7 +112,8 @@ switch(_classname) do {
 			//player say3D "toolSound0";
             [player,"toolSound0",100,1] remoteExec ["bde_fnc_say3d",0,false];
 	        sleep 1;
-            player removeMagazine _classname;
+            //player removeMagazine _classname;
+            [_classname,_cargoType] call _removeItemCargo;
             ["bde_bottleempty",_cargoType] call _addItemCargo;
             //player addMagazine ["bde_bottleempty",1];
 		    cutText ["fixed damaged bottle", "PLAIN DOWN"];
@@ -103,7 +127,8 @@ switch(_classname) do {
     	    //player say3D "fillSound0";
             [player,"fillSound0",20,1] remoteExec ["bde_fnc_say3d",0,false];
     	    sleep 1;
-			player removeMagazine _classname;
+			//player removeMagazine _classname;
+            [_classname,_cargoType] call _removeItemCargo;
             ["bde_bottleclean",_cargoType] call _addItemCargo;
 			//player addMagazine ["bde_bottleclean",1];
 			cutText ["filled bottle with clean water", "PLAIN DOWN"];
@@ -113,7 +138,8 @@ switch(_classname) do {
         	    //player say3D "fillSound0";
                 [player,"fillSound0",20,1] remoteExec ["bde_fnc_say3d",0,false];
         	    sleep 1;
-			    player removeMagazine _classname;
+			    //player removeMagazine _classname;
+                [_classname,_cargoType] call _removeItemCargo;
                 ["bde_bottlefilled",_cargoType] call _addItemCargo;
                 //player addMagazine ["bde_bottlefilled",1];
 			    cutText ["filled bottle with dirty water", "PLAIN DOWN"];
@@ -126,8 +152,10 @@ switch(_classname) do {
 		if("bde_waterpurificationtablets" in Magazines player)then{
         	player playActionNow "Medic";
 	        sleep 1;
-			player removeMagazine _classname;
-			player removeMagazine "bde_waterpurificationtablets";
+			//player removeMagazine _classname;
+            [_classname,_cargoType] call _removeItemCargo;
+			//player removeMagazine "bde_waterpurificationtablets";
+            ["bde_waterpurificationtablets",_cargoType] call _removeItemCargo;
             ["bde_bottleclean",_cargoType] call _addItemCargo;
             //player addMagazine ["bde_bottleclean",1];
 			cutText ["purified dirty water", "PLAIN DOWN"];
@@ -140,7 +168,8 @@ switch(_classname) do {
         [player,"drinkSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerThirst = playerThirst + 50;
-		player removeMagazine _classname;
+		//player removeMagazine _classname;
+        [_classname,_cargoType] call _removeItemCargo;
         ["bde_bottleempty",_cargoType] call _addItemCargo;
         //player addMagazine ["bde_bottleempty",1];
 		cutText ["drank clean water", "PLAIN DOWN"];
@@ -150,7 +179,8 @@ switch(_classname) do {
     	    //player say3D "fillSound0";
             [player,"fillSound0",20,1] remoteExec ["bde_fnc_say3d",0,false];
     	    sleep 1;
-			player removeMagazine _classname;
+			//player removeMagazine _classname;
+            [_classname,_cargoType] call _removeItemCargo;
             ["bde_canteenfilled",_cargoType] call _addItemCargo;
             //player addMagazine ["bde_canteenfilled",1];
 			cutText ["filled canteen with clean water", "PLAIN DOWN"];
@@ -163,7 +193,8 @@ switch(_classname) do {
         [player,"drinkSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerThirst = playerThirst + 30;
-		player removeMagazine _classname;
+		//player removeMagazine _classname;
+        [_classname,_cargoType] call _removeItemCargo;
         ["bde_canteenempty",_cargoType] call _addItemCargo;
         //player addMagazine ["bde_canteenempty",1];
 		cutText ["drank clean water", "PLAIN DOWN"];
@@ -173,7 +204,8 @@ switch(_classname) do {
         [player,"drinkSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerThirst = playerThirst + 10;
-		player removeMagazine _classname;
+		//player removeMagazine _classname;
+        [_classname,_cargoType] call _removeItemCargo;
 		["bde_canempty"] call _addItemFloor;
 		cutText ["drank can of Spirit", "PLAIN DOWN"];
 	};
@@ -183,7 +215,8 @@ switch(_classname) do {
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerHunger = playerHunger + (random(20)+20);
-		player removeMagazine _classname;
+		//player removeMagazine _classname;
+        [_classname,_cargoType] call _removeItemCargo;
 		["bde_emptycanunknown"] call _addItemFloor;
 		_tastes =  ["salty","sweet","bitter","sour","flavorless"];
 		cutText [format["ate somthing %1",selectRandom _tastes], "PLAIN DOWN"];
@@ -193,8 +226,9 @@ switch(_classname) do {
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerHunger = playerHunger + 20;
-		player removeMagazine _classname;
-		["bde_emptycanpasta"] call _addItemFloor;
+		//player removeMagazine _classname;
+        [_classname,_cargoType] call _removeItemCargo;
+        ["bde_emptycanpasta"] call _addItemFloor;
 		cutText ["ate pasta", "PLAIN DOWN"];
 	};
 	case "bde_bakedbeans": {
@@ -202,7 +236,8 @@ switch(_classname) do {
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerHunger = playerHunger + 25;
-		player removeMagazine _classname;
+        [_classname,_cargoType] call _removeItemCargo;
+		//player removeMagazine _classname;
 		["bde_emptycanunknown"] call _addItemFloor;
 		cutText ["ate baked beans", "PLAIN DOWN"];
 	};
@@ -211,7 +246,8 @@ switch(_classname) do {
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerHunger = playerHunger + 15;
-		player removeMagazine _classname;
+        [_classname,_cargoType] call _removeItemCargo;
+		//player removeMagazine _classname;
 		["bde_emptycanunknown"] call _addItemFloor;
 		cutText ["ate tactical bacon", "PLAIN DOWN"];
 	};
@@ -222,7 +258,8 @@ switch(_classname) do {
 	    sleep 1;
 		playerHunger = playerHunger + 30;
 		playerHealth = playerHealth - 10;
-		player removeMagazine _classname;
+        [_classname,_cargoType] call _removeItemCargo;
+		//player removeMagazine _classname;
 		cutText ["ate big peace of raw meat", "PLAIN DOWN"];
 	};
 	case "bde_meat_big_cooked": {
@@ -230,7 +267,8 @@ switch(_classname) do {
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerHunger = playerHunger + 40;
-		player removeMagazine _classname;
+        [_classname,_cargoType] call _removeItemCargo;
+		//player removeMagazine _classname;
 		cutText ["ate big peace of cooked meat", "PLAIN DOWN"];
 	};
 	case "bde_meat_small": {
@@ -239,7 +277,8 @@ switch(_classname) do {
 	    sleep 1;
 		playerHunger = playerHunger + 15;
 		playerHealth = playerHealth - 10;
-		player removeMagazine _classname;
+        [_classname,_cargoType] call _removeItemCargo;
+		//player removeMagazine _classname;
 		cutText ["ate small peace of raw meat", "PLAIN DOWN"];
 	};
 	case "bde_meat_small_cooked": {
@@ -247,7 +286,8 @@ switch(_classname) do {
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerHunger = playerHunger + 30;
-		player removeMagazine _classname;
+        [_classname,_cargoType] call _removeItemCargo;
+		//player removeMagazine _classname;
 		cutText ["ate small peace of cooked meat", "PLAIN DOWN"];
 	};
 
@@ -256,7 +296,8 @@ switch(_classname) do {
         [player,"swallowSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 		sleep 1;
 		playerHealth = playerHealth + 10;
-		player removeMagazine _classname;
+        [_classname,_cargoType] call _removeItemCargo;
+		//player removeMagazine _classname;
 		cutText ["took vitamines", "PLAIN DOWN"];
 	};
 
@@ -266,7 +307,8 @@ switch(_classname) do {
 		playerInfected = 0;
 		playerSick = 0;
 		playerHealth = playerHealth + 20;
-		player removeMagazine _classname;
+        [_classname,_cargoType] call _removeItemCargo;
+		//player removeMagazine _classname;
 		cutText ["took antibiotics", "PLAIN DOWN"];
 	};
 
@@ -274,7 +316,8 @@ switch(_classname) do {
     case "bde_tentDomePacked": {
         [player,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
 		sleep 5;
-		player removeMagazine _classname;
+        [_classname,_cargoType] call _removeItemCargo;
+		//player removeMagazine _classname;
         _pos            = getPosATL player;
         _pitchedTent    = "bde_tentDome" createVehicle _pos;
 
@@ -303,7 +346,8 @@ switch(_classname) do {
     case "bde_tentCamoPacked": {
         [player,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
 		sleep 5;
-		player removeMagazine _classname;
+        [_classname,_cargoType] call _removeItemCargo;
+		//player removeMagazine _classname;
         _pos            = getPosATL player;
         _pitchedTent    = "bde_tentCamo" createVehicle _pos;
 

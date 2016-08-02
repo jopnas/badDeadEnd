@@ -27,9 +27,13 @@ if(vehicle _playerUnit == _playerUnit)then{
     }else{
         _speed = _speedX;
     };
-    _speed = abs floor(3.6 * _speed);
+    _speed = (abs floor(3.6 * _speed)/2);
 
     // Surfaces
+    _hardNoise = 0;
+    if(_speed > 0 && isOnRoad _playerUnit)then{
+        _hardNoise = 30;
+    };
 
     // run,walk,sprint,crawl
     _movementType = "";
@@ -55,6 +59,13 @@ if(vehicle _playerUnit == _playerUnit)then{
         };
     };
 
+    if(_movementType == "run")then{
+        _hardNoise = _hardNoise * 2;
+    };
+    if(_movementType == "sprint")then{
+        _hardNoise = _hardNoise / 1.5;
+    };
+
     _type = surfaceType (getPosATL _playerUnit);
     _typeA = toArray _type;
     _typeA set [0,"DEL"];
@@ -67,19 +78,22 @@ if(vehicle _playerUnit == _playerUnit)then{
     _surfaceLevel = 1;
     {
         if(_x select 0 == _movementType)then{
-            _surfaceLevel = (_x select 1) select 3;
+            _surfaceLevel = ((_x select 1) select 3) / 2;
         };
     }forEach _soundVal;
 
     // Calculate Noise
-    _noiseLevel = round(_surfaceLevel * _stanceLevel * _speed);
-    _noiseLevel = (_noiseLevel/64)*10;
-    _noiseLevel = floor(_noiseLevel) * 10;
-
+    _noiseLevel = round(_surfaceLevel * (_stanceLevel * 2) * _speed + _hardNoise);
+    _noiseLevel = (_noiseLevel/64)*2;
+    _noiseLevel = floor(_noiseLevel) * 2;
 }else{
-    _speed	=  abs floor(speed (vehicle _playerUnit));
-    _noiseLevel = floor(100 + (_speed / 2));
+    //systemChat format["isEngineOn (vehicle player): %1",isEngineOn (vehicle player)];
+    if(isEngineOn (vehicle player))then{
+        _speed	=  abs floor(speed (vehicle _playerUnit));
+        _noiseLevel = floor(40 + (_speed / 5));
+    };
 };
+//systemChat format["_noiseLevel: %1",_noiseLevel];
 
 // Limitations cause GUI-Values
 if(_noiseLevel < 0)then{

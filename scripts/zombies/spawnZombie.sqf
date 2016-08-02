@@ -1,5 +1,5 @@
 _fnc_zombieBehaviour = compile preprocessFile "scripts\zombies\zombieBehaviour.sqf";
-/fnc_spawnZombie = {
+bde_fnc_spawnZombie = {
   _type     = _this select 0;
   _count    = _this select 1;
   _radius   = _this select 2;
