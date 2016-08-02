@@ -81,10 +81,6 @@ _buildFireplace = {
       };
     	cutText ["build fireplace", "PLAIN DOWN"];
         fireplace = createVehicle ["Land_FirePlace_F",position player,[],0,"can_collide"];
-        _fireplaceTextures = getObjectTextures fireplace;
-        {
-            fireplace setObjectTextureGlobal [_forEachIndex, "#(rgb,8,8,3)color(0,0,1,1)"];
-        } forEach _fireplaceTextures;
 
     	fireplace setDir (getDir player);
         fireplace attachTo [player, [0,2,0]];
@@ -312,14 +308,127 @@ switch(_classname) do {
 		cutText ["took antibiotics", "PLAIN DOWN"];
 	};
 
+    // Camonets
+    case "bde_camonetSmallPacked": {
+        [player,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
+		sleep 5;
+        [_classname,_cargoType] call _removeItemCargo;
+
+        _pitchedCamoNet = createVehicle ["CamoNet_INDP_open_F",getPosATL player,[],0,"can_collide"];
+        _pitchedCamoNet setDir (getDir player);
+        _pitchedCamoNet attachTo [player, [0,2,0]];
+        releasepitchedCamoNet = player addAction ["Release pitched Camonet", {
+            _object = _this select 3;
+            detach _object;
+            _pos = getPosATL _object;
+            _object setVehiclePosition [[_pos select 0,_pos select 1,(_pos select 2)+1], [],0,"can_collide"];
+            player removeAction releasepitchedCamoNet;
+        }, _pitchedCamoNet];
+
+        _tentPos        = getPosAtL _pitchedCamoNet;
+        _tentRot        = getDir _pitchedCamoNet;
+
+        _tentID         = format["%1%2",getPlayerUID player,floor(_tentPos select 0),floor(_tentPos select 1),floor(_tentPos select 2)];
+        _tentOwner      = getPlayerUID player;
+
+        _pitchedCamoNet setVariable["packedClass",_classname,true];
+        _pitchedCamoNet setVariable["tentID",_tentID,true];
+        [_pitchedCamoNet] remoteExec ["fnc_saveTent",2,false];
+
+        _pitchedCamoNet addAction ["Pack Camonet", {
+            _targetObject   = _this select 0;
+            _caller         = _this select 1;
+            [_targetObject,_caller] call packTent;
+        }, [],0,true,true,"","_target distance _this < 3"];
+
+	};
+
+    case "bde_camonetBigPacked": {
+        [player,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
+		sleep 5;
+        [_classname,_cargoType] call _removeItemCargo;
+
+        _pitchedCamoNet = createVehicle ["CamoNet_INDP_F",getPosATL player,[],0,"can_collide"];
+        _pitchedCamoNet setDir (getDir player);
+        _pitchedCamoNet attachTo [player, [0,2,0]];
+        releasepitchedCamoNet = player addAction ["Release pitched Camonet", {
+            _object = _this select 3;
+            detach _object;
+            _pos = getPosATL _object;
+            _object setVehiclePosition [[_pos select 0,_pos select 1,(_pos select 2)+1], [],0,"can_collide"];
+            player removeAction releasepitchedCamoNet;
+        }, _pitchedCamoNet];
+
+        _tentPos        = getPosAtL _pitchedCamoNet;
+        _tentRot        = getDir _pitchedCamoNet;
+
+        _tentID         = format["%1%2",getPlayerUID player,floor(_tentPos select 0),floor(_tentPos select 1),floor(_tentPos select 2)];
+        _tentOwner      = getPlayerUID player;
+
+        _pitchedCamoNet setVariable["packedClass",_classname,true];
+        _pitchedCamoNet setVariable["tentID",_tentID,true];
+        [_pitchedCamoNet] remoteExec ["fnc_saveTent",2,false];
+
+        _pitchedCamoNet addAction ["Pack Camonet", {
+            _targetObject   = _this select 0;
+            _caller         = _this select 1;
+
+            [_targetObject,_caller] call packTent;
+        }, [],0,true,true,"","_target distance _this < 3"];
+
+	};
+
+    case "bde_camonetVehiclesPacked": {
+        [player,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
+		sleep 5;
+        [_classname,_cargoType] call _removeItemCargo;
+
+        _pitchedCamoNet = createVehicle ["CamoNet_INDP_big_F",getPosATL player,[],0,"can_collide"];
+        _pitchedCamoNet setDir (getDir player);
+        _pitchedCamoNet attachTo [player, [0,2,0]];
+        releasepitchedCamoNet = player addAction ["Release pitched Camonet", {
+            _object = _this select 3;
+            detach _object;
+            _pos = getPosATL _object;
+            _object setVehiclePosition [[_pos select 0,_pos select 1,(_pos select 2)+1], [],0,"can_collide"];
+            player removeAction releasepitchedCamoNet;
+        }, _pitchedCamoNet];
+
+        _tentPos        = getPosAtL _pitchedCamoNet;
+        _tentRot        = getDir _pitchedCamoNet;
+
+        _tentID         = format["%1%2",getPlayerUID player,floor(_tentPos select 0),floor(_tentPos select 1),floor(_tentPos select 2)];
+        _tentOwner      = getPlayerUID player;
+
+        _pitchedCamoNet setVariable["packedClass",_classname,true];
+        _pitchedCamoNet setVariable["tentID",_tentID,true];
+        [_pitchedCamoNet] remoteExec ["fnc_saveTent",2,false];
+
+        _pitchedCamoNet addAction ["Pack Camonet", {
+            _targetObject   = _this select 0;
+            _caller         = _this select 1;
+
+            [_targetObject,_caller] call packTent;
+        }, [],0,true,true,"","_target distance _this < 3"];
+
+	};
+
     // Tents
     case "bde_tentDomePacked": {
         [player,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
 		sleep 5;
         [_classname,_cargoType] call _removeItemCargo;
-		//player removeMagazine _classname;
-        _pos            = getPosATL player;
-        _pitchedTent    = "bde_tentDome" createVehicle _pos;
+
+        _pitchedTent = createVehicle ["bde_tentDome",getPosATL player,[],0,"can_collide"];
+        _pitchedTent setDir (getDir player);
+        _pitchedTent attachTo [player, [0,2,0]];
+        releasepitchedTent = player addAction ["Release pitched Tent", {
+            _object = _this select 3;
+            detach _object;
+            _pos = getPosATL _object;
+            _object setVehiclePosition [[_pos select 0,_pos select 1,(_pos select 2)+1], [],0,"can_collide"];
+            player removeAction releasepitchedTent;
+        }, _pitchedTent];
 
         _tentPos        = getPosAtL _pitchedTent;
         _tentRot        = getDir _pitchedTent;
@@ -327,6 +436,7 @@ switch(_classname) do {
         _tentID         = format["%1%2",getPlayerUID player,floor(_tentPos select 0),floor(_tentPos select 1),floor(_tentPos select 2)];
         _tentOwner      = getPlayerUID player;
 
+        _pitchedTent setVariable["packedClass",_classname,true];
         _pitchedTent setVariable["tentID",_tentID,true];
         [_pitchedTent] remoteExec ["fnc_saveTent",2,false];
 
@@ -347,9 +457,18 @@ switch(_classname) do {
         [player,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
 		sleep 5;
         [_classname,_cargoType] call _removeItemCargo;
-		//player removeMagazine _classname;
-        _pos            = getPosATL player;
-        _pitchedTent    = "bde_tentCamo" createVehicle _pos;
+
+        _pitchedTent = createVehicle ["bde_tentCamo",getPosATL player,[],0,"can_collide"];
+
+        _pitchedTent setDir (getDir player);
+        _pitchedTent attachTo [player, [0,2,0]];
+        releasepitchedTent = player addAction ["Release pitched Tent", {
+            _object = _this select 3;
+            detach _object;
+            _pos = getPosATL _object;
+            _object setVehiclePosition [[_pos select 0,_pos select 1,(_pos select 2)+1], [],0,"can_collide"];
+            player removeAction releasepitchedTent;
+        }, _pitchedTent];
 
         _tentPos        = getPosAtL _pitchedTent;
         _tentRot        = getDir _pitchedTent;
@@ -357,6 +476,7 @@ switch(_classname) do {
         _tentID         = format["%1%2",getPlayerUID player,floor(_tentPos select 0),floor(_tentPos select 1),floor(_tentPos select 2)];
         _tentOwner      = getPlayerUID player;
 
+        _pitchedTent setVariable["packedClass",_classname,true];
         _pitchedTent setVariable["tentID",_tentID,true];
         [_pitchedTent] remoteExec ["fnc_saveTent",2,false];
 

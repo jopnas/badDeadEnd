@@ -107,85 +107,109 @@ if(count _db > 0)then{
     _playerUnit setPosATL _playerPosition;
 
 	// Set Uniform
-	if(count _playerUniform > 2)then{
+	if(_playerUniform != "")then{
 		_playerUnit forceAddUniform _playerUniform;
 	};
 
 	// Set Vest
-	if(count _playerVest > 2)then{
+	if(_playerVest != "")then{
 		_playerUnit addVest _playerVest;
 	};
 
 	// Set Backpack
-	if(count _playerBackpack > 2)then{
+	if(_playerBackpack != "")then{
 		_playerUnit addBackpack _playerBackpack;
 	};
 
     // Magazines loaded in weapons
-	{
-		_playerUnit addMagazine[_x,1];
-	}forEach _primWeapMag;
+    if(str _primWeapMag != "[]")then{
+    	{
+    		_playerUnit addMagazine[_x,1];
+    	}forEach _primWeapMag;
+    };
 
-	{
-		_playerUnit addMagazine[_x,1];
-	}forEach _secWeapMag;
+    if(str _secWeapMag != "[]")then{
+        {
+    		_playerUnit addMagazine[_x,1];
+    	}forEach _secWeapMag;
+    };
 
-	{
-		_playerUnit addMagazine[_x,1];
-	}forEach _handgunMag;
+    if(str _handgunMag != "[]")then{
+    	{
+    		_playerUnit addMagazine[_x,1];
+    	}forEach _handgunMag;
+    };
 
 	// Add Weapons
-	{
-		_playerUnit addWeapon _x;
-	}forEach _playerWeapons;
+    if(str _playerWeapons != "[]")then{
+    	{
+    		_playerUnit addWeapon _x;
+    	}forEach _playerWeapons;
 
-    _playerUnit selectWeapon _currentWeapon;
+        _playerUnit setAmmo [primaryWeapon _playerUnit, _primWeapAmmo];
+        _playerUnit setAmmo [secondaryWeapon _playerUnit, _secWeapAmmo];
+        _playerUnit setAmmo [handgunWeapon _playerUnit, _handgunAmmo];
+    };
 
-	_playerUnit setAmmo [primaryWeapon _playerUnit, _primWeapAmmo];
-	_playerUnit setAmmo [secondaryWeapon _playerUnit, _secWeapAmmo];
-	_playerUnit setAmmo [handgunWeapon _playerUnit, _handgunAmmo];
+    if(_currentWeapon != "")then{
+        _playerUnit selectWeapon _currentWeapon;
+    };
 
 	// Weapon Attachments
-	{
-		_playerUnit addPrimaryWeaponItem _x;
-	}forEach _primWeapItems;
+    if(str _primWeapItems != "[]")then{
+    	{
+    		_playerUnit addPrimaryWeaponItem _x;
+    	}forEach _primWeapItems;
+    };
 
-	{
-		_playerUnit addSecondaryWeaponItem _x;
-	}forEach _secWeapItems;
+    if(str _secWeapItems != "[]")then{
+    	{
+    		_playerUnit addSecondaryWeaponItem _x;
+    	}forEach _secWeapItems;
+    };
 
-	{
-		_playerUnit addHandgunItem _x;
-	}forEach _handgunItems;
+    if(str _handgunItems != "[]")then{
+    	{
+    		_playerUnit addHandgunItem _x;
+    	}forEach _handgunItems;
+    };
 
-	if(count _headgear > 2)then{
-		_playerUnit addHeadgear _headgear;
+    if(_headgear != "")then{
+    	_playerUnit addHeadgear _headgear;
 	};
 
-	{
-		//_playerUnit addItem _x;
-		_playerUnit addWeapon _x;
-		_playerUnit assignItem _x;
-	}forEach _assignedItems;
+    if(str _assignedItems != "[]")then{
+    	{
+    		//_playerUnit addItem _x;
+    		_playerUnit addWeapon _x;
+    		_playerUnit assignItem _x;
+    	}forEach _assignedItems;
+    };
 
-	if(count _goggles > 2)then{
-		_playerUnit addGoggles _goggles;
-	};
+    if(_goggles != "")then{
+    	_playerUnit addGoggles _goggles;
+    };
 
     // Set Items Backpack
-	{
-		_playerUnit addItemToBackpack _x;
-	}forEach _playerItemsBackpack;
+    if(str _playerItemsBackpack != "[]")then{
+    	{
+    		_playerUnit addItemToBackpack _x;
+    	}forEach _playerItemsBackpack;
+    };
 
 	// Set Items Vest
-	{
-		_playerUnit addItemToVest _x;
-	}forEach _playerItemsVest;
+    if(str _playerItemsVest != "[]")then{
+    	{
+    		_playerUnit addItemToVest _x;
+    	}forEach _playerItemsVest;
+    };
 
 	// Set Items Uniform
-	{
-		_playerUnit addItemToUniform _x;
-	}forEach _playerItemsUniform;
+    if(str _playerItemsUniform != "[]")then{
+    	{
+    		_playerUnit addItemToUniform _x;
+    	}forEach _playerItemsUniform;
+    };
 
     // Player's Dog
     if(_playersDog != "")then{

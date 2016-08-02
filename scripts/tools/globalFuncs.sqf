@@ -89,14 +89,15 @@ packTent = {
     _caller         = _this select 1;
     _tentPos        = getPosATL _targetObject;
     _tentID         = _targetObject getVariable["tentID","0"];
+    _tentPackClass  = _targetObject getVariable["packedClass",""];
 
-    [_caller,"toolSound1","configVol","configPitch",50] call bde_fnc_playSound3D;
-    //[_caller,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
+    //[_caller,"toolSound1","configVol","configPitch",50] call bde_fnc_playSound3D;
+    [_caller,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
     [_tentID] remoteExec ["fnc_deleteTent",2,false];
 
     sleep 5;
     deleteVehicle _targetObject;
     _tentWph = createVehicle ["groundWeaponHolder",_tentPos,[],0,"can_collide"];
     _tentWph setVehiclePosition [[_tentPos select 0,_tentPos select 1,(_tentPos select 2) + 0.5], [], 0, "can_collide"];
-    _tentWph addMagazineCargoGlobal [ format["%1Packed",typeOf _targetObject],1];
+    _tentWph addMagazineCargoGlobal [_tentPackClass,1];
 };

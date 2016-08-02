@@ -13,7 +13,7 @@ _dbResult = call fnc_loadBarricades;
     _barricade setDir _rot;
     _barricade setPosAtL _pos;
 
-    systemChat format["create %1",_type];
+    //systemChat format["create %1",_type];
 
     _barricade setVariable["barricadeID", _barricadeid,true];
     _barricade setVariable["health", _health,true];

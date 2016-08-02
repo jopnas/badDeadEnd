@@ -36,7 +36,7 @@ _dbResult = call fnc_loadTents;
     _tent setPosAtL _pos;
     _tent setDir _rot;
 
-    systemChat format["create %1",_type];
+    //systemChat format["create %1",_type];
 
     _tent setVariable["tentID", _tentid,true];
 

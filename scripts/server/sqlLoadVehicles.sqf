@@ -11,13 +11,13 @@ _vehiclesInDB         = _result select 1;
 	_position  = _x select 2;
 	_rotation  = _x select 3;
 	_fuel      = _x select 4;
-	_damage    = _x select 5;
-	_destroyed = _x select 6;
-	_items     = _x select 7;
-	_weapons   = _x select 8;
-	_magazines = _x select 9;
-	_backpacks = _x select 10;
-	_type      = _x select 11;
+	_destroyed = _x select 5;
+	_type      = _x select 6;
+	_damage    = _x select 7;
+	_items     = _x select 8;
+	_weapons   = _x select 9;
+	_magazines = _x select 10;
+	_backpacks = _x select 11;
 
     _bde_fnc_randRoadPos = {
         params["_classname"];
@@ -60,8 +60,8 @@ _vehiclesInDB         = _result select 1;
         //systemchat str _vehPosition;
 
         _spawnedVehicle = _classname createVehicle _vehPosition;
-
-        _spawnedVehicle setDir (-10 + (random 20));
+        _spawnedVehicle setVariable["id",_id,true];
+        _spawnedVehicle setDir random 180;
         _spawnedVehicle setFuel random 1;
 
         _allHitPoints = getAllHitPointsDamage _spawnedVehicle;
@@ -84,33 +84,42 @@ _vehiclesInDB         = _result select 1;
         _spawnedVehicle setVariable["id",_id,true];
         _spawnedVehicle setVariable["type",_type,true];
 
-        clearWeaponCargoGlobal _spawnedVehicle;
         clearMagazineCargoGlobal _spawnedVehicle;
+        clearBackpackCargoGlobal _spawnedVehicle;
+        clearWeaponCargoGlobal _spawnedVehicle;
         clearItemCargoGlobal _spawnedVehicle;
 
         _spawnedVehicle setPosATL _position;
     	_spawnedVehicle setDir _rotation;
     	_spawnedVehicle setFuel _fuel;
 
-    	{
-    		_count_items = (_items select 1) select _foreachindex;
-    		_spawnedVehicle addItemCargoGlobal[_x,_count_items];
-    	} forEach (_items select 0);
+        if(str _items != "[[],[]]")then{
+        	{
+        		_count_items = (_items select 1) select _foreachindex;
+        		_spawnedVehicle addItemCargoGlobal[_x,_count_items];
+        	} forEach (_items select 0);
+        };
 
-    	{
-    		_count_weapons = (_weapons select 1) select _foreachindex;
-    		_spawnedVehicle addWeaponCargoGlobal [_x,_count_weapons];
-    	} forEach (_weapons select 0);
+        if(str _weapons != "[[],[]]")then{
+        	{
+        		_count_weapons = (_weapons select 1) select _foreachindex;
+        		_spawnedVehicle addWeaponCargoGlobal [_x,_count_weapons];
+        	} forEach (_weapons select 0);
+        };
 
-    	{
-    		_count_magazines = (_magazines select 1) select _foreachindex;
-    		_spawnedVehicle addMagazineCargoGlobal [_x,_count_magazines];
-    	} forEach (_magazines select 0);
+        if(str _magazines != "[[],[]]")then{
+        	{
+        		_count_magazines = (_magazines select 1) select _foreachindex;
+        		_spawnedVehicle addMagazineCargoGlobal [_x,_count_magazines];
+        	} forEach (_magazines select 0);
+        };
 
-    	{
-    		_count_backpacks = (_backpacks select 1) select _foreachindex;
-    		_spawnedVehicle addBackpackCargoGlobal [_x, _count_backpacks];
-    	} forEach (_backpacks select 0);
+        if(str _backpacks != "[[],[]]")then{
+        	{
+        		_count_backpacks = (_backpacks select 1) select _foreachindex;
+        		_spawnedVehicle addBackpackCargoGlobal [_x, _count_backpacks];
+        	} forEach (_backpacks select 0);
+        };
 
     	_hitPointNames	= _damage select 0;
     	_hitPointValues	= _damage select 1;
@@ -122,33 +131,6 @@ _vehiclesInDB         = _result select 1;
     		};
     	};
     };
-
-    // Actions (repair etc.)
-    _spawnedVehicle addAction[format["repair %1",_type],{
-        _spawnedVehicle = _this select 3;
-        [_spawnedVehicle] execVM "scripts\vehicles\repairVehicleActions.sqf";
-    },_spawnedVehicle,0,false,false,"","
-        'ToolKit' in Items _this;
-        vehicle _this == _this;
-        count repairActionIDs == 0;
-    ",2,false];
-
-    _spawnedVehicle addAction[format["refuel %1",_type],{
-        _target = _this select 0;
-        _caller = _this select 1;
-        _type   = _this select 3;
-        if(fuel _target + 0.5 > 1)then{
-            _target setFuel 1;
-        }else{
-            _target setFuel (fuel _target + 0.5);
-        };
-        _caller removeMagazine "bde_fuelCanisterFilled";
-        _caller addMagazine "bde_fuelCanisterEmpty";
-    },_type,0,false,false,"","
-        'bde_fuelCanisterFilled' in Magazines _this;
-        vehicle _this == _this;
-        fuel _target < 1;
-    ",2,false];
 
     // EventHandlers for saving vehicle to db
     _spawnedVehicle addEventHandler ["ContainerClosed", {
@@ -183,8 +165,35 @@ _vehiclesInDB         = _result select 1;
         systemChat format["%1 enters %2",_unit,typeOf _vehicle];
     }];
 
+    // Actions (repair etc.)
+    _spawnedVehicle addAction[format["repair %1",_type],{
+        _spawnedVehicle = _this select 3;
+        [_spawnedVehicle] execVM "scripts\vehicles\repairVehicleActions.sqf";
+    },_spawnedVehicle,0,false,false,"","
+        'ToolKit' in Items _this;
+        vehicle _this == _this;
+        count repairActionIDs == 0;
+    ",2,false];
+
+    _spawnedVehicle addAction[format["refuel %1",_type],{
+        _target = _this select 0;
+        _caller = _this select 1;
+        _type   = _this select 3;
+        if(fuel _target + 0.5 > 1)then{
+            _target setFuel 1;
+        }else{
+            _target setFuel (fuel _target + 0.5);
+        };
+        _caller removeMagazine "bde_fuelCanisterFilled";
+        _caller addMagazine "bde_fuelCanisterEmpty";
+    },_type,0,false,false,"","
+        'bde_fuelCanisterFilled' in Magazines _this;
+        vehicle _this == _this;
+        fuel _target < 1;
+    ",2,false];
+
     // Debug
-    /*if(_type == "heli")then{
+    if(_type == "heli")then{
         _markerstr = createMarker [format["vehicle %1",_id], getPos _spawnedVehicle];
         _markerstr setMarkerType "c_air";
         _markerstr setMarkerColor "ColorGreen";
@@ -201,7 +210,7 @@ _vehiclesInDB         = _result select 1;
         _markerstr setMarkerType "c_plane";
         _markerstr setMarkerColor "ColorBlue";
         _markerstr setMarkerText format["class: %1, id: %2",_classname,_id];
-    };*/
+    };
 
     sleep 0.5;
 } forEach _vehiclesInDB;
