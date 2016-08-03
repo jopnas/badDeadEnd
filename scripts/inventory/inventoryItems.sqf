@@ -316,31 +316,31 @@ switch(_classname) do {
 
         _pitchedCamoNet = createVehicle ["CamoNet_INDP_open_F",getPosATL player,[],0,"can_collide"];
         _pitchedCamoNet setDir (getDir player);
-        _pitchedCamoNet attachTo [player, [0,2,0]];
+        _pitchedCamoNet attachTo [player, [0,5,1]];
         releasepitchedCamoNet = player addAction ["Release pitched Camonet", {
-            _object = _this select 3;
+            _param      = _this select 3;
+            _object     = _param select 0;
+            _classname  = _param select 1;
+
             detach _object;
             _pos = getPosATL _object;
             _object setVehiclePosition [[_pos select 0,_pos select 1,(_pos select 2)+1], [],0,"can_collide"];
             player removeAction releasepitchedCamoNet;
-        }, _pitchedCamoNet];
 
-        _tentPos        = getPosAtL _pitchedCamoNet;
-        _tentRot        = getDir _pitchedCamoNet;
+            _tentPos        = getPosAtL _object;
+            _tentID         = format["%1%2",getPlayerUID player,floor(_tentPos select 0),floor(_tentPos select 1),floor(_tentPos select 2)];
 
-        _tentID         = format["%1%2",getPlayerUID player,floor(_tentPos select 0),floor(_tentPos select 1),floor(_tentPos select 2)];
-        _tentOwner      = getPlayerUID player;
+            _object setVariable["packedClass",_classname,true];
+            _object setVariable["tentID",_tentID,true];
+            [_object] remoteExec ["fnc_saveTent",2,false];
 
-        _pitchedCamoNet setVariable["packedClass",_classname,true];
-        _pitchedCamoNet setVariable["tentID",_tentID,true];
-        [_pitchedCamoNet] remoteExec ["fnc_saveTent",2,false];
+            _object addAction ["Pack Camonet", {
+                _targetObject   = _this select 0;
+                _caller         = _this select 1;
+                [_targetObject,_caller] call packTent;
+            }, [],0,true,true,"","",3,false];
 
-        _pitchedCamoNet addAction ["Pack Camonet", {
-            _targetObject   = _this select 0;
-            _caller         = _this select 1;
-            [_targetObject,_caller] call packTent;
-        }, [],0,true,true,"","_target distance _this < 3"];
-
+        }, [_pitchedCamoNet,_classname]];
 	};
 
     case "bde_camonetBigPacked": {
@@ -350,7 +350,7 @@ switch(_classname) do {
 
         _pitchedCamoNet = createVehicle ["CamoNet_INDP_F",getPosATL player,[],0,"can_collide"];
         _pitchedCamoNet setDir (getDir player);
-        _pitchedCamoNet attachTo [player, [0,2,0]];
+        _pitchedCamoNet attachTo [player, [0,5,1]];
         releasepitchedCamoNet = player addAction ["Release pitched Camonet", {
             _object = _this select 3;
             detach _object;
@@ -360,8 +360,6 @@ switch(_classname) do {
         }, _pitchedCamoNet];
 
         _tentPos        = getPosAtL _pitchedCamoNet;
-        _tentRot        = getDir _pitchedCamoNet;
-
         _tentID         = format["%1%2",getPlayerUID player,floor(_tentPos select 0),floor(_tentPos select 1),floor(_tentPos select 2)];
         _tentOwner      = getPlayerUID player;
 
@@ -374,7 +372,7 @@ switch(_classname) do {
             _caller         = _this select 1;
 
             [_targetObject,_caller] call packTent;
-        }, [],0,true,true,"","_target distance _this < 3"];
+        }, [],0,true,true,"","",3,false];
 
 	};
 
@@ -385,7 +383,7 @@ switch(_classname) do {
 
         _pitchedCamoNet = createVehicle ["CamoNet_INDP_big_F",getPosATL player,[],0,"can_collide"];
         _pitchedCamoNet setDir (getDir player);
-        _pitchedCamoNet attachTo [player, [0,2,0]];
+        _pitchedCamoNet attachTo [player, [0,8,1]];
         releasepitchedCamoNet = player addAction ["Release pitched Camonet", {
             _object = _this select 3;
             detach _object;
@@ -409,7 +407,7 @@ switch(_classname) do {
             _caller         = _this select 1;
 
             [_targetObject,_caller] call packTent;
-        }, [],0,true,true,"","_target distance _this < 3"];
+        }, [],0,true,true,"","",3,false];
 
 	};
 
@@ -421,7 +419,7 @@ switch(_classname) do {
 
         _pitchedTent = createVehicle ["bde_tentDome",getPosATL player,[],0,"can_collide"];
         _pitchedTent setDir (getDir player);
-        _pitchedTent attachTo [player, [0,2,0]];
+        _pitchedTent attachTo [player, [0,4,1]];
         releasepitchedTent = player addAction ["Release pitched Tent", {
             _object = _this select 3;
             detach _object;
@@ -445,7 +443,7 @@ switch(_classname) do {
             _caller         = _this select 1;
 
             [_targetObject,_caller] call packTent;
-        }, [],0,true,true,"","_target distance _this < 3"];
+        }, [],0,true,true,"","",3,false];
 
         _pitchedTent addEventHandler ["ContainerClosed", {
             params["_container","_player"];
@@ -454,14 +452,14 @@ switch(_classname) do {
 	};
 
     case "bde_tentCamoPacked": {
-        [player,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
+        [player,"toolSound1",0,0] remoteExec ["bde_fnc_say3d",0,false];
 		sleep 5;
         [_classname,_cargoType] call _removeItemCargo;
 
         _pitchedTent = createVehicle ["bde_tentCamo",getPosATL player,[],0,"can_collide"];
 
         _pitchedTent setDir (getDir player);
-        _pitchedTent attachTo [player, [0,2,0]];
+        _pitchedTent attachTo [player, [0,4,1]];
         releasepitchedTent = player addAction ["Release pitched Tent", {
             _object = _this select 3;
             detach _object;
@@ -485,7 +483,7 @@ switch(_classname) do {
             _caller         = _this select 1;
 
             [_targetObject,_caller] call packTent;
-        }, [],0,true,true,"","_target distance _this < 3"];
+        }, [],0,true,true,"","",3,false];
 
         _pitchedTent addEventHandler ["ContainerClosed", {
             params["_container","_player"];

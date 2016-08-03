@@ -11,7 +11,7 @@ _dbResult = call fnc_loadTents;
     _magazines  = _x select 7;
     _backpacks  = _x select 8;
 
-    _tent       = _type createVehicle _pos;
+    _tent       = createVehicle [_type,_pos,[],0,"can_collide"];
 
     {
         _count_items = (_items select 1) select _foreachindex;

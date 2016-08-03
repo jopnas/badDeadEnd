@@ -80,7 +80,10 @@ _vehiclesInDB         = _result select 1;
         [_spawnedVehicle] call fnc_saveVehicle;
 
     }else{
-        _spawnedVehicle = _classname createVehicle _position;
+        _spawnedVehicle = createVehicle [_classname,_position,[],0,"can_collide"];
+        _spawnedVehicle setPosATL _position;
+        _spawnedVehicle setDir _rotation;
+
         _spawnedVehicle setVariable["id",_id,true];
         _spawnedVehicle setVariable["type",_type,true];
 
@@ -89,8 +92,6 @@ _vehiclesInDB         = _result select 1;
         clearWeaponCargoGlobal _spawnedVehicle;
         clearItemCargoGlobal _spawnedVehicle;
 
-        _spawnedVehicle setPosATL _position;
-    	_spawnedVehicle setDir _rotation;
     	_spawnedVehicle setFuel _fuel;
 
         if(str _items != "[[],[]]")then{

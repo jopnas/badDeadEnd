@@ -122,26 +122,26 @@ if(count _db > 0)then{
 	};
 
     // Magazines loaded in weapons
-    if(str _primWeapMag != "[]")then{
+    if(str _primWeapMag != "[]" && str _primWeapMag != "")then{
     	{
     		_playerUnit addMagazine[_x,1];
     	}forEach _primWeapMag;
     };
 
-    if(str _secWeapMag != "[]")then{
+    if(str _secWeapMag != "[]" && str _secWeapMag != "")then{
         {
     		_playerUnit addMagazine[_x,1];
     	}forEach _secWeapMag;
     };
 
-    if(str _handgunMag != "[]")then{
+    if(str _handgunMag != "[]" && str _handgunMag != "")then{
     	{
     		_playerUnit addMagazine[_x,1];
     	}forEach _handgunMag;
     };
 
 	// Add Weapons
-    if(str _playerWeapons != "[]")then{
+    if(str _playerWeapons != "[]" && str _playerWeapons != "")then{
     	{
     		_playerUnit addWeapon _x;
     	}forEach _playerWeapons;
@@ -156,19 +156,19 @@ if(count _db > 0)then{
     };
 
 	// Weapon Attachments
-    if(str _primWeapItems != "[]")then{
+    if(str _primWeapItems != "[]" && str _primWeapItems != "")then{
     	{
     		_playerUnit addPrimaryWeaponItem _x;
     	}forEach _primWeapItems;
     };
 
-    if(str _secWeapItems != "[]")then{
+    if(str _secWeapItems != "[]" && str _secWeapItems != "")then{
     	{
     		_playerUnit addSecondaryWeaponItem _x;
     	}forEach _secWeapItems;
     };
 
-    if(str _handgunItems != "[]")then{
+    if(str _handgunItems != "[]" && str _handgunItems != "")then{
     	{
     		_playerUnit addHandgunItem _x;
     	}forEach _handgunItems;
@@ -178,7 +178,7 @@ if(count _db > 0)then{
     	_playerUnit addHeadgear _headgear;
 	};
 
-    if(str _assignedItems != "[]")then{
+    if(str _assignedItems != "[]" && str _assignedItems != "")then{
     	{
     		//_playerUnit addItem _x;
     		_playerUnit addWeapon _x;
@@ -191,21 +191,21 @@ if(count _db > 0)then{
     };
 
     // Set Items Backpack
-    if(str _playerItemsBackpack != "[]")then{
+    if(str _playerItemsBackpack != "[]" && str _playerItemsBackpack != "")then{
     	{
     		_playerUnit addItemToBackpack _x;
     	}forEach _playerItemsBackpack;
     };
 
 	// Set Items Vest
-    if(str _playerItemsVest != "[]")then{
+    if(str _playerItemsVest != "[]" && str _playerItemsVest != "")then{
     	{
     		_playerUnit addItemToVest _x;
     	}forEach _playerItemsVest;
     };
 
 	// Set Items Uniform
-    if(str _playerItemsUniform != "[]")then{
+    if(str _playerItemsUniform != "[]" && str _playerItemsUniform != "")then{
     	{
     		_playerUnit addItemToUniform _x;
     	}forEach _playerItemsUniform;
@@ -221,17 +221,17 @@ if(count _db > 0)then{
         _markerstr = createMarker [format["dog %1",0], getPos _playersDog];
         _markerstr setMarkerType "c_unknown";
         _markerstr setMarkerColor "ColorPink";
-        _markerstr setMarkerText format["(DEBUG) _playersDog",_playersDog];
+        _markerstr setMarkerText format["_playersDog",_playersDog];
 
         // Dogbag
         _dogBag = createVehicle ["bde_dogbag", getPos _playersDog, [], 0, "can_collide"];
-        _dogBag attachTo [_playersDog, [0,-0.7,-0.2],"Head"]; // Works: Head,
+        _dogBag attachTo [_playersDog, [0,-0.6,-0.1],"Spine2"]; // Works: Head,Spine2
         _dogBag setVectorDirAndUp [[0,0,1],[0,1,0]];
 
         _playerUnit addAction ["call dog", {
             _caller = _this select 1;
             _dog    = _this select 3;
-            [_caller,"dogwhistle0",300,random 2] remoteExec ["bde_fnc_say3d",0,false];
+            [_caller,"dogwhistle0",0,0] remoteExec ["bde_fnc_say3d",0,false];
 
             _dog setVariable ["BIS_fnc_animalBehaviour_disable", true];
             _dog playMove "Dog_Sprint";
@@ -250,15 +250,14 @@ if(count _db > 0)then{
 
         _playersDog addEventHandler["AnimChanged",{
             params["_dog","_anim"];
-            //systemChat _anim;
             if(_anim == "dog_idle_bark")then{
-                [_dog,"dogBarkAniSync",200] remoteExec ["bde_fnc_say3d",0,false];
+                [_dog,"dogBarkAniSync",0,2.5] remoteExec ["bde_fnc_say3d",0,false];
             };
         }];
 
         _playersDog addEventHandler["Dammaged",{
             params["_dog"];
-            [_dog,"dogWhine01",200] remoteExec ["bde_fnc_say3d",0,false];
+            [_dog,"dogWhine01",0,0] remoteExec ["bde_fnc_say3d",0,false];
         }];
     };
 

@@ -1,10 +1,8 @@
-bde_fnc_say3d = { // [_sayobject,_audioclip,_maxdistance,_audiopitch] remoteExec ["bde_fnc_say3d",0,false];
+bde_fnc_say3d = { // [_sayobject,_audioclip,_maxdistance,_delay] remoteExec ["bde_fnc_say3d",0,false];
+    params["_sayobject","_audioclip","_maxdistance","_delay"];
     if(!isDedicated)then{
-        _sayobject      = _this select 0;
-        _audioclip      = _this select 1;
-        _maxdistance    = _this select 2;
-
-        _sayobject say3D [_audioclip, _maxdistance, random(2)];
+        sleep _delay;
+        _sayobject say3D [_audioclip, _maxdistance, 1];
     };
 };
 
