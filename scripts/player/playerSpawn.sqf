@@ -1,10 +1,7 @@
 private["_respawnTime","_db","_fnc_dogBehaviour"];
 _playerUnit     = _this select 0;
-_respawnTime    = _this select 1;
+_respawnTime    = 5;
 
-if (!isServer && (player != player)) then {
-    waitUntil {player == player};
-};
 sleep 5;
 _db = (_playerUnit getVariable["db",[]]);
 
@@ -122,6 +119,11 @@ if(count _db > 0)then{
 	};
 
     // Magazines loaded in weapons
+
+    if(_playerBackpack == "" && _playerVest == "" && _playerUniform == "")then{ //add backpack for loaded magazines
+        _playerUnit addBackpack "B_AssaultPack_khk";
+    };
+
     if(str _primWeapMag != "[]" && str _primWeapMag != "")then{
     	{
     		_playerUnit addMagazine[_x,1];
@@ -149,6 +151,10 @@ if(count _db > 0)then{
         _playerUnit setAmmo [primaryWeapon _playerUnit, _primWeapAmmo];
         _playerUnit setAmmo [secondaryWeapon _playerUnit, _secWeapAmmo];
         _playerUnit setAmmo [handgunWeapon _playerUnit, _handgunAmmo];
+    };
+
+    if(_playerBackpack == "" && _playerVest == "" && _playerUniform == "")then{  //remove backpack for loaded magazines
+            removeBackpack _playerUnit;
     };
 
     if(_currentWeapon != "")then{
@@ -216,7 +222,7 @@ if(count _db > 0)then{
         _playersDog = createAgent [_playersDog, getPos _playerUnit, [], 0, ""];
         _playersDog setVariable["dogID", 0,false];
         _playersDog setVariable["bestFriend", "76561197984281873",false];
-        player setVariable["playersDog",_playersDog,false];
+        _playerUnit setVariable["playersDog",_playersDog,false];
 
         _markerstr = createMarker [format["dog %1",0], getPos _playersDog];
         _markerstr setMarkerType "c_unknown";
@@ -227,6 +233,18 @@ if(count _db > 0)then{
         _dogBag = createVehicle ["bde_dogbag", getPos _playersDog, [], 0, "can_collide"];
         _dogBag attachTo [_playersDog, [0,-0.6,-0.1],"Spine2"]; // Works: Head,Spine2
         _dogBag setVectorDirAndUp [[0,0,1],[0,1,0]];
+
+        // Test Inventory Doggybag
+        _dogBag addEventHandler ["ContainerClosed", {
+            params["_bag","_player"];
+
+            _items		= getItemCargo _bag;
+            _weapons	= getWeaponCargo _bag;
+            _magazines	= getMagazineCargo _bag;
+            _backpacks	= getBackpackCargo _bag;
+
+            systemChat str _magazines;
+        }];
 
         _playerUnit addAction ["call dog", {
             _caller = _this select 1;
@@ -248,10 +266,12 @@ if(count _db > 0)then{
             };
         }, _playersDog];
 
-        _playersDog addEventHandler["AnimChanged",{
+        //dogsChangedAnims = [];
+        _playersDog addEventHandler["AnimStateChanged",{
             params["_dog","_anim"];
+            //dogsChangedAnims pushBackUnique _anim;
             if(_anim == "dog_idle_bark")then{
-                [_dog,"dogBarkAniSync",0,2.5] remoteExec ["bde_fnc_say3d",0,false];
+                [_dog,"dogBarkAniSync",0,0.5] remoteExec ["bde_fnc_say3d",0,false];
             };
         }];
 
@@ -287,10 +307,10 @@ if(count _db > 0)then{
 
 waitUntil{_playerUnit getVariable["playerSetupReady",false]};
 
-// Player UI Init
+// Player Init
 [_playerUnit] execVM "scripts\player\playerWhileAlive.sqf";
 
-// Init Player UI
+// Init BDE GUI
 3 cutRsc ['playerStatusGUI', 'PLAIN',3];
 
 // Action Eventhandler
@@ -299,34 +319,38 @@ inGameUISetEventHandler ["Action", "[_this] call actionHandler"];
 
 // Inventory Items Actions
 inventoryItemAction = compile preprocessFile "scripts\inventory\inventoryItems.sqf";
-actionsEventHandler = [] spawn {
-	fnc_coordinateItemActions = {
-        _idcData = _this select 0;
-        _bagType = _this select 1;
+fnc_coordinateItemActions = {
+    _idcData    = _this select 0;
+    _bagType    = _this select 1;
+    _clickPos   = _this select 2;
 
-		_idc = ctrlIDC (_idcData select 0);
-		_selectedIndex = _idcData select 1;
+    _idc = ctrlIDC (_idcData select 0);
+    _selectedIndex = _idcData select 1;
 
-		[_idc,_selectedIndex,_bagType,_idcData] spawn inventoryItemAction;
-		false
-    };
-
-	while {alive player} do {
-		waituntil {!(isnull (finddisplay 602))};
-        // Items Action
-        // MouseHolding statt LBDblClick?
-        ((findDisplay 602) displayCtrl 633) ctrlSetEventHandler ["LBDblClick", "[_this,'Uniform'] call fnc_coordinateItemActions"]; // Uniform
-        ((findDisplay 602) displayCtrl 638) ctrlSetEventHandler ["LBDblClick", "[_this,'Vest'] call fnc_coordinateItemActions"]; // Vest
-        ((findDisplay 602) displayCtrl 619) ctrlSetEventHandler ["LBDblClick", "[_this,'Backpack'] call fnc_coordinateItemActions"]; // Backpack
-		waituntil {isnull (finddisplay 602)};
-        if(!(alive player)) exitWith {};
-	};
+    [_idc,_selectedIndex,_bagType,_clickPos,_idcData] spawn inventoryItemAction;
+    systemChat str allDisplays;
+    false
 };
 
-/*for "_i" from 0 to (1 + floor(random 10)) do {
-    _plPos = getPos player;
-    _bird= "Kestrel_random_F" camCreate [_plPos select 0,_plPos select 1,(_plPos select 2) + 4];
-};*/
+_initInventoryActionHandler = [_playerUnit] spawn {
+    params["_playerUnit"];
+    // replace with inventory open event
+	while {alive _playerUnit} do {
+        invClickPos = [0,0];
+		waituntil {!(isnull (finddisplay 602))};
+        // Get Click Position
+        ((findDisplay 602) displayCtrl 633) ctrlSetEventHandler ["MouseButtonDown", "invClickPos = [_this select 2,_this select 3];"]; // Uniform
+        ((findDisplay 602) displayCtrl 638) ctrlSetEventHandler ["MouseButtonDown", "invClickPos = [_this select 2,_this select 3];"]; // Vest
+        ((findDisplay 602) displayCtrl 619) ctrlSetEventHandler ["MouseButtonDown", "invClickPos = [_this select 2,_this select 3];"]; // Backpack
+
+        // Items Action
+        ((findDisplay 602) displayCtrl 633) ctrlSetEventHandler ["LBDblClick", "[_this,'Uniform',invClickPos] call fnc_coordinateItemActions"]; // Uniform
+        ((findDisplay 602) displayCtrl 638) ctrlSetEventHandler ["LBDblClick", "[_this,'Vest',invClickPos] call fnc_coordinateItemActions"]; // Vest
+        ((findDisplay 602) displayCtrl 619) ctrlSetEventHandler ["LBDblClick", "[_this,'Backpack',invClickPos] call fnc_coordinateItemActions"]; // Backpack
+		waituntil {isnull (finddisplay 602)};
+        if(!(alive _playerUnit)) exitWith {};
+	};
+};
 
 // Player Init Situation
 if(_isRespawn)then{

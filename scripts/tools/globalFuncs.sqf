@@ -76,20 +76,19 @@ bde_fnc_removeBurnAction = {
 bde_fnc_underCover = {
     _object         = _this select 0;
     _startPosition  = getPosASL _object;
-    _endPosition    = [_startPosition select 0, _startPosition select 1, (_startPosition select 2 ) + 10];
+    _endPosition    = [_startPosition select 0, _startPosition select 1, (_startPosition select 2 ) + 15];
     _intersections  = lineIntersectsSurfaces [_startPosition, _endPosition, _object, objNull, false, 1, "GEOM", "VIEW"];
     _isBelowRoof    = !(_intersections isEqualTo []);
     _isBelowRoof
 };
 
-packTent = {
+bde_fnc_packTent = {
     _targetObject   = _this select 0;
     _caller         = _this select 1;
+    _tentPackClass  = _this select 2;
     _tentPos        = getPosATL _targetObject;
     _tentID         = _targetObject getVariable["tentID","0"];
-    _tentPackClass  = _targetObject getVariable["packedClass",""];
 
-    //[_caller,"toolSound1","configVol","configPitch",50] call bde_fnc_playSound3D;
     [_caller,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
     [_tentID] remoteExec ["fnc_deleteTent",2,false];
 
@@ -98,4 +97,48 @@ packTent = {
     _tentWph = createVehicle ["groundWeaponHolder",_tentPos,[],0,"can_collide"];
     _tentWph setVehiclePosition [[_tentPos select 0,_tentPos select 1,(_tentPos select 2) + 0.5], [], 0, "can_collide"];
     _tentWph addMagazineCargoGlobal [_tentPackClass,1];
+};
+
+bde_fnc_vehicleRepair = {
+    params["_partName","_damage","_vehicle","_part","_action","_caller"];
+
+    _allineed = false;
+    if(_partName find "Wheel" > -1 && "bde_wheel" in Magazines _caller)then{
+        _allineed = true;
+        _caller removeMagazine "bde_wheel";
+    };
+
+    if(_partName find "Fuel" > -1 && "bde_ducttape" in Magazines _caller)then{
+        _allineed = true;
+        _caller removeMagazine "bde_ducttape";
+    };
+
+    // Fallback if condition to repair vehiclepart is not set
+    if(_partName find "Wheel" < 0 && _partName find "Fuel" < 0)then{
+        _allineed = true;
+    };
+
+    if(_allineed)then{
+        _caller  say3D (selectRandom ["toolSound0","toolSound1"]);
+        sleep 11;
+        _vehicle setHit [_part, 0];    
+        _vehicle removeAction _action;
+        _repairActionIDs = _vehicle getVariable ["repairActionIDs", []];
+        _repairActionIDs = _repairActionIDs - [_action];
+        _vehicle setVariable ["repairActionIDs", _repairActionIDs,false];
+        sleep 1;
+        [_vehicle] call fnc_saveVehicle;
+        systemChat format["repaired %1s %2",typeOf _vehicle,_part];
+    };
+};
+
+bde_fnc_removeRepairActions = {
+    params["_vehicle"];
+    _repairActionIDs = _vehicle getVariable ["repairActionIDs", []];
+    if(count _repairActionIDs > 0)then{
+        {
+            _vehicle removeAction _x;
+        }forEach _repairActionIDs;
+        _vehicle setVariable ["repairActionIDs", [],false];
+    };
 };

@@ -7,7 +7,7 @@ OnLoadMissionTime = 0;
 loadScreen = "images\BadDeadEndLoadingScreen.paa";
 
 class Header {
-    gameType=Survival;
+    gameType=Survive;
     minPlayers=1;
     maxPlayers=4;
 };
@@ -15,7 +15,7 @@ class Header {
 onCheat = "hint str 'Fuck you, man!'";
 
 forceRotorLibSimulation = 2;
-//disableRandomization[] = {"AllVehicles"};
+disableRandomization[] = {"AllVehicles"};
 skipLobby = 1;
 saving = 0;
 
@@ -38,10 +38,10 @@ debriefing = 0;
 enableItemsDropping = 0;
 
 respawn = "BASE"; // Respawn type. 0:"NONE", 1:"BIRD", 2:"INSTANT", 3:"BASE", 4:"GROUP", 5:"SIDE"
-respawndelay = 10; // Delay in seconds before playable unit respawns.
+respawndelay = 5; // Delay in seconds before playable unit respawns.
 respawnVehicleDelay = 100; // Delay in seconds before vehicle respawns.
 respawnDialog = 0; // 0 to disable the score table (it can still be opened manually by pressing 'P' key).
-// respawnTemplates[] = {"Base","Counter","Revive"}; // Respawn templates from CfgRespawnTemplates. You can combine any number of them together.
+respawnTemplates[] = {"Base"}; // Respawn templates from CfgRespawnTemplates. You can combine any number of them together.
 respawnOnStart = 0; // 1 to respawn player when he joins the game. Available only for INSTANT and BASE respawn types.
 aikills = 0; // When 1, the score table contains score of all playable units as opposed to players only.
 
@@ -350,6 +350,110 @@ class CfgSounds {
 };
 
 // GUI
+class ScrollBar;
+class RscListBox
+{
+    access = 0; // Control access (0 - ReadAndWrite, 1 - ReadAndCreate, 2 - ReadOnly, 3 - ReadOnlyVerified)
+    idc = -1; // Control identification (without it, the control won't be displayed)
+    type = 5; // Type is 5
+    style =  0 + 0x10; // Style
+    default = 0; // Control selected by default (only one within a display can be used)
+    blinkingPeriod = 0; // Time in which control will fade out and back in. Use 0 to disable the effect.
+
+    x = 0; // Horizontal coordinates
+    y = 0; // Vertical coordinates
+    w = 0.5; // Width
+    h = 0.1; // Height
+
+    colorBackground[] = {0.2,0.2,0.2,1}; // Fill color
+    colorSelectBackground[] = {1,0.5,0,1}; // Selected item fill color
+    colorSelectBackground2[] = {0,0,0,1}; // Selected item fill color (oscillates between this and colorSelectBackground)
+    sizeEx = 0.03921; // Text size
+    font = "TahomaB"; // Font from CfgFontFamilies
+    shadow = 0; // Shadow (0 - none, 1 - directional, color affected by colorShadow, 2 - black outline)
+    colorText[] = {1,1,1,1}; // Text and frame color
+    colorDisabled[] = {1,1,1,0.5}; // Disabled text color
+    colorSelect[] = {1,1,1,1}; // Text selection color
+    colorSelect2[] = {1,1,1,1}; // Text selection color (oscillates between this and colorSelect)
+    colorShadow[] = {0,0,0,0.5}; // Text shadow color (used only when shadow is 1)
+
+    pictureColor[] = {1,0.5,0,1}; // Picture color
+    pictureColorSelect[] = {1,1,1,1}; // Selected picture color
+    pictureColorDisabled[] = {1,1,1,0.5}; // Disabled picture color
+
+    tooltip = ""; // Tooltip text
+    tooltipColorShade[] = {0,0,0,1}; // Tooltip background color
+    tooltipColorText[] = {1,1,1,1}; // Tooltip text color
+    tooltipColorBox[] = {1,1,1,1}; // Tooltip frame color
+
+    period = 1; // Oscillation time between colorSelect/colorSelectBackground2 and colorSelect2/colorSelectBackground when selected
+
+    rowHeight = 0.1; // Row height
+    itemSpacing = 0; // Height of empty space between items
+    maxHistoryDelay = 1; // Time since last keyboard type search to reset it
+    canDrag = 0; // 1 (true) to allow item dragging
+
+    soundSelect[] = {"\A3\ui_f\data\sound\RscListbox\soundSelect",0.09,1}; // Sound played when an item is selected
+
+    // Scrollbar configuration (applied only when LB_TEXTURES style is used)
+    class ListScrollBar //In older games this class is "ScrollBar"
+    {
+        width = 0; // width of ListScrollBar
+        height = 0; // height of ListScrollBar
+        scrollSpeed = 0.001; // scroll speed of ListScrollBar
+
+        arrowEmpty = "\A3\ui_f\data\gui\cfg\scrollbar\arrowEmpty_ca.paa"; // Arrow
+        arrowFull = "\A3\ui_f\data\gui\cfg\scrollbar\arrowFull_ca.paa"; // Arrow when clicked on
+        border = "\A3\ui_f\data\gui\cfg\scrollbar\border_ca.paa"; // Slider background (stretched vertically)
+        thumb = "\A3\ui_f\data\gui\cfg\scrollbar\thumb_ca.paa"; // Dragging element (stretched vertically)
+
+        color[] = {1,1,1,1}; // Scrollbar color
+    };
+
+    /*onCanDestroy = "systemChat str ['onCanDestroy',_this]; true";
+    onDestroy = "systemChat str ['onDestroy',_this]; false";
+    onSetFocus = "systemChat str ['onSetFocus',_this]; false";
+    onKillFocus = "systemChat str ['onKillFocus',_this]; false";
+    onKeyDown = "systemChat str ['onKeyDown',_this]; false";
+    onKeyUp = "systemChat str ['onKeyUp',_this]; false";
+    onMouseButtonDown = "systemChat str ['onMouseButtonDown',_this]; false";
+    onMouseButtonUp = "systemChat str ['onMouseButtonUp',_this]; false";
+    onMouseButtonClick = "systemChat str ['onMouseButtonClick',_this]; false";
+    onMouseButtonDblClick = "systemChat str ['onMouseButtonDblClick',_this]; false";
+    onMouseZChanged = "systemChat str ['onMouseZChanged',_this]; false";
+    onMouseMoving = "";
+    onMouseHolding = "";
+
+    onLBSelChanged = "systemChat str ['onLBSelChanged',_this]; false";
+    onLBDblClick = "systemChat str ['onLBDblClick',_this]; false";
+    onLBDrag = "systemChat str ['onLBDrag',_this]; false";
+    onLBDragging = "systemChat str ['onLBDragging',_this]; false";
+    onLBDrop = "systemChat str ['onLBDrop',_this]; false";*/
+};
+
+class invActionsGUI {
+    idd = 6901;
+    movingEnable = 0;
+    enableSimulation = 1;
+
+    class controls {
+        class InventoryActionMenu: RscListbox
+        {
+            idc = 1500;
+            x = 0; // Horizontal coordinates
+            y = 0; // Vertical coordinates
+            w = 0.3; // Width
+            h = 0.1; // Height
+            sizeEx = 0.027; // Text size
+            rowHeight = 0.027; // Row height
+            itemSpacing = 0.01;
+            period = 0; // Oscillation time between colorSelect/colorSelectBackground2 and colorSelect2/colorSelectBackground when selected
+        };
+    };
+};
+
+
+
 class RscText
 {
     type = 0;
@@ -433,7 +537,7 @@ class RscTitles
         name = "statusGui";
         onLoad = "uiNamespace setVariable ['bde_gui_display', _this select 0];";
 
-        class ControlsBackground {
+        class controls {
             // On/Off
             class guiInfected: RscPicGUI
             {
@@ -525,8 +629,6 @@ class RscTitles
         };
     };
 };
-
-// TODO: Inventory Item Action List (lb ListBox)
 
 // Functions
 class cfgFunctions

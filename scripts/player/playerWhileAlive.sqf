@@ -52,47 +52,6 @@ cookCannedFoodAvailable = false;
 cookMeatAvailable  		= false;
 eatCookedFoodAvailable  = false;
 
-// Refuel
-refuelActionAvailable = false;
-
-// Repair
-repairableParts         = [];
-repairActionIDs         = [];
-vehicleRepair = {
-    _partName   = _this select 0;
-    _damage     = _this select 1;
-    _vehicle    = _this select 2;
-    _part       = _this select 3;
-    _action     = _this select 4;
-
-    _allineed = false;
-    if(_partName find "Wheel" > -1 && "bde_wheel" in Magazines Player)then{
-        _allineed = true;
-        player removeMagazine "bde_wheel";
-    };
-
-    if(_partName find "Fuel" > -1 && "bde_ducttape" in Magazines Player)then{
-        _allineed = true;
-        player removeMagazine "bde_ducttape";
-    };
-
-    // Fallback if condition to repair vehiclepart is not set
-    if(_partName find "Wheel" < 0 && _partName find "Fuel" < 0)then{
-        _allineed = true;
-    };
-
-    if(_allineed)then{
-        player  say3D (selectRandom ["toolSound0","toolSound1"]);
-        sleep 11;
-        _vehicle setHit [_part, 0];
-        player removeAction _action;
-        repairActionIDs = repairActionIDs - [_action];
-        sleep 1;
-        [_vehicle] call fnc_saveVehicle;
-        systemChat format["repaired %1s %2",typeOf _vehicle,_part];
-    };
-};
-
 // Wood
 chopWoodActionAvailable = false;
 chopWood = {
@@ -157,13 +116,13 @@ eatCookedFoodAction = {
     cutText [format["ate somthing cooked %1",selectRandom _tastes], "PLAIN DOWN"];
 };
 
-player addEventHandler ["Take", {
+/*player addEventHandler ["Take", {
     // _unit: Object - Unit to which the event handler is assigned
     // _container: Object - The container from which the item was taken (vehicle, box, etc.)
     // _item: String - The class name of the taken item
     params["_unit","_container","_item"];
     systemChat format["Take/_item: %1, _container: %2",_item,typeof _container];
-}];
+}];*/
 
 // broadcast shot to zombie
 player addEventHandler ["Fired", {
@@ -191,13 +150,13 @@ player addEventHandler ["Fired", {
     _aud        = getNumber (configFile >> "CfgAmmo" >> _ammo >> "audibleFire");
     //_cal        = getNumber (configFile >> "CfgAmmo" >> _ammo >> "caliber");
 
-    _dist       = round((_aud/_sil) * 100 );
+    _dist       = round((_aud/_sil) * 50 );
 
     [_unit,getPos _unit,_dist] remoteExec ["bde_fnc_receivePlayersNoise",2,false];
-
+    systemChat format["shot noise range: %1",_dist];
 }];
 
-while{alive player && player getVariable["playerSetupReady",false]}do{
+while{true}do{
 	t=time;
     "dog 0" setMarkerPos getPos (player getVariable "playersDog");
 
@@ -393,49 +352,6 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         player removeAction eatCookedFoodAction;
     };
 
-    /*if( _cursorObjectType in ["Land_FuelStation_01_pump_F","Land_FuelStation_02_pump_F","Land_FuelStation_Feed_F","Land_fs_feed_F","Land_MetalBarrel_F","Land_Tank_rust_F"] && !(_cursorObject getVariable["refuelAction",false]))then{
-        refuelAction = _cursorObject addAction["fill an empty fuel canister",{
-            _target = _this select 0;
-            _caller = _this select 1;
-            _caller removeMagazine "bde_fuelCanisterEmpty";
-            _caller addMagazine "bde_fuelCanisterFilled";
-            [player,"fillSound0",20,1] remoteExec ["bde_fnc_say3d",0,false];
-            cutText ["filled fuel canister", "PLAIN DOWN"];
-        },[],6,false,false,"","
-            'bde_fuelCanisterEmpty' in Magazines _this;
-        ",3,false];
-        _cursorObject setVariable["refuelAction",true,true];
-    };*/
-
-    /*if(_cursorObjectType  == "Land_WaterTower_01_F" && !(_cursorObject getVariable["refillWaterAction",false]))then{
-        refillAction = _cursorObject addAction["refill an empty bottle",{
-            _target = _this select 0;
-            _caller = _this select 1;
-            if(((getPosATL _caller) select 2) > 8)then{
-                if("bde_bottleempty" in Magazines _caller)then{
-                    _caller removeMagazine "bde_bottleempty";
-                    _caller addMagazine "bde_bottleclean";
-                    cutText ["filled bottle", "PLAIN DOWN"];
-                }else{
-                    if("bde_canteenempty" in Magazines _caller)then{
-                        _caller removeMagazine "bde_canteenempty";
-                        _caller addMagazine "bde_canteenfilled";
-                        cutText ["filled canteen", "PLAIN DOWN"];
-                    };
-                };
-            }else{
-                cutText ["get up there", "PLAIN DOWN"];
-            };
-        },[],6,false,false,"","
-            if('bde_bottleempty' in Magazines _this || 'bde_canteenempty' in Magazines _this)then{
-                true
-            }else{
-                false
-            };
-        ",4,false];
-        _cursorObject setVariable["refillWaterAction",true,true];
-    };*/
-
     if(isInside && !actionBarricadeActive)then{
         actionBarricadeActive = true;
         barricadeAction = player addAction["Create Barricade Element",{
@@ -553,5 +469,5 @@ while{alive player && player getVariable["playerSetupReady",false]}do{
         actionBarricadeActive = false;
     };
 
-    hint format["_cursorObjectType: %1\nthis is the house: %2\ngetFuelCargo: %3",_cursorObjectType,_cursorObject == nearestBuilding player,getFuelCargo _cursorObject];
+    hint format["_cursorObjectType: %1\ngetModelInfo: %2",_cursorObjectType,getModelInfo _cursorObject];
 };

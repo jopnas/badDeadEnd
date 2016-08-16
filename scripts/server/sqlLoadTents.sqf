@@ -12,6 +12,9 @@ _dbResult = call fnc_loadTents;
     _backpacks  = _x select 8;
 
     _tent       = createVehicle [_type,_pos,[],0,"can_collide"];
+    _tent setPosAtL _pos;
+    _tent setDir _rot;
+
 
     {
         _count_items = (_items select 1) select _foreachindex;
@@ -33,9 +36,6 @@ _dbResult = call fnc_loadTents;
         _tent addBackpackCargoGlobal [_x, _count_backpacks];
     } forEach (_backpacks select 0);
 
-    _tent setPosAtL _pos;
-    _tent setDir _rot;
-
     //systemChat format["create %1",_type];
 
     _tent setVariable["tentID", _tentid,true];
@@ -44,7 +44,7 @@ _dbResult = call fnc_loadTents;
         _targetObject   = _this select 0;
         _caller         = _this select 1;
 
-        [_targetObject,_caller] call packTent;
+        [_targetObject,_caller] call bde_fnc_packTent;
     }, [],0,true,true,"","_target distance _this < 3"];
 
     _tent addEventHandler ["ContainerClosed", {

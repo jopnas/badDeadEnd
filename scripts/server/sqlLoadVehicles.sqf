@@ -29,12 +29,14 @@ _vehiclesInDB         = _result select 1;
     };
 
     _bde_fnc_randAirfieldPos = {
-        params["_classname"];
+        /*params["_classname"];
         _airports = nearestLocations [worldCenter, ["Airport"], worldHalfSize];
         _airfields = getPos selectRandom(_airports) nearRoads 500;
         __airfieldPosition = getPos selectRandom(_airfields);
         _position2 = _airfieldPosition findEmptyPosition [0,100,_classname];
-        _position2
+        _position2*/
+
+
     };
 
     _bde_fnc_randHeliportPos = {
@@ -135,20 +137,22 @@ _vehiclesInDB         = _result select 1;
 
     // EventHandlers for saving vehicle to db
     _spawnedVehicle addEventHandler ["ContainerClosed", {
-        params["_container","_player"];
-        [_container] call fnc_saveVehicle;
-        systemChat format["closed inventory of %1",typeOf _container];
+        params["_vehicle","_player"];
+        [_vehicle] call fnc_saveVehicle;
+        systemChat format["closed inventory of %1",typeOf _vehicle];
     }];
     _spawnedVehicle addEventHandler ["Hit", {
-        params["_unit","_causedBy","_damage"];
-        [_unit] call fnc_saveVehicle;
-        systemChat format["hit %1 by %2",typeOf _unit,_causedBy];
+        params["_vehicle","_causedBy","_damage"];
+        [_vehicle] call bde_fnc_removeRepairActions;
+        [_vehicle] call fnc_saveVehicle;
+        systemChat format["hit %1 by %2",typeOf _vehicle,_causedBy];
     }];
     _spawnedVehicle addEventHandler ["Killed", {
-        params["_unit","_killer"];
-        [_unit] call fnc_saveVehicle;
-        deleteMarker format["vehicle %1",_unit getVariable "id"];
-        systemChat format["destroyed %1",typeOf _unit];
+        params["_vehicle","_killer"];
+        [_vehicle] call bde_fnc_removeRepairActions;
+        [_vehicle] call fnc_saveVehicle;
+        deleteMarker format["vehicle %1",_vehicle getVariable "id"];
+        systemChat format["destroyed %1",typeOf _vehicle];
     }];
     _spawnedVehicle addEventHandler ["Fuel", {
         params["_vehicle","_fuelState"];
@@ -157,24 +161,23 @@ _vehiclesInDB         = _result select 1;
     }];
     _spawnedVehicle addEventHandler ["GetOut", {
         params["_vehicle","_position","_unit","_turret"];
+        [_vehicle] call bde_fnc_removeRepairActions;
         [_vehicle] call fnc_saveVehicle;
         systemChat format["%1 exit %2",_unit,typeOf _vehicle];
     }];
     _spawnedVehicle addEventHandler ["GetIn", {
         params["_vehicle","_position","_unit","_turret"];
+        [_vehicle] call bde_fnc_removeRepairActions;
         [_vehicle] call fnc_saveVehicle;
         systemChat format["%1 enters %2",_unit,typeOf _vehicle];
     }];
 
     // Actions (repair etc.)
+    _spawnedVehicle setVariable ["repairActionIDs", [], false];
     _spawnedVehicle addAction[format["repair %1",_type],{
         _spawnedVehicle = _this select 3;
         [_spawnedVehicle] execVM "scripts\vehicles\repairVehicleActions.sqf";
-    },_spawnedVehicle,0,false,false,"","
-        'ToolKit' in Items _this;
-        vehicle _this == _this;
-        count repairActionIDs == 0;
-    ",2,false];
+    },_spawnedVehicle,0,false,false,"","'ToolKit' in Items _this && vehicle _this == _this && count (_target getVariable ['repairActionIDs', []]) == 0",3,false];
 
     _spawnedVehicle addAction[format["refuel %1",_type],{
         _target = _this select 0;
@@ -187,11 +190,7 @@ _vehiclesInDB         = _result select 1;
         };
         _caller removeMagazine "bde_fuelCanisterFilled";
         _caller addMagazine "bde_fuelCanisterEmpty";
-    },_type,0,false,false,"","
-        'bde_fuelCanisterFilled' in Magazines _this;
-        vehicle _this == _this;
-        fuel _target < 1;
-    ",2,false];
+    },_type,0,false,false,"","'bde_fuelCanisterFilled' in Magazines _this && vehicle _this == _this && fuel _target < 1",3,false];
 
     // Debug
     if(_type == "heli")then{
@@ -226,7 +225,7 @@ Vehicles
 "O_T_LSV_02_armed_F"        // HUMMER, offen, Vulcan, sixtaedon tarn
 "O_T_LSV_02_unarmed_F"      // HUMMER, offen, sixtaedon tarn
 "B_T_UAV_03_F"              // Heli Drone , bewaffnet, div. Raketen
-"C_Plane_Civil_01_F"        // Cesna, unbewaffnet ;-)
+"C_Plane_Civil_01_F"        // Cessna, unbewaffnet ;-)
 "O_T_UAV_04_CAS_F"          // Jet Drone, bewaffnet, div. Raketen
 "B_T_VTOL_01_armed_F"       // Großer Senkrechtstarter
 "B_T_VTOL_01_infantry_F"    // Großer Senkrechtstarter

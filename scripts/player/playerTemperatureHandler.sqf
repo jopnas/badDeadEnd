@@ -41,7 +41,7 @@ if(_speedY >= _speedX)then{
 };
 _speed = abs floor(3.6 * _speed);
 if(_speed > 0 && !_isInCar)then{
-    _playerUnitTemperature = _playerUnitTemperature + (_speed/20);
+    _playerUnitTemperature = _playerUnitTemperature + (_speed/100);
 };
 
 if(_playerUniform != "U_BasicBody")then{

@@ -1,8 +1,11 @@
-private["_idcData","_cargoType","_idc","_selectedIndex","_classname","_description","_index","_pic","_buildFireplace","_needCountOfWood","_needCountOfStone","_magazinesDetail","_magazinesAmmoCargo"];
+disableSerialization;
+private["_idcData","_cargoType","_clickPos","_idc","_selectedIndex","_classname","_description","_index","_pic","_buildFireplace","_needCountOfWood","_needCountOfStone","_magazinesDetail","_magazinesAmmoCargo"];
+
 _idc            = _this select 0;
 _selectedIndex  = _this select 1;
 _cargoType      = _this select 2;
-_idcData        = _this select 3;
+_clickPos   	= _this select 3;
+_idcData        = _this select 4;
 
 _classname 	    = lbData [_idc, _selectedIndex];
 _description    = lbText [_idc, _selectedIndex];
@@ -10,6 +13,25 @@ _index          = lbValue [_idc, _selectedIndex];
 _pic 	        = lbPicture [_idc, _selectedIndex];
 
 // Functions
+inventoryActions = compile preprocessFile "scripts\inventory\inventoryActions.sqf";
+_showInventoryActions = {
+    params["_classname","_cargoType","_actionNames"];
+
+    _invActionList = createDialog "invActionsGUI";
+    {
+        lbAdd[1500,_x];
+    } forEach _actionNames;
+
+    _invActionCtrl      = (findDisplay 6901) displayCtrl 1500;
+    _invActionPos       = ctrlPosition _invActionCtrl;
+    _invActionNewHeight = (lbSize _invActionCtrl) * (0.027 + 0.01);
+
+    _invActionCtrl ctrlSetPosition [(_clickPos select 0) - 0.1, (_clickPos select 1) - 0.01, _invActionPos select 2, _invActionNewHeight];
+    _invActionCtrl ctrlCommit 0;
+
+    _invActionCtrl ctrlSetEventHandler ["LBSelChanged", format["['%1','%2',_this select 1] spawn inventoryActions;closeDialog 6901;",_classname,_cargoType]];
+};
+
 _addItemCargo = { // [_item,_cargoType] call _addItemCargo;
     _itemClass = _this select 0;
     _cargoType = _this select 1;
@@ -103,71 +125,20 @@ _buildFireplace = {
 switch(_classname) do {
     // Food
 	case "bde_bottleuseless": {
-        if("bde_ducttape" in Magazines Player)then{
-        	player playActionNow "Medic";
-			//player say3D "toolSound0";
-            [player,"toolSound0",100,1] remoteExec ["bde_fnc_say3d",0,false];
-	        sleep 1;
-            //player removeMagazine _classname;
-            [_classname,_cargoType] call _removeItemCargo;
-            ["bde_bottleempty",_cargoType] call _addItemCargo;
-            //player addMagazine ["bde_bottleempty",1];
-		    cutText ["fixed damaged bottle", "PLAIN DOWN"];
-        }else{
-            cutText ["need Ducttape to fix it", "PLAIN DOWN"];
-        };
+        [_classname,_cargoType,["fix damaged bottle"]] call _showInventoryActions;
 	};
 	case "bde_bottleempty": {
-		if(drinkActionAvailable)then{
-        	player playActionNow "PutDown";
-    	    //player say3D "fillSound0";
-            [player,"fillSound0",20,1] remoteExec ["bde_fnc_say3d",0,false];
-    	    sleep 1;
-			//player removeMagazine _classname;
-            [_classname,_cargoType] call _removeItemCargo;
-            ["bde_bottleclean",_cargoType] call _addItemCargo;
-			//player addMagazine ["bde_bottleclean",1];
-			cutText ["filled bottle with clean water", "PLAIN DOWN"];
-		}else{
-			if(nearOpenWater)then{
-            	player playActionNow "PutDown";
-        	    //player say3D "fillSound0";
-                [player,"fillSound0",20,1] remoteExec ["bde_fnc_say3d",0,false];
-        	    sleep 1;
-			    //player removeMagazine _classname;
-                [_classname,_cargoType] call _removeItemCargo;
-                ["bde_bottlefilled",_cargoType] call _addItemCargo;
-                //player addMagazine ["bde_bottlefilled",1];
-			    cutText ["filled bottle with dirty water", "PLAIN DOWN"];
-			}else{
-			    cutText ["not close to water source", "PLAIN DOWN"];
-			};
-		};
+        [_classname,_cargoType,["refill bottle"]] call _showInventoryActions;
 	};
 	case "bde_bottlefilled": {
-		if("bde_waterpurificationtablets" in Magazines player)then{
-        	player playActionNow "Medic";
-	        sleep 1;
-			//player removeMagazine _classname;
-            [_classname,_cargoType] call _removeItemCargo;
-			//player removeMagazine "bde_waterpurificationtablets";
-            ["bde_waterpurificationtablets",_cargoType] call _removeItemCargo;
-            ["bde_bottleclean",_cargoType] call _addItemCargo;
-            //player addMagazine ["bde_bottleclean",1];
-			cutText ["purified dirty water", "PLAIN DOWN"];
-		}else{
-			cutText ["need water purification tablets", "PLAIN DOWN"];
-		};
+        [_classname,_cargoType,["use water purification tablets","empty bottle"]] call _showInventoryActions;
 	};
 	case "bde_bottleclean": {
-	    //player say3D "drinkSound0";
         [player,"drinkSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerThirst = playerThirst + 50;
-		//player removeMagazine _classname;
         [_classname,_cargoType] call _removeItemCargo;
         ["bde_bottleempty",_cargoType] call _addItemCargo;
-        //player addMagazine ["bde_bottleempty",1];
 		cutText ["drank clean water", "PLAIN DOWN"];
 	};
 	case "bde_canteenempty":  {
@@ -185,86 +156,78 @@ switch(_classname) do {
 		};
 	};
 	case "bde_canteenfilled": {
-	    //player say3D "drinkSound0";
         [player,"drinkSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerThirst = playerThirst + 30;
-		//player removeMagazine _classname;
         [_classname,_cargoType] call _removeItemCargo;
         ["bde_canteenempty",_cargoType] call _addItemCargo;
-        //player addMagazine ["bde_canteenempty",1];
 		cutText ["drank clean water", "PLAIN DOWN"];
 	};
-	case "bde_canrusty": {
-	    //player say3D "drinkSound0";
+	case "bde_sodacan_01": {
         [player,"drinkSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerThirst = playerThirst + 10;
-		//player removeMagazine _classname;
+        [_classname,_cargoType] call _removeItemCargo;
+		["bde_canempty"] call _addItemFloor;
+		cutText ["drank can of Magic Cola", "PLAIN DOWN"];
+	};
+
+	case "bde_sodacan_02": {
+        [player,"drinkSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
+	    sleep 1;
+		playerThirst = playerThirst + 10;
         [_classname,_cargoType] call _removeItemCargo;
 		["bde_canempty"] call _addItemFloor;
 		cutText ["drank can of Spirit", "PLAIN DOWN"];
 	};
 
 	case "bde_canunknown": {
-	    //player  say3D "eatSound0";
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerHunger = playerHunger + (random(20)+20);
-		//player removeMagazine _classname;
         [_classname,_cargoType] call _removeItemCargo;
 		["bde_emptycanunknown"] call _addItemFloor;
 		_tastes =  ["salty","sweet","bitter","sour","flavorless"];
 		cutText [format["ate somthing %1",selectRandom _tastes], "PLAIN DOWN"];
 	};
 	case "bde_canpasta": {
-	    //player  say3D "eatSound0";
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerHunger = playerHunger + 20;
-		//player removeMagazine _classname;
         [_classname,_cargoType] call _removeItemCargo;
         ["bde_emptycanpasta"] call _addItemFloor;
 		cutText ["ate pasta", "PLAIN DOWN"];
 	};
 	case "bde_bakedbeans": {
-	    //player  say3D "eatSound0";
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerHunger = playerHunger + 25;
         [_classname,_cargoType] call _removeItemCargo;
-		//player removeMagazine _classname;
 		["bde_emptycanunknown"] call _addItemFloor;
 		cutText ["ate baked beans", "PLAIN DOWN"];
 	};
 	case "bde_tacticalbacon": {
-	    //player say3D "eatSound0";
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerHunger = playerHunger + 15;
         [_classname,_cargoType] call _removeItemCargo;
-		//player removeMagazine _classname;
 		["bde_emptycanunknown"] call _addItemFloor;
 		cutText ["ate tactical bacon", "PLAIN DOWN"];
 	};
 
 	case "bde_meat_big": {
-	    //player say3D "eatSound0";
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerHunger = playerHunger + 30;
 		playerHealth = playerHealth - 10;
         [_classname,_cargoType] call _removeItemCargo;
-		//player removeMagazine _classname;
 		cutText ["ate big peace of raw meat", "PLAIN DOWN"];
 	};
 	case "bde_meat_big_cooked": {
-	    //player say3D "eatSound0";
         [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
 	    sleep 1;
 		playerHunger = playerHunger + 40;
         [_classname,_cargoType] call _removeItemCargo;
-		//player removeMagazine _classname;
 		cutText ["ate big peace of cooked meat", "PLAIN DOWN"];
 	};
 	case "bde_meat_small": {
@@ -285,6 +248,17 @@ switch(_classname) do {
         [_classname,_cargoType] call _removeItemCargo;
 		//player removeMagazine _classname;
 		cutText ["ate small peace of cooked meat", "PLAIN DOWN"];
+	};
+
+	case "bde_apple": {
+	    //player say3D "eatSound0";
+        [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
+	    sleep 1;
+		playerHunger = playerHunger + 10;
+		playerHealth = playerHealth + 10;
+		playerThirst = playerThirst + 5;
+        [_classname,_cargoType] call _removeItemCargo;
+		cutText ["ate apple", "PLAIN DOWN"];
 	};
 
 	// Medical
@@ -316,7 +290,8 @@ switch(_classname) do {
 
         _pitchedCamoNet = createVehicle ["CamoNet_INDP_open_F",getPosATL player,[],0,"can_collide"];
         _pitchedCamoNet setDir (getDir player);
-        _pitchedCamoNet attachTo [player, [0,5,1]];
+        _pitchedCamoNet attachTo [player, [0,5,1.2]];
+
         releasepitchedCamoNet = player addAction ["Release pitched Camonet", {
             _param      = _this select 3;
             _object     = _param select 0;
@@ -330,15 +305,16 @@ switch(_classname) do {
             _tentPos        = getPosAtL _object;
             _tentID         = format["%1%2",getPlayerUID player,floor(_tentPos select 0),floor(_tentPos select 1),floor(_tentPos select 2)];
 
-            _object setVariable["packedClass",_classname,true];
             _object setVariable["tentID",_tentID,true];
             [_object] remoteExec ["fnc_saveTent",2,false];
 
             _object addAction ["Pack Camonet", {
                 _targetObject   = _this select 0;
                 _caller         = _this select 1;
-                [_targetObject,_caller] call packTent;
-            }, [],0,true,true,"","",3,false];
+                _classname      = _this select 3;
+
+                [_targetObject,_caller,_classname] call bde_fnc_packTent;
+            }, _classname,0,true,true,"","",5,false];
 
         }, [_pitchedCamoNet,_classname]];
 	};
@@ -350,30 +326,33 @@ switch(_classname) do {
 
         _pitchedCamoNet = createVehicle ["CamoNet_INDP_F",getPosATL player,[],0,"can_collide"];
         _pitchedCamoNet setDir (getDir player);
-        _pitchedCamoNet attachTo [player, [0,5,1]];
+        _pitchedCamoNet attachTo [player, [0,5,1.2]];
+
         releasepitchedCamoNet = player addAction ["Release pitched Camonet", {
-            _object = _this select 3;
+            _param      = _this select 3;
+            _object     = _param select 0;
+            _classname  = _param select 1;
+
             detach _object;
             _pos = getPosATL _object;
             _object setVehiclePosition [[_pos select 0,_pos select 1,(_pos select 2)+1], [],0,"can_collide"];
             player removeAction releasepitchedCamoNet;
-        }, _pitchedCamoNet];
 
-        _tentPos        = getPosAtL _pitchedCamoNet;
-        _tentID         = format["%1%2",getPlayerUID player,floor(_tentPos select 0),floor(_tentPos select 1),floor(_tentPos select 2)];
-        _tentOwner      = getPlayerUID player;
+            _tentPos        = getPosAtL _object;
+            _tentID         = format["%1%2",getPlayerUID player,floor(_tentPos select 0),floor(_tentPos select 1),floor(_tentPos select 2)];
+            _tentOwner      = getPlayerUID player;
 
-        _pitchedCamoNet setVariable["packedClass",_classname,true];
-        _pitchedCamoNet setVariable["tentID",_tentID,true];
-        [_pitchedCamoNet] remoteExec ["fnc_saveTent",2,false];
+            _object setVariable["tentID",_tentID,true];
+            [_object] remoteExec ["fnc_saveTent",2,false];
 
-        _pitchedCamoNet addAction ["Pack Camonet", {
-            _targetObject   = _this select 0;
-            _caller         = _this select 1;
+            _object addAction ["Pack Camonet", {
+                _targetObject   = _this select 0;
+                _caller         = _this select 1;
+                _classname      = _this select 3;
 
-            [_targetObject,_caller] call packTent;
-        }, [],0,true,true,"","",3,false];
-
+                [_targetObject,_caller,_classname] call bde_fnc_packTent;
+            }, _classname,0,true,true,"","",5,false];
+        }, [_pitchedCamoNet,_classname]];
 	};
 
     case "bde_camonetVehiclesPacked": {
@@ -383,32 +362,33 @@ switch(_classname) do {
 
         _pitchedCamoNet = createVehicle ["CamoNet_INDP_big_F",getPosATL player,[],0,"can_collide"];
         _pitchedCamoNet setDir (getDir player);
-        _pitchedCamoNet attachTo [player, [0,8,1]];
+        _pitchedCamoNet attachTo [player, [0,8,1.5]];
+
         releasepitchedCamoNet = player addAction ["Release pitched Camonet", {
-            _object = _this select 3;
+            _param      = _this select 3;
+            _object     = _param select 0;
+            _classname  = _param select 1;
+
             detach _object;
             _pos = getPosATL _object;
             _object setVehiclePosition [[_pos select 0,_pos select 1,(_pos select 2)+1], [],0,"can_collide"];
             player removeAction releasepitchedCamoNet;
-        }, _pitchedCamoNet];
 
-        _tentPos        = getPosAtL _pitchedCamoNet;
-        _tentRot        = getDir _pitchedCamoNet;
+            _tentPos        = getPosAtL _object;
+            _tentID         = format["%1%2",getPlayerUID player,floor(_tentPos select 0),floor(_tentPos select 1),floor(_tentPos select 2)];
+            _tentOwner      = getPlayerUID player;
 
-        _tentID         = format["%1%2",getPlayerUID player,floor(_tentPos select 0),floor(_tentPos select 1),floor(_tentPos select 2)];
-        _tentOwner      = getPlayerUID player;
+            _object setVariable["tentID",_tentID,true];
+            [_object] remoteExec ["fnc_saveTent",2,false];
 
-        _pitchedCamoNet setVariable["packedClass",_classname,true];
-        _pitchedCamoNet setVariable["tentID",_tentID,true];
-        [_pitchedCamoNet] remoteExec ["fnc_saveTent",2,false];
+            _object addAction ["Pack Camonet", {
+                _targetObject   = _this select 0;
+                _caller         = _this select 1;
+                _classname      = _this select 3;
 
-        _pitchedCamoNet addAction ["Pack Camonet", {
-            _targetObject   = _this select 0;
-            _caller         = _this select 1;
-
-            [_targetObject,_caller] call packTent;
-        }, [],0,true,true,"","",3,false];
-
+                [_targetObject,_caller,_classname] call bde_fnc_packTent;
+            }, _classname,0,true,true,"","",8,false];
+        }, [_pitchedCamoNet,_classname]];
 	};
 
     // Tents
@@ -419,36 +399,38 @@ switch(_classname) do {
 
         _pitchedTent = createVehicle ["bde_tentDome",getPosATL player,[],0,"can_collide"];
         _pitchedTent setDir (getDir player);
-        _pitchedTent attachTo [player, [0,4,1]];
+        _pitchedTent attachTo [player, [0,4,1.2]];
+
         releasepitchedTent = player addAction ["Release pitched Tent", {
-            _object = _this select 3;
+            _param      = _this select 3;
+            _object     = _param select 0;
+            _classname  = _param select 1;
+
             detach _object;
             _pos = getPosATL _object;
             _object setVehiclePosition [[_pos select 0,_pos select 1,(_pos select 2)+1], [],0,"can_collide"];
             player removeAction releasepitchedTent;
-        }, _pitchedTent];
 
-        _tentPos        = getPosAtL _pitchedTent;
-        _tentRot        = getDir _pitchedTent;
+            _tentPos        = getPosAtL _object;
+            _tentID         = format["%1%2",getPlayerUID player,floor(_tentPos select 0),floor(_tentPos select 1),floor(_tentPos select 2)];
+            _tentOwner      = getPlayerUID player;
 
-        _tentID         = format["%1%2",getPlayerUID player,floor(_tentPos select 0),floor(_tentPos select 1),floor(_tentPos select 2)];
-        _tentOwner      = getPlayerUID player;
+            _object setVariable["tentID",_tentID,true];
+            [_object] remoteExec ["fnc_saveTent",2,false];
 
-        _pitchedTent setVariable["packedClass",_classname,true];
-        _pitchedTent setVariable["tentID",_tentID,true];
-        [_pitchedTent] remoteExec ["fnc_saveTent",2,false];
+            _object addAction ["Pack Tent", {
+                _targetObject   = _this select 0;
+                _caller         = _this select 1;
+                _classname      = _this select 3;
 
-        _pitchedTent addAction ["Pack Tent", {
-            _targetObject   = _this select 0;
-            _caller         = _this select 1;
+                [_targetObject,_caller,_classname] call bde_fnc_packTent;
+            }, _classname,0,true,true,"","",3,false];
 
-            [_targetObject,_caller] call packTent;
-        }, [],0,true,true,"","",3,false];
-
-        _pitchedTent addEventHandler ["ContainerClosed", {
-            params["_container","_player"];
-            [_container] remoteExec ["fnc_saveTent",2,false];
-        }];
+            _object addEventHandler ["ContainerClosed", {
+                params["_container","_player"];
+                [_container] remoteExec ["fnc_saveTent",2,false];
+            }];
+        }, [_pitchedTent,_classname]];
 	};
 
     case "bde_tentCamoPacked": {
@@ -459,36 +441,38 @@ switch(_classname) do {
         _pitchedTent = createVehicle ["bde_tentCamo",getPosATL player,[],0,"can_collide"];
 
         _pitchedTent setDir (getDir player);
-        _pitchedTent attachTo [player, [0,4,1]];
+        _pitchedTent attachTo [player, [0,4,1.2]];
+
         releasepitchedTent = player addAction ["Release pitched Tent", {
-            _object = _this select 3;
+            _param      = _this select 3;
+            _object     = _param select 0;
+            _classname  = _param select 1;
+
             detach _object;
             _pos = getPosATL _object;
             _object setVehiclePosition [[_pos select 0,_pos select 1,(_pos select 2)+1], [],0,"can_collide"];
             player removeAction releasepitchedTent;
-        }, _pitchedTent];
 
-        _tentPos        = getPosAtL _pitchedTent;
-        _tentRot        = getDir _pitchedTent;
+            _tentPos        = getPosAtL _object;
+            _tentID         = format["%1%2",getPlayerUID player,floor(_tentPos select 0),floor(_tentPos select 1),floor(_tentPos select 2)];
+            _tentOwner      = getPlayerUID player;
 
-        _tentID         = format["%1%2",getPlayerUID player,floor(_tentPos select 0),floor(_tentPos select 1),floor(_tentPos select 2)];
-        _tentOwner      = getPlayerUID player;
+            _object setVariable["tentID",_tentID,true];
+            [_object] remoteExec ["fnc_saveTent",2,false];
 
-        _pitchedTent setVariable["packedClass",_classname,true];
-        _pitchedTent setVariable["tentID",_tentID,true];
-        [_pitchedTent] remoteExec ["fnc_saveTent",2,false];
+            _object addAction ["Pack Tent", {
+                _targetObject   = _this select 0;
+                _caller         = _this select 1;
+                _classname      = _this select 3;
 
-        _pitchedTent addAction ["Pack Tent", {
-            _targetObject   = _this select 0;
-            _caller         = _this select 1;
+                [_targetObject,_caller,_classname] call bde_fnc_packTent;
+            }, _classname,0,true,true,"","",3,false];
 
-            [_targetObject,_caller] call packTent;
-        }, [],0,true,true,"","",3,false];
-
-        _pitchedTent addEventHandler ["ContainerClosed", {
-            params["_container","_player"];
-            [_container] remoteExec ["fnc_saveTent",2,false];
-        }];
+            _object addEventHandler ["ContainerClosed", {
+                    params["_container","_player"];
+                    [_container] remoteExec ["fnc_saveTent",2,false];
+            }];
+        }, [_pitchedTent,_classname]];
 	};
 
     // Tools
