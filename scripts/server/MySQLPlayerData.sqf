@@ -9,37 +9,31 @@ fnc_deletePlayerStats = {
 };
 
 fnc_loadPlayerStats = {
-	params["_playerUnit","_PlayerUID","_result"];
+	params["_playerUnit","_PlayerUID","_isRespawn","_result"];
 
     if(_PlayerUID == "_SP_PLAYER_")then{
         _PlayerUID = 12345;
     };
 
-	_result = call compile ("extDB2" callExtension format["0:SQL_PL_LOAD:SELECT * FROM player WHERE PlayerUID='%1'",_PlayerUID]);
+	_result = call compile ("extDB2" callExtension format["0:SQL_PL_LOAD:SELECT PlayerPosition,PlayerStance,hunger,thirst,health,temperature,wet,sick,infected,playerDirection,playerDamage,loadout,dog FROM player WHERE PlayerUID='%1'",_PlayerUID]);
+
     waitUntil{count _result > 0 && _result select 0 > 0};
-    [_playerUnit] execVM "scripts\player\playerSpawn.sqf";
-	_playerUnit setVariable["db",(_result select 1) select 0,true];
+    if(_isRespawn)then{
+        _resultData = "isRespawn";
+    }else{
+        _resultData = (_result select 1) select 0;
+    };
+    [_playerUnit,_resultData] execVM "scripts\player\playerSpawn.sqf";
 };
 
 fnc_savePlayerStats = {
-	private["_player","_PlayerUID","_PlayerPosition","_sick","_PlayerWeapons","_PlayerUniformItems","_PlayerVestItems","_PlayerBackpackItems","_QueryCheck","_QuerySave","_QueryAdd"];
+	private["_player","_PlayerUID","_PlayerPosition","_QueryCheck","_QuerySave","_QueryAdd"];
 	_player 				= _this select 0;
 	_playerStats			= _this select 1;
 	_PlayerUID  			= getPlayerUID _player;
 	_PlayerPosition 		= getPosATL _player;
 	_playerDirection 		= getDir _player;
     _PlayerStance			= stance _player;
-
-	_PlayerWeapons 			= weapons _player;
-	_currentWeapon 			= currentWeapon _player;
-
-    _PlayerUniform			= uniform _player;
-	_PlayerVest				= vest _player;
-	_PlayerBackpack			= backpack _player;
-
-	_PlayerBackpackItems	= backpackItems _player;
-	_PlayerVestItems		= vestItems _player;
-	_PlayerUniformItems		= uniformItems _player;
 
 	_hunger      	= _playerStats select 0;
 	_thirst      	= _playerStats select 1;
@@ -48,23 +42,6 @@ fnc_savePlayerStats = {
 	_wet         	= _playerStats select 4;
 	_sick        	= _playerStats select 5;
 	_infected    	= _playerStats select 6;
-
-	_primWeapItems	= primaryWeaponItems _player;
-	_secWeapItems	= secondaryWeaponItems _player;
-	_handgunItems	= handgunItems _player;
-
-	_primWeapMag	= primaryWeaponMagazine _player;
-	_secWeapMag		= secondaryWeaponMagazine _player;
-	_handgunMag		= handgunMagazine _player;
-
-	_primWeapAmmo 	= _player ammo(primaryWeapon _player);
-	_secWeapAmmo 	= _player ammo(secondaryWeapon _player);
-	_handgunAmmo 	= _player ammo(handgunWeapon _player);
-
-	_headgear 		= headgear _player;
-	_assignedItems	= assignedItems _player;
-	_assignedItems	= _assignedItems - ["Binocular"] - ["Laserdesignator"] - ["Laserdesignator_02"] - ["Laserdesignator_03"] - ["Rangefinder"] - ["NVGoggles"];
-	_goggles		= goggles _player;
 
     _playerDamages  = getAllHitPointsDamage _player;
 	_playerDamage   = [_playerDamages select 0,_playerDamages select 2];
@@ -75,16 +52,9 @@ fnc_savePlayerStats = {
 		_PlayerUID = 12345;
 	};
 
-    _QueryInsUpd = format["0:SQL_PL_SAVE:INSERT INTO player (PlayerUID,PlayerWeapons,PlayerPosition,PlayerItemsUniform,PlayerItemsVest,PlayerItemsBackpack,PlayerUniform,PlayerVest,PlayerBackpack,PlayerStance,hunger,thirst,health,temperature,wet,sick,infected,primWeapItems,secWeapItems,handgunItems,primWeapMag,secWeapMag,handgunMag,headgear,assignedItems,goggles,primWeapAmmo,secWeapAmmo,handgunAmmo,playerDirection,currentWeapon,playerDamage,loadout) VALUES('%1','%2','%3','%4','%5','%6','%7','""%8""','""%9""','""%10""','%11','%12','%13','%14','%15','%16','%17','%18','%19','%20','%21','%22','%23','""%24""','%25','""%26""','%27','%28','%29','%30','""%31""','%32','%33') ON DUPLICATE KEY UPDATE playerWeapons='%2', PlayerPosition='%3',PlayerItemsUniform='%4',PlayerItemsVest='%5',PlayerItemsBackpack='%6',PlayerUniform='""%7""',PlayerVest='""%8""',PlayerBackpack='""%9""',PlayerStance='""%10""',hunger='%11',thirst='%12',health='%13',temperature='%14',wet='%15',sick='%16',infected='%17',primWeapItems='%18',secWeapItems='%19',handgunItems='%20',primWeapMag='%21',secWeapMag='%22',handgunMag='%23',headgear='""%24""',assignedItems='%25',goggles='""%26""',primWeapAmmo='%27',secWeapAmmo='%28',handgunAmmo='%29',playerDirection='%30',currentWeapon='""%31""', playerDamage='%32', loadout='%33'",
+    _QueryInsUpd = format["0:SQL_PL_SAVE:INSERT INTO player (PlayerUID,PlayerPosition,PlayerStance,hunger,thirst,health,temperature,wet,sick,infected,playerDirection,playerDamage,loadout) VALUES('%1','%2','""%3""','%4','%5','%6','%7','%8','%9','%10','%11','%12','%13') ON DUPLICATE KEY UPDATE PlayerPosition='%2',PlayerStance='""%3""',hunger='%4',thirst='%5',health='%6',temperature='%7',wet='%8',sick='%9',infected='%10',playerDirection='%11', playerDamage='%12', loadout='%13'",
 		_PlayerUID,
-		_PlayerWeapons,
 		_PlayerPosition,
-		_PlayerUniformItems,
-		_PlayerVestItems,
-		_PlayerBackpackItems,
-		_PlayerUniform,
-		_PlayerVest,
-		_PlayerBackpack,
 		_PlayerStance,
 		_hunger,
 		_thirst,
@@ -93,20 +63,7 @@ fnc_savePlayerStats = {
 		_wet,
 		_sick,
 		_infected,
-		_primWeapItems,
-		_secWeapItems,
-		_handgunItems,
-		_primWeapMag,
-		_secWeapMag,
-		_handgunMag,
-		_headgear,
-		_assignedItems,
-		_goggles,
-		_primWeapAmmo,
-		_secWeapAmmo,
-		_handgunAmmo,
 		_playerDirection,
-		_currentWeapon,
         _playerDamage,
         _playerLoadout];
     _saveIs = "extDB2" callExtension _QueryInsUpd;

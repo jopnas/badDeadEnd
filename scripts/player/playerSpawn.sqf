@@ -1,15 +1,10 @@
-private["_respawnTime","_db","_fnc_dogBehaviour"];
+private["_db","_fnc_dogBehaviour"];
 _playerUnit     = _this select 0;
-_respawnTime    = 5;
-
-sleep 5;
-_db = _playerUnit getVariable["db",[]];
+_db             = _this select 1;
 
 // Player Setup
 _playerUnit enableFatigue false;
 enableCamShake true;
-
-_PlayerUID	= getPlayerUID _playerUnit;
 
 _isRespawn = false;
 
@@ -23,202 +18,55 @@ removeGoggles _playerUnit;
 removeUniform _playerUnit;
 
 // Player Default Variables
-playerHunger = 100;
-playerThirst = 100;
-playerHealth = 100;
-playerTemperature = 100;
-playerNoise = 0;
-playerWet = 0;
-playerSick = 0;
-playerInfected = 0;
+playerHunger        = 100;
+playerThirst        = 100;
+playerHealth        = 100;
+playerTemperature   = 100;
+playerNoise         = 0;
+playerWet           = 0;
+playerSick          = 0;
+playerInfected      = 0;
 
-if(count _db > 0)then{
-	_playerStats 			= _db;
-	_playerWeapons			= _playerStats select 2;
-	_playerPosition			= _playerStats select 3;
+if(!(_db isEqualTo "isRespawn"))then{
+	_playerPosition        = _db select 0;
+	_playerStance          = _db select 1;
 
-	_playerItemsBackpack	= _playerStats select 4;
-	_playerItemsVest		= _playerStats select 5;
-	_playerItemsUniform		= _playerStats select 6;
+	_hunger                = _db select 2;
+	_thirst                = _db select 3;
+	_health                = _db select 4;
+	_temperature           = _db select 5;
+	_wet				   = _db select 6;
+	_sick                  = _db select 7;
+	_infected			   = _db select 8;
 
-	_playerUniform			= _playerStats select 7;
-	_playerVest				= _playerStats select 8;
-	_playerBackpack			= _playerStats select 9;
-
-	_playerStance			= _playerStats select 10;
-
-	_hunger					= _playerStats select 11;
-	_thirst					= _playerStats select 12;
-	_health					= _playerStats select 13;
-	_temperature			= _playerStats select 14;
-	_wet					= _playerStats select 15;
-	_sick					= _playerStats select 16;
-	_infected				= _playerStats select 17;
-
-	_primWeapItems			= _playerStats select 18;
-	_secWeapItems			= _playerStats select 19;
-	_handgunItems			= _playerStats select 20;
-
-	_primWeapMag			= _playerStats select 21;
-	_secWeapMag				= _playerStats select 22;
-	_handgunMag				= _playerStats select 23;
-
-	_headgear				= _playerStats select 24;
-	_assignedItems			= _playerStats select 25;
-	_goggles				= _playerStats select 26;
-
-	_primWeapAmmo			= _playerStats select 27;
-	_secWeapAmmo			= _playerStats select 28;
-	_handgunAmmo			= _playerStats select 29;
-
-	_playerDirection		= _playerStats select 30;
-	_currentWeapon			= _playerStats select 31;
-	_playerDamage			= _playerStats select 32;
-    _loadout                = _playerStats select 33;
-    _playersDog			    = _playerStats select 34;
-
-    //systemChat str _loadout;
+	_playerDirection       = _db select 9;
+	_playerDamage          = _db select 10;
+    _loadout               = _db select 11;
+    _playersDog			   = _db select 12;
 
 	// Player Variables
-	playerHunger = _hunger;
-	playerThirst = _thirst;
-	playerHealth = _health;
-	playerTemperature = _temperature;
-	playerWet = _wet;
-	playerSick = _sick;
-	playerInfected = _infected;
+	playerHunger           = _hunger;
+	playerThirst           = _thirst;
+	playerHealth           = _health;
+	playerTemperature      = _temperature;
+	playerWet              = _wet;
+	playerSick             = _sick;
+	playerInfected         = _infected;
+
+    _playerUnit setUnitLoadout [_loadout, false];
 
     switch(_playerStance)do{
         case "CROUCH": {
             _playerUnit switchMove "AmovPcrhMstpSrasWpstDnon_AadjPcrhMstpSrasWpstDdown";
         };
         case "PRONE": {
-            sleep 0.1;
             _playerUnit switchMove "AmovPpneMstpSnonWnonDnon";
         };
     };
 
-
 	// Set Position
     _playerUnit setDir _playerDirection;
     _playerUnit setPosATL _playerPosition;
-
-	// Set Uniform
-	/*if(_playerUniform != "")then{
-		_playerUnit forceAddUniform _playerUniform;
-	};*/
-
-	// Set Vest
-	/*if(_playerVest != "")then{
-		_playerUnit addVest _playerVest;
-	};*/
-
-	// Set Backpack
-	/*if(_playerBackpack != "")then{
-		_playerUnit addBackpack _playerBackpack;
-	};*/
-
-    // Magazines loaded in weapons
-
-    /*if(_playerBackpack == "" && _playerVest == "" && _playerUniform == "")then{ //add backpack for loaded magazines
-        _playerUnit addBackpack "B_AssaultPack_khk";
-    };*/
-
-    /*if(str _primWeapMag != "[]" && str _primWeapMag != "")then{
-    	{
-    		_playerUnit addMagazine[_x,1];
-    	}forEach _primWeapMag;
-    };*/
-
-    /*if(str _secWeapMag != "[]" && str _secWeapMag != "")then{
-        {
-    		_playerUnit addMagazine[_x,1];
-    	}forEach _secWeapMag;
-    };*/
-
-    /*if(str _handgunMag != "[]" && str _handgunMag != "")then{
-    	{
-    		_playerUnit addMagazine[_x,1];
-    	}forEach _handgunMag;
-    };*/
-
-	// Add Weapons
-    /*if(str _playerWeapons != "[]" && str _playerWeapons != "")then{
-    	{
-    		_playerUnit addWeapon _x;
-    	}forEach _playerWeapons;
-
-        _playerUnit setAmmo [primaryWeapon _playerUnit, _primWeapAmmo];
-        _playerUnit setAmmo [secondaryWeapon _playerUnit, _secWeapAmmo];
-        _playerUnit setAmmo [handgunWeapon _playerUnit, _handgunAmmo];
-    };*/
-
-    /*if(_playerBackpack == "" && _playerVest == "" && _playerUniform == "")then{  //remove backpack for loaded magazines
-            removeBackpack _playerUnit;
-    };*/
-
-    /*if(_currentWeapon != "")then{
-        _playerUnit selectWeapon _currentWeapon;
-    };*/
-
-	// Weapon Attachments
-    /*if(str _primWeapItems != "[]" && str _primWeapItems != "")then{
-    	{
-    		_playerUnit addPrimaryWeaponItem _x;
-    	}forEach _primWeapItems;
-    };*/
-
-    /*if(str _secWeapItems != "[]" && str _secWeapItems != "")then{
-    	{
-    		_playerUnit addSecondaryWeaponItem _x;
-    	}forEach _secWeapItems;
-    };*/
-
-    /*if(str _handgunItems != "[]" && str _handgunItems != "")then{
-    	{
-    		_playerUnit addHandgunItem _x;
-    	}forEach _handgunItems;
-    };*/
-
-    /*if(_headgear != "")then{
-    	_playerUnit addHeadgear _headgear;
-	};*/
-
-    /*if(str _assignedItems != "[]" && str _assignedItems != "")then{
-    	{
-    		//_playerUnit addItem _x;
-    		_playerUnit addWeapon _x;
-    		_playerUnit assignItem _x;
-    	}forEach _assignedItems;
-    };*/
-
-    /*if(_goggles != "")then{
-    	_playerUnit addGoggles _goggles;
-    };*/
-
-    // Set Items Backpack
-    /*if(str _playerItemsBackpack != "[]" && str _playerItemsBackpack != "")then{
-    	{
-    		_playerUnit addItemToBackpack _x;
-    	}forEach _playerItemsBackpack;
-    };*/
-
-	// Set Items Vest
-    /*if(str _playerItemsVest != "[]" && str _playerItemsVest != "")then{
-    	{
-    		_playerUnit addItemToVest _x;
-    	}forEach _playerItemsVest;
-    };*/
-
-	// Set Items Uniform
-    /*if(str _playerItemsUniform != "[]" && str _playerItemsUniform != "")then{
-    	{
-    		_playerUnit addItemToUniform _x;
-    	}forEach _playerItemsUniform;
-    };*/
-
-
-    _playerUnit setUnitLoadout [_loadout, false];
 
     // Player's Dog
     if(_playersDog != "")then{
@@ -301,7 +149,7 @@ if(count _db > 0)then{
 }else{
     _playerUnit setDamage 0;
     _isRespawn = true;
-    _forests = selectBestPlaces [worldCenter, worldHalfSize, "(1 + forest + trees) * (1 - sea) * (1 - houses) * (1 -  meadow) * (1 - deadBody)", 30, 20];
+    _forests = selectBestPlaces [worldCenter, worldHalfSize, "(1 + (forest * 2) + (trees * 2)) * (1 - sea) * (1 - (houses * 2)) * (1 -  (meadow * 2)) * (1 - (deadBody * 2))", 30, 20];
     _forestPlaces = _forests apply {_x select 0};
     _rdmSpawnPos = (_forestPlaces select 0) findEmptyPosition [0, 10, "C_man_1"];
     _playerUnit setPosATL _rdmSpawnPos;
@@ -337,7 +185,6 @@ fnc_coordinateItemActions = {
 
 _initInventoryActionHandler = [_playerUnit] spawn {
     params["_playerUnit"];
-    // replace with inventory open event
 	while {alive _playerUnit} do {
         invClickPos = [0,0];
 		waituntil {!(isnull (finddisplay 602))};
@@ -359,15 +206,11 @@ _initInventoryActionHandler = [_playerUnit] spawn {
 if(_isRespawn)then{
 	_playerUnit switchMove "AmovPpneMstpSnonWnonDnon";
 	playSound "feeepSound0";
-    addCamShake [10, _respawnTime + 7, 50];
+    addCamShake [10, 10, 50];
 };
 
-/*_playerUnit addEventHandler ["Respawn", {
-    params["_unit","_corpse"];
-    systemChat format["Respawn/_corpse uniform: %1",uniform  _corpse];
-}];*/
 
-_respawnTime fadeSound 3;
-_respawnTime fadeMusic 3;
+5 fadeSound 3;
+5 fadeMusic 3;
 
-cutText ["Welcome to BadDeadEnd ...", "BLACK IN", _respawnTime];
+cutText ["Welcome to BadDeadEnd ...", "BLACK IN", 5];

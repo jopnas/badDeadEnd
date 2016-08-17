@@ -5,4 +5,4 @@ _respawn = _this select 2;
 _respawnDelay = _this select 3;
 
 _newUnitUID     = getPlayerUID _newUnit;
-[_newUnit,_newUnitUID] remoteExecCall ["fnc_loadPlayerStats",2,false];
+[_newUnit,_newUnitUID,true] remoteExecCall ["fnc_loadPlayerStats",2,false];
