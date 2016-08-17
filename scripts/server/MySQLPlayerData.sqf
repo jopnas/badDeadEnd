@@ -9,7 +9,7 @@ fnc_deletePlayerStats = {
 };
 
 fnc_loadPlayerStats = {
-	params["_playerUnit","_PlayerUID","_isRespawn","_result"];
+	params["_playerUnit","_PlayerUID","_result","_resultData"];
 
     if(_PlayerUID == "_SP_PLAYER_")then{
         _PlayerUID = 12345;
@@ -18,12 +18,9 @@ fnc_loadPlayerStats = {
 	_result = call compile ("extDB2" callExtension format["0:SQL_PL_LOAD:SELECT PlayerPosition,PlayerStance,hunger,thirst,health,temperature,wet,sick,infected,playerDirection,playerDamage,loadout,dog FROM player WHERE PlayerUID='%1'",_PlayerUID]);
 
     waitUntil{count _result > 0 && _result select 0 > 0};
-    if(_isRespawn)then{
-        _resultData = "isRespawn";
-    }else{
-        _resultData = (_result select 1) select 0;
-    };
-    [_playerUnit,_resultData] execVM "scripts\player\playerSpawn.sqf";
+
+    systemChat str  (_result select 1);
+    [_playerUnit,(_result select 1) select 0,_result select 1] execVM "scripts\player\playerSpawn.sqf";
 };
 
 fnc_savePlayerStats = {

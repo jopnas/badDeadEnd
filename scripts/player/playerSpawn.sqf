@@ -1,6 +1,4 @@
-private["_db","_fnc_dogBehaviour"];
-_playerUnit     = _this select 0;
-_db             = _this select 1;
+params["_playerUnit","_db","_dbAll","_fnc_dogBehaviour"];
 
 // Player Setup
 _playerUnit enableFatigue false;
@@ -27,7 +25,7 @@ playerWet           = 0;
 playerSick          = 0;
 playerInfected      = 0;
 
-if(!(_db isEqualTo "isRespawn"))then{
+if(!(_dbAll isEqualTypeArray []))then{
 	_playerPosition        = _db select 0;
 	_playerStance          = _db select 1;
 
