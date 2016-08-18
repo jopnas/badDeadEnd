@@ -12,11 +12,11 @@ class Header {
     maxPlayers=4;
 };
 
-onCheat = "hint 'Fuck you, man!'";
+onCheat = "hint 'oh, come on!'";
 
-forceRotorLibSimulation = 2;
-disableRandomization[] = {"AllVehicles"};
-skipLobby = 1;
+forceRotorLibSimulation = 0;
+disableRandomization[] = {"All"};
+skipLobby = 0;
 saving = 0;
 
 // Removes all playable units which do not have a human player.
@@ -34,36 +34,43 @@ briefing = 0;
 // Defines if the debriefing is shown or not at the end of the mission.
 debriefing = 0;
 
+// Defines if the map is shown after the mission starts.
+showMap = 0;
+
+// In ArmA, defines if the NotePad is shown after the mission starts.
+showNotePad = 0;
+
+
 // Disable dropping items while swimming
-enableItemsDropping = 0;
+enableItemsDropping = 0
 
 respawn = "BASE"; // Respawn type. 0:"NONE", 1:"BIRD", 2:"INSTANT", 3:"BASE", 4:"GROUP", 5:"SIDE"
 respawndelay = 5; // Delay in seconds before playable unit respawns.
 respawnVehicleDelay = 100; // Delay in seconds before vehicle respawns.
 respawnDialog = 0; // 0 to disable the score table (it can still be opened manually by pressing 'P' key).
-respawnTemplates[] = {"Base"}; // Respawn templates from CfgRespawnTemplates. You can combine any number of them together.
+respawnTemplates[] = {"Spectator","Revive"}; // Respawn templates from CfgRespawnTemplates. You can combine any number of them together.
 respawnOnStart = 0; // 1 to respawn player when he joins the game. Available only for INSTANT and BASE respawn types.
 aikills = 0; // When 1, the score table contains score of all playable units as opposed to players only.
 
-//reviveDelay = 10;
-//reviveForceRespawnDelay = 3;
-//reviveBleedOutDelay = 11;
+reviveDelay = 20;
+reviveForceRespawnDelay = 120;
+reviveBleedOutDelay = 120;
 
 showGroupIndicator = 0;
 enableTeamSwitch = 0;
 disableChannels[] = {0,2,3,4}; //0 = Global, 1 = Side, 2 = Command, 3 = Group, 4 = Vehicle, 5 = Direct, 6 = System
 
-corpseManagerMode = 2;
-corpseLimit = 0;
+corpseManagerMode = 0;
+corpseLimit = 1000;
 corpseRemovalMinTime = 0;
 corpseRemovalMaxTime = 0;
 
 allowFunctionsRecompile = 0;
 
-wreckManagerMode = 1;
-wreckLimit = 10;
-wreckRemovalMinTime = 600;
-wreckRemovalMaxTime = 1200;
+wreckManagerMode = 0;
+wreckLimit = 1000;
+wreckRemovalMinTime = 0;
+wreckRemovalMaxTime = 0;
 
 // Allows access to the Debug Console outside of the editor during normal gameplay.
 // 0 = Default behavior, available only in editor
