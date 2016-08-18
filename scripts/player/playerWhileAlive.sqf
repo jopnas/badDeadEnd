@@ -360,11 +360,6 @@ while{true}do{
             player removeAction barricadeAction;
 
             barricade = createVehicle [barricadeAllElements select barricadeElementIndex,position player,[],0,"can_collide"];
-            _textures = getObjectTextures barricade;
-            {
-                barricade setObjectTextureGlobal [_forEachIndex,#(argb,8,8,3)color(0,0,0,0.2,CA)];
-            } forEach _textures;
-
             barricade enableSimulation false;
             barricade setDir (getDir player);
             barricade attachTo [player, [0,2,barricadeHeight]];
@@ -379,11 +374,6 @@ while{true}do{
                 };
 
                 barricade = createVehicle [barricadeAllElements select barricadeElementIndex,position player,[],0,"can_collide"];
-                _textures = getObjectTextures barricade;
-                {
-                    barricade setObjectTextureGlobal [_forEachIndex,#(argb,8,8,3)color(0,0,0,0.2,CA)];
-                } forEach _textures;
-
                 barricade enableSimulation false;
                 barricade setDir (getDir player);
                 barricade attachTo [player, [0,2,barricadeHeight]];
