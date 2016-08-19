@@ -45,4 +45,4 @@ if(count _eventParam > 0) then {
     };
 };
 
-_dontDoAction;
+_dontDoAction

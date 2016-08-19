@@ -177,7 +177,7 @@ fnc_coordinateItemActions = {
     _selectedIndex = _idcData select 1;
 
     [_idc,_selectedIndex,_bagType,_clickPos,_idcData] spawn inventoryItemAction;
-    systemChat str allDisplays;
+    //systemChat str allDisplays;
     false
 };
 
@@ -186,15 +186,20 @@ _initInventoryActionHandler = [_playerUnit] spawn {
 	while {alive _playerUnit} do {
         invClickPos = [0,0];
 		waituntil {!(isnull (finddisplay 602))};
+
+        systemChat str (allControls findDisplay 602);
+
         // Get Click Position
         ((findDisplay 602) displayCtrl 633) ctrlSetEventHandler ["MouseButtonDown", "invClickPos = [_this select 2,_this select 3];"]; // Uniform
         ((findDisplay 602) displayCtrl 638) ctrlSetEventHandler ["MouseButtonDown", "invClickPos = [_this select 2,_this select 3];"]; // Vest
         ((findDisplay 602) displayCtrl 619) ctrlSetEventHandler ["MouseButtonDown", "invClickPos = [_this select 2,_this select 3];"]; // Backpack
 
         // Items Action
-        ((findDisplay 602) displayCtrl 633) ctrlSetEventHandler ["LBDblClick", "[_this,'Uniform',invClickPos] call fnc_coordinateItemActions"]; // Uniform
-        ((findDisplay 602) displayCtrl 638) ctrlSetEventHandler ["LBDblClick", "[_this,'Vest',invClickPos] call fnc_coordinateItemActions"]; // Vest
-        ((findDisplay 602) displayCtrl 619) ctrlSetEventHandler ["LBDblClick", "[_this,'Backpack',invClickPos] call fnc_coordinateItemActions"]; // Backpack
+        ((findDisplay 602) displayCtrl 633) ctrlSetEventHandler ["LBDblClick", "[_this,['Uniform',633],invClickPos] call fnc_coordinateItemActions"]; // Uniform
+        ((findDisplay 602) displayCtrl 638) ctrlSetEventHandler ["LBDblClick", "[_this,['Vest',638],invClickPos] call fnc_coordinateItemActions"]; // Vest
+        ((findDisplay 602) displayCtrl 619) ctrlSetEventHandler ["LBDblClick", "[_this,['Backpack',619],invClickPos] call fnc_coordinateItemActions"]; // Backpack
+
+        if(!(alive _playerUnit)) exitWith {};
 		waituntil {isnull (finddisplay 602)};
         if(!(alive _playerUnit)) exitWith {};
 	};
