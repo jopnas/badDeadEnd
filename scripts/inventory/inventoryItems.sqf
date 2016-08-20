@@ -16,28 +16,12 @@ _pic 	        = lbPicture [_idc, _selectedIndex];
 
 // Functions
 inventoryActions = compile preprocessFile "scripts\inventory\inventoryActions.sqf";
-/*_showInventoryActions = {
-    params["_classname","_cargoType","_actionNames"];
-
-    _invActionList = createDialog "invActionsGUI";
-    {
-        lbAdd[1500,_x];
-    } forEach _actionNames;
-
-    _invActionCtrl      = (findDisplay 6901) displayCtrl 1500;
-    _invActionPos       = ctrlPosition _invActionCtrl;
-    _invActionNewHeight = (lbSize _invActionCtrl) * (0.027 + 0.01);
-
-    _invActionCtrl ctrlSetPosition [(_clickPos select 0) - 0.1, (_clickPos select 1) - 0.01, _invActionPos select 2, _invActionNewHeight];
-    _invActionCtrl ctrlCommit 0;
-
-    _invActionCtrl ctrlSetEventHandler ["LBSelChanged", format["['%1','%2',_this select 1] spawn inventoryActions;closeDialog 6901;",_classname,_cargoType]];
-};*/
-
 _showInventoryActions = {
-    params["_classname","_cargoType","_actionNames"];
+    params["_classname","_cargoType","_actionNames","_cargoCtrl"];
+
     if(_actionNames isEqualType [])then{
-        _invActionCtrl = findDisplay 602 ctrlCreate ["InventoryActionMenu", 1500];
+        //_invActionCtrl = findDisplay 602 ctrlCreate ["RscListbox", 1500, findDisplay 602 displayCtrl _cargoCtrl];
+        _invActionCtrl = findDisplay 602 ctrlCreate ["RscListbox", 1500];
 
         {
             lbAdd[1500,_x];
@@ -49,7 +33,7 @@ _showInventoryActions = {
         _invActionCtrl ctrlSetPosition [(_clickPos select 0) - 0.1, (_clickPos select 1) - 0.01, _invActionPos select 2, _invActionNewHeight];
         _invActionCtrl ctrlCommit 0;
 
-        _invActionCtrl ctrlSetEventHandler ["LBSelChanged", format["['%1','%2',_this select 1] spawn inventoryActions;sleep 0.5;ctrlDelete 1500;",_classname,_cargoType]];
+        _invActionCtrl ctrlSetEventHandler ["LBSelChanged", format["['%1','%2',_this select 1] spawn inventoryActions;",_classname,_cargoType]];
     };
 };
 
@@ -159,4 +143,4 @@ switch(_classname) do {
     };
 };
 
-[_classname,_cargoType,_actionTexts] call _showInventoryActions;
+[_classname,_cargoType,_actionTexts,_cargoCtrl] call _showInventoryActions;

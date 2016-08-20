@@ -376,7 +376,7 @@ class RscListBox
     colorSelectBackground2[] = {0,0,0,1}; // Selected item fill color (oscillates between this and colorSelectBackground)
     sizeEx = 0.03921; // Text size
     font = "TahomaB"; // Font from CfgFontFamilies
-    shadow = 0; // Shadow (0 - none, 1 - directional, color affected by colorShadow, 2 - black outline)
+    shadow = 1; // Shadow (0 - none, 1 - directional, color affected by colorShadow, 2 - black outline)
     colorText[] = {1,1,1,1}; // Text and frame color
     colorDisabled[] = {1,1,1,0.5}; // Disabled text color
     colorSelect[] = {1,1,1,1}; // Text selection color

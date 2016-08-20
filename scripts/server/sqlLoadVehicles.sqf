@@ -83,8 +83,8 @@ _vehiclesInDB         = _result select 1;
 
     }else{
         _spawnedVehicle = createVehicle [_classname,_position,[],0,"can_collide"];
-        _spawnedVehicle setPosATL _position;
         _spawnedVehicle setDir _rotation;
+        _spawnedVehicle setVehiclePosition [_position, [], 0, "can_collide"];
 
         _spawnedVehicle setVariable["id",_id,true];
         _spawnedVehicle setVariable["type",_type,true];

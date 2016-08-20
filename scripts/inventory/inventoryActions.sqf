@@ -579,3 +579,5 @@ switch(_classname) do {
 
     default {};
 };
+sleep 0.5;
+ctrlDelete ((findDisplay 602) displayCtrl 1500);
