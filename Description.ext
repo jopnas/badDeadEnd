@@ -445,7 +445,7 @@ class invActionsGUI {
     class controls {
         class InventoryActionMenu: RscListbox
         {
-            idc = 1500;
+            idc = 2500;
             x = 0; // Horizontal coordinates
             y = 0; // Vertical coordinates
             w = 0.3; // Width
