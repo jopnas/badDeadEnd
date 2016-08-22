@@ -1,3 +1,6 @@
+// nützlich für ghost objects? https://community.bistudio.com/wiki/createSimpleObject
+// https://community.bistudio.com/wiki/createSimpleObject/objects
+
 // GUI
 updateUI   			= compile preprocessFile "scripts\player\playerUpdateUI.sqf";
 checkNoise 			= compile preprocessFile "scripts\player\playerNoiseCheck.sqf";

@@ -32,6 +32,7 @@ _showInventoryActions = {
 
         _invActionCtrl ctrlSetPosition [(_clickPos select 0) - 0.1, (_clickPos select 1) - 0.01, _invActionPos select 2, _invActionNewHeight];
         _invActionCtrl ctrlCommit 0;
+        ctrlSetFocus _invActionCtrl;
 
         _invActionCtrl ctrlSetEventHandler ["LBSelChanged", format["['%1','%2',_this select 1] spawn inventoryActions;",_classname,_cargoType]];
     };
