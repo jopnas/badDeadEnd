@@ -187,9 +187,9 @@ _initInventoryActionHandler = [_playerUnit] spawn {
 		waituntil {!(isnull (finddisplay 602))};
 
         // Get Click Position
-        ((findDisplay 602) displayCtrl 633) ctrlSetEventHandler ["MouseButtonDown", "invClickPos = [_this select 2,_this select 3];"]; // Uniform
-        ((findDisplay 602) displayCtrl 638) ctrlSetEventHandler ["MouseButtonDown", "invClickPos = [_this select 2,_this select 3];"]; // Vest
-        ((findDisplay 602) displayCtrl 619) ctrlSetEventHandler ["MouseButtonDown", "invClickPos = [_this select 2,_this select 3];"]; // Backpack
+        ((findDisplay 602) displayCtrl 633) ctrlSetEventHandler ["MouseButtonDown", "invClickPos = [_this select 2,_this select 3];if(str ((findDisplay 602) displayCtrl 2500) != 'no Control')then{ctrlDelete ((findDisplay 602) displayCtrl 2500);};"]; // Uniform
+        ((findDisplay 602) displayCtrl 638) ctrlSetEventHandler ["MouseButtonDown", "invClickPos = [_this select 2,_this select 3];if(str ((findDisplay 602) displayCtrl 2500) != 'no Control')then{ctrlDelete ((findDisplay 602) displayCtrl 2500);};"]; // Vest
+        ((findDisplay 602) displayCtrl 619) ctrlSetEventHandler ["MouseButtonDown", "invClickPos = [_this select 2,_this select 3];if(str ((findDisplay 602) displayCtrl 2500) != 'no Control')then{ctrlDelete ((findDisplay 602) displayCtrl 2500);};"]; // Backpack
 
         // Items Action
         ((findDisplay 602) displayCtrl 633) ctrlSetEventHandler ["LBDblClick", "[_this,['Uniform',633],invClickPos] call fnc_coordinateItemActions"]; // Uniform

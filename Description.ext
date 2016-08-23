@@ -371,21 +371,21 @@ class RscListBox
     w = 0.5; // Width
     h = 0.1; // Height
 
-    colorBackground[] = {0.2,0.2,0.2,1}; // Fill color
-    colorSelectBackground[] = {1,0.5,0,1}; // Selected item fill color
-    colorSelectBackground2[] = {0,0,0,1}; // Selected item fill color (oscillates between this and colorSelectBackground)
+    colorBackground[] = {0,1,0,1}; // Fill color
+    colorSelectBackground[] = {0,1,0,1}; // Selected item fill color
+    colorSelectBackground2[] = {0,1,0,1}; // Selected item fill color (oscillates between this and colorSelectBackground)
     sizeEx = 0.03921; // Text size
     font = "TahomaB"; // Font from CfgFontFamilies
-    shadow = 2; // Shadow (0 - none, 1 - directional, color affected by colorShadow, 2 - black outline)
+    shadow = 0; // Shadow (0 - none, 1 - directional, color affected by colorShadow, 2 - black outline)
     colorText[] = {1,1,1,1}; // Text and frame color
-    colorDisabled[] = {1,1,1,0.5}; // Disabled text color
+    colorDisabled[] = {1,1,1,1}; // Disabled text color
     colorSelect[] = {1,1,1,1}; // Text selection color
     colorSelect2[] = {1,1,1,1}; // Text selection color (oscillates between this and colorSelect)
-    colorShadow[] = {0,0,0,0.5}; // Text shadow color (used only when shadow is 1)
+    colorShadow[] = {0,0,0,1}; // Text shadow color (used only when shadow is 1)
 
     pictureColor[] = {1,0.5,0,1}; // Picture color
     pictureColorSelect[] = {1,1,1,1}; // Selected picture color
-    pictureColorDisabled[] = {1,1,1,0.5}; // Disabled picture color
+    pictureColorDisabled[] = {1,1,1,1}; // Disabled picture color
 
     tooltip = ""; // Tooltip text
     tooltipColorShade[] = {0,0,0,1}; // Tooltip background color
@@ -455,8 +455,6 @@ class invActionsGUI {
             itemSpacing = 0.01;
             period = 0; // Oscillation time between colorSelect/colorSelectBackground2 and colorSelect2/colorSelectBackground when selected
         };
-        onMouseEnter = "(_this select 0) ctrlSetTextColor [0, 0, 0, 1]; false";
-        onMouseExit = "(_this select 0) ctrlSetTextColor [1, 1, 1, 1]; false";
     };
 };
 

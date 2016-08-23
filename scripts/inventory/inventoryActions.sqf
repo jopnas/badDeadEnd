@@ -1,4 +1,6 @@
 params["_classname","_cargoType","_actionNo"];
+ctrlDelete ((findDisplay 602) displayCtrl 2500);
+
 //systemChat format["_classname: %1, _cargoType: %2, _actionNo: %3",_classname,_cargoType,_actionNo];
 
 // nützlich für ghost objects? https://community.bistudio.com/wiki/createSimpleObject
@@ -583,5 +585,3 @@ switch(_classname) do {
 
     default {};
 };
-sleep 0.5;
-ctrlDelete ((findDisplay 602) displayCtrl 1500);

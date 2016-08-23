@@ -89,6 +89,8 @@ bde_fnc_packTent = {
     _tentPos        = getPosATL _targetObject;
     _tentID         = _targetObject getVariable["tentID","0"];
 
+    systemChat _tentPackClass;
+
     [_caller,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
     [_tentID] remoteExec ["fnc_deleteTent",2,false];
 
@@ -121,7 +123,7 @@ bde_fnc_vehicleRepair = {
     if(_allineed)then{
         _caller  say3D (selectRandom ["toolSound0","toolSound1"]);
         sleep 11;
-        _vehicle setHit [_part, 0];    
+        _vehicle setHit [_part, 0];
         _vehicle removeAction _action;
         _repairActionIDs = _vehicle getVariable ["repairActionIDs", []];
         _repairActionIDs = _repairActionIDs - [_action];

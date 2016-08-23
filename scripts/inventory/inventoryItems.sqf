@@ -20,11 +20,10 @@ _showInventoryActions = {
     params["_classname","_cargoType","_actionNames","_cargoCtrl"];
 
     if(_actionNames isEqualType [])then{
-        //_invActionCtrl = findDisplay 602 ctrlCreate ["RscListbox", 2500, findDisplay 602 displayCtrl _cargoCtrl];
         _invActionCtrl = findDisplay 602 ctrlCreate ["RscListbox", 2500];
 
         {
-            lbAdd[1500,_x];
+            lbAdd[2500,_x];
         } forEach _actionNames;
 
         _invActionPos       = ctrlPosition _invActionCtrl;
