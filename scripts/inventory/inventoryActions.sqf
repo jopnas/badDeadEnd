@@ -68,11 +68,9 @@ _buildFireplace = {
         [player,"buildSound0","configVol","randomPitch",300] spawn bde_fnc_playSound3D;
         sleep 5;
         for "_w" from 0 to _minWood step 1 do {
-            //player removeMagazine "bde_wood";
             ["bde_wood",_cargoType] call _removeItemCargo;
         };
         for "_s" from 0 to _minStone step 1 do {
-            //player removeMagazine "bde_stone";
             ["bde_stone",_cargoType] call _removeItemCargo;
         };
     	cutText ["build fireplace", "PLAIN DOWN"];
