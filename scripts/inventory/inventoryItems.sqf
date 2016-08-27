@@ -20,20 +20,21 @@ _showInventoryActions = {
     params["_classname","_cargoType","_actionNames","_cargoCtrl"];
 
     if(_actionNames isEqualType [])then{
-        _invActionCtrl = findDisplay 602 ctrlCreate ["RscListbox", 2500];
+        _invActionLB = findDisplay 602 ctrlCreate ["RscListbox", 2501];
 
         {
-            lbAdd[2500,_x];
+            lbAdd[2501,_x];
+            lbSetColor [2501, _forEachIndex, [1,0,0,1]];
         } forEach _actionNames;
 
-        _invActionPos       = ctrlPosition _invActionCtrl;
-        _invActionNewHeight = (lbSize _invActionCtrl) * (0.027 + 0.01);
+        _invActionPos       = ctrlPosition _invActionLB;
+        _invActionNewHeight = (lbSize _invActionLB) * (0.027 + 0.01);
 
-        _invActionCtrl ctrlSetPosition [(_clickPos select 0) - 0.1, (_clickPos select 1) - 0.01, _invActionPos select 2, _invActionNewHeight];
-        _invActionCtrl ctrlCommit 0;
-        ctrlSetFocus _invActionCtrl;
+        _invActionLB ctrlSetPosition [(_clickPos select 0) - 0.1, (_clickPos select 1) - 0.01, _invActionPos select 2, _invActionNewHeight];
+        _invActionLB ctrlCommit 0;
+        ctrlSetFocus _invActionLB;
 
-        _invActionCtrl ctrlSetEventHandler ["LBSelChanged", format["['%1','%2',_this select 1] spawn inventoryActions;",_classname,_cargoType]];
+        _invActionLB ctrlSetEventHandler ["LBSelChanged", format["['%1','%2',_this select 1] spawn inventoryActions;",_classname,_cargoType]];
     };
 };
 
