@@ -1,4 +1,4 @@
-_anomalyLocats    = nearestLocations [[16000,16000], ["Hill"], 12000];
+_anomalyLocats    = nearestLocations [worldCenter, ["Hill","FlatArea"], worldHalfSize];
 _anomalyLocatsRdm = _anomalyLocats call BIS_fnc_arrayShuffle;
 
 // Weaponslist
@@ -22,15 +22,6 @@ for "_a" from 0 to 3 step 1 do {
 	_markerstr setMarkerShape "ICON";
 	_markerstr setMarkerType "hd_dot";
 	_markerstr setMarkerColor "ColorYellow";
-	//_markerstr setMarkerAlpha 0;
-
-
-	// Particle FX
-	_anomalyFXrefract = "#particlesource" createVehicleLocal anomalyPos;
-	_anomalyFXrefract setParticleCircle [100,[0,0,0]]; // [radius, velocity]
-	_anomalyFXrefract setParticleRandom [0, [0, 0, 0], [0, 0, 0], 0, 0, [0, 0, 0, 0], 0, 0]; // [lifeTime, position, moveVelocity, rotationVelocity, size, color, randomDirectionPeriod, randomDirectionIntensity, {angle}, bounceOnSurface]
-	_anomalyFXrefract setParticleParams [["\A3\data_f\ParticleEffects\Universal\Refract", 1, 0, 1], "", "Billboard", 1, 4, anomalyPos, [0, 0, 0.5], 9, 10, 7.9, 0.1, [0.6, 1, 0.9, 0.8], [[0.1, 0.1, 0.1, 1], [0.25, 0.25, 0.25, 0.5], [0.5, 0.5, 0.5, 0]], [0, 0.1, 0.2, 0.5, 0.1, 0.1], 0, 0, "", "", _anomalyFXrefract];
-	_anomalyFXrefract setDropInterval 0.1;
 
 	for "_i" from 0 to 19 step 1 do {
 
