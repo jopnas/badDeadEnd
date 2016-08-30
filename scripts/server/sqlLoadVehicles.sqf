@@ -29,18 +29,73 @@ _vehiclesInDB         = _result select 1;
     };
 
     _bde_fnc_randAirfieldPos = {
-        /*params["_classname"];
-        _airports = nearestLocations [worldCenter, ["Airport"], worldHalfSize];
-        _airfields = getPos selectRandom(_airports) nearRoads 500;
-        __airfieldPosition = getPos selectRandom(_airfields);
-        _position2 = _airfieldPosition findEmptyPosition [0,100,_classname];
-        _position2*/
+        _possiblePlanePositions = [];
+        _rdmPlanePos = [0,0,0];
 
+        // Hangars
+        _allHangars = nearestObjects [worldCenter, ["Land_Hangar_F","Land_TentHangar_V1_F"], worldHalfSize];
+        {
+            _hangarPos = getPos _x;
+            _hangarDir = (getDir _x) - 180;
+            _possiblePlanePositions pushBack [_hangarPos,_hangarDir];
 
+            /*_markerstr = createMarker [format["hangar%1",_foreachindex],_hangarPos];
+            _markerstr setMarkerShape "ICON";
+            _markerstr setMarkerType "mil_arrow";*/
+
+            //_markerstr setMarkerDir _hangarDir;
+            //_testplane = "C_Plane_Civil_01_F" createVehicle (getPosATL _x);
+            //_testplane setDir _hangarDir;
+        } forEach _allHangars;
+
+        // Primary Airfield
+        _afMainPos  = getArray (configFile >> "CfgWorlds" >> worldName >> "ilsPosition");
+        _ilsDir     = getArray (configFile >> "CfgWorlds" >> worldName >> "ilsDirection");
+
+        //_markerstr = createMarker ["airfieldMain",_afMainPos];
+        //_markerstr setMarkerShape "ICON";
+        //_markerstr setMarkerType "mil_arrow";
+
+        _getDirHelper = "Sign_Arrow_Direction_Yellow_F" createVehicle _afMainPos;
+        _getDirHelper setVectorDir  [_ilsDir select 0,_ilsDir select 2,(_ilsDir select 1) * (-1)];
+        _getDirHelper setDir ((getDir _getDirHelper) - 180);
+        _afMainDir getDir _getDirHelper;
+        deleteVehicle _getDirHelper;
+
+        //_markerstr setMarkerDir _afMainDir;
+        _possiblePlanePositions pushBack [_afMainPos,_afMainDir];
+
+        // Secondary Airfields
+        _airfields   = (configFile >> "CfgWorlds" >> worldName >> "SecondaryAirports") call BIS_fnc_getCfgSubClasses;
+        {
+            private["_pos","_dir","_ilsDir"];
+            _afSecPos = getArray (configFile >> "CfgWorlds" >> worldName >> "SecondaryAirports" >> _x >> "ilsPosition");
+            _ilsDir = getArray (configFile >> "CfgWorlds" >> worldName >> "SecondaryAirports" >> _x >> "ilsDirection");
+
+            //_markerstr = createMarker [format["airfieldNo%1",_foreachindex],_afSecPos];
+            //_markerstr setMarkerShape "ICON";
+            //_markerstr setMarkerType "mil_arrow";
+
+            //_testplane = "C_Plane_Civil_01_F" createVehicle _afSecPos;
+            //_testplane setVectorDir [_ilsDir select 0,_ilsDir select 2,(_ilsDir select 1) * (-1)];
+            //_testplane setDir ((getDir _testplane) - 180);
+
+            //_markerstr setMarkerDir (getDir _testplane);
+
+            _getDirHelper = "Sign_Arrow_Direction_Yellow_F" createVehicle _afSecPos;
+            _getDirHelper setVectorDir  [_ilsDir select 0,_ilsDir select 2,(_ilsDir select 1) * (-1)];
+            _getDirHelper setDir ((getDir _getDirHelper) - 180);
+            _afSecDir getDir _getDirHelper;
+            deleteVehicle _getDirHelper;
+
+            _possiblePlanePositions pushBack [_afSecPos,_afSecDir];
+        } forEach _airfields;
+
+        _rdmPlanePos = selectRandom _possiblePlanePositions;
+        _rdmPlanePos
     };
 
     _bde_fnc_randHeliportPos = {
-        params["_classname"];
         _helipads = nearestObjects [worldCenter, ["Land_HelipadSquare_F","Land_HelipadRescue_F","Land_HelipadCircle_F","Land_HelipadCivil_F","Land_HelipadEmpty_F"], worldHalfSize];
         _rdmHelipad = selectRandom _helipads;
         _heliportPosition = getPosATL _rdmHelipad;
@@ -50,20 +105,27 @@ _vehiclesInDB         = _result select 1;
     if(_destroyed == 1) then {
         _vehPosition = [0,0,0];
         if(_type == "heli")then{
-            _vehPosition = [_classname] call _bde_fnc_randHeliportPos;
+            _vehPosition = [] call _bde_fnc_randHeliportPos;
         };
         if(_type == "car")then{
             _vehPosition = [_classname] call _bde_fnc_randRoadPos;
         };
         if(_type == "plane")then{
-            _vehPosition = [_classname] call _bde_fnc_randRoadPos; //_bde_fnc_randAirfieldPos;
+            _vehPosition  = ([] call _bde_fnc_randAirfieldPos) select 0;
+            _vehDirection = ([] call _bde_fnc_randAirfieldPos) select 1;
         };
 
         //systemchat str _vehPosition;
 
         _spawnedVehicle = _classname createVehicle _vehPosition;
         _spawnedVehicle setVariable["id",_id,true];
-        _spawnedVehicle setDir random 180;
+
+        if(_type == "plane")then{
+            _spawnedVehicle setDir _vehDirection;
+        };/*else{
+            _spawnedVehicle setDir random 360;
+        };*/
+
         _spawnedVehicle setFuel random 1;
 
         _allHitPoints = getAllHitPointsDamage _spawnedVehicle;
