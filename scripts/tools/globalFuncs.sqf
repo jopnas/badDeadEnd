@@ -74,10 +74,17 @@ bde_fnc_removeBurnAction = {
 };
 
 bde_fnc_underCover = {
-    _object         = _this select 0;
-    _startPosition  = getPosASL _object;
+    params["_object"/**/,"_startPosition","_ignoreObject1"];
+    if(_object isEqualType [0,0,0])then{
+        _startPosition  = _object;
+        _ignoreObject1  = objNull;
+    }else{
+        _startPosition  = getPosASL _object;
+        _ignoreObject1  = _object;
+    };
+
     _endPosition    = [_startPosition select 0, _startPosition select 1, (_startPosition select 2 ) + 15];
-    _intersections  = lineIntersectsSurfaces [_startPosition, _endPosition, _object, objNull, false, 1, "GEOM", "VIEW"];
+    _intersections  = lineIntersectsSurfaces [_startPosition, _endPosition, _ignoreObject1, objNull, false, 1, "GEOM", "VIEW"];
     _isBelowRoof    = !(_intersections isEqualTo []);
     _isBelowRoof
 };

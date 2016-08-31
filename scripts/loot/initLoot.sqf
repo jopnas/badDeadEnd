@@ -69,7 +69,7 @@ fnc_spawnLoot = {
 
     		// Options
             _spawn setDir round(random 360);
-            _spawn setVehiclePosition [[_holderPos select 0,_holderPos select 1,(_holderPos select 2) + 0.1], [], 0, "CAN_COLLIDE"];
+            _spawn setVehiclePosition [[_holderPos select 0,_holderPos select 1,(_holderPos select 2) + 0.15], [], 0, "CAN_COLLIDE"];
 
             if(typeOf _building in _garagesNames)then {
                 _spawn addMagazineCargoGlobal [selectRandom _garageStuff, 1];
@@ -160,9 +160,11 @@ fnc_spawnLoot = {
                 case "CivilianBuilding":{
                     // Furnitures
                     if(random 100 < 20 && !(typeOf _building in ["Land_Hangar_F","Land_TentHangar_V1_F"])) then {
-                        _furniture = (selectRandom _furnituresCivil) createVehicle _holderPos;
-                        _furniture setDir round(random 360);
-                        _furniture setVehiclePosition [[_holderPos select 0,_holderPos select 1,(_holderPos select 2) + 0.1], [], 0, "CAN_COLLIDE"];
+                        if([_holderPos] call bde_fnc_underCover)then{
+                            _furniture = [selectRandom _furnituresCivil, _holderPos, [], 0, "CAN_COLLIDE"];
+                            _furniture setDir round(random 360);
+                            _furniture setVehiclePosition [[_holderPos select 0,_holderPos select 1,(_holderPos select 2) + 0.1], [], 0, "CAN_COLLIDE"];
+                        };
                     }else{
 
                         // Food

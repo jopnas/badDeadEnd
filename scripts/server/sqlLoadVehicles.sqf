@@ -279,7 +279,7 @@ _vehiclesInDB         = _result select 1;
     {
         _inModelPosition = _spawnedVehicle selectionPosition[_x,"Memory"]; // "Memory","Geometry","FireGeometry","LandContact","HitPoints"
         if(_inModelPosition != [0,0,0])then{
-            _attachy = createSimpleObject ["a3\structures_f\Items\Electronics\Laptop_unfolded_F.p3d", _inModelPosition]; //https://community.bistudio.com/wiki/createSimpleObject/objects
+            _attachy = createSimpleObject ["a3\3den\Objects\sphere.p3d", _inModelPosition]; //https://community.bistudio.com/wiki/createSimpleObject/objects
             _attachy attachTo [_spawnedVehicle, [0,0,0], _x];
         };
     } forEach _selectionNames;
