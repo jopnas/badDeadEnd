@@ -275,7 +275,7 @@ _vehiclesInDB         = _result select 1;
     };
 
     // Get MemoryPoints for Vehicle Attachments
-    _selectionNames = selectionNames _spawnedVehicle;
+    /*_selectionNames = selectionNames _spawnedVehicle;
     {
         _inModelPosition = _spawnedVehicle selectionPosition[_x,"Memory"]; // "Memory","Geometry","FireGeometry","LandContact","HitPoints"
         if(_inModelPosition != [0,0,0])then{
@@ -285,7 +285,7 @@ _vehiclesInDB         = _result select 1;
     } forEach _selectionNames;
 
     sleep 0.5;
-} forEach _vehiclesInDB;
+} forEach _vehiclesInDB;*/
 
 /* Apex
 -----------------------

@@ -161,7 +161,7 @@ fnc_spawnLoot = {
                     // Furnitures
                     if(random 100 < 20 && !(typeOf _building in ["Land_Hangar_F","Land_TentHangar_V1_F"])) then {
                         if([_holderPos] call bde_fnc_underCover)then{
-                            _furniture = [selectRandom _furnituresCivil, _holderPos, [], 0, "CAN_COLLIDE"];
+                            _furniture = createVehicle[selectRandom _furnituresCivil, _holderPos, [], 0, "CAN_COLLIDE"];
                             _furniture setDir round(random 360);
                             _furniture setVehiclePosition [[_holderPos select 0,_holderPos select 1,(_holderPos select 2) + 0.1], [], 0, "CAN_COLLIDE"];
                         };
