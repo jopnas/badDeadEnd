@@ -1,4 +1,4 @@
-params["_classname","_cargoType","_actionNo"];
+params["_classname","_cargoType","_actionNo","_actionName"];
 ctrlDelete ((findDisplay 602) displayCtrl 2501);
 //systemChat format["_classname: %1, _cargoType: %2, _actionNo: %3",_classname,_cargoType,_actionNo];
 
@@ -581,4 +581,16 @@ switch(_classname) do {
     };
 
     default {};
+};
+
+if(_actionName == "eat") then {
+    nextHungerDecr = t + hungerWaitTime;
+};
+
+if(_actionName == "drink") then {
+    nextThirstDecr = t + thirstWaitTime;
+};
+
+if(_classname == "bde_vitamines" || _classname == "bde_antibiotics") then {
+    nextHealthDecr = t + healthWaitTime;
 };

@@ -34,7 +34,7 @@ _showInventoryActions = {
         _invActionLB ctrlCommit 0;
         ctrlSetFocus _invActionLB;
 
-        _invActionLB ctrlSetEventHandler ["LBSelChanged", format["['%1','%2',_this select 1] spawn inventoryActions;",_classname,_cargoType]];
+        _invActionLB ctrlSetEventHandler ["LBSelChanged", format["['%1','%2',_this select 1,'%3 select (_this select 1)'] spawn inventoryActions;",_classname,_cargoType,_actionNames]];
     };
 };
 
