@@ -46,13 +46,12 @@ _removeItemCargo = { // [_item,_cargoType] call _removeItemCargo;
 _addItemFloor = { // [_item] call _addItemFloor;
     _itemClass  = _this select 0;
     _pPos       = getPos player;
-    _trashPos   = [_pPos select 0,_pPos select 1,(_pPos select 2) + 1];
-    _trashPos   = [(_trashPos select 0) - 1 + random 2,(_trashPos select 1) - 1 + random 2,_trashPos select 2];
+    _trashPos   = [(_pPos select 0) - 1 + random 2,(_pPos select 1) - 1 + random 2,(_pPos select 2) + 0.5];
 
-    _trashWph   = createVehicle ["groundWeaponHolder", _trashPos, [], 1, ""];
+    _trashWph   = createVehicle ["groundWeaponHolder", _trashPos, [], 1, "CAN_COLLIDE"];
+    _trashWph setVehiclePosition [_trashPos, [], 0, "CAN_COLLIDE"];
 
     _trashWph setDir round(random 360);
-    _trashWph setVehiclePosition [_trashPos, [], 0, "CAN_COLLIDE"];
     _trashWph addMagazineCargoGlobal [_itemClass, 1];
 };
 

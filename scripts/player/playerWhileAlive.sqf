@@ -12,7 +12,7 @@ gutAnimal		    = compile preprocessFile "scripts\animals\gutAnimal.sqf";
 foodFuncs			= compile preprocessFile "scripts\food\food_funcs.sqf";
 checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
 
-lastHazardCheck     = 0;
+nextHazardCheck     = 0;
 hazards			    = compile preprocessFile "scripts\anomaly\biohazard.sqf";
 
 nextEverySecond     = 0;
