@@ -47,7 +47,7 @@ respawn = "BASE"; // Respawn type. 0:"NONE", 1:"BIRD", 2:"INSTANT", 3:"BASE", 4:
 respawndelay = 5; // Delay in seconds before playable unit respawns.
 respawnVehicleDelay = 100; // Delay in seconds before vehicle respawns.
 respawnDialog = 0; // 0 to disable the score table (it can still be opened manually by pressing 'P' key).
-respawnTemplates[] = {"Spectator"}; // Respawn templates from CfgRespawnTemplates. You can combine any number of them together.
+respawnTemplates[] = {}; // Respawn templates from CfgRespawnTemplates. You can combine any number of them together.
 respawnOnStart = 0; // 1 to respawn player when he joins the game. Available only for INSTANT and BASE respawn types.
 aikills = 0; // When 1, the score table contains score of all playable units as opposed to players only.
 

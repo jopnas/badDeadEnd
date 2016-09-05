@@ -104,6 +104,7 @@ _vehiclesInDB         = _result select 1;
 
     if(_destroyed == 1) then {
         _vehPosition = [0,0,0];
+        _vehDirection = 0;
         if(_type == "heli")then{
             _vehPosition = [] call _bde_fnc_randHeliportPos;
         };
@@ -111,6 +112,7 @@ _vehiclesInDB         = _result select 1;
             _vehPosition = [_classname] call _bde_fnc_randRoadPos;
         };
         if(_type == "plane")then{
+            //_vehPosition = [_classname] call _bde_fnc_randRoadPos;
             _vehPosition  = ([] call _bde_fnc_randAirfieldPos) select 0;
             _vehDirection = ([] call _bde_fnc_randAirfieldPos) select 1;
         };
@@ -282,10 +284,10 @@ _vehiclesInDB         = _result select 1;
             _attachy = createSimpleObject ["a3\3den\Objects\sphere.p3d", _inModelPosition]; //https://community.bistudio.com/wiki/createSimpleObject/objects
             _attachy attachTo [_spawnedVehicle, [0,0,0], _x];
         };
-    } forEach _selectionNames;
+    } forEach _selectionNames;*/
 
     sleep 0.5;
-} forEach _vehiclesInDB;*/
+} forEach _vehiclesInDB;
 
 /* Apex
 -----------------------

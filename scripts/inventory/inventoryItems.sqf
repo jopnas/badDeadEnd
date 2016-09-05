@@ -20,11 +20,12 @@ _showInventoryActions = {
     params["_classname","_cargoType","_actionNames","_cargoCtrl"];
 
     if(_actionNames isEqualType [])then{
-        _invActionLB = findDisplay 602 ctrlCreate ["RscListbox", 2501];
+        //_invActionLB = findDisplay 602 ctrlCreate ["RscListbox", 2501];
+        _invActionLB = findDisplay 602 ctrlCreate ["InventoryActionMenu", 2501];
 
         {
             lbAdd[2501,_x];
-            lbSetColor [2501, _forEachIndex, [1,0,0,1]];
+            //lbSetColor [2501, _forEachIndex, [1,0,0,1]];
         } forEach _actionNames;
 
         _invActionPos       = ctrlPosition _invActionLB;
