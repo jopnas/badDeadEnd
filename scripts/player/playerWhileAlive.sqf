@@ -12,6 +12,9 @@ gutAnimal		    = compile preprocessFile "scripts\animals\gutAnimal.sqf";
 foodFuncs			= compile preprocessFile "scripts\food\food_funcs.sqf";
 checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
 
+lastHazardCheck     = 0;
+hazards			    = compile preprocessFile "scripts\anomaly\biohazard.sqf";
+
 nextEverySecond     = 0;
 nextEveryHalfSecond = 0;
 
@@ -153,7 +156,7 @@ player addEventHandler ["Fired", {
     _aud        = getNumber (configFile >> "CfgAmmo" >> _ammo >> "audibleFire");
     //_cal        = getNumber (configFile >> "CfgAmmo" >> _ammo >> "caliber");
 
-    _dist       = round((_aud/_sil) * 50 );
+    _dist       = round((_aud/_sil) * 30 );
 
     [_unit,getPos _unit,_dist] remoteExec ["bde_fnc_receivePlayersNoise",2,false];
     systemChat format["shot noise range: %1",_dist];
@@ -216,6 +219,11 @@ while{true}do{
     if(t > nextEverySecond)then{
         [player,[playerHunger,playerThirst,playerHealth,playerTemperature,playerWet,playerSick,playerInfected]] remoteExec ["fnc_savePlayerStats",2,false];
         nextEverySecond = t + 1;
+    };
+
+    if(t > nextHazardCheck)then {
+        [] call hazards;
+        nextHazardCheck = t + 5;
     };
 
     _speed              = speed (vehicle player);

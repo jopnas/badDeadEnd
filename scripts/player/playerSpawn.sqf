@@ -105,20 +105,19 @@ if(!(_dbAll isEqualTypeArray []))then{
             while {alive _caller} do {
                 if(_dog distance _caller < 3 || !(alive _caller)) exitWith {
                     _dog setVariable ["BIS_fnc_animalBehaviour_disable", false];
-                    //_dog playMove "Dog_Sit";
                     _dog playMove "Dog_Idle_Bark";
-                    sleep (10 + floor(random 10));
+                    sleep 7;
+                    _dog playMove "Dog_Sit";
+                    sleep (10 + floor(random 20));
                     _dog playMove "Dog_Idle_Walk";
                 };
                 _dog moveTo (getPos _caller);
                 sleep 0.5;
             };
-        }, _playersDog];
+        }, _playersDog,6,false,false,"","vehicle _this == _this",10000,false];
 
-        //dogsChangedAnims = [];
         _playersDog addEventHandler["AnimStateChanged",{
             params["_dog","_anim"];
-            //dogsChangedAnims pushBackUnique _anim;
             if(_anim == "dog_idle_bark")then{
                 [_dog,"dogBarkAniSync",0,0.5] remoteExec ["bde_fnc_say3d",0,false];
             };
