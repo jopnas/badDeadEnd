@@ -166,6 +166,21 @@ while{true}do{
 	t=time;
     "dog 0" setMarkerPos getPos (player getVariable "playersDog");
 
+    //_speed              = speed (vehicle player);
+
+    //_carryingMass       = loadAbs player;
+    //_calcFatigue        = _carryingMass / 500;
+    //player setFatigue _calcFatigue;
+
+    _rainIsAcid         = false;
+    _cursorObject       = cursorObject;
+    _cursorObjectType   = typeOf _cursorObject;
+
+    _closestBuilding    = nearestBuilding player;
+    isInside           = [_closestBuilding,player,false,false] call checkBoundingBox;
+    _isInCar            = (vehicle player != player);
+    _isUnderCover       = [player] call bde_fnc_underCover;
+
 	if(t > nextHungerDecr)then{
 		// Hunger
 		_hungerVal = playerHunger;
@@ -222,23 +237,10 @@ while{true}do{
     };
 
     if(t > nextHazardCheck)then {
-        [] call hazards;
+        _rainIsAcid = player getVariable ["rainIsAcid",false];
+        [_isUnderCover,_isInCar,_rainIsAcid] call hazards;
         nextHazardCheck = t + 5;
     };
-
-    _speed              = speed (vehicle player);
-
-    _carryingMass       = loadAbs player;
-    //_calcFatigue        = _carryingMass / 500;
-    //player setFatigue _calcFatigue;
-
-    _cursorObject       = cursorObject;
-	_cursorObjectType   = typeOf _cursorObject;
-
-	_closestBuilding    = nearestBuilding player;
-	isInside           = [_closestBuilding,player,false,false] call checkBoundingBox;
-    _isInCar            = (vehicle player != player);
-    _isUnderCover       = [player] call bde_fnc_underCover;
 
 	_nearestFireplaces  = nearestObjects [player, ["Land_FirePlace_F","Land_Campfire_F"], 3];
     _inflamedFireplaces = [];
@@ -481,5 +483,5 @@ while{true}do{
         actionBarricadeActive = false;
     };
 
-    hint format["_cursorObjectType: %1\ngetModelInfo: %2",_cursorObjectType,getModelInfo _cursorObject];
+    hint format["_cursorObjectType: %1\ngetModelInfo: %2\n_rainIsAcid: %3",_cursorObjectType,getModelInfo _cursorObject,_rainIsAcid];
 };
