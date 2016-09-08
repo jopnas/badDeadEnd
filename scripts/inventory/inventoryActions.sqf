@@ -45,7 +45,7 @@ _removeItemCargo = { // [_item,_cargoType] call _removeItemCargo;
 
 _addItemFloor = { // [_item] call _addItemFloor;
     _itemClass  = _this select 0;
-    _pPos       = getPos player;
+    _pPos       = getPosATL player;
     _trashPos   = [(_pPos select 0) - 1 + random 2,(_pPos select 1) - 1 + random 2,(_pPos select 2) + 0.5];
 
     _trashWph   = createVehicle ["groundWeaponHolder", _trashPos, [], 1, "CAN_COLLIDE"];

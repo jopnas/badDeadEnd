@@ -2,7 +2,7 @@ nextChangeWeather   = 0;
 minChangeRate       = 600;
 curChangeTime       = 86400;
 
-wasRainingBefore    = false;
+rainBefore  = 0;
 
 weatherInit = [] spawn {
 	while{true}do{
@@ -19,18 +19,19 @@ weatherInit = [] spawn {
 			nextChangeWeather = nextChangeWeather + curChangeTime;
 		};
 
-        if(rain == 0 && wasRainingBefore)then{
-            wasRainingBefore = false;
-            if(random 100 > 90)then{
-                _acidRain = true;
-            }else{
-                _acidRain = false;
+        if(rainBefore > rain)then{
+            if(rain == 0)then{
+                if(random 100 > 50)then{
+                    _acidRain = true;
+                }else{
+                    _acidRain = false;
+                };
+                {
+                    _x setVariable ["rainIsAcid", _acidRain, true];
+                    systemChat str _acidRain;
+                }forEach allPlayers;
             };
-            {player setVariable ["rainIsAcid", _acidRain, false];} remoteExec ["bis_fnc_call",-2];
-        };
-
-        if(rain > 0 && !wasRainingBefore)then{
-            wasRainingBefore = true;
+            rainBefore = rain;
         };
 	};
 };

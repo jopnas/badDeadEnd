@@ -114,7 +114,7 @@ if(!(_dbAll isEqualTypeArray []))then{
                 _dog moveTo (getPos _caller);
                 sleep 0.5;
             };
-        }, _playersDog,6,false,false,"","vehicle _this == _this",10000,false];
+        }, _playersDog,1,false,false,"","vehicle _this == _this",10000,false];
 
         _playersDog addEventHandler["AnimStateChanged",{
             params["_dog","_anim"];
