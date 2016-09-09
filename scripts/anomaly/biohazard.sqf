@@ -1,6 +1,7 @@
 
 // https://forums.bistudio.com/topic/153589-secret-simulweather-commands/
 // https://community.bistudio.com/wiki/supportInfo
+// https://forums.bistudio.com/topic/188051-solar-and-climatological-functions/
 params["_isUnderCover","_isInCar","_rainIsAcid"];
 
 if(_rainIsAcid)then{
