@@ -252,7 +252,7 @@ while{true}do{
         };
     } forEach _nearestFireplaces;
 
-	[_isUnderCover,isInside,_isInCar,_inflamedFireplaces_isInShadow,_sunRadiation] spawn handleWet;
+	[_isUnderCover,isInside,_isInCar,_inflamedFireplaces,_isInShadow,_sunRadiation] spawn handleWet;
 	[_isUnderCover,isInside,_isInCar,_inflamedFireplaces,_isInShadow,_sunRadiation] spawn handleTemperature;
 
 	// Everything in 2 meters around player
@@ -297,7 +297,7 @@ while{true}do{
         };
     };
 
-    if(_cursorObject distance2D player < 3 && str (getModelInfo _cursorObject) find "watertank" > -1 || str (getModelInfo _cursorObject) find "waterbarrel" > -1 || str (getModelInfo _cursorObject) find "barrelwater" > -1 || str (getModelInfo _cursorObject) find "stallwater" > -1 || str (getModelInfo _cursorObject) find "watersource" > -1)then{
+    if(_cursorObject distance2D player < 3 && str (getModelInfo _cursorObject) find "watertank" > -1 || str (getModelInfo _cursorObject) find "waterbarrel" > -1 || str (getModelInfo _cursorObject) find "barrelwater" > -1 || str (getModelInfo _cursorObject) find "stallwater" > -1 || str (getModelInfo _cursorObject) find "water_source" > -1)then{
         if(!drinkActionAvailable)then{
             drinkAction = player addAction["drink clean water",{
                 [] call drinkWater;

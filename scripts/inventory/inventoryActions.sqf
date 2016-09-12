@@ -214,8 +214,8 @@ switch(_classname) do {
             sleep 1;
             playerThirst = playerThirst + 10;
             [_classname,_cargoType] call _removeItemCargo;
-            ["bde_canempty"] call _addItemFloor;
-            cutText ["drank can of Magic Cola", "PLAIN DOWN"];
+            ["bde_sodacan_01_trash"] call _addItemFloor;
+            cutText ["drank can of Pepsi", "PLAIN DOWN"];
         };
     };
     case "bde_sodacan_02": {
