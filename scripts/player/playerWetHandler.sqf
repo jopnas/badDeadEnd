@@ -1,8 +1,4 @@
-params["_isUnderCover","_isInside","_isInCar","_nearestFireplaces", /* private ->*/ "_getWetVal"];
-/*_isUnderCover 		= _this select 0;
-_isInside 		    = _this select 1;
-_isInCar 			= _this select 2;
-_nearestFireplaces 	= _this select 3;*/
+params["_isUnderCover","_isInside","_isInCar","_nearestFireplaces","_isInShadow","_sunRadiation"/**/,"_dryingVal","_getWetVal"];
 
 _player             = player;
 
@@ -44,7 +40,13 @@ if(count _nearestFireplaces > 0 && !(_isInCar))then{
 };
 
 if(rain == 0)then{
-    _playerWetness = _playerWetness - 0.02;
+    if(_isInShadow)then{
+        _dryingVal = _sunRadiation/1000;
+    }else{
+        _dryingVal = _sunRadiation/100;
+    };
+
+    _playerWetness = _playerWetness - _dryingVal;
 };
 
 if(_playerWetness < 0)then{

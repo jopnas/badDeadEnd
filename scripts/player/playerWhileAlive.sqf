@@ -177,9 +177,11 @@ while{true}do{
     _cursorObjectType   = typeOf _cursorObject;
 
     _closestBuilding    = nearestBuilding player;
-    isInside           = [_closestBuilding,player,false,false] call checkBoundingBox;
+    isInside            = [_closestBuilding,player,false,false] call checkBoundingBox;
     _isInCar            = (vehicle player != player);
     _isUnderCover       = [player] call bde_fnc_underCover;
+    _isInShadow         = [player] call llw_fnc_inShadow;
+    _sunRadiation       = [player] call llw_fnc_getSunRadiation;
 
 	if(t > nextHungerDecr)then{
 		// Hunger
@@ -250,8 +252,8 @@ while{true}do{
         };
     } forEach _nearestFireplaces;
 
-	[_isUnderCover,isInside,_isInCar,_inflamedFireplaces] spawn handleWet;
-	[_isUnderCover,isInside,_isInCar,_inflamedFireplaces] spawn handleTemperature;
+	[_isUnderCover,isInside,_isInCar,_inflamedFireplaces_isInShadow,_sunRadiation] spawn handleWet;
+	[_isUnderCover,isInside,_isInCar,_inflamedFireplaces,_isInShadow,_sunRadiation] spawn handleTemperature;
 
 	// Everything in 2 meters around player
 	/*_things = nearestObjects [player,[],5];   //!DON'T NEED IT AT MOMENT!
@@ -491,10 +493,10 @@ while{true}do{
             + "\nSolar azimuth: " + str ([] call llw_fnc_getSunAngle select 1)+"°"
             + "\nSolar elevation: " + str ([] call llw_fnc_getSunAngle select 0)+"°"
             + "\nElevation at noon: " + str ([] call llw_fnc_getSunElevationNoon)+"°"
-            + "\nSolar radiation: " + str ([player] call llw_fnc_getSunRadiation) + " W/m²"
+            + "\nSolar radiation: " + str _sunRadiation + " W/m²"
             + "\nAir: " + str ([] call llw_fnc_getTemperature select 0) +"°C"
             + "\nSea: " + str ([] call llw_fnc_getTemperature select 1) +"°C"
-            + "\nPlayer in shadow: " + str ([player] call llw_fnc_inShadow)
+            + "\nPlayer in shadow: " + str _isInShadow
             + "\n\nTry fiddling with time, date, overcast, and fog."
     );
 };
