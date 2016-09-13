@@ -1,9 +1,9 @@
 
 // https://community.bistudio.com/wiki/supportInfo
 // https://forums.bistudio.com/topic/188051-solar-and-climatological-functions/
-params["_isUnderCover","_isInCar","_rainIsAcid"];
+params["_isUnderCover","_isInCar"];
 
-if(_rainIsAcid)then{
+if(acidRainPossible)then{
     ["ColorInversion", 2500, [random 1,random 1,random 1]] spawn {
     	params ["_name", "_priority", "_effect",/**/"_handle"];
     	while {
@@ -46,4 +46,6 @@ if(_rainIsAcid)then{
         	ppEffectDestroy _handle;
         };
     };
+
+    playerPoisoning = playerPoisoning + 0.2;
 };

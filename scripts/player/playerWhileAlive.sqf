@@ -1,7 +1,7 @@
 // nützlich für ghost objects? https://community.bistudio.com/wiki/createSimpleObject
 // https://community.bistudio.com/wiki/createSimpleObject/objects
 
-// GUI
+// Compiles
 updateUI   			= compile preprocessFile "scripts\player\playerUpdateUI.sqf";
 checkNoise 			= compile preprocessFile "scripts\player\playerNoiseCheck.sqf";
 handleWet 			= compile preprocessFile "scripts\player\playerWetHandler.sqf";
@@ -11,6 +11,9 @@ checkAnimals		= compile preprocessFile "scripts\animals\checkAnimals.sqf";
 gutAnimal		    = compile preprocessFile "scripts\animals\gutAnimal.sqf";
 foodFuncs			= compile preprocessFile "scripts\food\food_funcs.sqf";
 checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
+
+// Hazards
+acidRainPossible    = false;
 
 nextHazardCheck     = 0;
 hazards			    = compile preprocessFile "scripts\anomaly\biohazard.sqf";
@@ -240,7 +243,7 @@ while{true}do{
 
     if(t > nextHazardCheck)then {
         _rainIsAcid = player getVariable ["rainIsAcid",false];
-        [_isUnderCover,_isInCar,_rainIsAcid] call hazards;
+        [_isUnderCover,_isInCar] call hazards;
         nextHazardCheck = t + 5;
     };
 
@@ -487,7 +490,8 @@ while{true}do{
 
     //hint format["_cursorObjectType: %1\ngetModelInfo: %2\n_rainIsAcid: %3",_cursorObjectType,getModelInfo _cursorObject,_rainIsAcid];
     hintsilent (
-            "\n\n\n\n" + ([] call llw_fnc_getDateTime)
+            "playerPoisoning:" + str playerPoisoning
+            + "\n\n" + ([] call llw_fnc_getDateTime)
             + "\nSunrise hour: " + str ([] call llw_fnc_getSunrise select 0)
             + "\nSunset hour: " + str ([] call llw_fnc_getSunrise select 1)
             + "\nSolar azimuth: " + str ([] call llw_fnc_getSunAngle select 1)+"°"

@@ -24,6 +24,7 @@ playerNoise         = 0;
 playerWet           = 0;
 playerSick          = 0;
 playerInfected      = 0;
+playerPoisoning     = 0;
 
 if(!(_dbAll isEqualTypeArray []))then{
 	_playerPosition        = _db select 0;
@@ -50,6 +51,7 @@ if(!(_dbAll isEqualTypeArray []))then{
 	playerWet              = _wet;
 	playerSick             = _sick;
 	playerInfected         = _infected;
+    playerPoisoning        = 0;
 
     _playerUnit setUnitLoadout [_loadout, false];
 
