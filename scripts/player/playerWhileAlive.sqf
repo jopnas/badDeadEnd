@@ -5,18 +5,19 @@
 updateUI   			= compile preprocessFile "scripts\player\playerUpdateUI.sqf";
 checkNoise 			= compile preprocessFile "scripts\player\playerNoiseCheck.sqf";
 handleWet 			= compile preprocessFile "scripts\player\playerWetHandler.sqf";
+handlePoisoning	    = compile preprocessFile "scripts\player\playerPoisoning.sqf";
 handleTemperature 	= compile preprocessFile "scripts\player\playerTemperatureHandler.sqf";
+checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
 checkBoundingBox    = compile preprocessFile "scripts\tools\checkBoundingBox.sqf";
 checkAnimals		= compile preprocessFile "scripts\animals\checkAnimals.sqf";
 gutAnimal		    = compile preprocessFile "scripts\animals\gutAnimal.sqf";
 foodFuncs			= compile preprocessFile "scripts\food\food_funcs.sqf";
-checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
 
 // Hazards
 acidRainPossible    = false;
 
 nextHazardCheck     = 0;
-hazards			    = compile preprocessFile "scripts\anomaly\biohazard.sqf";
+hazards			    = compile preprocessFile "scripts\anomaly\hazards.sqf";
 
 nextEverySecond     = 0;
 nextEveryHalfSecond = 0;
@@ -166,7 +167,7 @@ player addEventHandler ["Fired", {
 }];
 
 // Hide Weapons
-player addAction["Hide Weapons",{
+player addAction["Put away Weapons",{
     player action["SwitchWeapon",player,player,100];
     player switchCamera cameraView;
 }];
@@ -229,16 +230,16 @@ while{true}do{
 	};
 
     if(t > 2)then{
-        [] spawn checkNoise;
-        [] spawn checkAnimals;
+        [] call checkNoise;
+        [] call checkAnimals;
     };
     if(t > 5)then{
-        [] spawn checkSick;
+        [] call checkSick;
         [getPos player] remoteExec ["fnc_spawnLoot",2,false];
     };
 
     if(t > nextEveryHalfSecond)then{
-        [] spawn updateUI;
+        [] call updateUI;
         nextEveryHalfSecond = t + 0.5;
     };
 
@@ -248,8 +249,7 @@ while{true}do{
     };
 
     if(t > nextHazardCheck)then {
-        _rainIsAcid = player getVariable ["rainIsAcid",false];
-        [_isUnderCover,_isInCar] call hazards;
+        [_isUnderCover,_isInCar,_isInShadow,_sunRadiation] call handlePoisoning;
         nextHazardCheck = t + 5;
     };
 
