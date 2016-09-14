@@ -210,7 +210,6 @@ if(_isRespawn)then{
     addCamShake [10, 10, 50];
 };
 
-
 5 fadeSound 3;
 5 fadeMusic 3;
 

@@ -165,6 +165,12 @@ player addEventHandler ["Fired", {
     systemChat format["shot noise range: %1",_dist];
 }];
 
+// Hide Weapons
+player addAction["Hide Weapons",{
+    player action["SwitchWeapon",player,player,100];
+    player switchCamera cameraView;
+}];
+
 while{true}do{
 	t=time;
     "dog 0" setMarkerPos getPos (player getVariable "playersDog");
