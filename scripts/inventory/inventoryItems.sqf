@@ -111,6 +111,9 @@ switch(_classname) do {
 	case "bde_antibiotics": {
         _actionTexts = ["take"];
 	};
+	case "bde_antiradiationtablets": {
+        _actionTexts = ["take"];
+	};
 
     // Camonets
     case "bde_camonetSmallPacked": {

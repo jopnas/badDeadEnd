@@ -1,6 +1,6 @@
-params["_isUnderCover","_isInCar","_isInShadow","_sunRadiation"];
+params["_isUnderCover","_isInCar","_isInShadow","_sunRadiation"/**/,"_newValue"];
 
-playerPoisoning = playerPoisoning - 0.01;
+_newValue       = playerPoisoning - 0.01;
 
 // Acid Rain
 if(acidRainPossible)then{
@@ -47,18 +47,20 @@ if(acidRainPossible)then{
         };
     };
 
-    playerPoisoning = playerPoisoning + 0.2;
+    _newValue = _newValue + 0.2;
 };
 
 // Direct Sunrays
 if(!(_isInShadow) && _sunRadiation > 0)then{
-    playerPoisoning = playerPoisoning + (_sunRadiation/100);
+    _newValue = _newValue + (_sunRadiation/100);
 };
 
-if(playerPoisoning < 0)then{
-    playerPoisoning = 0;
+if(_newValue < 0)then{
+    _newValue = 0;
 };
 
-if(playerPoisoning > 100)then{
-    playerPoisoning = 100;
+if(_newValue > 100)then{
+    _newValue = 100;
 };
+
+playerPoisoning = _newValue;

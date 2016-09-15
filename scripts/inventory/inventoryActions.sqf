@@ -357,6 +357,16 @@ switch(_classname) do {
     	};
 	};
 
+	case "bde_antiradiationtablets": {
+        if(_actionNo == 0)then{
+            [player,"swallowSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
+    		sleep 1;
+    		playerPoisoning = 0;
+            [_classname,_cargoType] call _removeItemCargo;
+    		cutText ["took antiradiation tablets", "PLAIN DOWN"];
+    	};
+	};
+
     // Camonets
     case "bde_camonetSmallPacked": {
         if(_actionNo == 0)then{
