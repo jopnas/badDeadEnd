@@ -8,7 +8,7 @@ _headgear 		    = headgear player;
 _newValue       = playerPoisoning - 0.01;
 
 // Acid Rain
-if(acidRainPossible)then{
+if(rain > 0 && acidRain)then{
     ["ColorInversion", 2500, [random 1,random 1,random 1]] spawn {
     	params ["_name", "_priority", "_effect",/**/"_handle"];
     	while {
@@ -28,7 +28,7 @@ if(acidRainPossible)then{
     };
 
     // Acid Rain
-    if(rain > 0 && !(_isUnderCover) && !(_isInCar))then{
+    if(!(_isUnderCover) && !(_isInCar))then{
         systemChat format["ouch, acid rain: %1",rain];
         _curDamage = damage player;
         player setDamage (_curDamage - (rain/100));

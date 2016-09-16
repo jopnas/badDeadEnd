@@ -13,11 +13,9 @@ checkAnimals		= compile preprocessFile "scripts\animals\checkAnimals.sqf";
 gutAnimal		    = compile preprocessFile "scripts\animals\gutAnimal.sqf";
 foodFuncs			= compile preprocessFile "scripts\food\food_funcs.sqf";
 
-// Hazards
-acidRainPossible    = false;
+acidRain            = false;
 
-nextHazardCheck     = 0;
-hazards			    = compile preprocessFile "scripts\anomaly\hazards.sqf";
+nextPoisoningCheck  = 0;
 
 nextEverySecond     = 0;
 nextEveryHalfSecond = 0;
@@ -248,9 +246,9 @@ while{true}do{
         nextEverySecond = t + 1;
     };
 
-    if(t > nextHazardCheck)then {
+    if(t > nextPoisoningCheck)then {
         [_isUnderCover,_isInCar,_isInShadow,_sunRadiation] call handlePoisoning;
-        nextHazardCheck = t + 5;
+        nextPoisoningCheck = t + 5;
     };
 
 	_nearestFireplaces  = nearestObjects [player, ["Land_FirePlace_F","Land_Campfire_F"], 3];
@@ -498,11 +496,11 @@ while{true}do{
     hintsilent (
             "playerPoisoning:" + str playerPoisoning
             + "\n\n" + ([] call llw_fnc_getDateTime)
-            + "\nSunrise hour: " + str ([] call llw_fnc_getSunrise select 0)
-            + "\nSunset hour: " + str ([] call llw_fnc_getSunrise select 1)
-            + "\nSolar azimuth: " + str ([] call llw_fnc_getSunAngle select 1)+"°"
-            + "\nSolar elevation: " + str ([] call llw_fnc_getSunAngle select 0)+"°"
-            + "\nElevation at noon: " + str ([] call llw_fnc_getSunElevationNoon)+"°"
+            //+ "\nSunrise hour: " + str ([] call llw_fnc_getSunrise select 0)
+            //+ "\nSunset hour: " + str ([] call llw_fnc_getSunrise select 1)
+            //+ "\nSolar azimuth: " + str ([] call llw_fnc_getSunAngle select 1)+"°"
+            //+ "\nSolar elevation: " + str ([] call llw_fnc_getSunAngle select 0)+"°"
+            //+ "\nElevation at noon: " + str ([] call llw_fnc_getSunElevationNoon)+"°"
             + "\nSolar radiation: " + str _sunRadiation + " W/m²"
             + "\nAir: " + str ([] call llw_fnc_getTemperature select 0) +"°C"
             + "\nSea: " + str ([] call llw_fnc_getTemperature select 1) +"°C"
