@@ -1,7 +1,7 @@
 nextChangeWeather   = 0;
 minChangeRate       = 600;
 
-curChangeTime = (floor(random 1800) * timeMultiplier) + minChangeRate;
+curChangeTime = floor(random 1800) + minChangeRate;
 nextChangeWeather = nextChangeWeather + curChangeTime;
 
 acidRain = false;
@@ -22,7 +22,7 @@ while{true}do{
         	sleep 0.1;
         	simulWeatherSync;
         };
-		curChangeTime = (floor(random 1800) * timeMultiplier) + minChangeRate;
+		curChangeTime = floor(random 1800) + minChangeRate;
 		nextChangeWeather = nextChangeWeather + curChangeTime;
 	};
 };

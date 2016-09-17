@@ -494,7 +494,8 @@ while{true}do{
 
     //hint format["_cursorObjectType: %1\ngetModelInfo: %2\n_rainIsAcid: %3",_cursorObjectType,getModelInfo _cursorObject,_rainIsAcid];
     hintsilent (
-            "playerPoisoning:" + str playerPoisoning
+            "playerPoisoning:" + (str playerPoisoning)
+            + "\nacidRain:" + (str acidRain)
             + "\n\n" + ([] call llw_fnc_getDateTime)
             //+ "\nSunrise hour: " + str ([] call llw_fnc_getSunrise select 0)
             //+ "\nSunset hour: " + str ([] call llw_fnc_getSunrise select 1)

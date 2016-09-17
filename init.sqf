@@ -7,7 +7,7 @@ worldCenter     = [worldHalfSize,worldHalfSize,0];
 
 if(isServer)then{
     loadedCarsList = [];
-    setTimeMultiplier 120; // 0.1 - 120
+    setTimeMultiplier 10; // 0.1 - 120
 
     [] execVM "scripts\server\registerDBdata.sqf";
     [] execVM "scripts\server\MySQLPlayerData.sqf";
