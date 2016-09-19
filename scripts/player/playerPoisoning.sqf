@@ -10,7 +10,6 @@ _newValue           = playerPoisoning - 0.01;
 // Acid Rain
 if(rain > 0 && acidRain)then{
     if(!(_isUnderCover) && !(_isInCar))then{
-        systemChat format["ouch, acid rain: %1",rain];
         _curDamage = damage player;
         player setDamage (_curDamage - (rain/100));
 
@@ -68,6 +67,34 @@ if(_newValue < 0)then{
 
 if(_newValue > 100)then{
     _newValue = 100;
+};
+
+// acid rain effect
+["ColorInversion", 2500, [0,1,0],_isUnderCover,_isInCar] spawn {
+    params ["_name", "_priority", "_effect", "_handle","_isUnderCover","_isInCar"];
+    _handle = ppEffectCreate [_name, _priority];
+    _handle ppEffectAdjust _effect;
+    if(rain > 0 && acidRain && !(_isUnderCover) && !(_isInCar))then{
+        _handle ppEffectEnable true;
+    }else{
+        _handle ppEffectEnable true;
+    };
+    _handle ppEffectCommit 3;
+};
+
+// poisoned effect
+["DynamicBlur", 400, [_newValue]] spawn {
+	params ["_name", "_priority", "_poisoningVal", "_handle","_effect"];
+    _handle = ppEffectCreate [_name, _priority];
+    if(_poisoningVal > 0)then{
+        _effect = _poisoningVal/10;
+        _handle ppEffectEnable true;
+    }else{
+        _effect = 0;
+        _handle ppEffectEnable false;
+    };
+    _handle ppEffectAdjust _effect;
+	_handle ppEffectCommit 2;
 };
 
 playerPoisoning = _newValue;
