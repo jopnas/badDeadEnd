@@ -11,9 +11,9 @@ while{true}do{
         _rdmOvercast = random 1;
 
         if(random 100 < 50 && _rdmOvercast > 0.6)then{
-            {acidRain = true;} remoteExecCall ["bis_fnc_call", 0];
+            {acidRain = true;} remoteExecCall ["bis_fnc_call",0];
         }else{
-            {acidRain = false;} remoteExecCall ["bis_fnc_call", 0];
+            {acidRain = false;} remoteExecCall ["bis_fnc_call",0];
         };
 
 		curChangeTime setOvercast _rdmOvercast;

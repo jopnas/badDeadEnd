@@ -5,51 +5,14 @@ _playerVest			= vest player;
 _playerBackpack		= backpack player;
 _headgear 		    = headgear player;
 
-_newValue       = playerPoisoning - 0.01;
+_newValue           = playerPoisoning - 0.01;
 
 // Acid Rain
 if(rain > 0 && acidRain)then{
-    ["ColorInversion", 2500, [random 1,random 1,random 1]] spawn {
-    	params ["_name", "_priority", "_effect",/**/"_handle"];
-    	while {
-    		_handle = ppEffectCreate [_name, _priority];
-    		_handle < 0
-    	} do {
-    		_priority = _priority + 1;
-    	};
-    	_handle ppEffectEnable true;
-    	_handle ppEffectAdjust _effect;
-    	_handle ppEffectCommit 5;
-    	waitUntil {ppEffectCommitted _handle};
-    	uiSleep 3;
-    	comment "admire effect for a sec";
-    	_handle ppEffectEnable false;
-    	ppEffectDestroy _handle;
-    };
-
-    // Acid Rain
     if(!(_isUnderCover) && !(_isInCar))then{
         systemChat format["ouch, acid rain: %1",rain];
         _curDamage = damage player;
         player setDamage (_curDamage - (rain/100));
-
-        ["DynamicBlur", 400, [rain*10]] spawn {
-        	params ["_name", "_priority", "_effect",/**/"_handle"];
-        	while {
-        		_handle = ppEffectCreate [_name, _priority];
-        		_handle < 0
-        	} do {
-        		_priority = _priority + 1;
-        	};
-        	_handle ppEffectEnable true;
-        	_handle ppEffectAdjust _effect;
-        	_handle ppEffectCommit 5;
-        	waitUntil {ppEffectCommitted _handle};
-        	uiSleep 3;
-        	comment "admire effect for a sec";
-        	_handle ppEffectEnable false;
-        	ppEffectDestroy _handle;
-        };
 
         _newValue = _newValue + rain;
 
@@ -68,6 +31,7 @@ if(rain > 0 && acidRain)then{
     };
 };
 
+// Toxic Oxygen from Trees
 _trees = [];
 {
     if (str _x find ": t_" > -1) then {
@@ -79,7 +43,7 @@ if(_countedTrees > 0)then{
     _newValue = _newValue + (0.02 * _countedTrees);
 };
 
-// Direct Sunrays
+// Direct Sunshine
 if(!(_isInShadow) && _sunRadiation > 0)then{
     _newValue = _newValue + (_sunRadiation/100);
 

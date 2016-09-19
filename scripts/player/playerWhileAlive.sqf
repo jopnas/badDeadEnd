@@ -14,7 +14,6 @@ gutAnimal		    = compile preprocessFile "scripts\animals\gutAnimal.sqf";
 foodFuncs			= compile preprocessFile "scripts\food\food_funcs.sqf";
 
 acidRain            = false;
-
 nextPoisoningCheck  = 0;
 
 nextEverySecond     = 0;
@@ -180,7 +179,6 @@ while{true}do{
     //_calcFatigue        = _carryingMass / 500;
     //player setFatigue _calcFatigue;
 
-    _rainIsAcid         = false;
     _cursorObject       = cursorObject;
     _cursorObjectType   = typeOf _cursorObject;
 
@@ -492,7 +490,7 @@ while{true}do{
         actionBarricadeActive = false;
     };
 
-    //hint format["_cursorObjectType: %1\ngetModelInfo: %2\n_rainIsAcid: %3",_cursorObjectType,getModelInfo _cursorObject,_rainIsAcid];
+    //hint format["_cursorObjectType: %1\ngetModelInfo: %2",_cursorObjectType,getModelInfo _cursorObject];
     hintsilent (
             "playerPoisoning:" + (str playerPoisoning)
             + "\nacidRain:" + (str acidRain)
