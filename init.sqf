@@ -15,6 +15,7 @@ if(isServer)then{
 
     [] execVM "scripts\lists\buildingTypes.sqf";
     [] execVM "scripts\lists\weaponTypes.sqf";
+    [] execVM "scripts\lists\backpackTypes.sqf";
 	[] execVM "scripts\weather\initWeather.sqf";
 	[] execVM "scripts\anomaly\initAnomaly.sqf";
 	[] execVM "scripts\camps\initCamps.sqf";
