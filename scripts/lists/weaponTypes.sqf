@@ -5,8 +5,7 @@ lightWeapons    = [];
 mediumWeapons   = [];
 heavyWeapons    = [];
 
-//weaponCaliber   = [];
-//weaponHitVal    = [];
+attachments     = [];
 
 _allWeaponTypes = ["AssaultRifle","Handgun","MachineGun","Shotgun","Rifle","SubmachineGun","SniperRifle"];
 // AssaultRifle,BombLauncher,Cannon,GrenadeLauncher,Handgun,Launcher,MachineGun,Magazine,MissileLauncher,Mortar,RocketLauncher,Shotgun,Throw,Rifle,SubmachineGun,SniperRifle
@@ -22,6 +21,17 @@ _wpList = (configFile >> "cfgWeapons") call BIS_fnc_getCfgSubClasses;
             _baseName = _x	call BIS_fnc_baseWeapon;
 
             if (!(_baseName in lightWeapons) && !(_baseName in mediumWeapons) && !(_baseName in heavyWeapons) && !(_baseName in _allBannedWeapons)) then {
+                // Get Attachments List
+                _compatibles = [];
+                _compatibles append (getArray (configFile >> "CfgWeapons" >> _x >> "WeaponSlotsInfo" >> "MuzzleSlot" >> "compatibleItems"));
+                _compatibles append (getArray (configFile >> "CfgWeapons" >> _x >> "WeaponSlotsInfo" >> "CowsSlot" >> "compatibleItems"));
+                _compatibles append (getArray (configFile >> "CfgWeapons" >> _x >> "WeaponSlotsInfo" >> "PointerSlot" >> "compatibleItems"));
+                _compatibles append (getArray (configFile >> "CfgWeapons" >> _x >> "WeaponSlotsInfo" >> "UnderBarrelSlot" >> "compatibleItems"));
+                {
+                    attachments pushBackUnique _x;
+                } forEach _compatibles;
+
+
                 // Get Magazines List
                 _hardestHitPossible = 0;
                 _weaponMagazines    = getArray (configFile >> "CfgWeapons" >> _x >> "magazines");
@@ -32,8 +42,6 @@ _wpList = (configFile >> "cfgWeapons") call BIS_fnc_getCfgSubClasses;
                     if(_hitVal > _hardestHitPossible)then{
                         _hardestHitPossible = _hitVal;
                     };
-                    //weaponCaliber pushBackUnique _cal;
-                    //weaponHitVal pushBackUnique _cal;
                 }forEach _weaponMagazines;
 
                 // Sort Weapon to Array
@@ -51,17 +59,3 @@ _wpList = (configFile >> "cfgWeapons") call BIS_fnc_getCfgSubClasses;
     };
 
 } forEach _wpList;
-
-/* Caliber
-0.1,0.4,0.7,
-
-1,1.6,1.8,
-
-2,2.2,2.4,2.8,3.6,4.6,
-*/
-
-/* HitDamage
-4, 8,
-10, 12,14,
-16,18, 20, 24, 60
-*/

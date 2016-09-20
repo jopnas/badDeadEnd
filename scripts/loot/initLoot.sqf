@@ -5,7 +5,7 @@ fnc_spawnLoot = {
 
   // Military Lootlists
   _ammoGrenades         = ["MiniGrenade","SmokeShell","SmokeShellYellow","SmokeShellGreen","SmokeShellRed","SmokeShellPurple","SmokeShellOrange","SmokeShellBlue","Chemlight_green","Chemlight_red","Chemlight_yellow","Chemlight_blue"];
-  _itemsMil             = ["ItemGPS","Rangefinder","NVGoggles","Laserdesignator","Laserdesignator_02","Laserdesignator_03","Zasleh2","muzzle_snds_H","muzzle_snds_L","muzzle_snds_M","muzzle_snds_B","muzzle_snds_H_MG","muzzle_snds_H_SW","optic_Arco","optic_Hamr","optic_Aco","optic_ACO_grn","optic_Aco_smg","optic_ACO_grn_smg","optic_Holosight","optic_Holosight_smg","optic_SOS","acc_flashlight","acc_pointer_IR","optic_MRCO","muzzle_snds_acp","optic_NVS","optic_Nightstalker","optic_tws","optic_tws_mg","optic_DMS","optic_Yorris","optic_MRD","optic_LRPS","muzzle_snds_338_black","muzzle_snds_338_green","muzzle_snds_338_sand","muzzle_snds_93mmg","muzzle_snds_93mmg_tan","optic_AMS","optic_AMS_khk","optic_AMS_snd","optic_KHS_blk","optic_KHS_hex","optic_KHS_old","optic_KHS_tan","bipod_01_F_snd","bipod_01_F_blk","bipod_01_F_mtp","bipod_02_F_blk","bipod_02_F_tan","bipod_02_F_hex","bipod_03_F_blk","bipod_03_F_oli"];
+  _itemsMil             = ["ItemGPS","Rangefinder","NVGoggles","Laserdesignator","Laserdesignator_02","Laserdesignator_03"];
   _equipmentMil         = ["V_Rangemaster_belt","V_BandollierB_khk","V_BandollierB_cbr","V_BandollierB_rgr","V_BandollierB_blk","V_BandollierB_oli"];
 
   // Civilian Lootlists
@@ -76,7 +76,12 @@ fnc_spawnLoot = {
 
             switch(_buildingType) do {
                 case "MilitaryBuilding":{
-                  // Attachments & Items
+                  // Attachments
+                  if(random 100 < 30) then {
+                    _spawn addItemCargoGlobal [selectRandom attachments,1];
+                  };
+
+                  // Tools
                   if(random 100 < 30) then {
                     _spawn addItemCargoGlobal [selectRandom _itemsMil,1];
                   };
@@ -90,11 +95,16 @@ fnc_spawnLoot = {
 
                   // Backpacks
                   if(random 100 < 30) then {
-                    _spawn addBackpackCargoGlobal [selectRandom backpacksCiv,1];
+                    _spawn addBackpackCargoGlobal [selectRandom backpacks,1];
                   };
                   // Cloth
                   if(random 100 < 30) then {
                     _spawn addItemCargoGlobal [selectRandom _equipmentMil,1];
+                  };
+
+                  // Grenades
+                  if(random 100 < 30) then {
+                    _spawn addMagazineCargoGlobal [selectRandom _ammoGrenades, round(random 2)];
                   };
 
                   // Weapons
@@ -107,20 +117,15 @@ fnc_spawnLoot = {
                 };
 
                 case "AirportBuilding":{
-                    // Grenades
-                    if(random 100 < 20) then {
-                      _spawn addMagazineCargoGlobal [selectRandom _ammoGrenades, floor (random 2)];
-                    };
-
                     // Ammo only
-                    if(random 100 < 10) then {
+                    if(random 100 < 30) then {
                       _rdmWeaponAmmoAir  = selectRandom mediumWeapons;
                       _rmags      = getArray(configfile >> "cfgWeapons" >> _rdmWeaponAmmoAir >> "magazines");
                       _spawn addMagazineCargoGlobal [selectRandom _rmags, round(random 3)+1];
                     };
 
                     // Weapons
-                    if(random 100 < 20) then {
+                    if(random 100 < 30) then {
                       _rdmWeaponWeapAir = selectRandom mediumWeapons;
                       _spawn addWeaponCargoGlobal [_rdmWeaponWeapAir,1];
                       _rmags = getArray(configfile >> "cfgWeapons" >> _rdmWeaponWeapAir >> "magazines");
@@ -128,30 +133,30 @@ fnc_spawnLoot = {
                     };
 
                     // Tools
-                    if(random 100 < 10) then {
+                    if(random 100 < 30) then {
                         _spawn addMagazineCargoGlobal [selectRandom _toolItems,1];
                     };
 
                     // Food
-                    if(random 100 < 60) then {
+                    if(random 100 < 30) then {
                       _spawn addMagazineCargoGlobal [selectRandom _foodItems, 1];
                     };
                 };
 
                 case "ResearchBuilding":{
                   // Medicals & Chemicals
-                  if(random 100 < 40) then {
+                  if(random 100 < 30) then {
                     _spawn addMagazineCargoGlobal [selectRandom _medicalItems, 1];
                   };
                 };
 
                 case "ConstructionBuilding":{
                     // Tools
-                    if(random 100 < 10) then {
+                    if(random 100 < 30) then {
                         _spawn addMagazineCargoGlobal [selectRandom _toolItems,1];
                     };
                     // xtra Stone
-                    if(random 100 < 10) then {
+                    if(random 100 < 30) then {
                         _spawn addMagazineCargoGlobal ["bde_stone",round(random 3)];
                     };
                 };
@@ -167,34 +172,34 @@ fnc_spawnLoot = {
                     }else{
 
                         // Food
-                        if(random 100 < 60) then {
+                        if(random 100 < 30) then {
                             _spawn addMagazineCargoGlobal [selectRandom _foodItems, 1];
                         };
 
-                        // Attachments & Items
-                        if(random 100 < 5) then {
+                        // Items
+                        if(random 100 < 30) then {
                             _spawn addItemCargoGlobal [selectRandom _itemsCiv,1];
                         };
 
                         // Ammo only
-                        if(random 100 < 10) then {
+                        if(random 100 < 30) then {
                             _rdmWeaponAmmoCiv  = selectRandom lightWeapons;
                             _rmags      = getArray(configfile >> "cfgWeapons" >> _rdmWeaponAmmoCiv >> "magazines");
                             _spawn addMagazineCargoGlobal [selectRandom _rmags, round(random 3)+1];
                         };
 
                         // Backpacks
-                        if(random 100 < 5) then {
-                            _spawn addBackpackCargoGlobal [selectRandom backpacksCiv,1];
+                        if(random 100 < 30) then {
+                            _spawn addBackpackCargoGlobal [selectRandom backpacks,1];
                         };
 
                         // Cloth
-                        if(random 100 < 10) then {
+                        if(random 100 < 30) then {
                             _spawn addItemCargoGlobal [selectRandom _equipmentCiv,1];
                         };
 
                         // Weapons
-                        if(random 100 < 10) then {
+                        if(random 100 < 30) then {
                             _rdmWeaponWeapCiv = selectRandom lightWeapons;
                             _spawn addWeaponCargoGlobal [_rdmWeaponWeapCiv,1];
                             _rmags = getArray(configfile >> "cfgWeapons" >> _rdmWeaponWeapCiv >> "magazines");
