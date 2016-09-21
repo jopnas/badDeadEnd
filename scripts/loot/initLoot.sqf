@@ -4,7 +4,6 @@ fnc_spawnLoot = {
   _playerPosition 	= _this select 0;
 
   // Military Lootlists
-  _ammoGrenades         = ["MiniGrenade","SmokeShell","SmokeShellYellow","SmokeShellGreen","SmokeShellRed","SmokeShellPurple","SmokeShellOrange","SmokeShellBlue","Chemlight_green","Chemlight_red","Chemlight_yellow","Chemlight_blue"];
   _itemsMil             = ["bde_respirator","ItemGPS","Rangefinder","NVGoggles","Laserdesignator","Laserdesignator_02","Laserdesignator_03"];
   _equipmentMil         = ["V_Rangemaster_belt","V_BandollierB_khk","V_BandollierB_cbr","V_BandollierB_rgr","V_BandollierB_blk","V_BandollierB_oli"];
 
@@ -104,7 +103,12 @@ fnc_spawnLoot = {
 
                   // Grenades
                   if(random 100 < 30) then {
-                    _spawn addMagazineCargoGlobal [selectRandom _ammoGrenades, round(random 2)];
+                    _spawn addMagazineCargoGlobal [selectRandom grenades, round(random 2)];
+                  };
+
+                  // Chemlights
+                  if(random 100 < 30) then {
+                    _spawn addMagazineCargoGlobal [selectRandom chemlights, round(random 2)];
                   };
 
                   // Weapons
