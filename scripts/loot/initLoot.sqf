@@ -6,7 +6,7 @@ fnc_spawnLoot = {
   _clothes              = headgears + vests + uniforms;
 
   // Military Lootlists
-  _itemsMil             = ["bde_respirator","ItemGPS","Rangefinder","NVGoggles","Laserdesignator","Laserdesignator_02","Laserdesignator_03"];
+  _itemsMil             = ["bde_gasmask","ItemGPS","Rangefinder","NVGoggles","Laserdesignator","Laserdesignator_02","Laserdesignator_03"];
 
   // Civilian Lootlists
   _itemsCiv             = ["ItemWatch","ItemCompass","ItemMap","Binocular","FirstAidKit","Medikit","ToolKit"];
@@ -63,7 +63,7 @@ fnc_spawnLoot = {
 
     		_holderPos = _building buildingPos _i;
     		//_spawn = "WeaponHolderSimulated" createVehicle _holderPos;
-            _spawn = createVehicle ["WeaponHolderSimulated", [_holderPos select 0,_holderPos select 1,(_holderPos select 2) + 0.15], [], 0, "CAN_COLLIDE"];
+            _spawn = createVehicle ["groundWeaponHolder", [_holderPos select 0,_holderPos select 1,(_holderPos select 2) + 0.15], [], 0, "CAN_COLLIDE"];
 
     		// Options
             //_spawn setDir round(random 360);

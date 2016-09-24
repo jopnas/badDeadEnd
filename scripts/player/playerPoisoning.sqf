@@ -70,7 +70,7 @@ if(_newValue > 100)then{
 };
 
 // acid rain effect
-["ColorInversion", 2500, [0,1,0],_isUnderCover,_isInCar] spawn {
+/*["ColorInversion", 2500, [0,1,0],_isUnderCover,_isInCar] spawn {
     params ["_name", "_priority", "_effect", "_handle","_isUnderCover","_isInCar"];
     _handle = ppEffectCreate [_name, _priority];
     _handle ppEffectAdjust _effect;
@@ -86,8 +86,8 @@ if(_newValue > 100)then{
 ["DynamicBlur", 400, [_newValue]] spawn {
 	params ["_name", "_priority", "_poisoningVal", "_handle","_effect"];
     _handle = ppEffectCreate [_name, _priority];
-    if(_poisoningVal > 0)then{
-        _effect = _poisoningVal/10;
+    if(_poisoningVal select 0 > 0)then{
+        _effect = (_poisoningVal select 0)/10;
         _handle ppEffectEnable true;
     }else{
         _effect = 0;
@@ -95,6 +95,6 @@ if(_newValue > 100)then{
     };
     _handle ppEffectAdjust _effect;
 	_handle ppEffectCommit 2;
-};
+};*/
 
 playerPoisoning = _newValue;
