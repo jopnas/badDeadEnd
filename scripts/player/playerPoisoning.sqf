@@ -5,7 +5,7 @@ _playerVest			= vest player;
 _playerBackpack		= backpack player;
 _headgear 		    = headgear player;
 
-_newValue           = playerPoisoning - 0.01;
+_newValue           = playerPoisoning - 0.001;
 
 // Acid Rain
 if(rain > 0 && acidRain)then{
@@ -36,29 +36,29 @@ _trees = [];
     if (str _x find ": t_" > -1) then {
         _trees pushBack _x;
     };
-} forEach nearestObjects [player, [], 5];
+} forEach nearestObjects [player, [], 10];
 _countedTrees = count _trees;
 if(_countedTrees > 0)then{
-    _newValue = _newValue + (0.02 * _countedTrees);
+    _newValue = _newValue + (0.5 * _countedTrees);
 };
 
 // Direct Sunshine
 if(!(_isInShadow) && _sunRadiation > 0)then{
-    _newValue = _newValue + (_sunRadiation/100);
+    _newValue = _newValue + (_sunRadiation/50);
 
     if(_playerUniform != "U_BasicBody")then{
-        _newValue = _newValue - (_sunRadiation/22);
+        _newValue = _newValue - 0.2;
     };
     if(_playerVest != "")then{
-        _newValue = _newValue - (_sunRadiation/22);
+        _newValue = _newValue - 0.2;
     };
     if(_playerBackpack != "")then{
-        _newValue = _newValue - (_sunRadiation/22);
+        _newValue = _newValue - 0.2;
     };
     if(_headgear != "")then{
-        _newValue = _newValue - (_sunRadiation/22);
+        _newValue = _newValue - 0.2;
     };
-
+    systemChat str _newValue;
 };
 
 if(_newValue < 0)then{

@@ -1,33 +1,24 @@
-/*grenades = "(
-    (getText (_x >> 'ammo') == 'GrenadeHand')
-)" configClasses (configFile >> "CfgMagazines");
-
-chemlights = "(
-    (getText (_x >> 'ammo') == 'Chemlight_yellow') ||
-    (getText (_x >> 'ammo') == 'Chemlight_green') ||
-    (getText (_x >> 'ammo') == 'Chemlight_red') ||
-    (getText (_x >> 'ammo') == 'Chemlight_blue')
-)" configClasses (configFile >> "CfgMagazines");*/
-
-itemTypes = [];
-nameSounds = [];
-
-grenades = [];
+handgrenades = [];
 chemlights = [];
-_magazineList = (configFile >> "CfgMagazines") call BIS_fnc_getCfgSubClasses;
+smokeshells = [];
+_throwablesList = (configFile >> "CfgWeapons" >> "Throw") call BIS_fnc_getCfgSubClasses;
 {
-    private["_itemType"];
-    _itemType = _x call bis_fnc_itemType;
-    _nameSound = getText (configFile >> "CfgMagazines" >> _x >> "nameSound");
+    _magazinesArray = getArray (configFile >> "CfgWeapons" >> "Throw" >> _x >> "magazines");
+    if( count _magazinesArray > 0 )then{
 
-    if(_nameSound == "handgrenade")then{
-        grenades pushBackUnique _x;
-    };
-    if(_nameSound == "Chemlight")then{
-        chemlights pushBackUnique _x;
-    };
+        {
+            _nameSound = getText (configFile >> "CfgMagazines" >> _x >> "nameSound");
+            if( _nameSound == "Chemlight")then{
+                chemlights pushBackUnique _x;
+            };
+            if( _nameSound == "handgrenade")then{
+                handgrenades pushBackUnique _x;
+            };
+            if( _nameSound == "smokeshell")then{
+                smokeshells pushBackUnique _x;
+            };
+        } forEach _magazinesArray;
 
-    itemTypes pushBackUnique _itemType;
-    nameSounds pushBackUnique _nameSound;
-} forEach _magazineList;
+    };
+} forEach _throwablesList;
 

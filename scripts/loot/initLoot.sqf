@@ -62,12 +62,11 @@ fnc_spawnLoot = {
             // Create Holder
 
     		_holderPos = _building buildingPos _i;
-    		//_spawn = "WeaponHolderSimulated" createVehicle _holderPos;
             _spawn = createVehicle ["groundWeaponHolder", [_holderPos select 0,_holderPos select 1,(_holderPos select 2) + 0.15], [], 0, "CAN_COLLIDE"];
 
     		// Options
-            //_spawn setDir round(random 360);
-            //_spawn setVehiclePosition [[_holderPos select 0,_holderPos select 1,(_holderPos select 2) + 0.15], [], 0, "CAN_COLLIDE"];
+            _spawn setVehiclePosition [[_holderPos select 0,_holderPos select 1,(_holderPos select 2) + 0.15], [], 0, "CAN_COLLIDE"];
+            _spawn setDir round(random 360);
 
             if(_buildingClass in _garagesNames)then {
                 _spawn addMagazineCargoGlobal [selectRandom _garageStuff, 1];
@@ -96,19 +95,25 @@ fnc_spawnLoot = {
                   if(random 100 < 30) then {
                     _spawn addBackpackCargoGlobal [selectRandom backpacks,1];
                   };
+
                   // Cloth
                   if(random 100 < 30) then {
                     _spawn addItemCargoGlobal [selectRandom _clothes,1];
                   };
 
-                  // Grenades
+                  // Handgrenades
                   if(random 100 < 30) then {
-                    _spawn addMagazineCargoGlobal [selectRandom grenades, round(random 2)];
+                    _spawn addMagazineCargoGlobal [selectRandom handgrenades, round(random 2)];
                   };
 
                   // Chemlights
                   if(random 100 < 30) then {
                     _spawn addMagazineCargoGlobal [selectRandom chemlights, round(random 2)];
+                  };
+
+                  // Smokeshells
+                  if(random 100 < 30) then {
+                    _spawn addMagazineCargoGlobal [selectRandom smokeshells, round(random 2)];
                   };
 
                   // Weapons
