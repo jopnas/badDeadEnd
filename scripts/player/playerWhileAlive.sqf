@@ -3,7 +3,7 @@
 
 // Compiles
 updateUI   			= compile preprocessFile "scripts\player\playerUpdateUI.sqf";
-checkNoise 			= compile preprocessFile "scripts\player\playerNoiseCheck.sqf";
+//checkNoise 			= compile preprocessFile "scripts\player\playerNoiseCheck.sqf";
 handleWet 			= compile preprocessFile "scripts\player\playerWetHandler.sqf";
 handlePoisoning	    = compile preprocessFile "scripts\player\playerPoisoning.sqf";
 handleTemperature 	= compile preprocessFile "scripts\player\playerTemperatureHandler.sqf";
@@ -14,7 +14,6 @@ gutAnimal		    = compile preprocessFile "scripts\animals\gutAnimal.sqf";
 foodFuncs			= compile preprocessFile "scripts\food\food_funcs.sqf";
 
 acidRain            = false;
-nextPoisoningCheck  = 0;
 
 nextEverySecond     = 0;
 nextEveryHalfSecond = 0;
@@ -226,7 +225,8 @@ while{true}do{
 	};
 
     if(t > 2)then{
-        [] call checkNoise;
+        //[] call checkNoise;
+        [_isUnderCover,_isInCar,_isInShadow,_sunRadiation] call handlePoisoning;
         [] call checkAnimals;
     };
     if(t > 5)then{
@@ -242,11 +242,6 @@ while{true}do{
     if(t > nextEverySecond)then{
         [player,[playerHunger,playerThirst,playerHealth,playerTemperature,playerWet,playerSick,playerInfected]] remoteExec ["fnc_savePlayerStats",2,false];
         nextEverySecond = t + 1;
-    };
-
-    if(t > nextPoisoningCheck)then {
-        [_isUnderCover,_isInCar,_isInShadow,_sunRadiation] call handlePoisoning;
-        nextPoisoningCheck = t + 5;
     };
 
 	_nearestFireplaces  = nearestObjects [player, ["Land_FirePlace_F","Land_Campfire_F"], 3];

@@ -10,9 +10,6 @@ _newValue           = playerPoisoning - 0.001;
 // Acid Rain
 if(rain > 0 && acidRain)then{
     if(!(_isUnderCover) && !(_isInCar))then{
-        _curDamage = damage player;
-        player setDamage (_curDamage - (rain/100));
-
         _newValue = _newValue + rain;
 
         if(_playerUniform != "U_BasicBody")then{
@@ -39,16 +36,17 @@ _trees = [];
 } forEach nearestObjects [player, [], 10];
 _countedTrees = count _trees;
 if(_countedTrees > 0)then{
-    _newValue = _newValue + (0.5 * _countedTrees);
+    _newValue = _newValue + (0.2 * _countedTrees);
 };
 
 // Direct Sunshine
 if(!(_isInShadow) && _sunRadiation > 0)then{
-    _newValue = _newValue + (_sunRadiation/50);
+    _newValue = _newValue + (_sunRadiation/100);
 
     if(_playerUniform != "U_BasicBody")then{
         _newValue = _newValue - 0.2;
     };
+    
     if(_playerVest != "")then{
         _newValue = _newValue - 0.2;
     };
