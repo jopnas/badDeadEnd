@@ -157,6 +157,10 @@ if(!(_dbAll isEqualTypeArray []))then{
 
 waitUntil{_playerUnit getVariable["playerSetupReady",false]};
 
+_playerUnit addAction["Arsenal",{
+    ["Open",true] spawn BIS_fnc_arsenal;
+},[],1,false,false,"",""];
+
 // Player Init
 [_playerUnit] execVM "scripts\player\playerWhileAlive.sqf";
 

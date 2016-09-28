@@ -35,28 +35,28 @@ _trees = [];
     };
 } forEach nearestObjects [player, [], 10];
 _countedTrees = count _trees;
-if(_countedTrees > 0)then{
-    _newValue = _newValue + (0.2 * _countedTrees);
+if(_countedTrees > 0 && goggles player != "bde_gasmask") then{
+    _newValue = _newValue + (0.01 * _countedTrees);
 };
+systemChat str (0.02 * _countedTrees);
 
 // Direct Sunshine
 if(!(_isInShadow) && _sunRadiation > 0)then{
-    _newValue = _newValue + (_sunRadiation/100);
+    _newValue = _newValue + (_sunRadiation/1000);
 
     if(_playerUniform != "U_BasicBody")then{
-        _newValue = _newValue - 0.2;
+        _newValue = _newValue - ((_sunRadiation/1000) / 4);
     };
-    
+
     if(_playerVest != "")then{
-        _newValue = _newValue - 0.2;
+        _newValue = _newValue - ((_sunRadiation/1000) / 4);
     };
     if(_playerBackpack != "")then{
-        _newValue = _newValue - 0.2;
+        _newValue = _newValue - ((_sunRadiation/1000) / 4);
     };
     if(_headgear != "")then{
-        _newValue = _newValue - 0.2;
+        _newValue = _newValue - ((_sunRadiation/1000) / 4);
     };
-    systemChat str _newValue;
 };
 
 if(_newValue < 0)then{
