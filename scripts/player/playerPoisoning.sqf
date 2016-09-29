@@ -36,7 +36,11 @@ _trees = [];
 } forEach nearestObjects [player, [], 10];
 _countedTrees = count _trees;
 if(_countedTrees > 0 && goggles player != "bde_gasmask") then{
-    _newValue = _newValue + (0.01 * _countedTrees);
+    if(goggles player == "G_Bandanna_blk") then{
+        _newValue = _newValue + (0.02 * _countedTrees);
+    }else{
+        _newValue = _newValue + (0.05 * _countedTrees);
+    };
 };
 systemChat str (0.02 * _countedTrees);
 
