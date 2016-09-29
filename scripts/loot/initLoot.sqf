@@ -6,15 +6,15 @@ fnc_spawnLoot = {
   _clothes              = headgears + vests + uniforms;
 
   // Military Lootlists
-  _itemsMil             = ["bde_gasmask","ItemGPS","Rangefinder","NVGoggles","Laserdesignator","Laserdesignator_02","Laserdesignator_03"];
+  _itemsMil             = ["bde_gasmask","bde_gasmask_wasted","ItemGPS","Rangefinder","NVGoggles","Laserdesignator","Laserdesignator_02","Laserdesignator_03"];
 
   // Civilian Lootlists
   _itemsCiv             = ["ItemWatch","ItemCompass","ItemMap","Binocular","FirstAidKit","Medikit","ToolKit"];
 
   // BDE Mod Items
-  _foodItems            = ["bde_apple","bde_canunknown","bde_canpasta","bde_sodacan_01","bde_sodacan_02","bde_matches","bde_hatchet","bde_antibiotics","bde_zippo","bde_ducttape","bde_vitamines","bde_bottleuseless","bde_bottleempty","bde_bottlefilled","bde_bottleclean","bde_canteenempty","bde_canteenfilled","bde_bakedbeans","bde_tacticalbacon"];
-  _medicalItems	        = ["bde_antiradiationtablets","bde_waterpurificationtablets","bde_antibiotics","bde_vitamines"];
-  _toolItems            = ["bde_matches","bde_lock","bde_hatchet","bde_stone","bde_wood","bde_ducttape"];
+  _foodItems            = ["bde_apple","bde_canunknown","bde_canpasta","bde_sodacan_01","bde_sodacan_02","bde_antibiotics","bde_vitamines","bde_bottleuseless","bde_bottleempty","bde_bottlefilled","bde_bottleclean","bde_canteenempty","bde_canteenfilled","bde_bakedbeans","bde_tacticalbacon"];
+  _medicalItems	        = ["bde_gasmask_filter","bde_antiradiationtablets","bde_waterpurificationtablets","bde_antibiotics","bde_vitamines"];
+  _toolItems            = ["bde_scarf","bde_matches","bde_lock","bde_hatchet","bde_stone","bde_wood","bde_ducttape","bde_zippo"];
 
   _garageStuff          = ["bde_camonetSmallPacked","bde_camonetBigPacked","bde_camonetVehiclesPacked","bde_tentCamoPacked","bde_tentDomePacked","bde_wheel","bde_fuelCanisterEmpty","bde_fuelCanisterFilled"];
 
@@ -116,6 +116,12 @@ fnc_spawnLoot = {
                     _spawn addMagazineCargoGlobal [selectRandom smokeshells, round(random 2)];
                   };
 
+                  // Medicals & Chemicals
+                  if(random 100 < 30) then {
+                    _spawn addMagazineCargoGlobal [selectRandom _medicalItems, 1];
+                  };
+                  
+
                   // Weapons
                   if(random 100 < 30) then {
                     _rdmWeaponWeapMil = selectRandom (heavyWeapons call BIS_fnc_arrayShuffle);
@@ -139,6 +145,11 @@ fnc_spawnLoot = {
                       _spawn addWeaponCargoGlobal [_rdmWeaponWeapAir,1];
                       _rmags = getArray(configfile >> "cfgWeapons" >> _rdmWeaponWeapAir >> "magazines");
                       _spawn addMagazineCargoGlobal [selectRandom _rmags, round(random 3)];
+                    };
+
+                    // Medicals & Chemicals
+                    if(random 100 < 30) then {
+                      _spawn addMagazineCargoGlobal [selectRandom _medicalItems, 1];
                     };
 
                     // Tools
@@ -179,6 +190,15 @@ fnc_spawnLoot = {
                             _furniture setVehiclePosition [[_holderPos select 0,_holderPos select 1,(_holderPos select 2) + 0.1], [], 0, "CAN_COLLIDE"];
                         };
                     }else{
+                        // Medicals & Chemicals
+                        if(random 100 < 30) then {
+                          _spawn addMagazineCargoGlobal [selectRandom _medicalItems, 1];
+                        };
+
+                        // Tools
+                        if(random 100 < 30) then {
+                            _spawn addMagazineCargoGlobal [selectRandom _toolItems,1];
+                        };
 
                         // Food
                         if(random 100 < 30) then {

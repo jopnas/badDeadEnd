@@ -114,6 +114,9 @@ switch(_classname) do {
 	case "bde_antiradiationtablets": {
         _actionTexts = ["take"];
 	};
+	case "bde_gasmask_filter": {
+        _actionTexts = ["change"];
+	};
 
     // Camonets
     case "bde_camonetSmallPacked": {
@@ -133,6 +136,19 @@ switch(_classname) do {
     case "bde_tentCamoPacked": {
         _actionTexts = ["build tent"];
 	};
+
+    // Clothes
+    case "bde_scarf": {
+        _actionTexts = ["make bandanna","make mask"];
+    };
+
+    case "H_Bandanna_gry": {
+        _actionTexts = ["make scarf"];
+    };
+
+    case "G_Bandanna_blk": {
+        _actionTexts = ["make scarf"];
+    };
 
     // Crafting Elements
     case "bde_stone": {

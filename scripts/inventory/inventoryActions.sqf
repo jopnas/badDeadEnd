@@ -1,9 +1,5 @@
 params["_classname","_cargoType","_actionNo","_actionName"];
 ctrlDelete ((findDisplay 602) displayCtrl 2501);
-//systemChat format["_classname: %1, _cargoType: %2, _actionNo: %3",_classname,_cargoType,_actionNo];
-
-// nützlich für ghost objects? https://community.bistudio.com/wiki/createSimpleObject
-// https://community.bistudio.com/wiki/createSimpleObject/objects
 
 _addItemCargo = { // [_item,_cargoType] call _addItemCargo;
     _itemClass = _this select 0;
@@ -110,21 +106,16 @@ switch(_classname) do {
     case "bde_bottleempty": {
         if(drinkActionAvailable)then{
             player playActionNow "PutDown";
-            //player say3D "fillSound0";
             [player,"fillSound0",20,1] remoteExec ["bde_fnc_say3d",0,false];
             sleep 1;
-            //player removeMagazine _classname;
             [_classname,_cargoType] call _removeItemCargo;
             ["bde_bottleclean",_cargoType] call _addItemCargo;
-            //player addMagazine ["bde_bottleclean",1];
             cutText ["filled bottle with clean water", "PLAIN DOWN"];
         }else{
             if(nearOpenWater)then{
                 player playActionNow "PutDown";
-                //player say3D "fillSound0";
                 [player,"fillSound0",20,1] remoteExec ["bde_fnc_say3d",0,false];
                 sleep 1;
-                //player removeMagazine _classname;
                 [_classname,_cargoType] call _removeItemCargo;
                 ["bde_bottlefilled",_cargoType] call _addItemCargo;
                 //player addMagazine ["bde_bottlefilled",1];
@@ -139,12 +130,9 @@ switch(_classname) do {
             if("bde_waterpurificationtablets" in Magazines player)then{
                 player playActionNow "Medic";
                 sleep 1;
-                //player removeMagazine _classname;
                 [_classname,_cargoType] call _removeItemCargo;
-                //player removeMagazine "bde_waterpurificationtablets";
                 ["bde_waterpurificationtablets",_cargoType] call _removeItemCargo;
                 ["bde_bottleclean",_cargoType] call _addItemCargo;
-                //player addMagazine ["bde_bottleclean",1];
                 cutText ["purified dirty water", "PLAIN DOWN"];
             }else{
                 cutText ["need water purification tablets", "PLAIN DOWN"];
@@ -178,13 +166,10 @@ switch(_classname) do {
     case "bde_canteenempty":  {
         if(_actionNo == 0)then{
     		if(drinkActionAvailable)then{
-        	    //player say3D "fillSound0";
                 [player,"fillSound0",20,1] remoteExec ["bde_fnc_say3d",0,false];
         	    sleep 1;
-    			//player removeMagazine _classname;
                 [_classname,_cargoType] call _removeItemCargo;
                 ["bde_canteenfilled",_cargoType] call _addItemCargo;
-                //player addMagazine ["bde_canteenfilled",1];
     			cutText ["filled canteen with clean water", "PLAIN DOWN"];
     		}else{
     	        cutText ["not close to clean water source", "PLAIN DOWN"];
@@ -364,6 +349,17 @@ switch(_classname) do {
     		playerPoisoning = 0;
             [_classname,_cargoType] call _removeItemCargo;
     		cutText ["took antiradiation tablets", "PLAIN DOWN"];
+    	};
+	};
+
+	case "bde_gasmask_filter": {
+        if(_actionNo == 0)then{
+            //[player,"swallowSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
+            sleep 1;
+            [_classname,_cargoType] call _removeItemCargo;
+            ["bde_gasmask_wasted",_cargoType] call _removeItemCargo;
+            ["bde_gasmask",_cargoType] call _addItemCargo;
+    		cutText ["changed filter off wasted gasmask", "PLAIN DOWN"];
     	};
 	};
 
@@ -586,6 +582,42 @@ switch(_classname) do {
     case "bde_wood": {
         if(_actionNo == 0)then{
             [] call _buildFireplace;
+        };
+    };
+
+    // Clothes
+    case "bde_scarf": {
+        if(_actionNo == 0)then{
+            //[player,"drinkSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
+            sleep 1;
+            [_classname,_cargoType] call _removeItemCargo;
+            ["H_Bandanna_gry",_cargoType] call _addItemCargo;
+            cutText ["made bandanna", "PLAIN DOWN"];
+        };
+        if(_actionNo == 1)then{
+            //[player,"drinkSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
+            sleep 1;
+            [_classname,_cargoType] call _removeItemCargo;
+            ["G_Bandanna_blk",_cargoType] call _addItemCargo;
+            cutText ["made mask", "PLAIN DOWN"];
+        };
+    };
+    case "H_Bandanna_gry": {
+        if(_actionNo == 0)then{
+            //[player,"drinkSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
+            sleep 1;
+            [_classname,_cargoType] call _removeItemCargo;
+            ["bde_scarf",_cargoType] call _addItemCargo;
+            cutText ["made scarf", "PLAIN DOWN"];
+        };
+    };
+    case "G_Bandanna_blk": {
+        if(_actionNo == 0)then{
+            //[player,"drinkSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
+            sleep 1;
+            [_classname,_cargoType] call _removeItemCargo;
+            ["bde_scarf",_cargoType] call _addItemCargo;
+            cutText ["made scarf", "PLAIN DOWN"];
         };
     };
 
