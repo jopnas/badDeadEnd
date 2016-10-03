@@ -1,6 +1,6 @@
 params["_cursorObject"/**/,"_doors"];
 _selectionNames = selectionNames _cursorObject;
-if(str _selectionNames find "door_" < 0)exitwith{false};
+if(str _selectionNames find "door_" < 0)exitwith{0};
 _doors = [];
 {
   if(_x find "door_" && !(_x find "door_handle") )then{
