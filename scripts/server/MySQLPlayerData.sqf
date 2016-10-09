@@ -15,7 +15,7 @@ fnc_loadPlayerStats = {
         _PlayerUID = 12345;
     };
 
-	_result = call compile ("extDB2" callExtension format["0:SQL_PL_LOAD:SELECT PlayerPosition,PlayerStance,hunger,thirst,health,temperature,wet,sick,infected,playerDirection,playerDamage,loadout,dog FROM player WHERE PlayerUID='%1'",_PlayerUID]);
+	_result = call compile ("extDB2" callExtension format["0:SQL_PL_LOAD:SELECT PlayerPosition,PlayerStance,hunger,thirst,health,temperature,wet,sick,infected,playerDirection,playerDamage,currentWeapon,loadout,dog,poisoning FROM player WHERE PlayerUID='%1'",_PlayerUID]);
 
     waitUntil{count _result > 0 && _result select 0 > 0};
     [_playerUnit,(_result select 1) select 0,_result select 1] execVM "scripts\player\playerSpawn.sqf";
@@ -29,6 +29,7 @@ fnc_savePlayerStats = {
 	_PlayerPosition 		= getPosATL _player;
 	_playerDirection 		= getDir _player;
     _PlayerStance			= stance _player;
+    _PlayerWeapon          = currentWeapon _player;
 
 	_hunger      	= _playerStats select 0;
 	_thirst      	= _playerStats select 1;
@@ -37,6 +38,7 @@ fnc_savePlayerStats = {
 	_wet         	= _playerStats select 4;
 	_sick        	= _playerStats select 5;
 	_infected    	= _playerStats select 6;
+    _poisoning      = _playerStats select 7;
 
     _playerDamages  = getAllHitPointsDamage _player;
 	_playerDamage   = [_playerDamages select 0,_playerDamages select 2];
@@ -47,7 +49,7 @@ fnc_savePlayerStats = {
 		_PlayerUID = 12345;
 	};
 
-    _QueryInsUpd = format["0:SQL_PL_SAVE:INSERT INTO player (PlayerUID,PlayerPosition,PlayerStance,hunger,thirst,health,temperature,wet,sick,infected,playerDirection,playerDamage,loadout) VALUES('%1','%2','""%3""','%4','%5','%6','%7','%8','%9','%10','%11','%12','%13') ON DUPLICATE KEY UPDATE PlayerPosition='%2',PlayerStance='""%3""',hunger='%4',thirst='%5',health='%6',temperature='%7',wet='%8',sick='%9',infected='%10',playerDirection='%11', playerDamage='%12', loadout='%13'",
+    _QueryInsUpd = format["0:SQL_PL_SAVE:INSERT INTO player (PlayerUID,PlayerPosition,PlayerStance,hunger,thirst,health,temperature,wet,sick,infected,playerDirection,playerDamage,currentWeapon,loadout,poisoning) VALUES('%1','%2','""%3""','%4','%5','%6','%7','%8','%9','%10','%11','%12','""%13""','%14','%15') ON DUPLICATE KEY UPDATE PlayerPosition='%2',PlayerStance='""%3""',hunger='%4',thirst='%5',health='%6',temperature='%7',wet='%8',sick='%9',infected='%10',playerDirection='%11', playerDamage='%12', currentWeapon='""%13""', loadout='%14', poisoning='%15'",
 		_PlayerUID,
 		_PlayerPosition,
 		_PlayerStance,
@@ -60,7 +62,9 @@ fnc_savePlayerStats = {
 		_infected,
 		_playerDirection,
         _playerDamage,
-        _playerLoadout];
+        _PlayerWeapon,
+        _playerLoadout,
+        _poisoning];
     _saveIs = "extDB2" callExtension _QueryInsUpd;
 };
 
@@ -166,3 +170,26 @@ fnc_deleteBarricade = {
     params["_barricadeID"];
 	"extDB2" callExtension format["0:SQL_BC_DEL:DELETE FROM barricades WHERE barricadeid='""%1""'",_barricadeID];
 };
+
+// Doors Load
+fnc_loadDoors = {
+    _result             = call compile ("extDB2" callExtension "0:SQL_DOOR_LOAD:SELECT id,doorid,houseid,code,owner,locked FROM doors");
+    _resultQueryStatus  = _result select 0;
+    _resultInDB         = _result select 1;
+    waitUntil { _resultQueryStatus > 0 };
+    _resultInDB
+};
+
+// Doors Save
+bde_fnc_saveDoor = {
+    params["_id","_doorid","_houseid","_code","_owner","_locked"];
+
+    _QuerySaveDoor  = format["0:SQL_BC_SAVE:INSERT INTO doors (id,doorid,houseid,code,owner,locked) VALUES('""%1""','%2','%3','%4','%5','%6') ON DUPLICATE KEY UPDATE doorid='%2',houseid='%3',code='%4',owner='%5',locked='%6'",_id,_doorid,_houseid,_code,_owner,_locked];
+    _saveIs         = "extDB2" callExtension _QuerySaveDoor;
+};
+
+fnc_deleteDoor = {
+    params["_id"];
+	"extDB2" callExtension format["0:SQL_DOOR_DEL:DELETE FROM doors WHERE id='""%1""'",_id];
+};
+

@@ -28,6 +28,7 @@ _temperatureVal     = playerTemperature;
 _wetVal             = playerWet;
 _sickVal            = playerSick;
 _infectedVal        = playerInfected;
+_poisoningVal       = playerPoisoning;
 
 // Max.-/Min. Values
 if(_hungerVal>100)then{
@@ -42,6 +43,9 @@ if(_healthVal>100)then{
 if(_temperatureVal>100)then{
 	_temperatureVal = 100;
 };
+if(_poisoningVal>100)then{
+	_poisoningVal = 100;
+};
 
 if(_hungerVal<0)then{
 	_hungerVal = 0;
@@ -55,6 +59,10 @@ if(_healthVal<0)then{
 if(_temperatureVal<0)then{
 	_temperatureVal = 0;
 };
+if(_poisoningVal<0)then{
+	_poisoningVal = 0;
+};
+
 
 _namespaceUI = uiNamespace getVariable "bde_gui_display";
 
@@ -92,8 +100,12 @@ _ctrlHunger ctrlSetText "images\gui\val_" + str ( floor(_hungerVal/10)*10 ) + ".
 
 // "noise"
 //systemChat str playerNoise;
-_ctrlNoise = _namespaceUI displayCtrl 1212;
-_ctrlNoise ctrlSetText "images\gui\val_" + str ( floor(playerNoise/10)*10 ) + ".paa";
+//_ctrlNoise = _namespaceUI displayCtrl 1212;
+//_ctrlNoise ctrlSetText "images\gui\val_" + str ( floor(playerNoise/10)*10 ) + ".paa";
+
+_ctrlPoisoningIcon = _namespaceUI displayCtrl 1211;
+_ctrlPoisoning = _namespaceUI displayCtrl 1212;
+_ctrlPoisoning ctrlSetText "images\gui\val_" + str ( floor(_poisoningVal/10)*10 ) + ".paa";
 
 if(guiBlink)then{
     guiBlink = false;
@@ -152,16 +164,6 @@ if(_healthVal < 20)then{
     _ctrlHealthIcon ctrlSetTextColor [1,1,1,1];
 };
 
-if(_hungerVal < 20)then{
-    if(guiBlink)then{
-        _ctrlHungerIcon ctrlSetTextColor [1,1,1,0.2];
-    }else{
-        _ctrlHungerIcon ctrlSetTextColor [1,1,1,1];
-    };
-}else{
-    _ctrlHungerIcon ctrlSetTextColor [1,1,1,1];
-};
-
 if(_thirstVal < 20)then{
     if(guiBlink)then{
         _ctrlThirstIcon ctrlSetTextColor [1,1,1,0.2];
@@ -180,4 +182,14 @@ if(_hungerVal < 20)then{
     };
 }else{
     _ctrlHungerIcon ctrlSetTextColor [1,1,1,1];
+};
+
+if(_poisoningVal > 80)then{
+    if(guiBlink)then{
+        _ctrlPoisoningIcon ctrlSetTextColor [1,1,1,0.2];
+    }else{
+        _ctrlPoisoningIcon ctrlSetTextColor [1,1,1,1];
+    };
+}else{
+    _ctrlPoisoningIcon ctrlSetTextColor [1,1,1,1];
 };

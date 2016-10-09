@@ -31,6 +31,7 @@ if(isServer)then{
     [] execVM "scripts\server\sqlLoadTents.sqf";
     [] execVM "scripts\server\sqlLoadDogs.sqf";
     [] execVM "scripts\server\sqlLoadBarricades.sqf";
+    [] execVM "scripts\server\sqlLoadDoors.sqf";
 
 };
 

@@ -599,7 +599,7 @@ switch(_classname) do {
             sleep 1;
             [_classname,_cargoType] call _removeItemCargo;
             ["G_Bandanna_blk",_cargoType] call _addItemCargo;
-            cutText ["made mask", "PLAIN DOWN"];
+            cutText ["made bandanna mask", "PLAIN DOWN"];
         };
     };
     case "H_Bandanna_gry": {

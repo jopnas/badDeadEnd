@@ -73,6 +73,18 @@ bde_fnc_removeBurnAction = {
     _targetObject removeAction burnAction;
 };
 
+bde_fnc_relDirNinty = {
+    _building       = nearestBuilding player;
+    _buildingDir    = getDir _building;
+    _playerDir      = getDir player;
+    _realRelDir     = floor (_buildingDir - _playerDir);
+
+    if(_realRelDir < 0)then{
+        _realRelDir = _realRelDir + 360;
+    };
+    _realRelDir
+};
+
 bde_fnc_underCover = {
     params["_object"/**/,"_startPosition","_ignoreObject1"];
     if(_object isEqualType [0,0,0])then{

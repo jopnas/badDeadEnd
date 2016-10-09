@@ -39,6 +39,7 @@ _showInventoryActions = {
     };
 };
 
+
 switch(_classname) do {
     // Bottles
 	case "bde_bottleuseless": {

@@ -40,8 +40,10 @@ if(!(_dbAll isEqualTypeArray []))then{
 
 	_playerDirection       = _db select 9;
 	_playerDamage          = _db select 10;
-    _loadout               = _db select 11;
-    _playersDog			   = _db select 12;
+    _currentWeapon         = _db select 11;
+    _loadout               = _db select 12;
+    _playersDog			   = _db select 13;
+    _poisoning	           = _db select 14;
 
 	// Player Variables
 	playerHunger           = _hunger;
@@ -51,7 +53,7 @@ if(!(_dbAll isEqualTypeArray []))then{
 	playerWet              = _wet;
 	playerSick             = _sick;
 	playerInfected         = _infected;
-    playerPoisoning        = 0;
+    playerPoisoning        = _poisoning;
 
     _playerUnit setUnitLoadout [_loadout, false];
 
@@ -172,7 +174,7 @@ actionHandler = compile preprocessFile "scripts\player\actionHandler.sqf";
 inGameUISetEventHandler ["Action", "[_this] call actionHandler"];
 
 // Inventory Items Actions
-inventoryItemAction = compile preprocessFile "scripts\inventory\inventoryItems.sqf";
+inventoryItems = compile preprocessFile "scripts\inventory\inventoryItems.sqf";
 fnc_coordinateItemActions = {
     _idcData    = _this select 0;
     _bagType    = _this select 1;
@@ -181,7 +183,7 @@ fnc_coordinateItemActions = {
     _idc = ctrlIDC (_idcData select 0);
     _selectedIndex = _idcData select 1;
 
-    [_idc,_selectedIndex,_bagType,_clickPos,_idcData] spawn inventoryItemAction;
+    [_idc,_selectedIndex,_bagType,_clickPos,_idcData] spawn inventoryItems;
     false
 };
 

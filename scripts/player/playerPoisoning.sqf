@@ -42,7 +42,7 @@ if(_countedTrees > 0 && goggles player != "bde_gasmask") then{
         _newValue = _newValue + (0.05 * _countedTrees);
     };
 };
-systemChat str (0.02 * _countedTrees);
+//systemChat str (0.02 * _countedTrees);
 
 // Direct Sunshine
 if(!(_isInShadow) && _sunRadiation > 0)then{
