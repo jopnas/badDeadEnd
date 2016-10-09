@@ -174,7 +174,26 @@ player addAction["Holster Weapon",{
 },[],0,false,false];
 
 // Start Barricade
-barricadeStartAction = player addAction["Create Barricade","scripts\barricade\fnc_startBarricde.sqf",[],0,false,false,"","isInside"];
+barricadeStartAction = player addAction["Create Barricade","scripts\barricade\fnc_startBarricde.sqf",[],0,false,false,"","isInside && barricade isEqualTo objNull"];
+
+player addAction ["Attach Window Barricade", {
+    _barricadePos   = getPosATL barricade;
+    _barricadeID    = format["%1%2",getPlayerUID player,floor(_barricadePos select 0),floor(_barricadePos select 1),floor(_barricadePos select 2)];
+    barricade setVariable["barricadeID",_barricadeID,true];
+    barricade setVariable["health",1000,true];
+    [barricade] remoteExec ["fnc_saveBarricade",2,false];
+
+    barricade addAction ["Destroy Barricade", {
+        sleep 0.5;
+        [_this select 3] remoteExec ["fnc_deleteBarricade",2,false];
+        deleteVehicle (_this select 0);
+    },[],5,true,true,"","",3];
+
+    barricade addAction ["Upgrade Window Barricade","scripts\barricade\fnc_upgradeBarricade.sqf", [], 6, false, false, "", "", 3, false];
+
+    barricade             = objNull;
+
+}, [], 6, false, false, "", "typeOf barricade == 'bde_barricade_win_one'", 10, false];
 
 //Lock Door
 lockAction = player addAction["Lock/Unlock Door","scripts\barricade\fnc_lockdoor.sqf",[],0,false,false,"","closeToDoor"];
@@ -182,6 +201,18 @@ lockAction = player addAction["Lock/Unlock Door","scripts\barricade\fnc_lockdoor
 while{true}do{
 	t=time;
     "dog 0" setMarkerPos getPos (player getVariable "playersDog");
+
+    // If Barricading
+    if( !(barricade isEqualTo objNull) )then{
+        {
+            if( typeOf (_x select 2) == typeOf (nearestBuilding player) && !(barricade isEqualTo objNull) )then{
+                _infPos = ASLToATL (_x select 0);
+                barricade setPosATL _infPos;
+                barricade setVectorDir (_x select 1);
+            };
+        }forEach footIntersect;
+    };
+
 
     //_speed              = speed (vehicle player);
 
@@ -389,16 +420,6 @@ while{true}do{
         eatCookedFoodAvailable = false;
         cannedFoodCooldownCountdown = 0;
         player removeAction eatCookedFoodAction;
-    };
-
-    if( isInside && !(barricade isEqualTo objNull) )then{
-        {
-            if( typeOf (_x select 2) == typeOf (nearestBuilding player) && !(barricade isEqualTo objNull) )then{
-                _infPos = ASLToATL (_x select 0);
-                barricade setPosATL [_infPos select 0,(_infPos select 1) + 1,_infPos select 2];
-                barricade setVectorDir (_x select 1);
-            };
-        }forEach footIntersect;
     };
 
     /*
