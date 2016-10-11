@@ -23,23 +23,7 @@ nextEveryHalfSecond = 0;
 
 barricade = objNull;
 
-/*
-barricadeWoodElements       = ["Land_Pallet_vertical_F","Land_Shoot_House_Wall_F","Land_Shoot_House_Wall_Stand_F","Land_Shoot_House_Wall_Crouch_F","Land_Shoot_House_Wall_Prone_F","Land_Shoot_House_Wall_Long_F","Land_Shoot_House_Wall_Long_Stand_F","Land_Shoot_House_Wall_Long_Crouch_F","Land_Shoot_House_Wall_Long_Prone_F"];
-barricadeSandElements       = ["Land_BagFence_Corner_F","Land_BagFence_End_F","Land_BagFence_Long_F","Land_BagFence_Round_F","Land_BagFence_Short_Fm"];
-barricadeDefenceElements    = ["Land_Razorwire_F"];
-
-barricadeAllElements        = ["bde_barricade_win_one","bde_barricade_win_two","bde_barricade_win_three","bde_barricade_win_four","bde_barricade_win_five","bde_barricade_win_six"]; //barricadeWoodElements + barricadeSandElements + barricadeDefenceElements;
-
-changeBarricadeNext     = -1;
-changeBarricadePrev     = -1;
-cancleBarricading       = -1;
-releaseBarricade        = -1;
-barricade               = objNull;
-barricadeHeight         = 1;
-barricadeElementIndex   = 0;
-actionBarricadeActive   = false;
-*/
-
+//https://community.bistudio.com/wiki/BIS_fnc_isInsideArea
 isInside                = false;
 
 // current GUI blink status
@@ -133,7 +117,7 @@ eatCookedFoodAction = {
     // _item: String - The class name of the taken item
     params["_unit","_container","_item"];
     systemChat format["Take/_item: %1, _container: %2",_item,typeof _container];
-}];*/
+}];
 
 // broadcast shot to zombie
 player addEventHandler ["Fired", {
@@ -165,7 +149,7 @@ player addEventHandler ["Fired", {
 
     [_unit,getPos _unit,_dist] remoteExec ["bde_fnc_receivePlayersNoise",2,false];
     //systemChat format["shot noise range: %1",_dist];
-}];
+}];*/
 
 // Hide Weapons
 player addAction["Holster Weapon",{
@@ -422,109 +406,6 @@ while{true}do{
         player removeAction eatCookedFoodAction;
     };
 
-    /*
-    if(isInside && !actionBarricadeActive)then{
-        actionBarricadeActive = true;
-
-        barricadeAction = player addAction["Create Barricade Element",{
-            _caller     = _this select 1;
-
-            player removeAction barricadeAction;
-
-            barricade = createVehicle [barricadeAllElements select barricadeElementIndex, getPos player,[],0,"can_collide"];
-            barricade enableSimulation false;
-            barricade setDir (getDir player);
-            //barricade attachTo [player, [0,2,barricadeHeight]];
-
-            changeBarricadeNext = player addAction ["Add plank to Barricade", {
-
-                if(barricadeElementIndex == count barricadeAllElements - 1)then{
-                    barricadeElementIndex = count barricadeAllElements - 1;
-                }else{
-                    barricadeElementIndex = barricadeElementIndex + 1;
-                };
-
-                deleteVehicle barricade;
-                barricade = createVehicle [barricadeAllElements select barricadeElementIndex,position player,[],0,"can_collide"];
-                barricade enableSimulation false;
-                //barricade setDir (getDir player);
-                //barricade attachTo [player, [0,2,barricadeHeight]];
-                systemChat str barricadeElementIndex;
-            },"",1,true,false,"",""];
-
-            changeBarricadePrev = player addAction ["Remove plank of Barricade", {
-
-                if(barricadeElementIndex == 0)then{
-                    barricadeElementIndex = 0;
-                }else{
-                    barricadeElementIndex = barricadeElementIndex - 1;
-                };
-
-                deleteVehicle barricade;
-                barricade = createVehicle [barricadeAllElements select barricadeElementIndex,position player,[],0,"can_collide"];
-                barricade enableSimulation false;
-                //barricade setDir (getDir player);
-                //barricade attachTo [player, [0,2,barricadeHeight]];
-                systemChat str barricadeElementIndex;
-
-            },"",1,true,false,"",""];
-
-            cancleBarricading = player addAction ["Cancle Barricading", {
-                player removeAction changeBarricadePrev;
-                player removeAction changeBarricadeNext;
-                player removeAction cancleBarricading;
-                player removeAction releaseBarricade;
-                deleteVehicle barricade;
-                barricade             = objNull;
-                actionBarricadeActive = false;
-            },"",0,true,false,"",""];
-
-            releaseBarricade = player addAction ["Release Barricade", {
-
-                _barricadePos   = getPosATL barricade;
-                _barricadeID    = format["%1%2",getPlayerUID player,floor(_barricadePos select 0),floor(_barricadePos select 1),floor(_barricadePos select 2)];
-                barricade setVariable["barricadeID",_barricadeID,true];
-                barricade setVariable["health",1000,true];
-                [barricade] remoteExec ["fnc_saveBarricade",2,false];
-
-                barricade addAction ["Destroy Barricade", {
-                    sleep 0.5;
-                    [_this select 3] remoteExec ["fnc_deleteBarricade",2,false];
-                    deleteVehicle (_this select 0);
-                },[],0,true,true,"","",3];
-
-                barricade addAction ["Add plank to Barricade", {
-                    sleep 0.5;
-
-                },[],0,true,true,"","",3];
-
-                player removeAction changeBarricadePrev;
-                player removeAction changeBarricadeNext;
-                player removeAction cancleBarricading;
-                player removeAction releaseBarricade;
-                detach barricade;
-                barricade             = objNull;
-                actionBarricadeActive = false;
-
-            },"",0,true,false,"",""];
-
-        },"",1,false,false,""];
-    };
-
-    if(!isInside && actionBarricadeActive)then{
-        if(!(barricade isEqualTo objNull))then{
-            deleteVehicle barricade;
-            barricade = objNull;
-        };
-        player removeAction changeBarricadePrev;
-        player removeAction changeBarricadeNext;
-        player removeAction barricadeAction;
-        player removeAction cancleBarricading;
-        player removeAction releaseBarricade;
-        actionBarricadeActive = false;
-    };
-    */
-
     //hint format["_cursorObjectType: %1\ngetModelInfo: %2",_cursorObjectType,getModelInfo _cursorObject];
     hintsilent (
             "playerPoisoning:" + (str playerPoisoning)
@@ -540,6 +421,5 @@ while{true}do{
             + "\nSea: " + str ([] call llw_fnc_getTemperature select 1) +"°C"
             + "\nPlayer in shadow: " + str _isInShadow
             + "\n\nTry fiddling with time, date, overcast, and fog."
-            //+ "\n" + str ((footIntersect select 0) select 1) +""
     );
 };
