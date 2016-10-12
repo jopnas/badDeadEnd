@@ -35,7 +35,7 @@ if(_dir == "x")then{
     };
 };
 
-_numpad = createVehicle ["Sign_Sphere10cm_F",_pos,[],0,"can_collide"];
-_numpad enableSimulation false;
+_codeLockDebug = createVehicle ["Sign_Sphere10cm_F",_pos,[],0,"can_collide"];
+_codeLockDebug enableSimulation false;
 
 [_dir,_pos]
