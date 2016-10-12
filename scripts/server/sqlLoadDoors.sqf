@@ -20,5 +20,7 @@ waitUntil{count _dbResult > 0};
     _codelock setPos (_codelock modelToWorld [1,0.3,0]);
     _codelock attachTo [_house,[0,0,0]];
 
+    [_house,_doorid] execVM "scripts\barricade\fnc_getDoorLockPos.sqf";
+
     sleep 0.1;
 } forEach _dbResult;
