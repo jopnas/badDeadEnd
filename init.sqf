@@ -1,7 +1,3 @@
-if(!isDedicated)then{
-    cutText ["Welcome to BadDeadEnd ...", "BLACK FADED"];
-};
-
 worldHalfSize   = (getNumber (configFile >> "CfgWorlds" >> worldName >> "mapSize") / 2);
 worldCenter     = [worldHalfSize,worldHalfSize,0];
 
