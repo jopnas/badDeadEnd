@@ -39,7 +39,7 @@ _barricade setDir _barricadeRot;
 [_barricade] remoteExec ["fnc_saveBarricade",2,false];
 
 if(typeOf _barricade != "bde_barricade_win_six")then{
-    _barricade addAction ["Upgrade Window Barricade","scripts\barricade\fnc_upgradeBarricade.sqf", [], 6, false, false, "", "", 3, false];
+    _barricade addAction ["Upgrade Window Barricade","scripts\barricade\fnc_upgradeBarricade.sqf", [], 6, false, false, "", "('bde_nails' in (magazines player)) && ('bde_hammer' in (magazines player)) && ('bde_plank' in (magazines player))", 3, false];
 };
 
 _barricade addAction ["Destroy Barricade", {
