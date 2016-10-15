@@ -6,8 +6,8 @@ _doorCount = getNumber (configFile >> "cfgVehicles" >> (typeOf _building) >> "nu
 _closeEnough = false;
 
 for "_i" from 1 to _doorCount do {
-    _doorTriggerPos = (_building selectionPosition format["Door_%1_trigger",_i]);
-    _relPlayerPos   = (_building worldToModel getPosATL player);
+    _doorTriggerPos = _building selectionPosition format["Door_%1_trigger",_i];
+    _relPlayerPos   = _building worldToModel getPosATL player;
     _thisDistance   = _doorTriggerPos distance _relPlayerPos;
     if(_thisDistance < _closestDoorDist || _closestDoorDist < 0)then{
         _closestDoorDist = _thisDistance;

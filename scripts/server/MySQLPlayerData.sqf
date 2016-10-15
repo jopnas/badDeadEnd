@@ -192,4 +192,3 @@ fnc_deleteDoor = {
     params["_id"];
 	"extDB2" callExtension format["0:SQL_DOOR_DEL:DELETE FROM doors WHERE id='""%1""'",_id];
 };
-
