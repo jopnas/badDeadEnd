@@ -24,6 +24,6 @@ _dbResult = call fnc_loadBarricades;
         deleteVehicle (_this select 0);
     },_barricade getVariable["barricadeID","0"],5,true,true,"","isNull(attachedTo _target)",3];
 
-    _barricade addAction ["Upgrade Window Barricade","scripts\barricade\fnc_upgradeBarricade.sqf", [], 6, false, false, "", "", 3, false];
+    _barricade addAction ["Upgrade Window Barricade","scripts\barricade\fnc_upgradeBarricade.sqf", [], 6, false, false, "", "isInside && (barricade isEqualTo objNull) && ({_x == 'bde_nails'} count magazines player) >= 2 && ('bde_hammer' in (magazines player)) && ('bde_plank' in (magazines player))", 3, false];
 
 } forEach _dbResult;

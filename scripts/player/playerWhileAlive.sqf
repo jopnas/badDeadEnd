@@ -158,7 +158,7 @@ player addAction["Holster Weapon",{
 },[],0,false,false];
 
 // Start Barricade
-barricadeStartAction = player addAction["Create Barricade","scripts\barricade\fnc_startBarricde.sqf",[],0,false,false,"","isInside && barricade isEqualTo objNull"];
+barricadeStartAction = player addAction["Create Barricade","scripts\barricade\fnc_startBarricde.sqf",[],0,false,false,"","isInside && (barricade isEqualTo objNull) && ({_x == 'bde_nails'} count magazines player) >= 2 && ('bde_hammer' in (magazines player)) && ('bde_plank' in (magazines player))"];
 
 player addAction ["Attach Window Barricade", {
     _barricadePos   = getPosATL barricade;
@@ -167,14 +167,17 @@ player addAction ["Attach Window Barricade", {
     barricade setVariable["health",1000,true];
     [barricade] remoteExec ["fnc_saveBarricade",2,false];
 
+    player removeItem "bde_plank";
+    player removeItem "bde_nails";
+    player removeItem "bde_nails";
+
     barricade addAction ["Destroy Barricade", {
         sleep 0.5;
         [_this select 3] remoteExec ["fnc_deleteBarricade",2,false];
         deleteVehicle (_this select 0);
     },[],5,true,true,"","",3];
 
-    barricade addAction ["Upgrade Window Barricade","scripts\barricade\fnc_upgradeBarricade.sqf", [], 6, false, false, "", "", 3, false];
-
+    barricade addAction ["Upgrade Window Barricade","scripts\barricade\fnc_upgradeBarricade.sqf", [], 6, false, false, "", "isInside && (barricade isEqualTo objNull) && ({_x == 'bde_nails'} count magazines player) >= 2 && ('bde_hammer' in (magazines player)) && ('bde_plank' in (magazines player))", 3, false];
     barricade             = objNull;
 
 }, [], 6, false, false, "", "typeOf barricade == 'bde_barricade_win_one'", 10, false];

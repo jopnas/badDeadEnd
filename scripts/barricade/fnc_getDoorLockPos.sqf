@@ -35,10 +35,14 @@ if(_dir == "x")then{
     };
 };
 
-_codeLockDebug = createVehicle ["Sign_Sphere25cm_F",_pos,[],0,"can_collide"];
-_codeLockDebug setDir (getDir _building);
-_codeLockDebug setPos (_building modelToWorld _pos);
+/*_doorDebugRot = createVehicle ["Sign_Sphere25cm_F",_doorRotPos,[],0,"can_collide"];
+_doorDebugRot setDir (getDir _building);
+_doorDebugRot setPos (_building modelToWorld [_doorRotPos select 0,_doorRotPos select 1,_posZ]);
+
+_doorDebugTri = createVehicle ["Sign_Sphere10cm_F",_doorTriPos,[],0,"can_collide"];
+_doorDebugTri setDir (getDir _building);
+_doorDebugTri setPos (_building modelToWorld [_doorTriPos select 0,_doorTriPos select 1,_posZ]);*/
 
 //systemChat format["%1/%2",abs(_doorRotX - _doorTriX), abs(_doorRotY - _doorTriY)];
 
-[_dir,_pos]
+[_dir,_building modelToWorld [_doorTriPos select 0,_doorTriPos select 1,_posZ]]
