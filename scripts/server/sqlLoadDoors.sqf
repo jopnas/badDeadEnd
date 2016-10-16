@@ -12,13 +12,12 @@ waitUntil{count _dbResult > 0};
 
     _house = nearestBuilding _houseid;
     _house setVariable [format["bis_disabled_Door_%1",_doorid],_locked,true];
+    _house setVariable [format["bde_door_%1_has_lock",_doorid],true,true];
 
     _doorData = [_house,_doorid] call _compiledDoorData;
-    systemChat str (_doorData);
+    //systemChat str (_doorData);
 
-    _relPos = _house modelToWorld (_house selectionPosition format["door_%1_trigger",_doorid]);
     _codelock = createVehicle["bde_codelock", _doorData select 1, [], 0, "CAN_COLLIDE"];
-
     _codelock enableSimulationGlobal false;
 
     if(_doorData select 0 == "x")then{
@@ -28,13 +27,8 @@ waitUntil{count _dbResult > 0};
     };
 
     _codelock setPos (_doorData select 1); //(_codelock modelToWorld [1,0.3,0]);
-    _codelock setPos (_codelock modelToWorld [-0.8,0,0]); 
+    _codelock setPos (_codelock modelToWorld [-0.8,0,0]);
     _codelock attachTo [_house,[0,0,0]];
-
-    if(!(_house getVariable[format["door%1Debug",_doorid],false]))then{
-        [_house,_doorid] execVM "scripts\barricade\fnc_getDoorLockPos.sqf";
-        _house setVariable[format["door%1Debug",_doorid],true,true];
-    };
 
     sleep 0.1;
 } forEach _dbResult;

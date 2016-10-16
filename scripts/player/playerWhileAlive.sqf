@@ -183,7 +183,8 @@ player addAction ["Attach Window Barricade", {
 }, [], 6, false, false, "", "typeOf barricade == 'bde_barricade_win_one'", 10, false];
 
 //Lock Door
-lockAction = player addAction["Lock/Unlock Door","scripts\barricade\fnc_lockdoor.sqf",[],0,false,false,"","closeToDoor"];
+attachLockAction = player addAction["Attach Codelock","scripts\barricade\fnc_attachLock.sqf",[],0,false,false,"","closeToDoor && !(doorHasLock)"];
+lockAction = player addAction["Use Codelock","scripts\barricade\fnc_lockdoor.sqf",[],0,false,false,"","closeToDoor && doorHasLock"];
 
 while{true}do{
 	t=time;
@@ -219,15 +220,16 @@ while{true}do{
 
     footIntersect       = lineIntersectsSurfaces [AGLToASL positionCameraToWorld [0,0,0], AGLToASL positionCameraToWorld [0,0,20], player, barricade, true, 1, "GEOM", "NONE"];
 
-    if(closeToDoor)then{
-        player setUserActionText [lockAction, "Lock/Unlock Door"];
-    };
-
-
     if(isInside)then{
         closeToDoor = ([_closestBuilding] call canLock) select 1;
+        if(_closestBuilding getVariable[format["bde_%1_has_lock",([_closestBuilding] call canLock) select 0],false])then{
+            doorHasLock = true;
+        }else{
+            doorHasLock = false;
+        };
     }else{
         closeToDoor = false;
+        doorHasLock = false;
     };
 
 	if(t > nextHungerDecr)then{
