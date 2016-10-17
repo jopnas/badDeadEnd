@@ -68,4 +68,3 @@ waitUntil{_codeSet};
     closeDialog _codeblockIDD;
     [format["%1:%2",parseNumber ((str(_house) splitString " ") select 1),_doorNr],_doorNr,getPos _house,12345,getPlayerUID player,0] remoteExec ["bde_fnc_saveDoor",2,false];
 
-    
