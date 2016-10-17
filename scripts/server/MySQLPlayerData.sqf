@@ -149,17 +149,18 @@ fnc_deleteTent = {
 fnc_saveBarricade = {
     _barricade      = _this select 0;
     _barricadeID    = _barricade getVariable ["barricadeID","0"];
-    _health         = _barricade getVariable ["health","0"];
+    _health         = _barricade getVariable ["health",0];
     _position       = getPosAtL _barricade;
     _rotation       = getDir _barricade;
     _type           = typeOf _barricade;
-    _QuerySaveBarricade  = format["0:SQL_BC_SAVE:INSERT INTO barricades (barricadeid,pos,rot,type,health) VALUES('""%1""','%2','%3','""%4""','%5') ON DUPLICATE KEY UPDATE pos='%2',rot='%3',type='""%4""',health='%5'",_barricadeID,_position,_rotation,_type,_health];
+    _level          = _barricade getVariable["barricadeLevel",1];
+    _QuerySaveBarricade  = format["0:SQL_BC_SAVE:INSERT INTO barricades (barricadeid,pos,rot,type,health,level) VALUES('""%1""','%2','%3','""%4""','%5','%6') ON DUPLICATE KEY UPDATE pos='%2',rot='%3',type='""%4""',health='%5',level='%6'",_barricadeID,_position,_rotation,_type,_health,_level];
     _saveIs         = "extDB2" callExtension _QuerySaveBarricade;
 };
 
 // Barricades Load
 fnc_loadBarricades = {
-    _result             = call compile ("extDB2" callExtension "0:SQL_BC_LOAD:SELECT id,barricadeid,pos,rot,type,health FROM barricades");
+    _result             = call compile ("extDB2" callExtension "0:SQL_BC_LOAD:SELECT id,barricadeid,pos,rot,type,health,level FROM barricades");
     _resultQueryStatus  = _result select 0;
     _resultInDB         = _result select 1;
     waitUntil { _resultQueryStatus > 0 };

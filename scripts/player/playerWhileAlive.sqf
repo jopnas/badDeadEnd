@@ -76,8 +76,9 @@ chopWood = {
     _woodHolder addMagazineCargoGlobal ["bde_wood",1];
     sleep 2;
     _woodHolder addMagazineCargoGlobal ["bde_wood",1];
+    hideObjectGlobal _theTree;
 
-    cutText ["choped wood", "PLAIN DOWN"];
+    cutText ["Choped Wood", "PLAIN DOWN"];
 };
 
 // Watersources
@@ -183,24 +184,12 @@ player addAction ["Attach Window Barricade", {
 }, [], 6, false, false, "", "typeOf barricade == 'bde_barricade_win_one'", 10, false];
 
 //Lock Door
-attachLockAction = player addAction["Attach Codelock","scripts\barricade\fnc_attachLock.sqf",[],0,false,false,"","closeToDoor && !(doorHasLock)"];
-lockAction = player addAction["Use Codelock","scripts\barricade\fnc_lockdoor.sqf",[],0,false,false,"","closeToDoor && doorHasLock"];
+attachLockAction    = player addAction["Attach Codelock","scripts\barricade\fnc_attachLock.sqf",[],0,false,false,"","closeToDoor && !(doorHasLock)"];
+lockAction          = player addAction["Use Codelock","scripts\barricade\fnc_lockdoor.sqf",[],0,false,false,"","closeToDoor && doorHasLock"];
 
 while{true}do{
 	t=time;
     "dog 0" setMarkerPos getPos (player getVariable "playersDog");
-
-    // If Barricading
-    if( !(barricade isEqualTo objNull) )then{
-        {
-            if( typeOf (_x select 2) == typeOf (nearestBuilding player) && !(barricade isEqualTo objNull) )then{
-                _infPos = ASLToATL (_x select 0);
-                barricade setPosATL _infPos;
-                barricade setVectorDir (_x select 1);
-            };
-        }forEach footIntersect;
-    };
-
 
     //_speed              = speed (vehicle player);
 
@@ -218,7 +207,18 @@ while{true}do{
     _isInShadow         = [player] call llw_fnc_inShadow;
     _sunRadiation       = [player] call llw_fnc_getSunRadiation;
 
-    footIntersect       = lineIntersectsSurfaces [AGLToASL positionCameraToWorld [0,0,0], AGLToASL positionCameraToWorld [0,0,20], player, barricade, true, 1, "GEOM", "NONE"];
+    // If Barricading
+    _camBarricadeIntersect       = lineIntersectsSurfaces [AGLToASL positionCameraToWorld [0,0,0], AGLToASL positionCameraToWorld [0,0,20], player, barricade, true, 1, "GEOM", "NONE"];
+    if( !(barricade isEqualTo objNull) )then{
+        {
+            if( _x select 2 == _closestBuilding && !(barricade isEqualTo objNull) )exitWith{
+                _infPos = ASLToATL (_x select 0);
+                barricade setPosATL _infPos;
+                barricade setVectorDir (_x select 1);
+            };
+        }forEach _camBarricadeIntersect;
+    };
+
 
     if(isInside)then{
         closeToDoor = ([_closestBuilding] call canLock) select 1;

@@ -7,16 +7,16 @@ _dbResult = call fnc_loadBarricades;
     _rot            = _x select 3;
     _type           = _x select 4;
     _health         = _x select 5;
+    _level          = _x select 6;
 
     _barricade      = _type createVehicle _pos;
     _barricade enableSimulation false;
     _barricade setDir _rot;
     _barricade setPosAtL _pos;
 
-    //systemChat format["create %1",_type];
-
     _barricade setVariable["barricadeID", _barricadeid,true];
     _barricade setVariable["health", _health,true];
+    _barricade setVariable["barricadeLevel",_level,true];
 
     _barricade addAction ["Destroy Barricade", {
         sleep 0.5;
