@@ -1,6 +1,6 @@
 author="NotSure & Grandmaster-G";
 OnLoadName = "Bad Dead End v0.4";
-OnLoadMission = "WTF?";
+OnLoadMission = "la la la";
 OnLoadIntro = "";
 OnLoadIntroTime = 0;
 OnLoadMissionTime = 0;
@@ -12,7 +12,7 @@ class Header {
     maxPlayers=4;
 };
 
-onCheat = "hint 'oh, come on!'";
+onCheat = "hint 'computer says NO!'";
 
 forceRotorLibSimulation = 0;
 disableRandomization[] = {"All"};
@@ -536,143 +536,6 @@ class RscTitles
                 x = safezoneX + safezoneW - 0.22;
                 y = safezoneH + safezoneY - 0.12;
             };
-        };
-    };
-};
-
-class codelockGUI {
-    idd = 69000;
-    movingEnable = 0;
-    duration = 100000;
-    name = "codelockGUI";
-    onLoad = "uiNamespace setVariable ['bde_gui_codelock', _this select 0];";
-
-    class controls {
-        class bdeCoselockBackground: RscPicture
-        {
-        	idc = 12000;
-        	text = "#(argb,8,8,3)color(1,1,1,1)";
-        	x = 11.5 * GUI_GRID_W + GUI_GRID_X;
-        	y = 2 * GUI_GRID_H + GUI_GRID_Y;
-        	w = 17.5 * GUI_GRID_W;
-        	h = 20.5 * GUI_GRID_H;
-        };
-        class bdeCodelockButton1: RscButton
-        {
-        	idc = 16000;
-        	text = "1";
-        	x = 14 * GUI_GRID_W + GUI_GRID_X;
-        	y = 3 * GUI_GRID_H + GUI_GRID_Y;
-        	w = 3 * GUI_GRID_W;
-        	h = 3 * GUI_GRID_H;
-        };
-        class bdeCodelockButton2: RscButton
-        {
-        	idc = 16010;
-        	text = "2";
-        	x = 19 * GUI_GRID_W + GUI_GRID_X;
-        	y = 3 * GUI_GRID_H + GUI_GRID_Y;
-        	w = 3 * GUI_GRID_W;
-        	h = 3 * GUI_GRID_H;
-        };
-        class bdeCodelockButton3: RscButton
-        {
-        	idc = 16020;
-        	text = "3";
-        	x = 24 * GUI_GRID_W + GUI_GRID_X;
-        	y = 3 * GUI_GRID_H + GUI_GRID_Y;
-        	w = 3 * GUI_GRID_W;
-        	h = 3 * GUI_GRID_H;
-        };
-        class bdeCodelockButton4: RscButton
-        {
-        	idc = 16030;
-        	text = "4";
-        	x = 14 * GUI_GRID_W + GUI_GRID_X;
-        	y = 7 * GUI_GRID_H + GUI_GRID_Y;
-        	w = 3 * GUI_GRID_W;
-        	h = 3 * GUI_GRID_H;
-        };
-        class bdeCodelockButton5: RscButton
-        {
-        	idc = 16040;
-        	text = "5";
-        	x = 19 * GUI_GRID_W + GUI_GRID_X;
-        	y = 7 * GUI_GRID_H + GUI_GRID_Y;
-        	w = 3 * GUI_GRID_W;
-        	h = 3 * GUI_GRID_H;
-        };
-        class bdeCodelockButton6: RscButton
-        {
-        	idc = 16050;
-        	text = "6";
-        	x = 24 * GUI_GRID_W + GUI_GRID_X;
-        	y = 7 * GUI_GRID_H + GUI_GRID_Y;
-        	w = 3 * GUI_GRID_W;
-        	h = 3 * GUI_GRID_H;
-        };
-        class bdeCodelockButton7: RscButton
-        {
-        	idc = 16060;
-        	text = "7";
-        	x = 14 * GUI_GRID_W + GUI_GRID_X;
-        	y = 11 * GUI_GRID_H + GUI_GRID_Y;
-        	w = 3 * GUI_GRID_W;
-        	h = 3 * GUI_GRID_H;
-        };
-        class bdeCodelockButton8: RscButton
-        {
-        	idc = 16070;
-        	text = "8";
-        	x = 19 * GUI_GRID_W + GUI_GRID_X;
-        	y = 11 * GUI_GRID_H + GUI_GRID_Y;
-        	w = 3 * GUI_GRID_W;
-        	h = 3 * GUI_GRID_H;
-        };
-        class bdeCodelockButton9: RscButton
-        {
-        	idc = 16080;
-        	text = "9";
-        	x = 24 * GUI_GRID_W + GUI_GRID_X;
-        	y = 11 * GUI_GRID_H + GUI_GRID_Y;
-        	w = 3 * GUI_GRID_W;
-        	h = 3 * GUI_GRID_H;
-        };
-        class bdeCodelockButton0: RscButton
-        {
-        	idc = 16090;
-        	text = "0";
-        	x = 19 * GUI_GRID_W + GUI_GRID_X;
-        	y = 15 * GUI_GRID_H + GUI_GRID_Y;
-        	w = 3 * GUI_GRID_W;
-        	h = 3 * GUI_GRID_H;
-        };
-        class bdeCodelockButtonAsterisk: RscButton
-        {
-        	idc = 16100;
-        	text = "*";
-        	x = 14 * GUI_GRID_W + GUI_GRID_X;
-        	y = 15 * GUI_GRID_H + GUI_GRID_Y;
-        	w = 3 * GUI_GRID_W;
-        	h = 3 * GUI_GRID_H;
-        };
-        class bdeCodelockButtonHash: RscButton
-        {
-        	idc = 16110;
-        	text = "#";
-        	x = 24 * GUI_GRID_W + GUI_GRID_X;
-        	y = 15 * GUI_GRID_H + GUI_GRID_Y;
-        	w = 3 * GUI_GRID_W;
-        	h = 3 * GUI_GRID_H;
-        };
-        class bdeCodelockButtonOk: RscButton
-        {
-        	idc = 16120;
-        	text = "OK";
-        	x = 19 * GUI_GRID_W + GUI_GRID_X;
-        	y = 19 * GUI_GRID_H + GUI_GRID_Y;
-        	w = 3 * GUI_GRID_W;
-        	h = 3 * GUI_GRID_H;
         };
     };
 };
