@@ -2,6 +2,7 @@ params["_building","_doorNo"/**/,"_dir","_pos"];
 
 _doorRotPos = _building selectionPosition format["Door_%1",_doorNo];
 _doorTriPos = _building selectionPosition format["Door_%1_trigger",_doorNo];
+systemChat str(_building selectionPosition "Door_1_axis");
 
 _RotTriDis  = _doorRotPos distance2D _doorTriPos;
 
