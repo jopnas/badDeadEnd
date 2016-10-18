@@ -21,8 +21,8 @@ if(_doorDataDir == "x")then{
     _codelock2 setDir ((getDir _house) + 90 + 180);
 };
 
-_wallCheck1 = lineIntersectsSurfaces [AGLToASL (_codelock1 modelToWorld [-0.8,0.5,0]), AGLToASL (_codelock1 modelToWorld [-0.8,-0.5,0]), player, objNull, true, 1, "GEOM", "NONE"];
-_wallCheck2 = lineIntersectsSurfaces [AGLToASL (_codelock2 modelToWorld [-0.8,-0.5,0]), AGLToASL (_codelock2 modelToWorld [-0.8,0.5,0]), player, objNull, true, 1, "GEOM", "NONE"];
+_wallCheck1 = lineIntersectsSurfaces [AGLToASL (_codelock1 modelToWorld [0,0.5,0]), AGLToASL (_codelock1 modelToWorld [0,-0.5,0]), player, objNull, true, 1, "GEOM", "NONE"];
+_wallCheck2 = lineIntersectsSurfaces [AGLToASL (_codelock2 modelToWorld [0,-0.5,0]), AGLToASL (_codelock2 modelToWorld [0,0.5,0]), player, objNull, true, 1, "GEOM", "NONE"];
 
 {
     if( _x select 2 == _house)exitWith{
@@ -40,13 +40,9 @@ _wallCheck2 = lineIntersectsSurfaces [AGLToASL (_codelock2 modelToWorld [-0.8,-0
     };
 }forEach _wallCheck2;
 
-//_codelock1 setPos (_doorDataPos);
-//_codelock1 setPos (_codelock1 modelToWorld [-0.8,0,0]);
 _codelock1 attachTo [_house,[0,0,0]];
-
-//_codelock2 setPos (_doorDataPos);
-//_codelock2 setPos (_codelock2 modelToWorld [-0.8,0,0]);
 _codelock2 attachTo [_house,[0,0,0]];
+
 _house setVariable [format["bde_door_%1_has_lock",_doorNr],true,true];
 
 createDialog "codelockGUI";
@@ -66,5 +62,5 @@ waitUntil{!isNull (findDisplay _codeblockIDD)};
     ((findDisplay _codeblockIDD) displayCtrl 1226) ctrlSetEventHandler ["MouseButtonDown", "systemChat 'codelock OK';if(count _lockcode == 4)then{_codeSet = true;};systemChat _lockcode;"];
 waitUntil{_codeSet};
     closeDialog _codeblockIDD;
-    [format["%1:%2",parseNumber ((str(_house) splitString " ") select 1),_doorNr],_doorNr,getPos _house,12345,getPlayerUID player,0] remoteExec ["bde_fnc_saveDoor",2,false];
+    [format["%1:%2",parseNumber ((str(_house) splitString " ") select 1),_doorNr],_doorNr,getPos _house,_lockcode,getPlayerUID player,0] remoteExec ["bde_fnc_saveDoor",2,false];
 
