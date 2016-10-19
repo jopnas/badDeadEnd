@@ -27,6 +27,11 @@ if(rain > 0 && acidRain)then{
     };
 };
 
+// Toxic Sea
+if(underwater player)then{
+    _newValue = _newValue + 0.08;
+};
+
 // Toxic Oxygen from Trees
 _trees = [];
 {
