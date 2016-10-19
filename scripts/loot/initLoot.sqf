@@ -12,9 +12,9 @@ fnc_spawnLoot = {
   _itemsCiv             = ["ItemWatch","ItemCompass","ItemMap","Binocular","FirstAidKit","Medikit","ToolKit"];
 
   // BDE Mod Items
-  _foodItems            = ["bde_apple","bde_canunknown","bde_canpasta","bde_sodacan_01","bde_sodacan_02","bde_antibiotics","bde_vitamines","bde_bottleuseless","bde_bottleempty","bde_bottlefilled","bde_bottleclean","bde_canteenempty","bde_canteenfilled","bde_bakedbeans","bde_tacticalbacon"];
+  _foodItems            = ["bde_apple","bde_canunknown","bde_canpasta","bde_sodacan_01","bde_antibiotics","bde_vitamines","bde_bottleuseless","bde_bottleempty","bde_bottlefilled","bde_bottleclean","bde_canteenempty","bde_canteenfilled","bde_bakedbeans","bde_tacticalbacon"];
   _medicalItems	        = ["bde_gasmask_filter","bde_antiradiationtablets","bde_waterpurificationtablets","bde_antibiotics","bde_vitamines"];
-  _toolItems            = ["bde_scarf","bde_matches","bde_lock","bde_hatchet","bde_stone","bde_wood","bde_ducttape","bde_zippo","bde_hammer","bde_nails","bde_plank"];
+  _toolItems            = ["bde_scarf","bde_matches","bde_lock","bde_hatchet","bde_stone","bde_wood","bde_ducttape","bde_zippo","bde_hammer","bde_nails","bde_plank","bde_codelock_case","bde_codelock_pannel","bde_codelock"];
 
   _garageStuff          = ["bde_camonetSmallPacked","bde_camonetBigPacked","bde_camonetVehiclesPacked","bde_tentCamoPacked","bde_tentDomePacked","bde_wheel","bde_fuelCanisterEmpty","bde_fuelCanisterFilled"];
 

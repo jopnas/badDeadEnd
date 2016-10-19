@@ -203,16 +203,6 @@ switch(_classname) do {
             cutText ["drank can of Pepsi", "PLAIN DOWN"];
         };
     };
-    case "bde_sodacan_02": {
-        if(_actionNo == 0)then{
-            [player,"drinkSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
-    	    sleep 1;
-    		playerThirst = playerThirst + 10;
-            [_classname,_cargoType] call _removeItemCargo;
-    		["bde_canempty"] call _addItemFloor;
-    		cutText ["drank can of Spirit", "PLAIN DOWN"];
-	    };
-	};
     case "bde_canunknown": {
         if(_actionNo == 0)then{
             [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];

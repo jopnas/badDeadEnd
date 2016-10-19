@@ -67,9 +67,6 @@ switch(_classname) do {
 	case "bde_sodacan_01": {
         _actionTexts = ["drink"];
 	};
-	case "bde_sodacan_02": {
-        _actionTexts = ["drink"];
-	};
 
     // Canned Food
 	case "bde_canunknown": {
