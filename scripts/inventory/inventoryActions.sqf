@@ -236,26 +236,6 @@ switch(_classname) do {
     		cutText ["ate pasta", "PLAIN DOWN"];
 	       };
 	};
-	case "bde_bakedbeans": {
-        if(_actionNo == 0)then{
-            [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
-    	    sleep 1;
-    		playerHunger = playerHunger + 25;
-            [_classname,_cargoType] call _removeItemCargo;
-    		["bde_emptycanunknown"] call _addItemFloor;
-    		cutText ["ate baked beans", "PLAIN DOWN"];
-    	};
-	};
-	case "bde_tacticalbacon": {
-        if(_actionNo == 0)then{
-            [player,"eatSound0",10,1] remoteExec ["bde_fnc_say3d",0,false];
-    	    sleep 1;
-    		playerHunger = playerHunger + 15;
-            [_classname,_cargoType] call _removeItemCargo;
-    		["bde_emptycanunknown"] call _addItemFloor;
-    		cutText ["ate tactical bacon", "PLAIN DOWN"];
-    	};
-   };
 
 	case "bde_meat_big": {
         if(_actionNo == 0)then{

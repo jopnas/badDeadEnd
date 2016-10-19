@@ -75,12 +75,6 @@ switch(_classname) do {
 	case "bde_canpasta": {
         _actionTexts = ["eat"];
 	};
-	case "bde_bakedbeans": {
-        _actionTexts = ["eat"];
-	};
-	case "bde_tacticalbacon": {
-        _actionTexts = ["eat"];
-	};
 
     // Meat
 	case "bde_meat_big": {
