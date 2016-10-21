@@ -8,7 +8,7 @@ _campstuff          = ["Land_WoodPile_large_F","Land_WoodenLog_F","Land_CampingT
 _garbageTypes       = ["Land_Garbage_square3_F","Land_Garbage_square5_F"];
 
 // Loot
-_foodItems          = ["bde_hatchet","bde_antibiotics","bde_ducttape","bde_vitamines","bde_bottleuseless","bde_bottleempty","bde_bottlefilled","bde_bottleclean","bde_canteenempty","bde_canteenfilled","bde_bakedbeans","bde_tacticalbacon"];
+_foodItems          = ["bde_hatchet","bde_antibiotics","bde_ducttape","bde_vitamines","bde_bottleuseless","bde_bottleempty","bde_bottlefilled","bde_bottleclean","bde_canteenempty","bde_canteenfilled"];
 // Military Lootlists
 _itemBackpacksMil   = ["B_AssaultPack_blk","B_AssaultPack_dgtl","B_AssaultPack_khk","B_AssaultPack_rgr","B_AssaultPack_sgg","B_AssaultPack_cbr","B_AssaultPack_mcamo","B_Bergen_mcamo","B_Carryall_oucamo","B_Carryall_ocamo","B_Carryall_mcamo","B_FieldPack_oucamo","B_FieldPack_ocamo","B_Kitbag_mcamo"];
 _weaponRiflesMil    = ["MMG_02_sand_F","MMG_01_hex_F","srifle_GM6_camo_SOS_F","srifle_GM6_camo_F","arifle_TRG20_F","arifle_TRG21_F","arifle_SDAR_F","arifle_MXM_Black_F","arifle_MX_SW_Black_F","arifle_MX_Black_F","arifle_MXC_Black_F","arifle_MXM_F","arifle_MX_SW_F","arifle_MX_F","arifle_MXC_F","arifle_Mk20C_F","arifle_Mk20_F","arifle_Katiba_F","srifle_DMR_01_F","srifle_EBR_F","srifle_GM6_F","srifle_LRR_F","LMG_Mk200_F","LMG_Zafir_F"];

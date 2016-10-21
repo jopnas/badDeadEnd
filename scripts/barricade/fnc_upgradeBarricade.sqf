@@ -5,7 +5,7 @@ _barricadeID        = _barricade getVariable "barricadeID";
 _barricadeHealth    = _barricade getVariable "health";
 _barricadeLevel     = _barricade getVariable "barricadeLevel";
 
-_barricadePos       = getPos _barricade;
+_barricadePos       = getPosATL _barricade;
 _barricadeRot       = getDir _barricade;
 
 [_barricade] remoteExec ["fnc_deleteBarricade",2,false];
@@ -41,7 +41,7 @@ _barricade setVariable["barricadeID",_barricadeID,true];
 _barricade setVariable["health",_barricadeHealth,true];
 _barricade setVariable["barricadeLevel",_barricadeLevel,true];
 
-_barricade getPos _barricadePos;
+_barricade getPosATL _barricadePos;
 _barricade enableSimulation false;
 _barricade setDir _barricadeRot;
 

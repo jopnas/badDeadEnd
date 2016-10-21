@@ -21,8 +21,8 @@ if(_doorDataDir == "x")then{
     _codelock2 setDir ((getDir _house) + 90 + 180);
 };
 
-_wallCheck1 = lineIntersectsSurfaces [AGLToASL (_codelock1 modelToWorld [0,0.5,0]), AGLToASL (_codelock1 modelToWorld [0,-0.5,0]), player, objNull, true, 1, "GEOM", "NONE"];
-_wallCheck2 = lineIntersectsSurfaces [AGLToASL (_codelock2 modelToWorld [0,-0.5,0]), AGLToASL (_codelock2 modelToWorld [0,0.5,0]), player, objNull, true, 1, "GEOM", "NONE"];
+_wallCheck1 = lineIntersectsSurfaces [AGLToASL (_codelock1 modelToWorld [-0.8,0.5,0]), AGLToASL (_codelock1 modelToWorld [-0.8,0.5,0]), player, objNull, true, 1, "GEOM", "NONE"];
+_wallCheck2 = lineIntersectsSurfaces [AGLToASL (_codelock2 modelToWorld [-0.8,0.5,0]), AGLToASL (_codelock2 modelToWorld [-0.8,0.5,0]), player, objNull, true, 1, "GEOM", "NONE"];
 
 {
     if( _x select 2 == _house)exitWith{
