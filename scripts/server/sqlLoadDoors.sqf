@@ -13,6 +13,7 @@ waitUntil{count _dbResult > 0};
     _house = nearestBuilding _houseid;
     _house setVariable [format["bis_disabled_Door_%1",_doorid],_locked,true];
     _house setVariable [format["bde_door_%1_has_lock",_doorid],true,true];
+    _house setVariable [format["bde_door_%1_code",_doorid],_code,true];
 
     _doorData = [_house,_doorid] call _compiledDoorData;
     //systemChat str (_doorData);

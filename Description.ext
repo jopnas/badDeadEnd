@@ -363,7 +363,54 @@ class CfgSounds {
 };
 
 // GUI
-class RscButton;
+
+class RscButton
+{
+    access = 0;
+    type = 1;
+    style = 0;
+    x = 0; y = 0; w = 0.3; h = 0.1;
+    text = "";
+    font = "TahomaB";
+    sizeEx = 0.04;
+    colorText[] = {0,0,0,1};
+    colorDisabled[] = {0.3,0.3,0.3,1};
+    colorBackground[] = {0.6,0.6,0.6,1};
+    colorBackgroundDisabled[] = {0.6,0.6,0.6,1};
+    colorBackgroundActive[] = {1,0.5,0,1};
+    offsetX = 0.004;
+    offsetY = 0.004;
+    offsetPressedX = 0.002;
+    offsetPressedY = 0.002;
+    colorFocused[] = {0,0,0,1};
+    colorShadow[] = {0,0,0,1};
+    shadow = 0;
+    colorBorder[] = {0,0,0,1};
+    borderSize = 0.008;
+    soundEnter[] = {"",0.1,1};
+    soundPush[] = {"",0.1,1};
+    soundClick[] = {"",0.1,1};
+    soundEscape[] = {"",0.1,1};
+};
+
+class codelockButton : RscButton
+{
+    w = 0.0630208 * safezoneW;
+    h = 0.109957 * safezoneH;
+    colorBackground[] = {0,0,0,0};
+    colorBackgroundDisabled[] = {0,0,0,0};
+    colorBackgroundActive[] = {0,0,0,0};
+    colorText[] = {0,0,0,0};
+    colorDisabled[] = {0,0,0,0};
+    colorFocused[] = {0,0,0,0};
+    colorShadow[] = {0,0,0,0};
+    offsetX = 0;
+    offsetY = 0;
+    offsetPressedX = 0;
+    offsetPressedY = 0;
+    borderSize = 0;
+};
+
 class RscText
 {
     type = 0;
@@ -540,6 +587,126 @@ class RscTitles
     };
 };
 
+class codelockGUI {
+    idd = 6906;
+    movingEnable = 0;
+
+    class ControlsBackground
+    {
+        class codelockBackground: RscPicture
+        {
+            idc = 1213;
+            text = "images\gui\codelock\codelock.paa";
+            x = 0.379688 * safezoneW + safezoneX;
+            y = 0.236103 * safezoneH + safezoneY;
+            w = 0.246354 * safezoneW;
+            h = 0.527794 * safezoneH;
+            style = 48;
+            colorBackground[] = {0,0,0,0};
+            colorText[] = {1,1,1,1};
+        };
+    };
+
+    class Controls
+    {
+        class codelock_button_1: codelockButton
+        {
+            idc = 1600;
+            text = "";
+            x = 0.396875 * safezoneW + safezoneX;
+            y = 0.258094 * safezoneH + safezoneY;
+            action = "lockcode pushBack 1;systemChat str lockcode";
+        };
+        class codelock_button_2: codelockButton
+        {
+            idc = 1601;
+            text = "";
+            x = 0.471354 * safezoneW + safezoneX;
+            y = 0.258094 * safezoneH + safezoneY;
+            action = "lockcode pushBack 2;systemChat str lockcode";
+        };
+        class codelock_button_3: codelockButton
+        {
+            idc = 1602;
+            text = "images\gui\codelock\codelock_3.paa";
+            x = 0.545833 * safezoneW + safezoneX;
+            y = 0.258094 * safezoneH + safezoneY;
+            action = "lockcode pushBack 3;systemChat str lockcode";
+        };
+        class codelock_button_4: codelockButton
+        {
+            idc = 1603;
+            text = "images\gui\codelock\codelock_4.paa";
+            x = 0.396875 * safezoneW + safezoneX;
+            y = 0.379047 * safezoneH + safezoneY;
+            action = "lockcode pushBack 4;systemChat str lockcode";
+        };
+        class codelock_button_5: codelockButton
+        {
+            idc = 1604;
+            text = "images\gui\codelock\codelock_5.paa";
+            x = 0.471354 * safezoneW + safezoneX;
+            y = 0.379047 * safezoneH + safezoneY;
+            action = "lockcode pushBack 5;systemChat str lockcode";
+        };
+        class codelock_button_6: codelockButton
+        {
+            idc = 1605;
+            text = "images\gui\codelock\codelock_6.paa";
+            x = 0.545833 * safezoneW + safezoneX;
+            y = 0.379047 * safezoneH + safezoneY;
+            action = "lockcode pushBack 6;systemChat str lockcode";
+        };
+        class codelock_button_7: codelockButton
+        {
+            idc = 1606;
+            text = "images\gui\codelock\codelock_7.paa";
+            x = 0.396875 * safezoneW + safezoneX;
+            y = 0.5 * safezoneH + safezoneY;
+            action = "lockcode pushBack 7;systemChat str lockcode";
+        };
+        class codelock_button_8: codelockButton
+        {
+            idc = 1607;
+            text = "images\gui\codelock\codelock_8.paa";
+            x = 0.471354 * safezoneW + safezoneX;
+            y = 0.5 * safezoneH + safezoneY;
+            action = "lockcode pushBack 8;systemChat str lockcode";
+        };
+        class codelock_button_9: codelockButton
+        {
+            idc = 1608;
+            text = "images\gui\codelock\codelock_9.paa";
+            x = 0.545833 * safezoneW + safezoneX;
+            y = 0.5 * safezoneH + safezoneY;
+            action = "lockcode pushBack 9;systemChat str lockcode";
+        };
+        class codelock_button_asterisk: codelockButton
+        {
+            idc = 1609;
+            text = "images\gui\codelock\codelock_asterisk.paa";
+            x = 0.396875 * safezoneW + safezoneX;
+            y = 0.620953 * safezoneH + safezoneY;
+            action = "systemChat 'codelock_asterisk';";
+    };
+    class codelock_button_0: codelockButton
+        {
+            idc = 1610;
+            text = "images\gui\codelock\codelock_0.paa";
+            x = 0.471354 * safezoneW + safezoneX;
+            y = 0.620953 * safezoneH + safezoneY;
+            action = "lockcode pushBack 0;systemChat str lockcode";
+        };
+        class codelock_button_hashtag: codelockButton
+        {
+            idc = 1611;
+            text = "images\gui\codelock\codelock_hashtag.paa";
+            x = 0.545833 * safezoneW + safezoneX;
+            y = 0.620953 * safezoneH + safezoneY;
+            action = "systemChat 'codelock_hashtag';";
+        };
+    };
+};
 
 // Functions
 class cfgFunctions
