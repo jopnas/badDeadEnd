@@ -41,7 +41,7 @@ _barricade setVariable["barricadeID",_barricadeID,true];
 _barricade setVariable["health",_barricadeHealth,true];
 _barricade setVariable["barricadeLevel",_barricadeLevel,true];
 
-_barricade getPosATL _barricadePos;
+_barricade setPosATL _barricadePos;
 _barricade enableSimulation false;
 _barricade setDir _barricadeRot;
 
