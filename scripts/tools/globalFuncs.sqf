@@ -150,8 +150,8 @@ bde_fnc_vehicleRepair = {
     if(_allineed)then{
         _caller  say3D (selectRandom ["toolSound0","toolSound1"]);
         sleep 11;
-        _vehicle setHit [_part, 0];
-        //_vehicle setHitPointDamage [_partName, 1.0];
+        //_vehicle setHit [_part, 0];
+        _vehicle setHitPointDamage [_part,0];
         _vehicle removeAction _action;
         _repairActionIDs = _vehicle getVariable ["repairActionIDs", []];
         _repairActionIDs = _repairActionIDs - [_action];

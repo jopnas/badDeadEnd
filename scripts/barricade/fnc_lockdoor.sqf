@@ -10,9 +10,21 @@ _isDoorLocked       = 0;
 _doorcode           = _nearestBuilding getVariable format["bde_door_%1_code",_doorNo];
 lockcode            = [];
 
-
 _codelockGuiOK = createDialog "codelockGui";
-waitUntil {count lockcode == 4 && _doorcode isEqualTo lockcode};
+
+waitUntil {
+    _return = false;
+    if(count lockcode == 4)then{
+        if(_doorcode isEqualTo lockcode)then{
+            _return = true;
+        }else{
+            lockcode = [];
+            _return = false;
+        };
+    };
+    _return
+};
+
 closeDialog 6906;
 
 if(_isDoorOpen == 0)then{

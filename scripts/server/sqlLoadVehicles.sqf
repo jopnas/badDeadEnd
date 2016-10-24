@@ -203,37 +203,37 @@ _vehiclesInDB         = _result select 1;
     _spawnedVehicle addEventHandler ["ContainerClosed", {
         params["_vehicle","_player"];
         [_vehicle] call fnc_saveVehicle;
-        systemChat format["closed inventory of %1",typeOf _vehicle];
+        //systemChat format["closed inventory of %1",typeOf _vehicle];
     }];
     _spawnedVehicle addEventHandler ["Hit", {
         params["_vehicle","_causedBy","_damage"];
         [_vehicle] call bde_fnc_removeRepairActions;
         [_vehicle] call fnc_saveVehicle;
-        systemChat format["hit %1 by %2",typeOf _vehicle,_causedBy];
+        //systemChat format["hit %1 by %2",typeOf _vehicle,_causedBy];
     }];
     _spawnedVehicle addEventHandler ["Killed", {
         params["_vehicle","_killer"];
         [_vehicle] call bde_fnc_removeRepairActions;
         [_vehicle] call fnc_saveVehicle;
         deleteMarker format["vehicle %1",_vehicle getVariable "id"];
-        systemChat format["destroyed %1",typeOf _vehicle];
+        //systemChat format["destroyed %1",typeOf _vehicle];
     }];
     _spawnedVehicle addEventHandler ["Fuel", {
         params["_vehicle","_fuelState"];
         [_vehicle] call fnc_saveVehicle;
-        systemChat format["fuel state changed from %1",typeOf _vehicle];
+        //systemChat format["fuel state changed from %1",typeOf _vehicle];
     }];
     _spawnedVehicle addEventHandler ["GetOut", {
         params["_vehicle","_position","_unit","_turret"];
         [_vehicle] call bde_fnc_removeRepairActions;
         [_vehicle] call fnc_saveVehicle;
-        systemChat format["%1 exit %2",_unit,typeOf _vehicle];
+        //systemChat format["%1 exit %2",_unit,typeOf _vehicle];
     }];
     _spawnedVehicle addEventHandler ["GetIn", {
         params["_vehicle","_position","_unit","_turret"];
         [_vehicle] call bde_fnc_removeRepairActions;
         [_vehicle] call fnc_saveVehicle;
-        systemChat format["%1 enters %2",_unit,typeOf _vehicle];
+        //systemChat format["%1 enters %2",_unit,typeOf _vehicle];
     }];
 
     // Actions (repair etc.)
