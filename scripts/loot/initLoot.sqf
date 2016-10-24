@@ -12,7 +12,7 @@ fnc_spawnLoot = {
   _itemsCiv             = ["ItemWatch","ItemCompass","ItemMap","Binocular","FirstAidKit","Medikit"];
 
   // ConstructionBuilding Items
-  _constructionItems    = ["bde_matches",s"bde_lock","bde_wood","bde_hammer","bde_nails","bde_plank","bde_cable","bde_stone","bde_ducttape","bde_codelock_panel"];
+  _constructionItems    = ["bde_matches","bde_lock","bde_wood","bde_hammer","bde_nails","bde_plank","bde_cable","bde_stone","bde_ducttape","bde_codelock_panel"];
 
   // BDE Mod Items
   _foodItems            = ["bde_apple","bde_canunknown","bde_canpasta","bde_sodacan_01","bde_antibiotics","bde_vitamines","bde_bottleuseless","bde_bottleempty","bde_bottlefilled","bde_bottleclean","bde_canteenempty","bde_canteenfilled"];
@@ -179,7 +179,7 @@ fnc_spawnLoot = {
                         _spawn addItemCargoGlobal/*addMagazineCargoGlobal*/ [selectRandom _toolItems,1];
                     };
                     // Xtra Construction Items
-                    for _i=1 from 0 to 5 do {
+                    for "_i=1" from 1 to 5 do {
                         if(random 100 < 30) then {
                             _spawn addItemCargoGlobal/*addMagazineCargoGlobal*/ [selectRandom _constructionItems,round(random 1)];
                         };

@@ -157,8 +157,8 @@ bde_fnc_vehicleRepair = {
         _repairActionIDs = _repairActionIDs - [_action];
         _vehicle setVariable ["repairActionIDs", _repairActionIDs,false];
         sleep 1;
-        [_vehicle] call fnc_saveVehicle
-        cutText [format["repaired %1",_part], "PLAIN DOWN"];
+        [_vehicle] call fnc_saveVehicle;
+        cutText [format["repaired %1",_partName], "PLAIN DOWN"];
     };
 };
 

@@ -605,17 +605,6 @@ class codelockGUI {
             colorBackground[] = {0,0,0,0};
             colorText[] = {1,1,1,1};
         };
-        class codelockDisplay:RscText
-        {
-            idc = 1214;
-            x = 0.379688 * safezoneW + safezoneX;
-            y = 0.1 * safezoneH + safezoneY;
-            w = 0.246354 * safezoneW;
-            h = 0.527794 * safezoneH;
-            style = 0;
-            colorBackground[] = {0,0,0,1};
-            colorText[] = {1,1,1,1};
-        };
     };
 
     class Controls
