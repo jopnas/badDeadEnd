@@ -86,9 +86,9 @@ bde_fnc_relDirNinty = {
 };
 
 bde_fnc_underCover = {
-    params["_object"/**/,"_startPosition","_ignoreObject1"];
-    if(_object isEqualType [0,0,0])then{
-        _startPosition  = _object;
+    params["_object"/**/,"_startPosition","_ignoreObject1","_isUndercover"];
+    if(_object isEqualType [0,0,0])then{ // if object is a position array
+        _startPosition  = AGLToASL _object; // buildingPos returns position in AGL
         _ignoreObject1  = objNull;
     }else{
         _startPosition  = getPosASL _object;
@@ -97,8 +97,8 @@ bde_fnc_underCover = {
 
     _endPosition    = [_startPosition select 0, _startPosition select 1, (_startPosition select 2 ) + 15];
     _intersections  = lineIntersectsSurfaces [_startPosition, _endPosition, _ignoreObject1, objNull, false, 1, "GEOM", "VIEW"];
-    _isBelowRoof    = !(_intersections isEqualTo []);
-    _isBelowRoof
+    _isUndercover   = !(_intersections isEqualTo []);
+    _isUndercover
 };
 
 bde_fnc_packTent = {
@@ -108,7 +108,7 @@ bde_fnc_packTent = {
     _tentPos        = getPosATL _targetObject;
     _tentID         = _targetObject getVariable["tentID","0"];
 
-    systemChat _tentPackClass;
+    //systemChat _tentPackClass;
 
     [_caller,"toolSound1",10,1] remoteExec ["bde_fnc_say3d",0,false];
     [_tentID] remoteExec ["fnc_deleteTent",2,false];
@@ -124,7 +124,7 @@ bde_fnc_vehicleRepair = {
     params["_partName","_damage","_vehicle","_part","_action","_caller"];
 
     _allineed = false;
-    if(_partName find "Wheel" > -1 && "bde_wheel" in Magazines _caller)then{
+    if(_partName find "Wheel" > -1 && "bde_wheel" in Magazines _caller && "bde_wrench" in Magazines _caller)then{
         _allineed = true;
         _caller removeMagazine "bde_wheel";
     };
@@ -132,6 +132,14 @@ bde_fnc_vehicleRepair = {
     if(_partName find "Fuel" > -1 && "bde_ducttape" in Magazines _caller)then{
         _allineed = true;
         _caller removeMagazine "bde_ducttape";
+    };
+
+    if(_partName find "Motor" > -1 && "bde_multitool" in Magazines _caller && "bde_wrench" in Magazines _caller)then{
+        _allineed = true;
+    };
+
+    if(_partName find "Glass" > -1 && "bde_multitool" in Magazines _caller)then{
+        _allineed = true;
     };
 
     // Fallback if condition to repair vehiclepart is not set
@@ -149,8 +157,8 @@ bde_fnc_vehicleRepair = {
         _repairActionIDs = _repairActionIDs - [_action];
         _vehicle setVariable ["repairActionIDs", _repairActionIDs,false];
         sleep 1;
-        [_vehicle] call fnc_saveVehicle;
-        systemChat format["repaired %1s %2",typeOf _vehicle,_part];
+        [_vehicle] call fnc_saveVehicle
+        cutText [format["repaired %1",_part], "PLAIN DOWN"];
     };
 };
 

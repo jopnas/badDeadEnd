@@ -241,7 +241,7 @@ _vehiclesInDB         = _result select 1;
     _spawnedVehicle addAction[format["repair %1",_type],{
         _spawnedVehicle = _this select 3;
         [_spawnedVehicle] execVM "scripts\vehicles\repairVehicleActions.sqf";
-    },_spawnedVehicle,0,false,false,"","'ToolKit' in Items _this && vehicle _this == _this && count (_target getVariable ['repairActionIDs', []]) == 0",3,false];
+    },_spawnedVehicle,0,false,false,"","vehicle _this == _this && count (_target getVariable ['repairActionIDs', []]) == 0",3,false];
 
     _spawnedVehicle addAction[format["refuel %1",_type],{
         _target = _this select 0;

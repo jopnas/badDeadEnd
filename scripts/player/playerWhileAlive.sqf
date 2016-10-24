@@ -166,6 +166,7 @@ player addAction ["Attach Window Barricade", {
     _barricadeID    = format["%1%2",getPlayerUID player,floor(_barricadePos select 0),floor(_barricadePos select 1),floor(_barricadePos select 2)];
     barricade setVariable["barricadeID",_barricadeID,true];
     barricade setVariable["health",1000,true];
+    barricade setVariable["barricadePosition",_barricadePos,true];
     [barricade] remoteExec ["fnc_saveBarricade",2,false];
 
     player removeItem "bde_plank";

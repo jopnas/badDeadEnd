@@ -4,8 +4,8 @@ _barricade  = _this select 0;
 _barricadeID        = _barricade getVariable "barricadeID";
 _barricadeHealth    = _barricade getVariable "health";
 _barricadeLevel     = _barricade getVariable "barricadeLevel";
+_barricadePosition  = _barricade getVariable "barricadePosition";
 
-_barricadePos       = getPosATL _barricade;
 _barricadeRot       = getDir _barricade;
 
 [_barricade] remoteExec ["fnc_deleteBarricade",2,false];
@@ -14,19 +14,19 @@ deleteVehicle _barricade;
 // create next level
 switch(_barricadeLevel)do{
     case 1:{
-        _barricade = createVehicle ["bde_barricade_win_two", _barricadePos,[],0,"can_collide"];
+        _barricade = createVehicle ["bde_barricade_win_two", _barricadePosition,[],0,"can_collide"];
     };
     case 2:{
-        _barricade = createVehicle ["bde_barricade_win_three", _barricadePos,[],0,"can_collide"];
+        _barricade = createVehicle ["bde_barricade_win_three", _barricadePosition,[],0,"can_collide"];
     };
     case 3:{
-        _barricade = createVehicle ["bde_barricade_win_four", _barricadePos,[],0,"can_collide"];
+        _barricade = createVehicle ["bde_barricade_win_four", _barricadePosition,[],0,"can_collide"];
     };
     case 4:{
-        _barricade = createVehicle ["bde_barricade_win_five", _barricadePos,[],0,"can_collide"];
+        _barricade = createVehicle ["bde_barricade_win_five", _barricadePosition,[],0,"can_collide"];
     };
     case 5:{
-        _barricade = createVehicle ["bde_barricade_win_six", _barricadePos,[],0,"can_collide"];
+        _barricade = createVehicle ["bde_barricade_win_six", _barricadePosition,[],0,"can_collide"];
     };
     default {
     };
@@ -41,7 +41,7 @@ _barricade setVariable["barricadeID",_barricadeID,true];
 _barricade setVariable["health",_barricadeHealth,true];
 _barricade setVariable["barricadeLevel",_barricadeLevel,true];
 
-_barricade setPosATL _barricadePos;
+_barricade setPosATL _barricadePosition;
 _barricade enableSimulation false;
 _barricade setDir _barricadeRot;
 

@@ -17,6 +17,7 @@ _dbResult = call fnc_loadBarricades;
     _barricade setVariable["barricadeID", _barricadeid,true];
     _barricade setVariable["health", _health,true];
     _barricade setVariable["barricadeLevel",_level,true];
+    _barricade setVariable["barricadePosition",_pos,true];
 
     _barricade addAction ["Destroy Barricade", {
         sleep 0.5;
