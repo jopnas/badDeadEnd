@@ -6,6 +6,8 @@ fnc_spawnLoot = {
   _clothes              = headgears + vests + uniforms;
 
   _ducttapes            = ["bde_ducttape","bde_ducttape_6","bde_ducttape_5","bde_ducttape_4","bde_ducttape_3","bde_ducttape_2","bde_ducttape_1","bde_ducttape_empty"];
+  _bottles              = ["bde_bottleclean","bde_bottleclean_3_4","bde_bottleclean_2_4","bde_bottleclean_1_4","bde_bottleempty","bde_bottlefilled","bde_bottleuseless"];
+  _canteen              = ["bde_canteenfilled","bde_canteenfilled_3_4","bde_canteenfilled_2_4","bde_canteenfilled_1_4","bde_canteenempty"];
 
   // Military Lootlists
   _itemsMil             = ["bde_gasmask","bde_gasmask_wasted","bde_gasmask_filter","bde_gasmask_empty","ItemGPS","Rangefinder","NVGoggles","Laserdesignator","Laserdesignator_02","Laserdesignator_03"];
@@ -15,10 +17,12 @@ fnc_spawnLoot = {
 
   // ConstructionBuilding Items
   _constructionItems    = ["bde_matches","bde_lock","bde_wood","bde_hammer","bde_nails","bde_plank","bde_cable","bde_stone","bde_codelock_panel"];
-  _constructionItems append _ducttapes;
+  _constructionItems append _bottles;
+  _constructionItems append _canteen;
 
   // BDE Mod Items
-  _foodItems            = ["bde_apple","bde_canunknown","bde_canpasta","bde_sodacan_01","bde_antibiotics","bde_vitamines","bde_bottleuseless","bde_bottleempty","bde_bottlefilled","bde_bottleclean","bde_canteenempty","bde_canteenfilled"];
+  _foodItems            = ["bde_apple","bde_canunknown","bde_canpasta","bde_sodacan_01","bde_antibiotics","bde_vitamines"];
+  _foodItems append array2
   _medicalItems	        = ["bde_gasmask_filter","bde_gasmask_empty","bde_antiradiationtablets","bde_waterpurificationtablets","bde_antibiotics","bde_vitamines"];
   _toolItems            = ["bde_scarf","bde_matches","bde_lock","bde_hatchet","bde_zippo","bde_codelock_panel","bde_codelock"];
   _toolItems append _ducttapes;

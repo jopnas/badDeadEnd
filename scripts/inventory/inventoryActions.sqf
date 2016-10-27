@@ -89,6 +89,9 @@ _buildFireplace = {
     };
 };
 
+_bottleStates   = ["bde_bottleclean","bde_bottleclean_3_4","bde_bottleclean_2_4","bde_bottleclean_1_4","bde_bottleempty"];
+_canteenStates  = ["bde_canteenfilled","bde_canteenfilled_3_4","bde_canteenfilled_2_4","bde_canteenfilled_1_4","bde_canteenempty"];
+
 switch(_classname) do {
     // Food
 	case "bde_bottleuseless": {
