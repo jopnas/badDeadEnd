@@ -122,6 +122,21 @@ bde_fnc_packTent = {
 
 bde_fnc_vehicleRepair = {
     params["_partName","_damage","_vehicle","_part","_action","_caller"];
+    _itemsList = ["bde_ducttape","bde_ducttape_6","bde_ducttape_5","bde_ducttape_4","bde_ducttape_3","bde_ducttape_2","bde_ducttape_1","bde_ducttape_empty"];
+    _haveOneOfThis = {
+        params["_caller","_itemsList"];
+        _haveOne = false;
+        _smallestOfType = "";
+        _itemArrayIndex = 0;
+        {
+            if(_x in Magazines _caller && _x != "bde_ducttape_empty")then{
+                _haveOne = true;
+                _smallestType   = _x;
+                _smallestIndex  = _forEachIndex;
+            };
+        } forEach _itemsList;
+        [_haveOne,_smallestType,_smallestIndex]
+    };
 
     _allineed = false;
     if(_partName find "Wheel" > -1 && "bde_wheel" in Magazines _caller && "bde_wrench" in Magazines _caller)then{
@@ -129,9 +144,9 @@ bde_fnc_vehicleRepair = {
         _caller removeMagazine "bde_wheel";
     };
 
-    if(_partName find "Fuel" > -1 && "bde_ducttape" in Magazines _caller)then{
+    if(_partName find "Fuel" > -1 && ([_caller,_ducttapes] call _haveOneOfThis) select 0)then{
         _allineed = true;
-        _caller removeMagazine "bde_ducttape";
+        _caller removeMagazine (_itemsList select ((([_caller,_ducttapes] call _haveOneOfThis) select 2) + 1));
     };
 
     if(_partName find "Motor" > -1 && "bde_multitool" in Magazines _caller && "bde_wrench" in Magazines _caller)then{
@@ -143,7 +158,7 @@ bde_fnc_vehicleRepair = {
     };
 
     // Fallback if condition to repair vehiclepart is not set
-    if(_partName find "Wheel" < 0 && _partName find "Fuel" < 0)then{
+    if(_partName find "Wheel" < 0 && _partName find "Fuel" < 0 && _partName find "Motor" < 0 && _partName find "Glass" < 0)then{
         _allineed = true;
     };
 
