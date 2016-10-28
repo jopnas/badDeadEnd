@@ -2,10 +2,10 @@ worldHalfSize   = (getNumber (configFile >> "CfgWorlds" >> worldName >> "mapSize
 worldCenter     = [worldHalfSize,worldHalfSize,0];
 
 if(isServer)then{
-    setTimeMultiplier 2; // 0.1 - 120
+    setTimeMultiplier 5; // 0.1 - 120
 
     [] execVM "scripts\server\registerDBdata.sqf";
-    [] execVM "scripts\server\MySQLPlayerData.sqf";
+    [] execVM "scripts\server\MySQLdata.sqf";
 
     [] execVM "scripts\server\worldObjectsOptions.sqf";
 

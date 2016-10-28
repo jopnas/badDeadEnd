@@ -15,17 +15,6 @@ removeHeadgear _playerUnit;
 removeGoggles _playerUnit;
 removeUniform _playerUnit;
 
-// Player Default Variables
-playerHunger        = 100;
-playerThirst        = 100;
-playerHealth        = 100;
-playerTemperature   = 100;
-playerNoise         = 0;
-playerWet           = 0;
-playerSick          = 0;
-playerInfected      = 0;
-playerPoisoning     = 0;
-
 if(!(_dbAll isEqualTypeArray []))then{
 	_playerPosition        = _db select 0;
 	_playerStance          = _db select 1;
@@ -44,34 +33,28 @@ if(!(_dbAll isEqualTypeArray []))then{
     _loadout               = _db select 12;
     _playersDog			   = _db select 13;
     _poisoning	           = _db select 14;
+    _radiation	           = _db select 15;
 
 	// Player Variables
-	playerHunger           = _hunger;
-	playerThirst           = _thirst;
-	playerHealth           = _health;
-	playerTemperature      = _temperature;
-	playerWet              = _wet;
-	playerSick             = _sick;
-	playerInfected         = _infected;
-    playerPoisoning        = _poisoning;
+    _playerUnit setVariable ["playerHunger",_hunger,true];
+    _playerUnit setVariable ["playerThirst",_thirst,true];
+    _playerUnit setVariable ["playerHealth",_health,true];
+    _playerUnit setVariable ["playerTemperature",_temperature,true];
+    _playerUnit setVariable ["playerWet",_wet,true];
+    _playerUnit setVariable ["playerSick",_sick,true];
+    _playerUnit setVariable ["playerInfected",_infected,true];
+    _playerUnit setVariable ["playerPoisoning",_poisoning,true];
+    _playerUnit setVariable ["playerRadiation",_radiation,true];
 
+    _playerUnit switchMove _playerStance;
     _playerUnit setUnitLoadout [_loadout, false];
-
-    switch(_playerStance)do{
-        case "CROUCH": {
-            _playerUnit switchMove "AmovPcrhMstpSrasWpstDnon_AadjPcrhMstpSrasWpstDdown";
-        };
-        case "PRONE": {
-            _playerUnit switchMove "AmovPpneMstpSnonWnonDnon";
-        };
-    };
 
 	// Set Position
     _playerUnit setDir _playerDirection;
     _playerUnit setPosATL _playerPosition;
 
     // Player's Dog
-    if(_playersDog != "")then{
+    /*if(_playersDog != "")then{
         _playersDog = createAgent [_playersDog, getPos _playerUnit, [], 0, ""];
         _playersDog setVariable["dogID", 0,false];
         _playersDog setVariable["bestFriend", "76561197984281873",false];
@@ -131,7 +114,7 @@ if(!(_dbAll isEqualTypeArray []))then{
             params["_dog"];
             [_dog,"dogWhine01",0,0] remoteExec ["bde_fnc_say3d",0,false];
         }];
-    };
+    };*/
 
   	_hitPointNames	= _playerDamage select 0;
 	_hitPointValues	= _playerDamage select 1;
@@ -148,6 +131,16 @@ if(!(_dbAll isEqualTypeArray []))then{
 	};
 
 }else{
+    _playerUnit setVariable ["playerHunger",100,true];
+    _playerUnit setVariable ["playerThirst",100,true];
+    _playerUnit setVariable ["playerHealth",100,true];
+    _playerUnit setVariable ["playerTemperature",100,true];
+    _playerUnit setVariable ["playerWet",0,true];
+    _playerUnit setVariable ["playerSick",0,true];
+    _playerUnit setVariable ["playerInfected",0,true];
+    _playerUnit setVariable ["playerPoisoning",0,true];
+    _playerUnit setVariable ["playerRadiation",0,true];
+
     _playerUnit setDamage 0;
     _isRespawn = true;
     _forests = selectBestPlaces [worldCenter, worldHalfSize, "(1 + (forest * 2) + (trees * 2)) * (1 - sea) * (1 - (houses * 2)) * (1 -  (meadow * 2)) * (1 - (deadBody * 2))", 30, 20];

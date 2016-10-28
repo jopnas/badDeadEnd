@@ -11,15 +11,26 @@ checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
 checkBoundingBox    = compile preprocessFile "scripts\tools\checkBoundingBox.sqf";
 checkAnimals		= compile preprocessFile "scripts\animals\checkAnimals.sqf";
 canLock		        = compile preprocessFile "scripts\barricade\canLock.sqf";
-gutAnimal		    = compile preprocessFile "scripts\animals\gutAnimal.sqf";
+//gutAnimal		    = compile preprocessFile "scripts\animals\gutAnimal.sqf";
 foodFuncs			= compile preprocessFile "scripts\food\food_funcs.sqf";
+
+// Player Variables
+playerHunger           = player getVariable ["playerHunger",100];
+playerThirst           = player getVariable ["playerThirst",100];
+playerHealth           = player getVariable ["playerHealth",100];
+playerTemperature      = player getVariable ["playerTemperature",100];
+playerWet              = player getVariable ["playerWet",0];
+playerSick             = player getVariable ["playerSick",0];
+playerInfected         = player getVariable ["playerInfected",0];
+playerPoisoning        = player getVariable ["playerPoisoning",0];
+playerRadiation        = player getVariable ["playerRadiation",0];
 
 closeToDoor = false;
 
 acidRain            = false;
 
 nextEverySecond     = 0;
-nextEveryHalfSecond = 0;
+//nextEveryHalfSecond = 0;
 
 barricade = objNull;
 
@@ -39,7 +50,7 @@ healthWaitTime      = 30;
 nextHealthDecr      = healthWaitTime;
 
 // Gut Animal
-gutAnimalActionAvailable = false;
+//gutAnimalActionAvailable = false;
 
 // Cook & Boil
 boilWaterAvailable      = false;
@@ -59,26 +70,26 @@ chopWood = {
     sleep 2;
     _woodHolder = createVehicle ["groundWeaponHolder",_theTreePos,[],0,"can_collide"];
 
-    _woodHolder addMagazineCargoGlobal ["bde_wood",1];
+    _woodHolder addItemCargoGlobal ["bde_wood",1];
     sleep 2;
-    _woodHolder addMagazineCargoGlobal ["bde_wood",1];
+    _woodHolder addItemCargoGlobal ["bde_wood",1];
     sleep 2;
-    _woodHolder addMagazineCargoGlobal ["bde_wood",1];
+    _woodHolder addItemCargoGlobal ["bde_wood",1];
     sleep 2;
-    _woodHolder addMagazineCargoGlobal ["bde_wood",1];
+    _woodHolder addItemCargoGlobal ["bde_wood",1];
     sleep 2;
-    _woodHolder addMagazineCargoGlobal ["bde_wood",1];
+    _woodHolder addItemCargoGlobal ["bde_wood",1];
     sleep 2;
-    _woodHolder addMagazineCargoGlobal ["bde_wood",1];
+    _woodHolder addItemCargoGlobal ["bde_wood",1];
     sleep 2;
-    _woodHolder addMagazineCargoGlobal ["bde_wood",1];
+    _woodHolder addItemCargoGlobal ["bde_wood",1];
     sleep 2;
-    _woodHolder addMagazineCargoGlobal ["bde_wood",1];
+    _woodHolder addItemCargoGlobal ["bde_wood",1];
     sleep 2;
-    _woodHolder addMagazineCargoGlobal ["bde_wood",1];
+    _woodHolder addItemCargoGlobal ["bde_wood",1];
     hideObjectGlobal _theTree;
 
-    cutText ["Choped Wood", "PLAIN DOWN"];
+    cutText ["tree felled", "PLAIN DOWN"];
 };
 
 // Watersources
@@ -185,8 +196,11 @@ player addAction ["Attach Window Barricade", {
 }, [], 6, false, false, "", "typeOf barricade == 'bde_barricade_win_one'", 10, false];
 
 //Lock Door
-attachLockAction    = player addAction["Attach Codelock","scripts\barricade\fnc_attachLock.sqf",[],0,false,false,"","closeToDoor && !(doorHasLock)"];
-lockAction          = player addAction["Use Codelock","scripts\barricade\fnc_lockdoor.sqf",[],0,false,false,"","closeToDoor && doorHasLock"];
+player addAction["Attach Codelock","scripts\barricade\fnc_attachLock.sqf",[],0,false,false,"","closeToDoor && !(doorHasLock)"];
+player addAction["Use Codelock","scripts\barricade\fnc_lockdoor.sqf",[],0,false,false,"","closeToDoor && doorHasLock"];
+
+// Gut Animal TEST
+player addAction["Gut Animal","scripts\animals\gutAnimal.sqf",[],6,true,true,"","(cursorObject isKindOf 'Animal') && (('bde_multitool' in magazines player) || && ('bde_knife' in magazines player))",1.5,false];
 
 while{true}do{
 	t=time;
@@ -279,13 +293,14 @@ while{true}do{
         [getPos player] remoteExec ["fnc_spawnLoot",2,false];
     };
 
-    if(t > nextEveryHalfSecond)then{
+    /*if(t > nextEveryHalfSecond)then{
         [] call updateUI;
         nextEveryHalfSecond = t + 0.5;
-    };
+    };*/
 
     if(t > nextEverySecond)then{
-        [player,[playerHunger,playerThirst,playerHealth,playerTemperature,playerWet,playerSick,playerInfected,playerPoisoning]] remoteExec ["fnc_savePlayerStats",2,false];
+        [player,[playerHunger,playerThirst,playerHealth,playerTemperature,playerWet,playerSick,playerInfected,playerPoisoning,playerRadiation]] remoteExec ["fnc_savePlayerStats",2,false];
+        [] call updateUI;
         nextEverySecond = t + 1;
     };
 
@@ -310,9 +325,10 @@ while{true}do{
 		};
 	} forEach _things;*/
 
-    // Gut Animals
+    /*/ Gut Animals
     if( _cursorObject distance2D player < 3 &&
-        _cursorObjectType in ["Rabbit_F","Goat_random_F","Sheep_random_F","Hen_random_F","Cock_random_F"] &&
+        //_cursorObjectType in ["Rabbit_F","Goat_random_F","Sheep_random_F","Hen_random_F","Cock_random_F"] &&
+        _cursorObjectType isKindOf "Animal" &&
         !(alive _cursorObject) &&
         _cursorObject getVariable["animalHasLoot",0] == 0)then{
         if(!gutAnimalActionAvailable)then{
@@ -326,7 +342,7 @@ while{true}do{
             gutAnimalActionAvailable = false;
             player removeAction gutAnimalAction;
         };
-    };
+    };*/
 
     if(_cursorObject distance2D player < 3 && "bde_hatchet" in magazines player && str (_cursorObject) find ": t_" > -1)then{
         if(!chopWoodActionAvailable)then{
@@ -417,11 +433,6 @@ while{true}do{
             "playerPoisoning:" + (str playerPoisoning)
             + "\nacidRain:" + (str acidRain)
             + "\n\n" + ([] call llw_fnc_getDateTime)
-            //+ "\nSunrise hour: " + str ([] call llw_fnc_getSunrise select 0)
-            //+ "\nSunset hour: " + str ([] call llw_fnc_getSunrise select 1)
-            //+ "\nSolar azimuth: " + str ([] call llw_fnc_getSunAngle select 1)+"°"
-            //+ "\nSolar elevation: " + str ([] call llw_fnc_getSunAngle select 0)+"°"
-            //+ "\nElevation at noon: " + str ([] call llw_fnc_getSunElevationNoon)+"°"
             + "\nSolar radiation: " + str _sunRadiation + " W/m²"
             + "\nAir: " + str ([] call llw_fnc_getTemperature select 0) +"°C"
             + "\nSea: " + str ([] call llw_fnc_getTemperature select 1) +"°C"

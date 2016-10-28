@@ -1,7 +1,10 @@
-params["_animal",/**/"_newPos"];
-_smallAnimals = ["Rabbit_F","Hen_random_F","Cock_random_F"];
-_bigAnimals = ["Goat_random_F","Sheep_random_F"];
-_animalType = typeOf _animal;
+private["_newPos"];
+_animal         = cursorObject;
+if (!(_animal isKindOf "Animal")) exitWith {};
+
+_smallAnimals   = ["Rabbit_F","Hen_random_F","Cock_random_F"];
+_bigAnimals     = ["Goat_random_F","Sheep_random_F"];
+_animalType     = typeOf _animal;
 
 if(_animal getVariable["animalHasLoot",0] == 0)then{
     _animal setVariable["animalHasLoot",1,true];

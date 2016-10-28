@@ -15,7 +15,7 @@ fnc_loadPlayerStats = {
         _PlayerUID = 12345;
     };
 
-	_result = call compile ("extDB2" callExtension format["0:SQL_PL_LOAD:SELECT PlayerPosition,PlayerStance,hunger,thirst,health,temperature,wet,sick,infected,playerDirection,playerDamage,currentWeapon,loadout,dog,poisoning FROM player WHERE PlayerUID='%1'",_PlayerUID]);
+	_result = call compile ("extDB2" callExtension format["0:SQL_PL_LOAD:SELECT PlayerPosition,PlayerStance,hunger,thirst,health,temperature,wet,sick,infected,playerDirection,playerDamage,currentWeapon,loadout,dog,poisoning,radiation FROM player WHERE PlayerUID='%1'",_PlayerUID]);
 
     waitUntil{count _result > 0 && _result select 0 > 0};
     [_playerUnit,(_result select 1) select 0,_result select 1] execVM "scripts\player\playerSpawn.sqf";
@@ -28,28 +28,29 @@ fnc_savePlayerStats = {
 	_PlayerUID  			= getPlayerUID _player;
 	_PlayerPosition 		= getPosATL _player;
 	_playerDirection 		= getDir _player;
-    _PlayerStance			= stance _player;
-    _PlayerWeapon          = currentWeapon _player;
+    _PlayerStance           = animationState _player;
+    _PlayerWeapon           = currentMuzzle _player;
 
-	_hunger      	= _playerStats select 0;
-	_thirst      	= _playerStats select 1;
-	_health      	= _playerStats select 2;
-	_temperature 	= _playerStats select 3;
-	_wet         	= _playerStats select 4;
-	_sick        	= _playerStats select 5;
-	_infected    	= _playerStats select 6;
-    _poisoning      = _playerStats select 7;
+	_hunger                 = _playerStats select 0;
+    _thirst                 = _playerStats select 1;
+    _health                 = _playerStats select 2;
+    _temperature            = _playerStats select 3;
+    _wet                    = _playerStats select 4;
+    _sick                   = _playerStats select 5;
+    _infected               = _playerStats select 6;
+    _poisoning              = _playerStats select 7;
+    _radiation              = _playerStats select 8;
 
-    _playerDamages  = getAllHitPointsDamage _player;
-	_playerDamage   = [_playerDamages select 0,_playerDamages select 2];
+    _playerDamages          = getAllHitPointsDamage _player;
+    _playerDamage           = [_playerDamages select 0,_playerDamages select 2];
 
-    _playerLoadout  = getUnitLoadout _player;
+    _playerLoadout          = getUnitLoadout _player;
 
 	if(_PlayerUID == "_SP_PLAYER_")then{
 		_PlayerUID = 12345;
 	};
 
-    _QueryInsUpd = format["0:SQL_PL_SAVE:INSERT INTO player (PlayerUID,PlayerPosition,PlayerStance,hunger,thirst,health,temperature,wet,sick,infected,playerDirection,playerDamage,currentWeapon,loadout,poisoning) VALUES('%1','%2','""%3""','%4','%5','%6','%7','%8','%9','%10','%11','%12','""%13""','%14','%15') ON DUPLICATE KEY UPDATE PlayerPosition='%2',PlayerStance='""%3""',hunger='%4',thirst='%5',health='%6',temperature='%7',wet='%8',sick='%9',infected='%10',playerDirection='%11', playerDamage='%12', currentWeapon='""%13""', loadout='%14', poisoning='%15'",
+    _QueryInsUpd = format["0:SQL_PL_SAVE:INSERT INTO player (PlayerUID,PlayerPosition,PlayerStance,hunger,thirst,health,temperature,wet,sick,infected,playerDirection,playerDamage,currentWeapon,loadout,poisoning,radiation) VALUES('%1','%2','""%3""','%4','%5','%6','%7','%8','%9','%10','%11','%12','""%13""','%14','%15','%16') ON DUPLICATE KEY UPDATE PlayerPosition='%2',PlayerStance='""%3""',hunger='%4',thirst='%5',health='%6',temperature='%7',wet='%8',sick='%9',infected='%10',playerDirection='%11', playerDamage='%12', currentWeapon='""%13""', loadout='%14', poisoning='%15', radiation='%16'",
 		_PlayerUID,
 		_PlayerPosition,
 		_PlayerStance,
@@ -64,7 +65,8 @@ fnc_savePlayerStats = {
         _playerDamage,
         _PlayerWeapon,
         _playerLoadout,
-        _poisoning];
+        _poisoning,
+        _radiation];
     _saveIs = "extDB2" callExtension _QueryInsUpd;
 };
 
