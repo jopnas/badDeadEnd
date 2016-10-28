@@ -601,7 +601,6 @@ class codelockGUI {
             y = 0.236103 * safezoneH + safezoneY;
             w = 0.246354 * safezoneW;
             h = 0.527794 * safezoneH;
-            style = 48;
             colorBackground[] = {0,0,0,0};
             colorText[] = {1,1,1,1};
         };
@@ -704,6 +703,63 @@ class codelockGUI {
             x = 0.545833 * safezoneW + safezoneX;
             y = 0.620953 * safezoneH + safezoneY;
             action = "systemChat 'codelock_hashtag';";
+        };
+    };
+};
+
+class lockpickGUI {
+    idd = 6907;
+    movingEnable = 0;
+
+    class ControlsBackground
+    {
+        class lockBackground: RscPicture
+        {
+            idc = 1214;
+            text = "images\gui\codelock\codelock.paa";
+            x = 0.379688 * safezoneW + safezoneX;
+            y = 0.236103 * safezoneH + safezoneY;
+            w = 0.15 * safezoneW;
+            h = 0.15 * safezoneH;
+            colorBackground[] = {0,0,0,0};
+            colorText[] = {1,1,1,1};
+        };
+    };
+
+    class Controls
+    {
+        class lock: RscPicture
+        {
+            idc = 1600;
+            text = "images\gui\codelock\codelock_5.paa";
+            x = 0.379688 * safezoneW + safezoneX;
+            y = 0.236103 * safezoneH + safezoneY;
+            w = 0.15 * safezoneW;
+            h = 0.15 * safezoneH;
+            colorBackground[] = {0,0,0,0};
+            colorText[] = {1,1,1,1};
+        };
+        class lockpick1: RscPicture
+        {
+            idc = 1601;
+            text = "images\gui\codelock\codelock_asterisk.paa";
+            x = 0.379688 * safezoneW + safezoneX;
+            y = 0.236103 * safezoneH + safezoneY;
+            w = 0.15 * safezoneW;
+            h = 0.15 * safezoneH;
+            colorBackground[] = {0,0,0,0};
+            colorText[] = {1,1,1,1};
+        };
+        class lockpick2: RscPicture
+        {
+            idc = 1602;
+            text = "images\gui\codelock\codelock_hashtag.paa";
+            x = 0.379688 * safezoneW + safezoneX;
+            y = 0.236103 * safezoneH + safezoneY;
+            w = 0.15 * safezoneW;
+            h = 0.15 * safezoneH;
+            colorBackground[] = {0,0,0,0};
+            colorText[] = {1,1,1,1};
         };
     };
 };
