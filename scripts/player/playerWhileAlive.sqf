@@ -11,7 +11,6 @@ checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
 checkBoundingBox    = compile preprocessFile "scripts\tools\checkBoundingBox.sqf";
 checkAnimals		= compile preprocessFile "scripts\animals\checkAnimals.sqf";
 canLock		        = compile preprocessFile "scripts\barricade\canLock.sqf";
-//gutAnimal		    = compile preprocessFile "scripts\animals\gutAnimal.sqf";
 foodFuncs			= compile preprocessFile "scripts\food\food_funcs.sqf";
 
 // Player Variables
@@ -49,9 +48,6 @@ nextThirstDecr      = thirstWaitTime;
 healthWaitTime      = 30;
 nextHealthDecr      = healthWaitTime;
 
-// Gut Animal
-//gutAnimalActionAvailable = false;
-
 // Cook & Boil
 boilWaterAvailable      = false;
 cookCannedFoodAvailable = false;
@@ -59,7 +55,6 @@ cookMeatAvailable  		= false;
 eatCookedFoodAvailable  = false;
 
 // Wood
-chopWoodActionAvailable = false;
 chopWood = {
     _theTree = _this select 0;
     _theTreePos = getPosATL _theTree;
@@ -167,7 +162,7 @@ player addEventHandler ["Fired", {
 player addAction["Holster Weapon",{
     player action["SwitchWeapon",player,player,100];
     player switchCamera cameraView;
-},[],0,false,false];
+},[],0,false,false,"","currentWeapon player != ''"];
 
 // Start Barricade
 barricadeStartAction = player addAction["Create Barricade","scripts\barricade\fnc_startBarricde.sqf",[],0,false,false,"","isInside && (barricade isEqualTo objNull) && ({_x == 'bde_nails'} count magazines player) >= 2 && ('bde_hammer' in (magazines player)) && ('bde_plank' in (magazines player))"];
@@ -199,8 +194,18 @@ player addAction ["Attach Window Barricade", {
 player addAction["Attach Codelock","scripts\barricade\fnc_attachLock.sqf",[],0,false,false,"","closeToDoor && !(doorHasLock)"];
 player addAction["Use Codelock","scripts\barricade\fnc_lockdoor.sqf",[],0,false,false,"","closeToDoor && doorHasLock"];
 
-// Gut Animal TEST
-player addAction["Gut Animal","scripts\animals\gutAnimal.sqf",[],6,true,true,"","(cursorObject isKindOf 'Animal') && (('bde_multitool' in magazines player) || && ('bde_knife' in magazines player))",1.5,false];
+// Gut Animal
+player addAction["Gut Animal","scripts\animals\gutAnimal.sqf",[],6,true,true,"","(cursorObject isKindOf 'Animal') && (('bde_multitool' in magazines player) || ('bde_knife' in magazines player)) && (player distance cursorObject < 2) && !(alive cursorObject)"];
+
+// Chop Wood
+player addAction["chop wood",{
+    [cursorObject] call chopWood;
+},[],6,true,true,"","('bde_hatchet' in magazines player) && (str (cursorObject) find ': t_' > -1) && (player distance2d cursorObject < 3)"];
+
+// Drink Water
+player addAction["drink clean water",{
+    [] call drinkWater;
+},_cursorObject,6,true,true,"","(cursorObject distance player < 2) && (str (getModelInfo cursorObject) find 'watertank' > -1 || str (getModelInfo cursorObject) find 'waterbarrel' > -1 || str (getModelInfo cursorObject) find 'barrelwater' > -1 || str (getModelInfo cursorObject) find 'stallwater' > -1 || str (getModelInfo cursorObject) find 'water_source' > -1)"];
 
 while{true}do{
 	t=time;
@@ -325,40 +330,7 @@ while{true}do{
 		};
 	} forEach _things;*/
 
-    /*/ Gut Animals
-    if( _cursorObject distance2D player < 3 &&
-        //_cursorObjectType in ["Rabbit_F","Goat_random_F","Sheep_random_F","Hen_random_F","Cock_random_F"] &&
-        _cursorObjectType isKindOf "Animal" &&
-        !(alive _cursorObject) &&
-        _cursorObject getVariable["animalHasLoot",0] == 0)then{
-        if(!gutAnimalActionAvailable)then{
-            gutAnimalAction = player addAction["Gut Animal",{
-                [_this select 3] call gutAnimal;
-            },_cursorObject,6,true,true,"",""];
-            gutAnimalActionAvailable = true;
-        };
-    }else{
-        if(gutAnimalActionAvailable)then{
-            gutAnimalActionAvailable = false;
-            player removeAction gutAnimalAction;
-        };
-    };*/
-
-    if(_cursorObject distance2D player < 3 && "bde_hatchet" in magazines player && str (_cursorObject) find ": t_" > -1)then{
-        if(!chopWoodActionAvailable)then{
-            chopWoodAction = player addAction["chop wood",{
-                [_this select 3] call chopWood;
-            },_cursorObject,6,true,true,"",""];
-            chopWoodActionAvailable = true;
-        };
-    }else{
-        if(chopWoodActionAvailable)then{
-            chopWoodActionAvailable = false;
-            player removeAction chopWoodAction;
-        };
-    };
-
-    if(_cursorObject distance2D player < 3 && str (getModelInfo _cursorObject) find "watertank" > -1 || str (getModelInfo _cursorObject) find "waterbarrel" > -1 || str (getModelInfo _cursorObject) find "barrelwater" > -1 || str (getModelInfo _cursorObject) find "stallwater" > -1 || str (getModelInfo _cursorObject) find "water_source" > -1)then{
+    /*if(_cursorObject distance player < 2 && (str (getModelInfo _cursorObject) find "watertank" > -1 || str (getModelInfo _cursorObject) find "waterbarrel" > -1 || str (getModelInfo _cursorObject) find "barrelwater" > -1 || str (getModelInfo _cursorObject) find "stallwater" > -1 || str (getModelInfo _cursorObject) find "water_source" > -1) )then{
         if(!drinkActionAvailable)then{
             drinkAction = player addAction["drink clean water",{
                 [] call drinkWater;
@@ -370,7 +342,7 @@ while{true}do{
             drinkActionAvailable = false;
             player removeAction drinkAction;
         };
-    };
+    };*/
 
 	// Fireplace Check
 	if(inflamed _cursorObject) then {
@@ -437,6 +409,8 @@ while{true}do{
             + "\nAir: " + str ([] call llw_fnc_getTemperature select 0) +"°C"
             + "\nSea: " + str ([] call llw_fnc_getTemperature select 1) +"°C"
             + "\nPlayer in shadow: " + str _isInShadow
+            + "\ncursor object: " + str cursorobject
+            + "\ncursor object class: " + typeOf cursorobject
             + "\n\nTry fiddling with time, date, overcast, and fog."
     );
 };

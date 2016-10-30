@@ -1,6 +1,8 @@
 worldHalfSize   = (getNumber (configFile >> "CfgWorlds" >> worldName >> "mapSize") / 2);
 worldCenter     = [worldHalfSize,worldHalfSize,0];
 
+[] execVM "scripts\tools\globalFuncs.sqf";
+
 if(isServer)then{
     setTimeMultiplier 5; // 0.1 - 120
 
@@ -32,5 +34,4 @@ if(isServer)then{
 };
 
 [] execVM "scripts\tools\burnObject.sqf";
-[] execVM "scripts\tools\globalFuncs.sqf";
 [] execVM "LLW_Climate\loadFunctions.sqf";

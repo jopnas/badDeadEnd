@@ -1,6 +1,6 @@
 author="NotSure & Grandmaster-G";
 OnLoadName = "Bad Dead End v0.4";
-OnLoadMission = "la la la";
+OnLoadMission = "prepare to survive";
 OnLoadIntro = "";
 OnLoadIntroTime = 0;
 OnLoadMissionTime = 0;
@@ -43,16 +43,16 @@ showNotePad = 0;
 // Disable dropping items while swimming
 enableItemsDropping = 0
 
-respawn = "BASE"; // Respawn type. 0:"NONE", 1:"BIRD", 2:"INSTANT", 3:"BASE", 4:"GROUP", 5:"SIDE"
+respawn = "INSTANT"; // Respawn type. 0:"NONE", 1:"BIRD", 2:"INSTANT", 3:"BASE", 4:"GROUP", 5:"SIDE"
 respawndelay = 5; // Delay in seconds before playable unit respawns.
-respawnVehicleDelay = 100; // Delay in seconds before vehicle respawns.
+respawnVehicleDelay = 100000; // Delay in seconds before vehicle respawns.
 respawnDialog = 0; // 0 to disable the score table (it can still be opened manually by pressing 'P' key).
 respawnTemplates[] = {}; // Respawn templates from CfgRespawnTemplates. You can combine any number of them together.
 respawnOnStart = 0; // 1 to respawn player when he joins the game. Available only for INSTANT and BASE respawn types.
 aikills = 0; // When 1, the score table contains score of all playable units as opposed to players only.
 
 // Revive
-ReviveMode = 2;                         //0: disabled, 1: enabled, 2: controlled by player attributes
+ReviveMode = 0;                         //0: disabled, 1: enabled, 2: controlled by player attributes
 ReviveUnconsciousStateMode = 2;         //0: basic, 1: advanced, 2: realistic
 ReviveRequiredTrait = 0;                //0: none, 1: medic trait is required
 ReviveRequiredItems = 2;                //0: none, 1: medkit, 2: medkit or first aid kit
@@ -614,7 +614,7 @@ class codelockGUI {
             text = "";
             x = 0.396875 * safezoneW + safezoneX;
             y = 0.258094 * safezoneH + safezoneY;
-            action = "lockcode pushBack 1;systemChat str lockcode";
+            action = "lockcode pushBack 1;";
         };
         class codelock_button_2: codelockButton
         {
@@ -622,7 +622,7 @@ class codelockGUI {
             text = "";
             x = 0.471354 * safezoneW + safezoneX;
             y = 0.258094 * safezoneH + safezoneY;
-            action = "lockcode pushBack 2;systemChat str lockcode";
+            action = "lockcode pushBack 2;";
         };
         class codelock_button_3: codelockButton
         {
@@ -630,7 +630,7 @@ class codelockGUI {
             text = "images\gui\codelock\codelock_3.paa";
             x = 0.545833 * safezoneW + safezoneX;
             y = 0.258094 * safezoneH + safezoneY;
-            action = "lockcode pushBack 3;systemChat str lockcode";
+            action = "lockcode pushBack 3;";
         };
         class codelock_button_4: codelockButton
         {
@@ -638,7 +638,7 @@ class codelockGUI {
             text = "images\gui\codelock\codelock_4.paa";
             x = 0.396875 * safezoneW + safezoneX;
             y = 0.379047 * safezoneH + safezoneY;
-            action = "lockcode pushBack 4;systemChat str lockcode";
+            action = "lockcode pushBack 4;";
         };
         class codelock_button_5: codelockButton
         {
@@ -646,7 +646,7 @@ class codelockGUI {
             text = "images\gui\codelock\codelock_5.paa";
             x = 0.471354 * safezoneW + safezoneX;
             y = 0.379047 * safezoneH + safezoneY;
-            action = "lockcode pushBack 5;systemChat str lockcode";
+            action = "lockcode pushBack 5;";
         };
         class codelock_button_6: codelockButton
         {
@@ -654,7 +654,7 @@ class codelockGUI {
             text = "images\gui\codelock\codelock_6.paa";
             x = 0.545833 * safezoneW + safezoneX;
             y = 0.379047 * safezoneH + safezoneY;
-            action = "lockcode pushBack 6;systemChat str lockcode";
+            action = "lockcode pushBack 6;";
         };
         class codelock_button_7: codelockButton
         {
@@ -662,7 +662,7 @@ class codelockGUI {
             text = "images\gui\codelock\codelock_7.paa";
             x = 0.396875 * safezoneW + safezoneX;
             y = 0.5 * safezoneH + safezoneY;
-            action = "lockcode pushBack 7;systemChat str lockcode";
+            action = "lockcode pushBack 7;";
         };
         class codelock_button_8: codelockButton
         {
@@ -670,7 +670,7 @@ class codelockGUI {
             text = "images\gui\codelock\codelock_8.paa";
             x = 0.471354 * safezoneW + safezoneX;
             y = 0.5 * safezoneH + safezoneY;
-            action = "lockcode pushBack 8;systemChat str lockcode";
+            action = "lockcode pushBack 8;";
         };
         class codelock_button_9: codelockButton
         {
@@ -678,7 +678,7 @@ class codelockGUI {
             text = "images\gui\codelock\codelock_9.paa";
             x = 0.545833 * safezoneW + safezoneX;
             y = 0.5 * safezoneH + safezoneY;
-            action = "lockcode pushBack 9;systemChat str lockcode";
+            action = "lockcode pushBack 9;";
         };
         class codelock_button_asterisk: codelockButton
         {
@@ -694,7 +694,7 @@ class codelockGUI {
             text = "images\gui\codelock\codelock_0.paa";
             x = 0.471354 * safezoneW + safezoneX;
             y = 0.620953 * safezoneH + safezoneY;
-            action = "lockcode pushBack 0;systemChat str lockcode";
+            action = "lockcode pushBack 0;";
         };
         class codelock_button_hashtag: codelockButton
         {

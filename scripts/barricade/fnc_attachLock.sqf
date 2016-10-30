@@ -58,7 +58,9 @@ _house setVariable [format["bde_door_%1_has_lock",_doorNr],true,true];
 _codelockGuiOK = createDialog "codelockGui";
 waitUntil {_codelockGuiOK && count lockcode == 4};
 closeDialog 6906;
-systemChat format["Locked with code %1", lockcode];
+
+cutText [format["Locked with code %1", toString lockcode], "PLAIN DOWN"];
+
 _house setVariable [format["bde_door_%1_code",_doorNr],lockcode,true];
 [format["%1:%2",parseNumber ((str(_house) splitString " ") select 1),_doorNr],_doorNr,getPos _house,lockcode,getPlayerUID player,0] remoteExec ["bde_fnc_saveDoor",2,false];
 

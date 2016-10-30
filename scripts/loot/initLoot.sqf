@@ -11,30 +11,28 @@ fnc_spawnLoot = {
 
   // Military Lootlists
   _itemsMil             = ["bde_gasmask","bde_gasmask_wasted","bde_gasmask_filter","bde_gasmask_empty","ItemGPS","Rangefinder","NVGoggles","Laserdesignator","Laserdesignator_02","Laserdesignator_03"];
-
   // Civilian Lootlists
   _itemsCiv             = ["ItemWatch","ItemCompass","ItemMap","Binocular","FirstAidKit","Medikit"];
-
   // ConstructionBuilding Items
   _constructionItems    = ["bde_matches","bde_lock","bde_wood","bde_hammer","bde_nails","bde_plank","bde_cable","bde_stone","bde_codelock_panel"];
-  _constructionItems append _bottles;
-  _constructionItems append _canteen;
 
   // BDE Mod Items
   _foodItems            = ["bde_apple","bde_canunknown","bde_canpasta","bde_sodacan_01","bde_antibiotics","bde_vitamines"];
-  _foodItems append array2
   _medicalItems	        = ["bde_gasmask_filter","bde_gasmask_empty","bde_antiradiationtablets","bde_waterpurificationtablets","bde_antibiotics","bde_vitamines"];
   _toolItems            = ["bde_scarf","bde_matches","bde_lock","bde_hatchet","bde_zippo","bde_codelock_panel","bde_codelock"];
-  _toolItems append _ducttapes;
 
+  // Building Stuff
   _garageStuff          = ["bde_camonetSmallPacked","bde_camonetBigPacked","bde_camonetVehiclesPacked","bde_tentCamoPacked","bde_tentDomePacked","bde_wheel","bde_fuelCanisterEmpty","bde_fuelCanisterFilled","bde_wrench","bde_multitool"];
-
   _garagesNames         = ["Land_i_Garage_V1_F","Land_i_Garage_V1_dam_F","Land_i_Garage_V2_F","Land_i_Garage_V2_dam_F"];
   _pierNames         	= ["Land_Pier_F","Land_Pier_Box_F","Land_Pier_wall_F"];
   _bridgeNames         	= ["Land_Bridge_01_PathLod_F","Land_Bridge_Asphalt_PathLod_F","Land_Bridge_Concrete_PathLod_F","Land_Bridge_HighWay_PathLod_F"];
   _BuildingsExclude     = _pierNames + _bridgeNames;
 
+  // Furniture
   _furnituresCivil      =["Land_ChairWood_F","Land_Metal_rack_F","Land_Rack_F","Land_Metal_wooden_rack_F","Land_ShelvesWooden_khaki_F","Land_ShelvesWooden_F","Land_WoodenTable_small_F","Land_WoodenTable_large_F","Land_ChairPlastic_F"];
+
+  _constructionItems append [_bottles,_canteen];
+  _foodItems append [_canteen,_bottles,_ducttapes];
 
   _buildings = nearestObjects [_playerPosition, ["Building"], 50];
   {
