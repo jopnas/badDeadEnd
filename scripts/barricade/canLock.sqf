@@ -10,7 +10,7 @@ for "_i" from 1 to _doorCount do {
     _doorTriggerPos = _building selectionPosition format["Door_%1_trigger",_i];
     _relPlayerPos   = _building worldToModel getPosATL player;
     _thisDistance   = _doorTriggerPos distance _relPlayerPos;
-    if(_thisDistance < _closestDoorDist || _closestDoorDist < 0)then{
+    if((_thisDistance < _closestDoorDist || _closestDoorDist < 0) && !(_building selectionPosition format["Door_handle_%1_axis",_i] isEqualTo [0,0,0]) )then{
         _closestDoorDist    = _thisDistance;
         _closestDoor        = format["door_%1",_i];
         _closestDoorNo      = _i;

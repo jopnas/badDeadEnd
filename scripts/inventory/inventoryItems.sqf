@@ -1,6 +1,8 @@
 disableSerialization;
 private["_idcData","_cargoType","_clickPos","_idc","_selectedIndex","_classname","_description","_index","_pic","_buildFireplace","_needCountOfWood","_needCountOfStone","_actionTexts"];
 
+inventoryActions = compile preprocessFile "scripts\inventory\inventoryActions.sqf";
+
 _idc            = _this select 0;
 _selectedIndex  = _this select 1;
 _cargoData      = _this select 2;
@@ -14,18 +16,21 @@ _description    = lbText [_idc, _selectedIndex];
 _index          = lbValue [_idc, _selectedIndex];
 _pic 	        = lbPicture [_idc, _selectedIndex];
 
+_itemActionNames    = getArray (configFile >> "CfgMagazines" >> _classname >> "itemActionNames");
+_itemActionOutputs  = getArray (configFile >> "CfgMagazines" >> _classname >> "itemActionOutputs");
+if( !(_itemActionNames isEqualTo []) )exitWith{
+    [_itemActionNames,_itemActionOutputs,_classname,_cargoType,_clickPos] execVM "scripts\inventory\inventoryItemUse.sqf";
+};
+
 // Functions
-inventoryActions = compile preprocessFile "scripts\inventory\inventoryActions.sqf";
 _showInventoryActions = {
-    params["_classname","_cargoType","_actionNames","_cargoCtrl"];
+    params["_classname","_cargoType","_actionNames"];
 
     if(_actionNames isEqualType [])then{
-        //_invActionLB = findDisplay 602 ctrlCreate ["RscListbox", 2501];
         _invActionLB = findDisplay 602 ctrlCreate ["InventoryActionMenu", 2501];
 
         {
             lbAdd[2501,_x];
-            //lbSetColor [2501, _forEachIndex, [1,0,0,1]];
         } forEach _actionNames;
 
         _invActionPos       = ctrlPosition _invActionLB;
@@ -156,4 +161,4 @@ switch(_classname) do {
     };
 };
 
-[_classname,_cargoType,_actionTexts,_cargoCtrl] call _showInventoryActions;
+[_classname,_cargoType,_actionTexts] call _showInventoryActions;

@@ -18,8 +18,6 @@ _posX           = _doorRotPos select 0;
 _posY           = _doorRotPos select 1;
 _posZ           = _doorTriPos select 2;
 
-//systemChat format["%1",[_doorRotX,_doorRotY,_doorTriZ]];
-
 if(abs(_doorRotX - _doorTriX) > abs(_doorRotY - _doorTriY))then{
     _dir = "x";
 }else{
@@ -40,5 +38,4 @@ if(_dir == "x")then{
     };
 };
 
-//[_dir,_building modelToWorld [_doorRotX,_doorRotY,_doorTriZ],_doorRotPos distance2D _doorTriPos]
 [_dir,_building modelToWorld _doorHandlePos,_doorRotPos distance2D _doorTriPos]

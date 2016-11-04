@@ -23,16 +23,8 @@ if(_doorDataDir == "x")then{
     _codelock2 setDir ((getDir _house) + 90);
 };
 
-_wallCheck1 = lineIntersectsSurfaces [AGLToASL (_codelock1 modelToWorld [_doorDataTrigRotDistance * 2,0.5,0]), AGLToASL (_codelock1 modelToWorld [-(_doorDataTrigRotDistance * 2),0.5,0]), player, objNull, true, 1, "GEOM", "NONE"];
-_wallCheck2 = lineIntersectsSurfaces [AGLToASL (_codelock2 modelToWorld [-(_doorDataTrigRotDistance * 2),0.5,0]), AGLToASL (_codelock2 modelToWorld [_doorDataTrigRotDistance * 2,0.5,0]), player, objNull, true, 1, "GEOM", "NONE"];
-
-/*_posWallCheck1 = _wallCheck1 select 0;
-_posWallCheck2 = _wallCheck2 select 0;
-
-//systemChat format["%1",_wallCheck1];
-
-_codelock1 setPosATL _posWallCheck1;
-_codelock2 setPosATL _posWallCheck2;*/
+_wallCheck1 = lineIntersectsSurfaces [AGLToASL [0,0.5,0], AGLToASL [0,0.5,0], player, objNull, true, 1, "GEOM", "NONE"];
+_wallCheck2 = lineIntersectsSurfaces [AGLToASL [0,0.5,0], AGLToASL [0,0.5,0], player, objNull, true, 1, "GEOM", "NONE"];
 
 {
     if( _x select 2 == _house)exitWith{
@@ -59,7 +51,7 @@ _codelockGuiOK = createDialog "codelockGui";
 waitUntil {_codelockGuiOK && count lockcode == 4};
 closeDialog 6906;
 
-cutText [format["Locked with code %1", toString lockcode], "PLAIN DOWN"];
+cutText [format["Locked with code %1", lockcode], "PLAIN DOWN"];
 
 _house setVariable [format["bde_door_%1_code",_doorNr],lockcode,true];
 [format["%1:%2",parseNumber ((str(_house) splitString " ") select 1),_doorNr],_doorNr,getPos _house,lockcode,getPlayerUID player,0] remoteExec ["bde_fnc_saveDoor",2,false];
