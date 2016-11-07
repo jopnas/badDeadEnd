@@ -207,9 +207,19 @@ player addAction["drink clean water",{
     [] call drinkWater;
 },_cursorObject,6,true,true,"","(cursorObject distance player < 2) && (str (getModelInfo cursorObject) find 'watertank' > -1 || str (getModelInfo cursorObject) find 'waterbarrel' > -1 || str (getModelInfo cursorObject) find 'barrelwater' > -1 || str (getModelInfo cursorObject) find 'stallwater' > -1 || str (getModelInfo cursorObject) find 'water_source' > -1)"];
 
+endLoadingScreen;
+// Player Init Situation
+if(_isRespawn)then{
+	playSound "feeepSound0";
+    addCamShake [10, 10, 50];
+};
+5 fadeSound 3;
+5 fadeMusic 3;
+cutText ["Welcome to BadDeadEnd ...", "BLACK IN", 5];
+
 while{true}do{
 	t=time;
-    "dog 0" setMarkerPos getPos (player getVariable "playersDog");
+    //"dog 0" setMarkerPos getPos (player getVariable "playersDog");
 
     //_speed              = speed (vehicle player);
 

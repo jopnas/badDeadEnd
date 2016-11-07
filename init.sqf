@@ -1,6 +1,10 @@
 worldHalfSize   = (getNumber (configFile >> "CfgWorlds" >> worldName >> "mapSize") / 2);
 worldCenter     = [worldHalfSize,worldHalfSize,0];
 
+if(!isDedicated)then{
+    startLoadingScreen ["Loading My Mission"];
+};
+
 [] execVM "scripts\tools\globalFuncs.sqf";
 
 if(isServer)then{
@@ -30,7 +34,6 @@ if(isServer)then{
     [] execVM "scripts\server\sqlLoadDogs.sqf";
     [] execVM "scripts\server\sqlLoadBarricades.sqf";
     [] execVM "scripts\server\sqlLoadDoors.sqf";
-
 };
 
 [] execVM "scripts\tools\burnObject.sqf";

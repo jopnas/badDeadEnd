@@ -201,15 +201,3 @@ _initInventoryActionHandler = [_playerUnit] spawn {
         if(!(alive _playerUnit)) exitWith {};
 	};
 };
-
-// Player Init Situation
-if(_isRespawn)then{
-	_playerUnit switchMove "AmovPpneMstpSnonWnonDnon";
-	playSound "feeepSound0";
-    addCamShake [10, 10, 50];
-};
-
-5 fadeSound 3;
-5 fadeMusic 3;
-
-cutText ["Welcome to BadDeadEnd ...", "BLACK IN", 5];
