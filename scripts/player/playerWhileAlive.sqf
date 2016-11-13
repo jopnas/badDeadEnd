@@ -1,3 +1,5 @@
+params["_playerUnit","_isRespawn"];
+
 // nützlich für ghost objects? https://community.bistudio.com/wiki/createSimpleObject
 // https://community.bistudio.com/wiki/createSimpleObject/objects
 
@@ -208,6 +210,7 @@ player addAction["drink clean water",{
 },_cursorObject,6,true,true,"","(cursorObject distance player < 2) && (str (getModelInfo cursorObject) find 'watertank' > -1 || str (getModelInfo cursorObject) find 'waterbarrel' > -1 || str (getModelInfo cursorObject) find 'barrelwater' > -1 || str (getModelInfo cursorObject) find 'stallwater' > -1 || str (getModelInfo cursorObject) find 'water_source' > -1)"];
 
 endLoadingScreen;
+
 // Player Init Situation
 if(_isRespawn)then{
 	playSound "feeepSound0";

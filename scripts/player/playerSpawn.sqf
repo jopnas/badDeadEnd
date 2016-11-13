@@ -157,7 +157,7 @@ _playerUnit addAction["Arsenal",{
 },[],1,false,false,"",""];
 
 // Player Init
-[_playerUnit] execVM "scripts\player\playerWhileAlive.sqf";
+[_playerUnit,_isRespawn] execVM "scripts\player\playerWhileAlive.sqf";
 
 // Init BDE GUI
 3 cutRsc ['playerStatusGUI', 'PLAIN',3];

@@ -43,7 +43,7 @@ showNotePad = 0;
 // Disable dropping items while swimming
 enableItemsDropping = 0
 
-respawn = "INSTANT"; // Respawn type. 0:"NONE", 1:"BIRD", 2:"INSTANT", 3:"BASE", 4:"GROUP", 5:"SIDE"
+respawn = "BASE"; // Respawn type. 0:"NONE", 1:"BIRD", 2:"INSTANT", 3:"BASE", 4:"GROUP", 5:"SIDE"
 respawndelay = 5; // Delay in seconds before playable unit respawns.
 respawnVehicleDelay = 100000; // Delay in seconds before vehicle respawns.
 respawnDialog = 0; // 0 to disable the score table (it can still be opened manually by pressing 'P' key).
