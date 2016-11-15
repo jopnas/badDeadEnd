@@ -160,7 +160,7 @@ _playerUnit addAction["Arsenal",{
 [_playerUnit,_isRespawn] execVM "scripts\player\playerWhileAlive.sqf";
 
 // Init BDE GUI
-3 cutRsc ['playerStatusGUI', 'PLAIN',3];
+3 cutRsc ['playerStatusGUI', 'PLAIN',3,false];
 
 // Action Eventhandler
 actionHandler = compile preprocessFile "scripts\player\actionHandler.sqf";
