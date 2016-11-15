@@ -6,7 +6,7 @@ fnc_spawnLoot = {
   _clothes              = headgears + vests + uniforms;
 
   _ducttapes            = ["bde_ducttape","bde_ducttape_6","bde_ducttape_5","bde_ducttape_4","bde_ducttape_3","bde_ducttape_2","bde_ducttape_1","bde_ducttape_empty"];
-  _bottles              = ["bde_bottleclean","bde_bottleclean_3_4","bde_bottleclean_2_4","bde_bottleclean_1_4","bde_bottleempty","bde_bottlefilled","bde_bottleuseless"];
+  _bottles              = ["bde_bottleclean","bde_bottleclean_3_4","bde_bottleclean_2_4","bde_bottleclean_1_4","bde_bottleempty","bde_bottledirty","bde_bottleuseless"];
   _canteen              = ["bde_canteenfilled","bde_canteenfilled_3_4","bde_canteenfilled_2_4","bde_canteenfilled_1_4","bde_canteenempty"];
 
   // Military Lootlists
