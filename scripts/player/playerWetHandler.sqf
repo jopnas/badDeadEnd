@@ -7,7 +7,7 @@ _playerVest			= vest _player;
 _playerBackpack		= backpack _player;
 _headgear 		    = headgear _player;
 
-_playerWetness  = playerWet;
+_playerWetness  = _player getVariable ["playerWet",0];
 
 if(rain > 0 && !_isUnderCover && !_isInCar)then{
     _getWetVal = 0.2;
@@ -57,4 +57,4 @@ if(_playerWetness > 100)then{
 	_playerWetness = 100;
 };
 
-playerWet = _playerWetness;
+_player setVariable ["playerWet",_playerWetness,true];

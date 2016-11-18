@@ -9,26 +9,27 @@ _headgear 		    = headgear _player;
 
 _clothBonus       = 0;
 
-_playerUnitTemperature = playerTemperature;
+_playerUnitTemperature = _player getVariable ["playerTemperature",100];
+_playerWet = _player getVariable ["playerWet",100];
 
-if(playerWet >= 50)then{
+if(_playerWet >= 50)then{
     if(_isInShadow)then{
-        _cooldownVal = (playerWet/100);
+        _cooldownVal = (_playerWet/100);
     }else{
-        _cooldownVal = (playerWet/200);
+        _cooldownVal = (_playerWet/200);
     };
 	_playerUnitTemperature = _playerUnitTemperature - _cooldownVal;
 };
 
-if(playerWet < 50 && !_isInShadow)then{
+if(_playerWet < 50 && !_isInShadow)then{
     _playerUnitTemperature = _playerUnitTemperature + 0.5 + (_sunRadiation/10);
 };
 
-if((_isInside || _isInCar) && playerWet < 20)then{
+if((_isInside || _isInCar) && _playerWet < 20)then{
 	_playerUnitTemperature = _playerUnitTemperature + 0.1;
 };
 
-if(count _nearestFireplaces > 0 && !_isInCar && playerWet < 20)then{
+if(count _nearestFireplaces > 0 && !_isInCar && _playerWet < 20)then{
 	_playerUnitTemperature = _playerUnitTemperature + (count(_nearestFireplaces) / 2);
 };
 
@@ -68,7 +69,7 @@ if(_playerUnitTemperature > 100)then{
 	_playerUnitTemperature = 100;
 };
 
-playerTemperature = _playerUnitTemperature;
+_player setVariable ["playerTemperature",_playerUnitTemperature,true];
 
 if(_playerUnitTemperature < 20)then{
     addCamShake [2,1,5];

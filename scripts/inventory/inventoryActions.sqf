@@ -117,15 +117,15 @@ switch(_classname) do {
                 [player,"fillSound0",20,1] remoteExec ["bde_fnc_say3d",0,false];
                 sleep 1;
                 [_classname,_cargoType] call _removeItemCargo;
-                ["bde_bottlefilled",_cargoType] call _addItemCargo;
-                //player addMagazine ["bde_bottlefilled",1];
+                ["bde_bottledirty",_cargoType] call _addItemCargo;
+                //player addMagazine ["bde_bottledirty",1];
                 cutText ["filled bottle with dirty water", "PLAIN DOWN"];
             }else{
                 cutText ["not close to water source", "PLAIN DOWN"];
             };
         };
     };
-    case "bde_bottlefilled": {
+    case "bde_bottledirty": {
         if(_actionNo == 0)then{
             if("bde_waterpurificationtablets" in Magazines player)then{
                 player playActionNow "Medic";

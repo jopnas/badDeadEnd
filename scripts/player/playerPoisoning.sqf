@@ -1,11 +1,11 @@
-params["_isUnderCover","_isInCar","_isInShadow","_sunRadiation"/**/,"_newValue"];
+params["_isUnderCover","_isInCar","_isInShadow","_sunRadiation"/**/,"_newValue","_poisoningVal"];
 
 _playerUniform		= uniform player;
 _playerVest			= vest player;
 _playerBackpack		= backpack player;
 _headgear 		    = headgear player;
-
-_newValue           = playerPoisoning - 0.001;
+_poisoningVal       = player getVariable ["playerPoisoning",0];
+_newValue           = _poisoningVal - 0.001;
 
 // Acid Rain
 if(rain > 0 && acidRain)then{
@@ -85,4 +85,4 @@ if(_newValue > 100)then{
 	_handle ppEffectCommit 2;
 };*/
 
-playerPoisoning = _newValue;
+player setVariable ["playerPoisoning",_newValue,true];

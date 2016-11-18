@@ -209,7 +209,7 @@ player addAction["drink clean water",{
     [] call drinkWater;
 },_cursorObject,6,true,true,"","(cursorObject distance player < 2) && (str (getModelInfo cursorObject) find 'watertank' > -1 || str (getModelInfo cursorObject) find 'waterbarrel' > -1 || str (getModelInfo cursorObject) find 'barrelwater' > -1 || str (getModelInfo cursorObject) find 'stallwater' > -1 || str (getModelInfo cursorObject) find 'water_source' > -1)"];
 
-endLoadingScreen;
+//endLoadingScreen;
 
 // Player Init Situation
 if(_isRespawn)then{
@@ -363,7 +363,7 @@ while{true}do{
 		_emptyUnknownCanCount   = {_x == "bde_emptycanunknown"} count magazines player;
 		_emptyCanCount 			= _emptyPastaCanCount + _emptyUnknownCanCount;
 
-		_bottlefilledCount  	= {_x == "bde_bottlefilled"} count magazines player;
+		_bottlefilledCount  	= {_x == "bde_bottledirty"} count magazines player;
 
 		_canBeansCount  		= {_x == "bde_bakedbeans"} count magazines player;
 		_canUnknownCount  		= {_x == "bde_canunknown"} count magazines player;

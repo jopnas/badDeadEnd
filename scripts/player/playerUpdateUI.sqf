@@ -12,8 +12,10 @@ Float
 1208 = Thirst Value
 1209 = Hunger
 1210 = Hunger Value
-1211 = Noise
-1212 = Noise Value
+1211 = Poisoning
+1212 = Poisoning Value
+1213 = Radiation
+1214 = Radiation Value
 */
 
 disableSerialization;
@@ -21,14 +23,15 @@ disableSerialization;
 _playerUnit         = player;
 
 // current values
-_hungerVal          = playerHunger;
-_thirstVal          = playerThirst;
-_healthVal          = playerHealth;
-_temperatureVal     = playerTemperature;
-_wetVal             = playerWet;
-_sickVal            = playerSick;
-_infectedVal        = playerInfected;
-_poisoningVal       = playerPoisoning;
+_hungerVal       = _playerUnit getVariable ["playerHunger",100];
+_thirstVal       = _playerUnit getVariable ["playerThirst",100];
+_healthVal       = _playerUnit getVariable ["playerHealth",100];
+_temperatureVal  = _playerUnit getVariable ["playerTemperature",100];
+_wetVal          = _playerUnit getVariable ["playerWet",0];
+_sickVal         = _playerUnit getVariable ["playerSick",0];
+_infectedVal     = _playerUnit getVariable ["playerInfected",0];
+_poisoningVal    = _playerUnit getVariable ["playerPoisoning",0];
+_radiationVal    = _playerUnit getVariable ["playerRadiation",0];
 
 // Max.-/Min. Values
 if(_hungerVal>100)then{
@@ -47,6 +50,10 @@ if(_poisoningVal>100)then{
 	_poisoningVal = 100;
 };
 
+if(_radiationVal>100)then{
+	_radiationVal = 100;
+};
+
 if(_hungerVal<0)then{
 	_hungerVal = 0;
 };
@@ -61,6 +68,10 @@ if(_temperatureVal<0)then{
 };
 if(_poisoningVal<0)then{
 	_poisoningVal = 0;
+};
+
+if(_radiationVal<0)then{
+	_radiationVal = 0;
 };
 
 

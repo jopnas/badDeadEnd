@@ -53,7 +53,7 @@ switch(_classname) do {
 	case "bde_bottleempty": {
         _actionTexts = ["refill"];
 	};
-	case "bde_bottlefilled": {
+	case "bde_bottledirty": {
         _actionTexts = ["purify","empty"];
 	};
 	case "bde_bottleclean": {

@@ -4,8 +4,8 @@ _playerUniform		= uniform player;
 _playerVest			= vest player;
 _playerBackpack		= backpack player;
 _headgear 		    = headgear player;
-
-_newValue           = playerRadiation - 0.0001;
+_radiationVal       = player getVariable ["playerRadiation",0];
+_newValue           = _radiationVal - 0.0001;
 
 // Direct Sunshine
 if(!(_isInShadow) && _sunRadiation > 0)then{
@@ -34,4 +34,4 @@ if(_newValue > 100)then{
     _newValue = 100;
 };
 
-playerRadiation = _newValue;
+player setVariable ["playerRadiation",_newValue,true];

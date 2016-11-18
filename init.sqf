@@ -2,7 +2,7 @@ worldHalfSize   = (getNumber (configFile >> "CfgWorlds" >> worldName >> "mapSize
 worldCenter     = [worldHalfSize,worldHalfSize,0];
 
 if(!isDedicated)then{
-    startLoadingScreen ["Loading My Mission"];
+    //startLoadingScreen ["Loading My Mission"];
 };
 
 [] execVM "scripts\tools\globalFuncs.sqf";

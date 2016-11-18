@@ -5,7 +5,7 @@ _fnc_boilWater = {
     player setUnitPos "MIDDLE";
     player say3D "boilSound0";
     sleep 3;
-    player removeMagazine "bde_bottlefilled";
+    player removeMagazine "bde_bottledirty";
     player addMagazine ["bde_bottleclean",1];
     cutText ["boiled some water", "PLAIN DOWN"];
 };
