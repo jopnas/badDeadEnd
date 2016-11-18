@@ -590,6 +590,8 @@ class RscTitles
 class codelockGUI {
     idd = 6906;
     movingEnable = 0;
+    name = "codelockGui";
+    onLoad = "uiNamespace setVariable ['bde_gui_codelock', _this select 0];";
 
     class ControlsBackground
     {
@@ -614,7 +616,7 @@ class codelockGUI {
             text = "";
             x = 0.396875 * safezoneW + safezoneX;
             y = 0.258094 * safezoneH + safezoneY;
-            action = "lockcode pushBack 1;";
+            action = "[1] call bde_fnc_pressCodelockButton";
         };
         class codelock_button_2: codelockButton
         {
@@ -622,7 +624,7 @@ class codelockGUI {
             text = "";
             x = 0.471354 * safezoneW + safezoneX;
             y = 0.258094 * safezoneH + safezoneY;
-            action = "lockcode pushBack 2;";
+            action = "[2] call bde_fnc_pressCodelockButton";
         };
         class codelock_button_3: codelockButton
         {
@@ -630,7 +632,7 @@ class codelockGUI {
             text = "images\gui\codelock\codelock_3.paa";
             x = 0.545833 * safezoneW + safezoneX;
             y = 0.258094 * safezoneH + safezoneY;
-            action = "lockcode pushBack 3;";
+            action = "[3] call bde_fnc_pressCodelockButton";
         };
         class codelock_button_4: codelockButton
         {
@@ -638,7 +640,7 @@ class codelockGUI {
             text = "images\gui\codelock\codelock_4.paa";
             x = 0.396875 * safezoneW + safezoneX;
             y = 0.379047 * safezoneH + safezoneY;
-            action = "lockcode pushBack 4;";
+            action = "[4] call bde_fnc_pressCodelockButton";
         };
         class codelock_button_5: codelockButton
         {
@@ -646,7 +648,7 @@ class codelockGUI {
             text = "images\gui\codelock\codelock_5.paa";
             x = 0.471354 * safezoneW + safezoneX;
             y = 0.379047 * safezoneH + safezoneY;
-            action = "lockcode pushBack 5;";
+            action = "[5] call bde_fnc_pressCodelockButton";
         };
         class codelock_button_6: codelockButton
         {
@@ -654,7 +656,7 @@ class codelockGUI {
             text = "images\gui\codelock\codelock_6.paa";
             x = 0.545833 * safezoneW + safezoneX;
             y = 0.379047 * safezoneH + safezoneY;
-            action = "lockcode pushBack 6;";
+            action = "[6] call bde_fnc_pressCodelockButton";
         };
         class codelock_button_7: codelockButton
         {
@@ -662,7 +664,7 @@ class codelockGUI {
             text = "images\gui\codelock\codelock_7.paa";
             x = 0.396875 * safezoneW + safezoneX;
             y = 0.5 * safezoneH + safezoneY;
-            action = "lockcode pushBack 7;";
+            action = "[7] call bde_fnc_pressCodelockButton";
         };
         class codelock_button_8: codelockButton
         {
@@ -670,7 +672,7 @@ class codelockGUI {
             text = "images\gui\codelock\codelock_8.paa";
             x = 0.471354 * safezoneW + safezoneX;
             y = 0.5 * safezoneH + safezoneY;
-            action = "lockcode pushBack 8;";
+            action = "[8] call bde_fnc_pressCodelockButton";
         };
         class codelock_button_9: codelockButton
         {
@@ -678,7 +680,7 @@ class codelockGUI {
             text = "images\gui\codelock\codelock_9.paa";
             x = 0.545833 * safezoneW + safezoneX;
             y = 0.5 * safezoneH + safezoneY;
-            action = "lockcode pushBack 9;";
+            action = "[9] call bde_fnc_pressCodelockButton";
         };
         class codelock_button_asterisk: codelockButton
         {
@@ -686,15 +688,15 @@ class codelockGUI {
             text = "images\gui\codelock\codelock_asterisk.paa";
             x = 0.396875 * safezoneW + safezoneX;
             y = 0.620953 * safezoneH + safezoneY;
-            action = "systemChat 'codelock_asterisk';";
-    };
-    class codelock_button_0: codelockButton
+            action = "['*'] call bde_fnc_pressCodelockButton";
+        };
+        class codelock_button_0: codelockButton
         {
             idc = 1610;
             text = "images\gui\codelock\codelock_0.paa";
             x = 0.471354 * safezoneW + safezoneX;
             y = 0.620953 * safezoneH + safezoneY;
-            action = "lockcode pushBack 0;";
+            action = "[0] call bde_fnc_pressCodelockButton";
         };
         class codelock_button_hashtag: codelockButton
         {
@@ -702,8 +704,19 @@ class codelockGUI {
             text = "images\gui\codelock\codelock_hashtag.paa";
             x = 0.545833 * safezoneW + safezoneX;
             y = 0.620953 * safezoneH + safezoneY;
-            action = "systemChat 'codelock_hashtag';";
+            action = "['#'] call bde_fnc_pressCodelockButton";
         };
+        class codelock_display: RscText
+        {
+            idc = 1612;
+            text = "";
+            x = 0.369688 * safezoneW + safezoneX;
+            y = 0.240001 * safezoneH + safezoneY;
+            w = 0.246354 * safezoneW;
+            h = 0.100001 * safezoneH;
+            colorBackground[] = {0,0,0,1};
+            colorText[] = {0,0.7,0,0.8};
+        }
     };
 };
 
@@ -715,7 +728,7 @@ class lockpickGUI {
     {
         class lockBackground: RscPicture
         {
-            idc = 1214;
+            idc = 1613;
             text = "images\gui\codelock\codelock.paa";
             x = 0.379688 * safezoneW + safezoneX;
             y = 0.236103 * safezoneH + safezoneY;
@@ -730,7 +743,7 @@ class lockpickGUI {
     {
         class lock: RscPicture
         {
-            idc = 1600;
+            idc = 1614;
             text = "images\gui\codelock\codelock_5.paa";
             x = 0.379688 * safezoneW + safezoneX;
             y = 0.236103 * safezoneH + safezoneY;
@@ -741,7 +754,7 @@ class lockpickGUI {
         };
         class lockpick1: RscPicture
         {
-            idc = 1601;
+            idc = 1615;
             text = "images\gui\codelock\codelock_asterisk.paa";
             x = 0.379688 * safezoneW + safezoneX;
             y = 0.236103 * safezoneH + safezoneY;
@@ -752,7 +765,7 @@ class lockpickGUI {
         };
         class lockpick2: RscPicture
         {
-            idc = 1602;
+            idc = 1616;
             text = "images\gui\codelock\codelock_hashtag.paa";
             x = 0.379688 * safezoneW + safezoneX;
             y = 0.236103 * safezoneH + safezoneY;

@@ -8,7 +8,7 @@ _doorNo             = (_doorName splitString "_") select 1;
 _isDoorOpen         = _nearestBuilding animationPhase format["Door_%1_rot",_doorNo];
 _isDoorLocked       = 0;
 _doorcode           = _nearestBuilding getVariable format["bde_door_%1_code",_doorNo];
-lockcode            = [];
+lockcode            = "";
 
 _codelockGuiOK = createDialog "codelockGui";
 
@@ -18,7 +18,7 @@ waitUntil {
         if(_doorcode isEqualTo lockcode)then{
             _return = true;
         }else{
-            lockcode = [];
+            lockcode = "";
             _return = false;
         };
     };

@@ -187,3 +187,16 @@ bde_fnc_removeRepairActions = {
         _vehicle setVariable ["repairActionIDs", [],false];
     };
 };
+
+// GUI Codelock
+bde_fnc_pressCodelockButton = {
+    params["_pressed"/**/,"_namespaceUI","_ctrlCodelockDisplay"];
+    if(count lockcode == 4)then{
+        lockcode = '';
+    }else{
+        lockcode = lockcode + str(_pressed);
+    };
+    _namespaceUI = uiNamespace getVariable "bde_gui_codelock";
+    _ctrlCodelockDisplay = _namespaceUI displayCtrl 1612;
+    _ctrlCodelockDisplay ctrlSetText str(lockcode);
+};

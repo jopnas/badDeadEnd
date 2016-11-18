@@ -6,7 +6,7 @@ _house                      = nearestBuilding player;
 _codeblockIDD               = 666667;
 
 _codeSet                    = false;
-lockcode                   = [];
+lockcode                    = "";
 _doorData                   = [_house,_doorNr] call _compiledDoorData;
 _doorDataDir                = _doorData select 0;
 _doorDataPos                = _doorData select 1;
