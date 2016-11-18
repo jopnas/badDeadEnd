@@ -16,14 +16,10 @@ _description    = lbText [_idc, _selectedIndex];
 _index          = lbValue [_idc, _selectedIndex];
 _pic 	        = lbPicture [_idc, _selectedIndex];
 
-_itemActionNames    = getArray (configFile >> "CfgMagazines" >> _classname >> "itemActionNames");
-_itemActionOutputs  = getArray (configFile >> "CfgMagazines" >> _classname >> "itemActionOutputs");
 _itemActions        = getArray (configFile >> "CfgMagazines" >> _classname >> "itemActions");
 
-systemChat str ((_itemActions select 0) splitString ",");
-
-if( !(_itemActionNames isEqualTo []) )exitWith{
-    [_itemActionNames,_itemActionOutputs,_classname,_cargoType,_clickPos] execVM "scripts\inventory\inventoryItemUse.sqf";
+if( !(_itemActions isEqualTo []) ) exitWith {
+    [_itemActions,_classname,_cargoType,_clickPos] execVM "scripts\inventory\inventoryItemUse.sqf";
 };
 
 // Functions
