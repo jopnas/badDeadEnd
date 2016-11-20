@@ -118,6 +118,10 @@ _ctrlPoisoningIcon = _namespaceUI displayCtrl 1211;
 _ctrlPoisoning = _namespaceUI displayCtrl 1212;
 _ctrlPoisoning ctrlSetText "images\gui\val_" + str ( floor(_poisoningVal/10)*10 ) + ".paa";
 
+_ctrlRadiationIcon = _namespaceUI displayCtrl 1213;
+_ctrlRadiation = _namespaceUI displayCtrl 1214;
+_ctrlRadiation ctrlSetText "images\gui\val_" + str ( floor(_radiationVal/10)*10 ) + ".paa";
+
 if(guiBlink)then{
     guiBlink = false;
 }else{
@@ -203,4 +207,14 @@ if(_poisoningVal > 80)then{
     };
 }else{
     _ctrlPoisoningIcon ctrlSetTextColor [1,1,1,1];
+};
+
+if(_radiationVal > 80)then{
+    if(guiBlink)then{
+        _ctrlRadiationIcon ctrlSetTextColor [1,1,1,0.2];
+    }else{
+        _ctrlRadiationIcon ctrlSetTextColor [1,1,1,1];
+    };
+}else{
+    _ctrlRadiationIcon ctrlSetTextColor [1,1,1,1];
 };

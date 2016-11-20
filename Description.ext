@@ -574,14 +574,14 @@ class RscTitles
                 idc = 1211;
                 text = "images\gui\icon_poisoning.paa";
                 x = safezoneX + safezoneW - 0.22;
-                y = safezoneH + safezoneY - 0.12;
+                y = safezoneH + safezoneY - 0.26;
             };
             class guiPoisoningValue: RscValGUI
             {
                 idc = 1212;
                 text = "images\gui\val_100.paa";
                 x = safezoneX + safezoneW - 0.22;
-                y = safezoneH + safezoneY - 0.12;
+                y = safezoneH + safezoneY - 0.26;
             };
             class guiRadiation: RscPicGUI
             {
