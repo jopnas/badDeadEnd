@@ -81,8 +81,6 @@ fnc_spawnLoot = {
                 _spawn addItemCargoGlobal [selectRandom _garageStuff, 1];
             };
 
-            _spawn addItemCargoGlobal ["bde_12gauge_pellets",1];
-
             switch(_buildingType) do {
                 case "MilitaryBuilding":{
                   // Attachments

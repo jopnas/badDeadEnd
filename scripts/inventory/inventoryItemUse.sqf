@@ -1,7 +1,7 @@
 disableSerialization;
 params["_itemActions","_classname","_cargoType","_clickPos"];
 
-systemChat format["_itemActions: %1",_itemActions];
+//systemChat format["_itemActions: %1",_itemActions];
 
 bde_fnc_addItemCargo = { // [_item,_cargoType] call bde_fnc_addItemCargo;
     _itemClass = _this select 0;
@@ -54,17 +54,19 @@ bde_fnc_removeItemCargo = { // [_item,_cargoType] call bde_fnc_removeItemCargo;
 };
 
 useItem = {
+    // ['Eat from unlabled can','bde_emptycanunknown','bde_multitool_tinopener','ground']
+    //disableSerialization;
     params["_usedItem","_cargoType","_itemActions","_clickedIndex"/**/,"_newItem"];
-    _newItem = _itemActionOutputs select _clickedIndex;
 
-    _itemActionSplited      = (_itemActions select _clickedIndex) splitString ",";
-    _itemActionOutput       = _itemActionSplited select 1;
-    _itemActionRequires     = _itemActionSplited select 2;
-    _itemActionGroundCargo  = _itemActionSplited select 3;
+    _itemActionData         = (_itemActions select _clickedIndex) splitString ",";
 
-    systemChat format["%1, %2, %3, %4, %5",_cargoType,_usedItem,_itemActionOutput,_itemActionRequire,_itemActionGroundCargo];
+    _itemActionOutput       = _itemActionData select 1;
+    _itemActionRequires     = _itemActionData select 2;
+    _itemActionGroundCargo  = _itemActionData select 3;
 
-    ctrlDelete ((findDisplay 602) displayCtrl 2501);
+    systemChat format["_itemActionOutput: %1, _itemActionRequires: %2, _itemActionGroundCargo: %3",_itemActionOutput,_itemActionRequires,_itemActionGroundCargo];
+
+    //ctrlDelete ((findDisplay 602) displayCtrl 2501);
     [_usedItem,_cargoType] call bde_fnc_removeItemCargo;
     sleep 5;
     if(_itemActionGroundCargo == "cargo")then {
