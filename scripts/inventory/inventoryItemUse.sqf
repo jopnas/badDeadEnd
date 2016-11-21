@@ -1,5 +1,5 @@
 disableSerialization;
-params["_itemActions","_classname","_cargoType","_clickPos"];
+params["_classname","_cargoType","_clickPos"];
 
 //systemChat format["_itemActions: %1",_itemActions];
 
@@ -54,37 +54,38 @@ bde_fnc_removeItemCargo = { // [_item,_cargoType] call bde_fnc_removeItemCargo;
 };
 
 useItem = {
-    // ['Eat from unlabled can','bde_emptycanunknown','bde_multitool_tinopener','ground']
-    //disableSerialization;
-    params["_usedItem","_cargoType","_itemActions","_clickedIndex"/**/,"_newItem"];
+    params["_usedItem","_cargoType","_clickedIndex"/**/,"_itemActions","_outputItem","_requiredItems","_consumesItems","_putOutputItem"];
+    /*class action1 {
+        actionText = "Collapse";
+        outputItem = "bde_multitool";
+        requiredItems[] = {};
+        consumesItems[] = {};
+        putOutputItem = "cargo/ground";
+    };*/
 
-    _itemActionData         = (_itemActions select _clickedIndex) splitString ",";
+    _itemActions    = (configFile >> "CfgMagazines" >> _usedItem >> "itemActions") call BIS_fnc_getCfgSubClasses;
+    _selectedAction = _itemActions select _clickedIndex;
 
-    _itemActionOutput       = _itemActionData select 1;
-    _itemActionRequires     = _itemActionData select 2;
-    _itemActionGroundCargo  = _itemActionData select 3;
+    _outputItem     = getText (configFile >> "CfgMagazines" >> _usedItem >> "itemActions" >> _selectedAction >> "outputItem");
+    _requiredItems  = getArray (configFile >> "CfgMagazines" >> _usedItem >> "itemActions" >> _selectedAction >> "requiredItems");
+    _consumesItems  = getArray (configFile >> "CfgMagazines" >> _usedItem >> "itemActions" >> _selectedAction >> "consumesItems");
+    _putOutputItem  = getText (configFile >> "CfgMagazines" >> _usedItem >> "itemActions" >> _selectedAction >> "putOutputItem");
 
-    systemChat format["_itemActionOutput: %1, _itemActionRequires: %2, _itemActionGroundCargo: %3",_itemActionOutput,_itemActionRequires,_itemActionGroundCargo];
+    systemChat format["_outputItem: %1, _requiredItems: %2, _consumesItems: %3, _putOutputItem: %4",_outputItem,_requiredItems,_consumesItems,_putOutputItem];
 
-    //ctrlDelete ((findDisplay 602) displayCtrl 2501);
-    [_usedItem,_cargoType] call bde_fnc_removeItemCargo;
-    sleep 5;
-    if(_itemActionGroundCargo == "cargo")then {
-        [_itemActionOutput,_cargoType] call bde_fnc_addItemCargo;
-    };
-    if(_itemActionGroundCargo == "ground")then {
-        [_itemActionOutput] call bde_fnc_addItemGround;
-    };
+    
+
 };
 
 _showInventoryActions = {
-    params["_classname","_cargoType","_itemActions","_clickPos"];
+    params["_classname","_cargoType","_clickPos"/**/,"_itemActions"];
 
-    if(_itemActions isEqualType [])then{
+    _itemActions = (configFile >> "CfgMagazines" >> _classname >> "itemActions") call BIS_fnc_getCfgSubClasses;
+
+    if(_itemActions isEqualType [] && count _itemActions > 0)then{
         _invActionLB = findDisplay 602 ctrlCreate ["InventoryActionMenu", 2501];
-
         {
-            _actionText = (_x splitString ",") select 0;
+            _actionText = (configFile >> "CfgMagazines" >> _classname >> "itemActions" >> _x >> "actionText"):
             lbAdd[2501,_actionText];
         } forEach _itemActions;
 
@@ -95,8 +96,8 @@ _showInventoryActions = {
         _invActionLB ctrlCommit 0;
         ctrlSetFocus _invActionLB;
 
-        _invActionLB ctrlSetEventHandler ["LBSelChanged",format["['%1','%2',%3,_this select 1] call useItem",_classname,_cargoType,_itemActions]];
+        _invActionLB ctrlSetEventHandler ["LBSelChanged",format["['%1','%2',_this select 1] call useItem",_classname,_cargoType]];
     };
 };
 
-[_classname,_cargoType,_itemActions,_clickPos] call _showInventoryActions;
+[_classname,_cargoType,_clickPos] call _showInventoryActions;

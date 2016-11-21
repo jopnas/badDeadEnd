@@ -16,10 +16,17 @@ _description    = lbText [_idc, _selectedIndex];
 _index          = lbValue [_idc, _selectedIndex];
 _pic 	        = lbPicture [_idc, _selectedIndex];
 
-_itemActions        = getArray (configFile >> "CfgMagazines" >> _classname >> "itemActions");
+_itemActions = getArray (configFile >> "CfgMagazines" >> _classname >> "itemActions");
 
 if( !(_itemActions isEqualTo []) ) exitWith {
-    [_itemActions,_classname,_cargoType,_clickPos] execVM "scripts\inventory\inventoryItemUse.sqf";
+    /*class action1 {
+        actionText = "Collapse";
+        outputItem = "bde_multitool";
+        consumesItems[] = {};
+        requiredItems[] = {};
+        putOutputItem = "cargo";
+    };*/
+    [_classname,_cargoType,_clickPos] execVM "scripts\inventory\inventoryItemUse.sqf";
 };
 
 // Functions
