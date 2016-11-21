@@ -16,7 +16,7 @@ _description    = lbText [_idc, _selectedIndex];
 _index          = lbValue [_idc, _selectedIndex];
 _pic 	        = lbPicture [_idc, _selectedIndex];
 
-_itemActions    = (configFile >> "CfgMagazines" >> _usedItem >> "itemActions") call BIS_fnc_getCfgSubClasses;
+_itemActions    = (configFile >> "CfgMagazines" >> _classname >> "itemActions") call BIS_fnc_getCfgSubClasses;
 
 if( !(_itemActions isEqualTo []) ) exitWith {
     [_classname,_cargoType,_clickPos] execVM "scripts\inventory\inventoryItemUse.sqf";

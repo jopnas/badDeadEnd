@@ -65,7 +65,6 @@ useItem = {
 
     _itemActions    = (configFile >> "CfgMagazines" >> _usedItem >> "itemActions") call BIS_fnc_getCfgSubClasses;
     _selectedAction = _itemActions select _clickedIndex;
-
     _outputItem     = getText (configFile >> "CfgMagazines" >> _usedItem >> "itemActions" >> _selectedAction >> "outputItem");
     _requiredItems  = getArray (configFile >> "CfgMagazines" >> _usedItem >> "itemActions" >> _selectedAction >> "requiredItems");
     _consumesItems  = getArray (configFile >> "CfgMagazines" >> _usedItem >> "itemActions" >> _selectedAction >> "consumesItems");
@@ -73,8 +72,14 @@ useItem = {
 
     systemChat format["_outputItem: %1, _requiredItems: %2, _consumesItems: %3, _putOutputItem: %4",_outputItem,_requiredItems,_consumesItems,_putOutputItem];
 
+    [_usedItem,_cargoType] call bde_fnc_removeItemCargo;
 
-
+    if(_putOutputItem == "ground")then{
+        [_outputItem] call bde_fnc_addItemGround;
+    };
+    if(_putOutputItem == "cargo")then{
+        [_outputItem,_cargoType] call bde_fnc_addItemCargo;
+    };
 };
 
 _showInventoryActions = {
@@ -85,7 +90,7 @@ _showInventoryActions = {
     if(_itemActions isEqualType [] && count _itemActions > 0)then{
         _invActionLB = findDisplay 602 ctrlCreate ["InventoryActionMenu", 2501];
         {
-            _actionText = (configFile >> "CfgMagazines" >> _classname >> "itemActions" >> _x >> "actionText"):
+            _actionText = getText (configFile >> "CfgMagazines" >> _classname >> "itemActions" >> _x >> "actionText");
             lbAdd[2501,_actionText];
         } forEach _itemActions;
 
