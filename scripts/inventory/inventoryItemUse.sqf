@@ -69,8 +69,12 @@ useItem = {
     _requiredItems  = getArray (configFile >> "CfgMagazines" >> _usedItem >> "itemActions" >> _selectedAction >> "requiredItems");
     _consumesItems  = getArray (configFile >> "CfgMagazines" >> _usedItem >> "itemActions" >> _selectedAction >> "consumesItems");
     _putOutputItem  = getText (configFile >> "CfgMagazines" >> _usedItem >> "itemActions" >> _selectedAction >> "putOutputItem");
+    _actionTime     = 5;    // TODO in cfgMagazines
+    _customFunction = "";   // TODO in cfgMagazines
 
     systemChat format["_outputItem: %1, _requiredItems: %2, _consumesItems: %3, _putOutputItem: %4",_outputItem,_requiredItems,_consumesItems,_putOutputItem];
+
+    sleep _actionTime;
 
     [_usedItem,_cargoType] call bde_fnc_removeItemCargo;
 
