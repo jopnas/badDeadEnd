@@ -61,6 +61,8 @@ useItem = {
         requiredItems[] = {};
         consumesItems[] = {};
         putOutputItem = "cargo/ground";
+        actionTime = 10;
+        customFunction = "buildCampfire";
     };*/
 
     _itemActions    = (configFile >> "CfgMagazines" >> _usedItem >> "itemActions") call BIS_fnc_getCfgSubClasses;
@@ -69,20 +71,25 @@ useItem = {
     _requiredItems  = getArray (configFile >> "CfgMagazines" >> _usedItem >> "itemActions" >> _selectedAction >> "requiredItems");
     _consumesItems  = getArray (configFile >> "CfgMagazines" >> _usedItem >> "itemActions" >> _selectedAction >> "consumesItems");
     _putOutputItem  = getText (configFile >> "CfgMagazines" >> _usedItem >> "itemActions" >> _selectedAction >> "putOutputItem");
-    _actionTime     = 5;    // TODO in cfgMagazines
-    _customFunction = "";   // TODO in cfgMagazines
+    _actionTime     = getNumber (configFile >> "CfgMagazines" >> _usedItem >> "itemActions" >> _selectedAction >> "actionTime");
+    _actionSound    = getText (configFile >> "CfgMagazines" >> _usedItem >> "itemActions" >> _selectedAction >> "actionSound");
+    _customFunction = getText (configFile >> "CfgMagazines" >> _usedItem >> "itemActions" >> _selectedAction >> "customFunction");
 
     systemChat format["_outputItem: %1, _requiredItems: %2, _consumesItems: %3, _putOutputItem: %4",_outputItem,_requiredItems,_consumesItems,_putOutputItem];
 
-    sleep _actionTime;
+    if(_customFunction != "")then{
+        [] call compile _customFunction;
+    }else{
+        sleep _actionTime;
 
-    [_usedItem,_cargoType] call bde_fnc_removeItemCargo;
+        [_usedItem,_cargoType] call bde_fnc_removeItemCargo;
 
-    if(_putOutputItem == "ground")then{
-        [_outputItem] call bde_fnc_addItemGround;
-    };
-    if(_putOutputItem == "cargo")then{
-        [_outputItem,_cargoType] call bde_fnc_addItemCargo;
+        if(_putOutputItem == "ground")then{
+            [_outputItem] call bde_fnc_addItemGround;
+        };
+        if(_putOutputItem == "cargo")then{
+            [_outputItem,_cargoType] call bde_fnc_addItemCargo;
+        };
     };
 };
 
