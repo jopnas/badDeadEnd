@@ -197,7 +197,7 @@ player addAction["Attach Codelock","scripts\barricade\fnc_attachLock.sqf",[],0,f
 player addAction["Use Codelock","scripts\barricade\fnc_lockdoor.sqf",[],0,false,false,"","closeToDoor && doorHasLock"];
 
 // Gut Animal
-player addAction["Gut Animal","scripts\animals\gutAnimal.sqf",[],6,true,true,"","(cursorObject isKindOf 'Animal') && (('bde_multitool' in magazines player) || ('bde_knife' in magazines player)) && (player distance cursorObject < 2) && !(alive cursorObject)"];
+player addAction["Gut Animal","scripts\animals\gutAnimal.sqf",[],6,true,true,"","(cursorObject isKindOf 'Animal') && ('bde_multitool_knife' in magazines player) && (player distance cursorObject < 2) && !(alive cursorObject)"];
 
 // Chop Wood
 player addAction["chop wood",{

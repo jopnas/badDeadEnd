@@ -93,6 +93,45 @@ useItem = {
     };
 };
 
+// Stone + Wood Action
+bde_fnc_buildFireplace = {
+    private["_minWood","_minStone","_needCountOfWood","_needCountOfStone","_woodCount","_stoneCount"];
+    _minWood = 2;
+    _minStone = 4;
+    _woodCount  = {_x == "bde_wood"} count magazines player;
+    _stoneCount = {_x == "bde_stone"} count magazines player;
+    if(_woodCount >= _minWood && _stoneCount >= _minStone)then{
+        player playActionNow "Medic";
+        [player,"buildSound0","configVol","randomPitch",300] spawn bde_fnc_playSound3D;
+        sleep 5;
+        for "_w" from 0 to _minWood step 1 do {
+            ["bde_wood",_cargoType] call _removeItemCargo;
+        };
+        for "_s" from 0 to _minStone step 1 do {
+            ["bde_stone",_cargoType] call _removeItemCargo;
+        };
+    	cutText ["build fireplace", "PLAIN DOWN"];
+
+        fireplace = createVehicle ["Land_FirePlace_F",position player,[],0,"can_collide"];
+
+    	fireplace setDir (getDir player);
+        fireplace attachTo [player, [0,2,0]];
+    	releaseFireplace = player addAction ["Release Fireplace", { detach fireplace; player removeAction releaseFireplace;}, name player];
+    }else{
+    	if(_woodCount >= _minWood)then{
+            _needCountOfWood = 0;
+        }else{
+            _needCountOfWood = _minWood - _woodCount;
+        };
+    	if(_stoneCount >= _minStone)then{
+            _needCountOfStone = 0;
+        }else{
+    		_needCountOfStone = _minStone - _stoneCount;
+        };
+        cutText [ format["need %1 more wood and %2 more stone to build fireplace",_needCountOfWood,_needCountOfStone], "PLAIN DOWN"];
+    };
+};
+
 _showInventoryActions = {
     params["_classname","_cargoType","_clickPos"/**/,"_itemActions"];
 
