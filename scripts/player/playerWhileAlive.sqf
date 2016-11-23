@@ -5,9 +5,10 @@ params["_playerUnit","_isRespawn"];
 
 // Compiles
 updateUI   			= compile preprocessFile "scripts\player\playerUpdateUI.sqf";
-//checkNoise 			= compile preprocessFile "scripts\player\playerNoiseCheck.sqf";
+//checkNoise 		= compile preprocessFile "scripts\player\playerNoiseCheck.sqf";
 handleWet 			= compile preprocessFile "scripts\player\playerWetHandler.sqf";
 handlePoisoning	    = compile preprocessFile "scripts\player\playerPoisoning.sqf";
+handleRadiation	    = compile preprocessFile "scripts\player\playerRadiation.sqf";
 handleTemperature 	= compile preprocessFile "scripts\player\playerTemperatureHandler.sqf";
 checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
 checkBoundingBox    = compile preprocessFile "scripts\tools\checkBoundingBox.sqf";
@@ -303,7 +304,8 @@ while{true}do{
 
     if(t > 2)then{
         //[] call checkNoise;
-        [_isUnderCover,_isInCar,_isInShadow,_sunRadiation] call handlePoisoning;
+        [_isUnderCover,_isInCar] call handlePoisoning;
+        [_isInCar,_isInShadow,_sunRadiation] call handleRadiation;
         [] call checkAnimals;
     };
     if(t > 5)then{

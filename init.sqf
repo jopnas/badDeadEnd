@@ -36,5 +36,8 @@ if(isServer)then{
     [] execVM "scripts\server\sqlLoadDoors.sqf";
 };
 
+if(!isDedicated)then {
+    [] execVM "LLW_Climate\loadFunctions.sqf";
+};
+
 [] execVM "scripts\tools\burnObject.sqf";
-[] execVM "LLW_Climate\loadFunctions.sqf";

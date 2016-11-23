@@ -1,4 +1,4 @@
-params["_isUnderCover","_isInCar","_isInShadow","_sunRadiation"/**/,"_newValue","_poisoningVal"];
+params["_isUnderCover","_isInCar"/**/,"_newValue","_poisoningVal"];
 
 _playerUniform		= uniform player;
 _playerVest			= vest player;

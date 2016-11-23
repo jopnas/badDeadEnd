@@ -16,8 +16,9 @@ _description    = lbText [_idc, _selectedIndex];
 _index          = lbValue [_idc, _selectedIndex];
 _pic 	        = lbPicture [_idc, _selectedIndex];
 
-_itemInfo       = call compile format["((%1Items player) select %2)",_cargoType,_index];
-systemChat format["_itemInfo: %1",_itemInfo];
+_itemsInfo      = call compile format["%1Items player",_cargoType,_index];
+_magazinesInfo  = call compile format["magazinesDetail%1 player)",_cargoType,_index];
+systemChat format["_itemsInfo: %1, _magazinesInfo: %2",_itemsInfo,_magazinesInfo];
 
 _itemActions    = (configFile >> "CfgMagazines" >> _classname >> "itemActions") call BIS_fnc_getCfgSubClasses;
 if( !(_itemActions isEqualTo []) ) exitWith {

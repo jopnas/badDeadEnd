@@ -191,10 +191,15 @@ bde_fnc_removeRepairActions = {
 // GUI Codelock
 bde_fnc_pressCodelockButton = {
     params["_pressed"/**/,"_namespaceUI","_ctrlCodelockDisplay"];
-    if(count lockcode == 4)then{
+    if(count lockcode == 4 || _pressed == "#")then{
         lockcode = '';
     }else{
-        lockcode = lockcode + str(_pressed);
+        if(_pressed != "*" && _pressed != "#")then{
+            lockcode = lockcode + str(_pressed);
+        }
+        if(_pressed == "*")then{
+            systemChat "DING DOOOOOONG!";
+        };
     };
     _namespaceUI = uiNamespace getVariable "bde_gui_codelock";
     _ctrlCodelockDisplay = _namespaceUI displayCtrl 1612;
