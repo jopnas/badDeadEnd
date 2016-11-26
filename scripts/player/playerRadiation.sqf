@@ -3,11 +3,11 @@ params["_isInCar","_isInShadow","_sunRadiation"/**/,"_newValue","_radiationVal"]
 _playerUniform		= uniform player;
 _playerVest			= vest player;
 _playerBackpack		= backpack player;
-_headgear 		    = headgear player
+_headgear 		    = headgear player;
 
 _radiationVal       = player getVariable ["playerRadiation",0];
 _newValue           = _radiationVal;
-_radiationNormal    = _sunRadiation/1000
+_radiationNormal    = _sunRadiation/1000;
 
 // Direct Sunshine
 if(!_isInShadow && _radiationNormal > 0)then{

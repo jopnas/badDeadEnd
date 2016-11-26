@@ -77,9 +77,9 @@ useItem = {
 
     systemChat format["_outputItem: %1, _requiredItems: %2, _consumesItems: %3, _putOutputItem: %4",_outputItem,_requiredItems,_consumesItems,_putOutputItem];
 
-    if(_customFunction != "")then{
+    /*if(_customFunction != "")then{
         [] call compile _customFunction;
-    }else{
+    }else{*/
         sleep _actionTime;
 
         [_usedItem,_cargoType] call bde_fnc_removeItemCargo;
@@ -90,7 +90,7 @@ useItem = {
         if(_putOutputItem == "cargo")then{
             [_outputItem,_cargoType] call bde_fnc_addItemCargo;
         };
-    };
+    //};
 };
 
 // Stone + Wood Action

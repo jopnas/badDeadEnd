@@ -196,7 +196,7 @@ bde_fnc_pressCodelockButton = {
     }else{
         if(_pressed != "*" && _pressed != "#")then{
             lockcode = lockcode + str(_pressed);
-        }
+        };
         if(_pressed == "*")then{
             systemChat "DING DOOOOOONG!";
         };
