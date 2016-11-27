@@ -34,22 +34,17 @@ bde_fnc_addItemGround = { // [_item] call bde_fnc_addItemGround;
     _trashWph addMagazineCargoGlobal [_itemClass, 1];
 };
 
-bde_fnc_removeItemCargo = { // [_item,_cargoType] call bde_fnc_removeItemCargo;
+bde_fnc_removeItemCargo = { // [_item] call bde_fnc_removeItemCargo;
     _itemClass = _this select 0;
-    _cargoType = _this select 1;
 
-    switch(_cargoType) do {
-        case "Backpack": {
-            player removeItemFromBackpack _itemClass;
-        };
-        case "Vest": {
-            player removeItemFromVest _itemClass;
-        };
-        case "Uniform": {
-            player removeItemFromUniform _itemClass;
-        };
-        default {
-        };
+    if(_itemClass in uniformItems player)exitWith {
+        player removeItemFromUniform _itemClass;
+    };
+    if(_itemClass in backpackItems player) exitWith {
+        player removeItemFromBackpack _itemClass;
+    };
+    if(_itemClass in vestItems player) exitWith {
+        player removeItemFromVest _itemClass;
     };
 };
 
@@ -77,12 +72,29 @@ useItem = {
 
     systemChat format["_outputItem: %1, _requiredItems: %2, _consumesItems: %3, _putOutputItem: %4",_outputItem,_requiredItems,_consumesItems,_putOutputItem];
 
-    /*if(_customFunction != "")then{
+    if(_customFunction != "")then{
         [] call compile _customFunction;
-    }else{*/
-        sleep _actionTime;
+    }else{
+        _dontStop = true;
+        {
+            if(!(_x in items player))then{
+                _dontStop = false;
+            };
+        } forEach _requiredItems;
 
-        [_usedItem,_cargoType] call bde_fnc_removeItemCargo;
+        if(!_dontStop)exitWith {
+            cutText ["missing item", "PLAIN DOWN"];
+        };
+
+        {
+            if(_x in items player)then{
+                {
+                    [_x] call bde_fnc_removeItemCargo;
+                }foreach (backpackCargo vehicle player);
+            };
+        } forEach _consumesItems;
+
+        //sleep _actionTime;
 
         if(_putOutputItem == "ground")then{
             [_outputItem] call bde_fnc_addItemGround;
@@ -90,7 +102,8 @@ useItem = {
         if(_putOutputItem == "cargo")then{
             [_outputItem,_cargoType] call bde_fnc_addItemCargo;
         };
-    //};
+    };
+
 };
 
 // Stone + Wood Action
@@ -151,7 +164,7 @@ _showInventoryActions = {
         _invActionLB ctrlCommit 0;
         ctrlSetFocus _invActionLB;
 
-        _invActionLB ctrlSetEventHandler ["LBSelChanged",format["['%1','%2',_this select 1] call useItem",_classname,_cargoType]];
+        _invActionLB ctrlSetEventHandler ["LBSelChanged",format["['%1','%2',_this select 1] spawn useItem",_classname,_cargoType]];
     };
 };
 
