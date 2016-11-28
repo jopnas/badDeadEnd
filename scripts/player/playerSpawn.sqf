@@ -50,6 +50,11 @@ if(!(_dbAll isEqualTypeArray []))then{
 
     _playerUnit switchMove _playerStance;
 
+    if(_currentWeapon == "")then{
+        _playerUnit action["SwitchWeapon",_playerUnit,_playerUnit,100];
+        _playerUnit switchCamera cameraView;
+    };
+
 	// Set Position
     _playerUnit setDir _playerDirection;
     _playerUnit setPosATL _playerPosition;

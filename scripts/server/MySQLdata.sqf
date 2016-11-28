@@ -29,7 +29,7 @@ fnc_savePlayerStats = {
 	_PlayerPosition 		= getPosATL _player;
 	_playerDirection 		= getDir _player;
     _PlayerStance           = animationState _player;
-    _PlayerWeapon           = currentMuzzle _player;
+    _PlayerWeapon           = currentWeapon _player;
 
 	_hunger                 = _playerStats select 0;
     _thirst                 = _playerStats select 1;

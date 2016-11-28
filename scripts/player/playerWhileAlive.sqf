@@ -127,10 +127,10 @@ eatCookedFoodAction = {
     // _item: String - The class name of the taken item
     params["_unit","_container","_item"];
     systemChat format["Take/_item: %1, _container: %2",_item,typeof _container];
-}];
+}];*/
 
 // broadcast shot to zombie
-player addEventHandler ["Fired", {
+/*player addEventHandler ["Fired", {
     private["_unit","_audible","_caliber","_distance","_sil"];
     _unit       = _this select 0; // Object - Object the event handler is assigned to
     _weapon     = _this select 1; // String - Fired weapon
@@ -160,6 +160,21 @@ player addEventHandler ["Fired", {
     [_unit,getPos _unit,_dist] remoteExec ["bde_fnc_receivePlayersNoise",2,false];
     //systemChat format["shot noise range: %1",_dist];
 }];*/
+
+player addEventHandler ["Fired", {
+    private["_unit","_audible","_caliber","_distance","_sil"];
+    _unit       = _this select 0; // Object - Object the event handler is assigned to
+    _weapon     = _this select 1; // String - Fired weapon
+    _muzzle     = _this select 2; // String - Muzzle that was used
+    _mode       = _this select 3; // String - Current mode of the fired weapon
+    _ammo       = _this select 4; // String - Ammo used
+    _magazine   = _this select 5; // String - magazine name which was used
+    _projectile = _this select 6; // Object - Object of the projectile that was shot
+
+    if (_ammo isKindOf "bde_melee_ammo") exitWith {
+    	_unit playActionNow "GestureSwing";
+    };
+}];
 
 // Hide Weapons
 player addAction["Holster Weapon",{
