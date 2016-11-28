@@ -18,7 +18,7 @@ _pic 	        = lbPicture [_idc, _selectedIndex];
 
 _itemsInfo      = call compile format["%1Items player",_cargoType,_index];
 //_magazinesInfo  = call compile format["magazinesDetail%1 player)",_cargoType,_index];
-systemChat format["_itemsInfo: %1",_itemsInfo];
+//systemChat format["_itemsInfo: %1",_itemsInfo];
 
 _itemActions    = (configFile >> "CfgMagazines" >> _classname >> "itemActions") call BIS_fnc_getCfgSubClasses;
 if( !(_itemActions isEqualTo []) ) exitWith {

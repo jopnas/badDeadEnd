@@ -63,6 +63,8 @@ bde_fnc_removeItemCargo = { // [item,cargo] spawn bde_fnc_removeItemCargo;
 
 useItem = {
     params["_usedItem","_cargoType","_clickedIndex"/**/,"_itemActions","_outputItem","_requiredItems","_consumesItems","_putOutputItem","_dontStop"];
+    //ctrlDelete ((findDisplay 602) displayCtrl 2501);
+
     /*class action1 {
         actionText = "Collapse";
         outputItem = "bde_multitool";
@@ -83,7 +85,7 @@ useItem = {
     _actionSound    = getText (configFile >> "CfgMagazines" >> _usedItem >> "itemActions" >> _selectedAction >> "actionSound");
     _customFunction = getText (configFile >> "CfgMagazines" >> _usedItem >> "itemActions" >> _selectedAction >> "customFunction");
 
-    systemChat format["_outputItem: %1, _requiredItems: %2, _consumesItems: %3, _putOutputItem: %4",_outputItem,_requiredItems,_consumesItems,_putOutputItem];
+    _allItems = (uniformitems player) + (vestitems player) + (backpackitems player);
 
     if(_customFunction != "")then{
         [] call compile _customFunction;
@@ -91,7 +93,7 @@ useItem = {
 
     _dontStop = true;
     {
-        if(!(_x in items player))then{
+        if(!(_x in _allItems))then{
             _dontStop = false;
         };
     } forEach _requiredItems;
@@ -100,9 +102,13 @@ useItem = {
         cutText ["missing item", "PLAIN DOWN"];
     };
 
-    {
-        [_x,""] call bde_fnc_removeItemCargo;
-    } forEach _consumesItems;
+    systemChat format["_consumesItems: %1, dontStop: %2",_consumesItems,_dontStop];
+
+    if(!(_consumesItems isEqualTo [])) then {
+        {
+            [_x,""] call bde_fnc_removeItemCargo;
+        } forEach _consumesItems;
+    };
 
     sleep _actionTime;
 
@@ -168,15 +174,15 @@ _showInventoryActions = {
             lbAdd[2501,_actionText];
         } forEach _itemActions;
 
-        _rowHeight          = ctrlTextHeight _invActionLB;
+        _rowHeight          = 0.05;
         _invActionPos       = ctrlPosition _invActionLB;
-        _invActionNewHeight = (count _itemActions) * _rowHeight;//0.035;
+        _invActionNewHeight = (count _itemActions) * _rowHeight;
 
         _invActionLB ctrlSetPosition [(_clickPos select 0) - 0.1, (_clickPos select 1) - 0.01, _invActionPos select 2, _invActionNewHeight];
         _invActionLB ctrlCommit 0;
         ctrlSetFocus _invActionLB;
 
-        _invActionLB ctrlSetEventHandler ["LBSelChanged",format["['%1','%2',_this select 1] spawn useItem;ctrlDelete ((findDisplay 602) displayCtrl 2501);",_classname,_cargoType]];
+        _invActionLB ctrlSetEventHandler ["LBSelChanged",format["['%1','%2',_this select 1] spawn useItem;",_classname,_cargoType]];
     };
 };
 

@@ -171,6 +171,8 @@ player addEventHandler ["Fired", {
     _magazine   = _this select 5; // String - magazine name which was used
     _projectile = _this select 6; // Object - Object of the projectile that was shot
 
+    systemChat format["ammo: %1",_ammo];
+
     if (_ammo isKindOf "bde_melee_ammo") exitWith {
     	_unit playActionNow "GestureSwing";
     };
