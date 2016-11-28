@@ -3,7 +3,7 @@ params["_classname","_cargoType","_clickPos"];
 
 //systemChat format["_itemActions: %1",_itemActions];
 
-bde_fnc_addItemCargo = { // [_item,_cargoType] call bde_fnc_addItemCargo;
+bde_fnc_addItemCargo = { // [item,cargoType] call bde_fnc_addItemCargo;
     _itemClass = _this select 0;
     _cargoType = _this select 1;
 
@@ -22,7 +22,7 @@ bde_fnc_addItemCargo = { // [_item,_cargoType] call bde_fnc_addItemCargo;
     };
 };
 
-bde_fnc_addItemGround = { // [_item] call bde_fnc_addItemGround;
+bde_fnc_addItemGround = { // [item] spawn bde_fnc_addItemGround;
     _itemClass  = _this select 0;
     _pPos       = getPosATL player;
     _trashPos   = [(_pPos select 0) - 1 + random 2,(_pPos select 1) - 1 + random 2,(_pPos select 2) + 0.5];
@@ -34,22 +34,35 @@ bde_fnc_addItemGround = { // [_item] call bde_fnc_addItemGround;
     _trashWph addMagazineCargoGlobal [_itemClass, 1];
 };
 
-bde_fnc_removeItemCargo = { // [_item] call bde_fnc_removeItemCargo;
+bde_fnc_removeItemCargo = { // [item,cargo] spawn bde_fnc_removeItemCargo;
     _itemClass = _this select 0;
+    _cargoType = _this select 1;
 
-    if(_itemClass in uniformItems player)exitWith {
-        player removeItemFromUniform _itemClass;
-    };
-    if(_itemClass in backpackItems player) exitWith {
-        player removeItemFromBackpack _itemClass;
-    };
-    if(_itemClass in vestItems player) exitWith {
-        player removeItemFromVest _itemClass;
-    };
+    if(_cargoType == "")then{
+        if(_itemClass in uniformItems player) exitWith {
+            player removeItemFromUniform _itemClass;
+        };
+        if (_itemClass in vestItems player) exitWith {
+            player removeItemFromVest _itemClass;
+        };
+        if (_itemClass in backpackItems player) exitWith {
+            player removeItemFromBackpack _itemClass;
+        };
+    }else{
+        if(_cargoType == "Uniform") then {
+            player removeItemFromUniform _itemClass;
+        };
+        if(_cargoType == "Vest") then {
+            player removeItemFromVest _itemClass;
+        };
+        if(_cargoType == "Backpack") then {
+            player removeItemFromBackpack _itemClass;
+        };
+    }
 };
 
 useItem = {
-    params["_usedItem","_cargoType","_clickedIndex"/**/,"_itemActions","_outputItem","_requiredItems","_consumesItems","_putOutputItem"];
+    params["_usedItem","_cargoType","_clickedIndex"/**/,"_itemActions","_outputItem","_requiredItems","_consumesItems","_putOutputItem","_dontStop"];
     /*class action1 {
         actionText = "Collapse";
         outputItem = "bde_multitool";
@@ -74,36 +87,34 @@ useItem = {
 
     if(_customFunction != "")then{
         [] call compile _customFunction;
-    }else{
-        _dontStop = true;
-        {
-            if(!(_x in items player))then{
-                _dontStop = false;
-            };
-        } forEach _requiredItems;
-
-        if(!_dontStop)exitWith {
-            cutText ["missing item", "PLAIN DOWN"];
-        };
-
-        {
-            if(_x in items player)then{
-                {
-                    [_x] call bde_fnc_removeItemCargo;
-                }foreach (backpackCargo vehicle player);
-            };
-        } forEach _consumesItems;
-
-        //sleep _actionTime;
-
-        if(_putOutputItem == "ground")then{
-            [_outputItem] call bde_fnc_addItemGround;
-        };
-        if(_putOutputItem == "cargo")then{
-            [_outputItem,_cargoType] call bde_fnc_addItemCargo;
-        };
     };
 
+    _dontStop = true;
+    {
+        if(!(_x in items player))then{
+            _dontStop = false;
+        };
+    } forEach _requiredItems;
+
+    if(!_dontStop) exitWith {
+        cutText ["missing item", "PLAIN DOWN"];
+    };
+
+    {
+        [_x,""] call bde_fnc_removeItemCargo;
+    } forEach _consumesItems;
+
+    sleep _actionTime;
+
+    if(_putOutputItem == "ground")then{
+        [_outputItem] call bde_fnc_addItemGround;
+    };
+    if(_putOutputItem == "cargo")then{
+        [_outputItem,_cargoType] call bde_fnc_addItemCargo;
+    };
+    if(_putOutputItem == "")then{
+        [_x,_cargoType] spawn bde_fnc_removeItemCargo;
+    };
 };
 
 // Stone + Wood Action
@@ -118,10 +129,10 @@ bde_fnc_buildFireplace = {
         [player,"buildSound0","configVol","randomPitch",300] spawn bde_fnc_playSound3D;
         sleep 5;
         for "_w" from 0 to _minWood step 1 do {
-            ["bde_wood",_cargoType] call _removeItemCargo;
+            ["bde_wood",_cargoType] spawn _removeItemCargo;
         };
         for "_s" from 0 to _minStone step 1 do {
-            ["bde_stone",_cargoType] call _removeItemCargo;
+            ["bde_stone",_cargoType] spawn _removeItemCargo;
         };
     	cutText ["build fireplace", "PLAIN DOWN"];
 
@@ -157,14 +168,15 @@ _showInventoryActions = {
             lbAdd[2501,_actionText];
         } forEach _itemActions;
 
+        _rowHeight          = ctrlTextHeight _invActionLB;
         _invActionPos       = ctrlPosition _invActionLB;
-        _invActionNewHeight = (count _itemActions) * 0.03;
+        _invActionNewHeight = (count _itemActions) * _rowHeight;//0.035;
 
         _invActionLB ctrlSetPosition [(_clickPos select 0) - 0.1, (_clickPos select 1) - 0.01, _invActionPos select 2, _invActionNewHeight];
         _invActionLB ctrlCommit 0;
         ctrlSetFocus _invActionLB;
 
-        _invActionLB ctrlSetEventHandler ["LBSelChanged",format["['%1','%2',_this select 1] spawn useItem",_classname,_cargoType]];
+        _invActionLB ctrlSetEventHandler ["LBSelChanged",format["['%1','%2',_this select 1] spawn useItem;ctrlDelete ((findDisplay 602) displayCtrl 2501);",_classname,_cargoType]];
     };
 };
 
