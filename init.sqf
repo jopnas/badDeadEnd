@@ -3,6 +3,8 @@ worldCenter     = [worldHalfSize,worldHalfSize,0];
 
 if(!isDedicated)then{
     //startLoadingScreen ["Loading My Mission"];
+    [] execVM "scripts\player\playerGlobalFuncs.sqf";
+    [] execVM "scripts\player\playerGlobalVars.sqf";
 };
 
 [] execVM "scripts\tools\globalFuncs.sqf";
