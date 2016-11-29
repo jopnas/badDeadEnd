@@ -161,6 +161,14 @@ eatCookedFoodAction = {
     //systemChat format["shot noise range: %1",_dist];
 }];*/
 
+player addAction["Punch",{
+    player playActionNow "GesturePunch";
+};
+
+player addAction["Pee",{
+    player execVM "scripts\player\pee.sqf";
+};
+
 player addEventHandler ["Fired", {
     _unit       = _this select 0; // Object - Object the event handler is assigned to
     _weapon     = _this select 1; // String - Fired weapon
