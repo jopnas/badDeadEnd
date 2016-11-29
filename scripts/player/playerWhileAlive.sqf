@@ -162,7 +162,6 @@ eatCookedFoodAction = {
 }];*/
 
 player addEventHandler ["Fired", {
-    private["_unit","_audible","_caliber","_distance","_sil"];
     _unit       = _this select 0; // Object - Object the event handler is assigned to
     _weapon     = _this select 1; // String - Fired weapon
     _muzzle     = _this select 2; // String - Muzzle that was used
