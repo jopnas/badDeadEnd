@@ -1,3 +1,72 @@
+// Food functions
+bde_fnc_changeThirst = {
+    params["_val"];
+
+    // Thirst
+    _cur = player getVariable ["playerThirst",100];
+    _new = _cur + _val;
+    if(_new > 100)then{
+        _new = 100;
+    };
+    if(_new < 0)then{
+        _new = 0;
+    };
+    player setVariable ["playerThirst", _new, true];
+
+    // Bladder
+    _curBladder = getVariable ["playerBladder",0];
+    _newBladder = _bladder + (_val/2);
+    if(_newBladder > 100)then{
+        _newBladder = 100;
+    };
+    player setVariable ["playerBladder",_newBladder,true];
+};
+
+bde_fnc_changeHunger = {
+    params["_val"];
+
+    _cur = player getVariable ["playerHunger",100];
+    _new = _cur + _val;
+    if(_new > 100)then{
+        _new = 100;
+    };
+    if(_new < 0)then{
+        _new = 0;
+    };
+
+    player setVariable ["playerHunger", _new, true];
+};
+
+bde_fnc_changeHealth = {
+    params["_val"];
+
+    _cur = player getVariable ["playerHealth",100];
+    _new = _cur + _val;
+    if(_new > 100)then{
+        _new = 100;
+    };
+    if(_new < 0)then{
+        _new = 0;
+    };
+
+    player setVariable ["playerHealth", _new, true];
+};
+
+bde_fnc_changeTemperature = {
+    params["_val"];
+
+    _cur = player getVariable ["playerTemperature",100];
+    _new = _cur + _val;
+    if(_new > 100)then{
+        _new = 100;
+    };
+    if(_new < 0)then{
+        _new = 0;
+    };
+    player setVariable ["playerTemperature", _new, true];
+};
+
+// ItemUse functions
 bde_fnc_addItemCargo = { // [item,cargoType] call bde_fnc_addItemCargo;
     _itemClass = _this select 0;
     _cargoType = _this select 1;

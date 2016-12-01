@@ -4,52 +4,45 @@ params["_playerUnit","_isRespawn"];
 // https://community.bistudio.com/wiki/createSimpleObject/objects
 
 // Compiles
-updateUI   			= compile preprocessFile "scripts\player\playerUpdateUI.sqf";
-//checkNoise 		= compile preprocessFile "scripts\player\playerNoiseCheck.sqf";
-handleWet 			= compile preprocessFile "scripts\player\playerWetHandler.sqf";
-handlePoisoning	    = compile preprocessFile "scripts\player\playerPoisoning.sqf";
-handleRadiation	    = compile preprocessFile "scripts\player\playerRadiation.sqf";
-handleTemperature 	= compile preprocessFile "scripts\player\playerTemperatureHandler.sqf";
-checkSick			= compile preprocessFile "scripts\player\checkSick.sqf";
-checkBoundingBox    = compile preprocessFile "scripts\tools\checkBoundingBox.sqf";
-checkAnimals		= compile preprocessFile "scripts\animals\checkAnimals.sqf";
-canLock		        = compile preprocessFile "scripts\barricade\canLock.sqf";
-foodFuncs			= compile preprocessFile "scripts\food\food_funcs.sqf";
+updateUI                = compile preprocessFile "scripts\player\playerUpdateUI.sqf";
+//checkNoise            = compile preprocessFile "scripts\player\playerNoiseCheck.sqf";
+handleWet               = compile preprocessFile "scripts\player\playerWetHandler.sqf";
+handlePoisoning         = compile preprocessFile "scripts\player\playerPoisoning.sqf";
+handleRadiation         = compile preprocessFile "scripts\player\playerRadiation.sqf";
+handleTemperature       = compile preprocessFile "scripts\player\playerTemperatureHandler.sqf";
+checkSick			    = compile preprocessFile "scripts\player\checkSick.sqf";
+checkBoundingBox        = compile preprocessFile "scripts\tools\checkBoundingBox.sqf";
+checkAnimals            = compile preprocessFile "scripts\animals\checkAnimals.sqf";
+canLock                 = compile preprocessFile "scripts\barricade\canLock.sqf";
+foodFuncs			    = compile preprocessFile "scripts\food\food_funcs.sqf";
 
-// Player Variables
-playerHunger           = player getVariable ["playerHunger",100];
-playerThirst           = player getVariable ["playerThirst",100];
-playerHealth           = player getVariable ["playerHealth",100];
-playerTemperature      = player getVariable ["playerTemperature",100];
-playerWet              = player getVariable ["playerWet",0];
-playerSick             = player getVariable ["playerSick",0];
-playerInfected         = player getVariable ["playerInfected",0];
-playerPoisoning        = player getVariable ["playerPoisoning",0];
-playerRadiation        = player getVariable ["playerRadiation",0];
+player setVariable ["playerBladder",0,true];
 
-closeToDoor = false;
+curAmmo                 = player ammo currentMuzzle player;
 
-acidRain            = false;
+closeToDoor             = false;
 
-nextEverySecond     = 0;
-//nextEveryHalfSecond = 0;
+acidRain                = false;
 
-barricade = objNull;
+nextEverySecond         = 0;
+//nextEveryHalfSecond   = 0;
+
+barricade               = objNull;
 
 //https://community.bistudio.com/wiki/BIS_fnc_isInsideArea
 isInside                = false;
 
 // current GUI blink status
-guiBlink            = false;
+guiBlink                = false;
 
-hungerWaitTime      = 10;
-nextHungerDecr      = hungerWaitTime;
+hungerWaitTime          = 10;
+nextHungerDecr          = hungerWaitTime;
 
-thirstWaitTime      = 20;
-nextThirstDecr      = thirstWaitTime;
+thirstWaitTime          = 20;
+nextThirstDecr          = thirstWaitTime;
 
-healthWaitTime      = 30;
-nextHealthDecr      = healthWaitTime;
+healthWaitTime          = 30;
+nextHealthDecr          = healthWaitTime;
 
 // Cook & Boil
 boilWaterAvailable      = false;
@@ -92,13 +85,6 @@ chopWood = {
 
 // Watersources
 nearOpenWater           = false;
-drinkActionAvailable    = false;
-drinkWater = {
-    player playActionNow "PutDown";
-    player say3D "drinkSound0";
-    sleep 2;
-    playerThirst = playerThirst + 10;
-};
 
 cannedFoodCooldownTime      = 120;
 cannedFoodCooldownCountdown = 0;
@@ -106,8 +92,10 @@ cannedFoodCooldownCountdown = 0;
 eatCookedFoodAction = {
     player say3D "eatSound0";
     sleep 1;
-    playerHunger = playerHunger + (random(20)+30);
-    playerTemperature = playerTemperature + 20;
+
+    [random(20)+30] call bde_fnc_changeHunger;
+    [20] call bde_fnc_changeTemperature
+
     player removeMagazine "bde_canunknown";
 
     _pPos     = getPos player;
@@ -121,53 +109,13 @@ eatCookedFoodAction = {
     cutText [format["ate somthing cooked %1",selectRandom _tastes], "PLAIN DOWN"];
 };
 
-/*player addEventHandler ["Take", {
-    // _unit: Object - Unit to which the event handler is assigned
-    // _container: Object - The container from which the item was taken (vehicle, box, etc.)
-    // _item: String - The class name of the taken item
-    params["_unit","_container","_item"];
-    systemChat format["Take/_item: %1, _container: %2",_item,typeof _container];
-}];*/
-
-// broadcast shot to zombie
-/*player addEventHandler ["Fired", {
-    private["_unit","_audible","_caliber","_distance","_sil"];
-    _unit       = _this select 0; // Object - Object the event handler is assigned to
-    _weapon     = _this select 1; // String - Fired weapon
-    _muzzle     = _this select 2; // String - Muzzle that was used
-    _mode       = _this select 3; // String - Current mode of the fired weapon
-    _ammo       = _this select 4; // String - Ammo used
-    _magazine   = _this select 5; // String - magazine name which was used
-    _projectile = _this select 6; // Object - Object of the projectile that was shot
-
-    _sil        = 1;
-
-    if(_weapon == primaryWeapon _unit && str(primaryWeaponItems _unit) find "_snds_" > -1)then{
-        _sil    = 3;
-    };
-    if(_weapon == secondaryWeapon _unit && str(secondaryWeaponItems _unit) find "_snds_" > -1)then{
-        _sil    = 2;
-    };
-    if(_weapon == handgunWeapon _unit && str(handgunItems _unit) find "_snds_" > -1)then{
-        _sil    = 4;
-    };
-
-    _aud        = getNumber (configFile >> "CfgAmmo" >> _ammo >> "audibleFire");
-    //_cal        = getNumber (configFile >> "CfgAmmo" >> _ammo >> "caliber");
-
-    _dist       = round((_aud/_sil) * 30 );
-
-    [_unit,getPos _unit,_dist] remoteExec ["bde_fnc_receivePlayersNoise",2,false];
-    //systemChat format["shot noise range: %1",_dist];
-}];*/
-
 player addAction["Punch",{
     player playActionNow "GesturePunch";
-};
+},[],0,false,false,"","true"];
 
 player addAction["Pee",{
     player execVM "scripts\player\pee.sqf";
-};
+},[],0,false,false,"","true"];
 
 player addEventHandler ["Fired", {
     _unit       = _this select 0; // Object - Object the event handler is assigned to
@@ -178,10 +126,27 @@ player addEventHandler ["Fired", {
     _magazine   = _this select 5; // String - magazine name which was used
     _projectile = _this select 6; // Object - Object of the projectile that was shot
 
-    systemChat format["ammo: %1",_ammo];
+    systemChat format["shot ammo: %1",_ammo];
 
     if (_ammo isKindOf "bde_melee_ammo") exitWith {
     	_unit playActionNow "GestureSwing";
+    };
+}];
+
+player addEventHandler ["Reloaded", {
+    _unit           = _this select 1; // Object - unit or vehicle to which EH is assigned
+    _weapon         = _this select 2; // String - weapon that got reloaded
+    _muzzle         = _this select 3; // String - weapon's muzzle that got reloaded
+    _newMagazine    = _this select 4; // Array - new magazine info
+    _oldMagazine    = _this select 5; // Array or Nothing - old magazine info
+
+    systemChat format["reloaded weapon: %1, reloaded magazine: %2, ",_weapon,_newMagazine];
+
+    if (_weapon == "bde_spas12") then {
+        _unit setAmmo [currentWeapon _unit, curAmmo + 1];
+        true
+    } else {
+        false
     };
 }];
 
@@ -230,9 +195,20 @@ player addAction["chop wood",{
 },[],6,true,true,"","('bde_hatchet' in magazines player) && (str (cursorObject) find ': t_' > -1) && (player distance2d cursorObject < 3)"];
 
 // Drink Water
-player addAction["drink clean water",{
-    [] call drinkWater;
-},_cursorObject,6,true,true,"","(cursorObject distance player < 2) && (str (getModelInfo cursorObject) find 'watertank' > -1 || str (getModelInfo cursorObject) find 'waterbarrel' > -1 || str (getModelInfo cursorObject) find 'barrelwater' > -1 || str (getModelInfo cursorObject) find 'stallwater' > -1 || str (getModelInfo cursorObject) find 'water_source' > -1)"];
+player addAction["drink water",{
+    player playActionNow "PutDown";
+    player say3D "drink Sound0";
+    sleep 2;
+    [10] call bde_fnc_changeThirst;
+    if(nearOpenWater && random 100 > 90)then{
+        _cur = player getVariable ["playerSick",0];
+        _new = _cur + 0.5;
+    	if(_new > 1)then{
+    		_new = 1;
+    	};
+    	player setVariable ["playerSick",_new,true];
+    };
+},_cursorObject,6,true,true,"","nearOpenWater || ((cursorObject distance player < 2) && (str (getModelInfo cursorObject) find 'watertank' > -1 || str (getModelInfo cursorObject) find 'waterbarrel' > -1 || str (getModelInfo cursorObject) find 'barrelwater' > -1 || str (getModelInfo cursorObject) find 'stallwater' > -1 || str (getModelInfo cursorObject) find 'water_source' > -1))"];
 
 //endLoadingScreen;
 
@@ -245,8 +221,23 @@ if(_isRespawn)then{
 5 fadeMusic 3;
 cutText ["Welcome to BadDeadEnd ...", "BLACK IN", 5];
 
+/*-/-/-/-/-> LOOP <-/-/-/-/-/*/
 while{true}do{
 	t=time;
+
+    // Player Variables
+    _playerHunger            = player getVariable ["playerHunger",100];
+    _playerThirst            = player getVariable ["playerThirst",100];
+    _playerHealth            = player getVariable ["playerHealth",100];
+    _playerTemperature       = player getVariable ["playerTemperature",100];
+    _playerWet               = player getVariable ["playerWet",0];
+    _playerSick              = player getVariable ["playerSick",0];
+    _playerInfected          = player getVariable ["playerInfected",0];
+    _playerPoisoning         = player getVariable ["playerPoisoning",0];
+    _playerRadiation         = player getVariable ["playerRadiation",0];
+
+    curAmmo = player ammo currentMuzzle player;
+
     //"dog 0" setMarkerPos getPos (player getVariable "playersDog");
 
     //_speed              = speed (vehicle player);
@@ -277,6 +268,11 @@ while{true}do{
         }forEach _camBarricadeIntersect;
     };
 
+    if(surfaceIsWater (getPos player))then{
+        nearOpenWater = true;
+    }else{
+        nearOpenWater = false;
+    };
 
     if(isInside)then{
         closeToDoor = ([_closestBuilding] call canLock) select 1;
@@ -291,38 +287,17 @@ while{true}do{
     };
 
 	if(t > nextHungerDecr)then{
-		// Hunger
-		_hungerVal = playerHunger;
-		if(_hungerVal > 0)then{
-			playerHunger = _hungerVal - 1;
-		}else{
-			playerHunger = 0;
-		};
+        [-1] call bde_fnc_changeHunger;
 		nextHungerDecr = t + hungerWaitTime;
 	};
 
 	if(t > nextThirstDecr)then{
-		// Thirst
-		_thirstVal = playerThirst;
-		if(_thirstVal > 0)then{
-			playerThirst = _thirstVal - 1;
-		}else{
-			playerThirst = 0;
-		};
+        [-1] call bde_fnc_changeThirst;
 		nextThirstDecr = t + thirstWaitTime;
 	};
 
 	if(t > nextHealthDecr)then{
-		// Health
-		_healthVal = playerHealth;
-		_sickVal = playerSick;
-
-		if(_healthVal > 0)then{
-			playerHealth = _healthVal - 1;
-		}else{
-			playerHealth = 0;
-		};
-
+        [-1] call bde_fnc_changeHealth;
 		nextHealthDecr = t + healthWaitTime;
 	};
 
@@ -337,13 +312,8 @@ while{true}do{
         [getPos player] remoteExec ["fnc_spawnLoot",2,false];
     };
 
-    /*if(t > nextEveryHalfSecond)then{
-        [] call updateUI;
-        nextEveryHalfSecond = t + 0.5;
-    };*/
-
     if(t > nextEverySecond)then{
-        [player,[playerHunger,playerThirst,playerHealth,playerTemperature,playerWet,playerSick,playerInfected,playerPoisoning,playerRadiation]] remoteExec ["fnc_savePlayerStats",2,false];
+        [player,[_playerHunger,_playerThirst,_playerHealth,_playerTemperature,_playerWet,_playerSick,_playerInfected,_playerPoisoning,_playerRadiation]] remoteExec ["fnc_savePlayerStats",2,false];
         [] call updateUI;
         nextEverySecond = t + 1;
     };
@@ -360,7 +330,7 @@ while{true}do{
 	[_isUnderCover,isInside,_isInCar,_inflamedFireplaces,_isInShadow,_sunRadiation] spawn handleTemperature;
 
 	// Everything in 2 meters around player
-	/*_things = nearestObjects [player,[],5];   //!DON'T NEED IT AT MOMENT!
+	/*_things = nearestObjects [player,[],5];   //!DON'T NEED IT AT MOMENT! :D
 	{
 		_obj = _x;
 		// Tree Check
@@ -368,20 +338,6 @@ while{true}do{
 			nearestTree = [_obj];
 		};
 	} forEach _things;*/
-
-    /*if(_cursorObject distance player < 2 && (str (getModelInfo _cursorObject) find "watertank" > -1 || str (getModelInfo _cursorObject) find "waterbarrel" > -1 || str (getModelInfo _cursorObject) find "barrelwater" > -1 || str (getModelInfo _cursorObject) find "stallwater" > -1 || str (getModelInfo _cursorObject) find "water_source" > -1) )then{
-        if(!drinkActionAvailable)then{
-            drinkAction = player addAction["drink clean water",{
-                [] call drinkWater;
-            },_cursorObject,6,true,true,"",""];
-            drinkActionAvailable = true;
-        };
-    }else{
-        if(drinkActionAvailable)then{
-            drinkActionAvailable = false;
-            player removeAction drinkAction;
-        };
-    };*/
 
 	// Fireplace Check
 	if(inflamed _cursorObject) then {
@@ -391,7 +347,6 @@ while{true}do{
 
 		_bottlefilledCount  	= {_x == "bde_bottledirty"} count magazines player;
 
-		_canBeansCount  		= {_x == "bde_bakedbeans"} count magazines player;
 		_canUnknownCount  		= {_x == "bde_canunknown"} count magazines player;
 		_canPastaCount  		= {_x == "bde_canpasta"} count magazines player;
 		_canCount				= _canBeansCount + _canUnknownCount + _canPastaCount;
@@ -439,17 +394,15 @@ while{true}do{
         player removeAction eatCookedFoodAction;
     };
 
-    //hint format["_cursorObjectType: %1\ngetModelInfo: %2",_cursorObjectType,getModelInfo _cursorObject];
     hintsilent (
-            "playerPoisoning:" + (str playerPoisoning)
-            + "\nacidRain:" + (str acidRain)
-            + "\n\n" + ([] call llw_fnc_getDateTime)
-            + "\nSolar radiation: " + str _sunRadiation + " W/m²"
-            + "\nAir: " + str ([] call llw_fnc_getTemperature select 0) +"°C"
-            + "\nSea: " + str ([] call llw_fnc_getTemperature select 1) +"°C"
-            + "\nPlayer in shadow: " + str _isInShadow
-            + "\ncursor object: " + str cursorobject
-            + "\ncursor object class: " + typeOf cursorobject
-            + "\n\nTry fiddling with time, date, overcast, and fog."
+            "nearOpenWater:" + (str nearOpenWater) +
+            "\nacidRain:" + (str acidRain) +
+            "\n\n" + ([] call llw_fnc_getDateTime) +
+            "\nSolar radiation: " + str _sunRadiation + " W/m²" +
+            "\nAir: " + str ([] call llw_fnc_getTemperature select 0) +"°C" +
+            "\nSea: " + str ([] call llw_fnc_getTemperature select 1) +"°C" +
+            "\nPlayer in shadow: " + str _isInShadow +
+            "\ncursor object: " + str cursorobject +
+            "\ncursor object class: " + typeOf cursorobject
     );
 };

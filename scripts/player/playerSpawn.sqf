@@ -35,6 +35,7 @@ if(!(_dbAll isEqualTypeArray []))then{
     _poisoning	           = _db select 14;
     _radiation	           = _db select 15;
 
+
 	// Player Variables
     _playerUnit setVariable ["playerHunger",_hunger,true];
     _playerUnit setVariable ["playerThirst",_thirst,true];
@@ -45,6 +46,7 @@ if(!(_dbAll isEqualTypeArray []))then{
     _playerUnit setVariable ["playerInfected",_infected,true];
     _playerUnit setVariable ["playerPoisoning",_poisoning,true];
     _playerUnit setVariable ["playerRadiation",_radiation,true];
+
 
     _playerUnit setUnitLoadout [_loadout, false];
 
