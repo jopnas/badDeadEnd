@@ -17,7 +17,7 @@ fnc_loadPlayerStats = {
 
 	_result = call compile ("extDB2" callExtension format["0:SQL_PL_LOAD:SELECT PlayerPosition,PlayerStance,hunger,thirst,health,temperature,wet,sick,infected,playerDirection,playerDamage,currentWeapon,loadout,dog,poisoning,radiation FROM player WHERE PlayerUID='%1'",_PlayerUID]);
 
-    waitUntil{count _result > 0 && _result select 0 > 0};
+    waitUntil { (count _result > 0 && _result select 0 > 0) };
     [_playerUnit,(_result select 1) select 0,_result select 1] execVM "scripts\player\playerSpawn.sqf";
 };
 
