@@ -5,4 +5,4 @@ _respawn = _this select 2;
 _respawnDelay = _this select 3;
 
 _newUnitUID     = getPlayerUID _newUnit;
-[_newUnit,"",nil] execVM "scripts\server\playerSpawn.sqf";
+[_newUnit,false,false] execVM "scripts\server\playerSpawn.sqf";
