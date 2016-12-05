@@ -1,11 +1,20 @@
 params["_playerUnit","_isRespawn"];
 
+// Player Init Situation
+if(_isRespawn)then{
+    endLoadingScreen;
+    playSound "feeepSound0";
+    addCamShake [10, 10, 50];
+};
+5 fadeSound 3;
+5 fadeMusic 3;
+cutText ["Welcome to BadDeadEnd ...", "BLACK IN", 5];
+
 // nützlich für ghost objects? https://community.bistudio.com/wiki/createSimpleObject
 // https://community.bistudio.com/wiki/createSimpleObject/objects
 
 // Compiles
 updateUI                = compile preprocessFile "scripts\player\playerUpdateUI.sqf";
-//checkNoise            = compile preprocessFile "scripts\player\playerNoiseCheck.sqf";
 handleWet               = compile preprocessFile "scripts\player\playerWetHandler.sqf";
 handlePoisoning         = compile preprocessFile "scripts\player\playerPoisoning.sqf";
 handleRadiation         = compile preprocessFile "scripts\player\playerRadiation.sqf";
@@ -18,18 +27,10 @@ foodFuncs			    = compile preprocessFile "scripts\food\food_funcs.sqf";
 
 player setVariable ["playerBladder",0,true];
 
-curAmmo                 = player ammo currentMuzzle player;
-
 closeToDoor             = false;
-
 acidRain                = false;
-
 nextEverySecond         = 0;
-//nextEveryHalfSecond   = 0;
-
 barricade               = objNull;
-
-//https://community.bistudio.com/wiki/BIS_fnc_isInsideArea
 isInside                = false;
 
 // current GUI blink status
@@ -126,23 +127,6 @@ player addEventHandler ["Fired", {
     };
 }];
 
-/*player addEventHandler ["Reloaded", {
-    _unit           = _this select 1; // Object - unit or vehicle to which EH is assigned
-    _weapon         = _this select 2; // String - weapon that got reloaded
-    _muzzle         = _this select 3; // String - weapon's muzzle that got reloaded
-    _newMagazine    = _this select 4; // Array - new magazine info
-    _oldMagazine    = _this select 5; // Array or Nothing - old magazine info
-
-    systemChat format["reloaded weapon: %1, reloaded magazine: %2, ",_weapon,_newMagazine];
-
-    if (_weapon == "bde_spas12") then {
-        player setAmmo [currentWeapon player, curAmmo + 1];
-        true
-    } else {
-        false
-    };
-}];*/
-
 // Add Actions
 // DEBUG / Tests ->
     player addAction["location description",{
@@ -151,7 +135,7 @@ player addEventHandler ["Fired", {
 
     player addAction["Punch",{
         player playActionNow "GesturePunch";
-    },[],0,false,false,"","true"];
+    },[],6,false,false,"(currentWeapon player == '')","true"];
 
     player addAction["Pee",{
         player execVM "scripts\player\pee.sqf";
@@ -218,16 +202,7 @@ player addAction["drink water",{
     };
 },_cursorObject,6,true,true,"","nearOpenWater || ((cursorObject distance player < 2) && (str (getModelInfo cursorObject) find 'watertank' > -1 || str (getModelInfo cursorObject) find 'waterbarrel' > -1 || str (getModelInfo cursorObject) find 'barrelwater' > -1 || str (getModelInfo cursorObject) find 'stallwater' > -1 || str (getModelInfo cursorObject) find 'water_source' > -1))"];
 
-//endLoadingScreen;
 
-// Player Init Situation
-if(_isRespawn)then{
-	playSound "feeepSound0";
-    addCamShake [10, 10, 50];
-};
-5 fadeSound 3;
-5 fadeMusic 3;
-cutText ["Welcome to BadDeadEnd ...", "BLACK IN", 5];
 
 /*-/-/-/-/-> LOOP <-/-/-/-/-/*/
 while{true}do{

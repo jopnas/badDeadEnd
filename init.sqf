@@ -2,12 +2,13 @@ worldHalfSize   = (getNumber (configFile >> "CfgWorlds" >> worldName >> "mapSize
 worldCenter     = [worldHalfSize,worldHalfSize,0];
 
 if(!isDedicated)then{
-    //startLoadingScreen ["Loading My Mission"];
+    startLoadingScreen ["Can't skip loading time...", "bde_loadingScreen"];
     [] execVM "scripts\player\playerGlobalFuncs.sqf";
     [] execVM "scripts\player\playerGlobalVars.sqf";
 };
 
 [] execVM "scripts\tools\globalFuncs.sqf";
+[] execVM "scripts\tools\burnObject.sqf";
 
 if(isServer)then{
     setTimeMultiplier 5; // 0.1 - 120
@@ -30,7 +31,6 @@ if(isServer)then{
 	[] execVM "scripts\loot\initLoot.sqf";
 	[] execVM "scripts\animals\spawnAnimals.sqf";
 	[] execVM "scripts\server\whilePlayerOnline.sqf";
-    //[] execVM "scripts\zombies\initZombies.sqf";
     [] execVM "scripts\server\sqlLoadVehicles.sqf";
     [] execVM "scripts\server\sqlLoadTents.sqf";
     [] execVM "scripts\server\sqlLoadDogs.sqf";
@@ -42,4 +42,3 @@ if(!isDedicated)then {
     [] execVM "LLW_Climate\loadFunctions.sqf";
 };
 
-[] execVM "scripts\tools\burnObject.sqf";
