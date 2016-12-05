@@ -7,9 +7,9 @@ OnLoadMissionTime = 0;
 loadScreen = "images\BadDeadEndLoadingScreen.paa";
 
 class Header {
-    gameType=Survive;
-    minPlayers=1;
-    maxPlayers=4;
+    gameType = Survive;
+    minPlayers = 1;
+    maxPlayers = 4;
 };
 
 onCheat = "hint 'computer says NO!'";
@@ -52,10 +52,10 @@ respawnOnStart = 0; // 1 to respawn player when he joins the game. Available onl
 aikills = 0; // When 1, the score table contains score of all playable units as opposed to players only.
 
 // Revive
-ReviveMode = 0;                         //0: disabled, 1: enabled, 2: controlled by player attributes
+ReviveMode = 1;                         //0: disabled, 1: enabled, 2: controlled by player attributes
 ReviveUnconsciousStateMode = 2;         //0: basic, 1: advanced, 2: realistic
 ReviveRequiredTrait = 0;                //0: none, 1: medic trait is required
-ReviveRequiredItems = 2;                //0: none, 1: medkit, 2: medkit or first aid kit
+ReviveRequiredItems = 0;                //0: none, 1: medkit, 2: medkit or first aid kit
 ReviveRequiredItemsFakConsumed = 0;     //0: first aid kit is not consumed upon revive, 1: first aid kit is consumed
 ReviveDelay = 6;                        //time needed to revive someone (in secs)
 ReviveMedicSpeedMultiplier = 2;         //speed multiplier for revive performed by medic

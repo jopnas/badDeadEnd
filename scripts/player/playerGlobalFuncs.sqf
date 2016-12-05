@@ -14,8 +14,8 @@ bde_fnc_changeThirst = {
     player setVariable ["playerThirst", _new, true];
 
     // Bladder
-    _curBladder = getVariable ["playerBladder",0];
-    _newBladder = _bladder + (_val/2);
+    _curBladder = player getVariable ["playerBladder",0];
+    _newBladder = _curBladder + (_val/2);
     if(_newBladder > 100)then{
         _newBladder = 100;
     };

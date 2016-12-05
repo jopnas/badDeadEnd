@@ -12,7 +12,7 @@ fnc_spawnLoot = {
   // Military Lootlists
   _itemsMil             = ["bde_gasmask","bde_gasmask_wasted","bde_gasmask_filter","bde_gasmask_empty","ItemGPS","Rangefinder","NVGoggles","Laserdesignator","Laserdesignator_02","Laserdesignator_03"];
   // Civilian Lootlists
-  _itemsCiv             = ["ItemWatch","ItemCompass","ItemMap","Binocular","FirstAidKit","Medikit"];
+  _itemsCiv             = ["ItemWatch","bde_compass","bde_map","Binocular","FirstAidKit","Medikit"];
   // ConstructionBuilding Items
   _constructionItems    = ["bde_matches","bde_lock","bde_wood","bde_hammer","bde_nails","bde_plank","bde_cable","bde_stone","bde_codelock_panel"];
 

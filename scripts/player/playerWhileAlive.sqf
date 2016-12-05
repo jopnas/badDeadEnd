@@ -94,7 +94,7 @@ eatCookedFoodAction = {
     sleep 1;
 
     [random(20)+30] call bde_fnc_changeHunger;
-    [20] call bde_fnc_changeTemperature
+    [20] call bde_fnc_changeTemperature;
 
     player removeMagazine "bde_canunknown";
 
@@ -126,7 +126,7 @@ player addEventHandler ["Fired", {
     };
 }];
 
-player addEventHandler ["Reloaded", {
+/*player addEventHandler ["Reloaded", {
     _unit           = _this select 1; // Object - unit or vehicle to which EH is assigned
     _weapon         = _this select 2; // String - weapon that got reloaded
     _muzzle         = _this select 3; // String - weapon's muzzle that got reloaded
@@ -136,12 +136,12 @@ player addEventHandler ["Reloaded", {
     systemChat format["reloaded weapon: %1, reloaded magazine: %2, ",_weapon,_newMagazine];
 
     if (_weapon == "bde_spas12") then {
-        _unit setAmmo [currentWeapon _unit, curAmmo + 1];
+        player setAmmo [currentWeapon player, curAmmo + 1];
         true
     } else {
         false
     };
-}];
+}];*/
 
 // Add Actions
 // DEBUG / Tests ->

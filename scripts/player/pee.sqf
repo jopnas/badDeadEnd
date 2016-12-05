@@ -1,4 +1,4 @@
-_this playMove "Acts_AidlPercMstpSlowWrflDnon_pissing" ;
+_this playMove "Acts_AidlPercMstpSlowWrflDnon_pissing";
 	sleep 4 ;
 
 	_dir = getDir _this;

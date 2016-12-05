@@ -47,7 +47,6 @@ if(_dbAll isEqualType [])then{
     _playerUnit setVariable ["playerPoisoning",_poisoning,true];
     _playerUnit setVariable ["playerRadiation",_radiation,true];
 
-
     _playerUnit setUnitLoadout [_loadout, false];
 
     _playerUnit switchMove _playerStance;
