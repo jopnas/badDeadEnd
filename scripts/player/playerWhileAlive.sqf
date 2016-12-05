@@ -109,14 +109,7 @@ eatCookedFoodAction = {
     cutText [format["ate somthing cooked %1",selectRandom _tastes], "PLAIN DOWN"];
 };
 
-player addAction["Punch",{
-    player playActionNow "GesturePunch";
-},[],0,false,false,"","true"];
-
-player addAction["Pee",{
-    player execVM "scripts\player\pee.sqf";
-},[],0,false,false,"","true"];
-
+// Event Handler
 player addEventHandler ["Fired", {
     _unit       = _this select 0; // Object - Object the event handler is assigned to
     _weapon     = _this select 1; // String - Fired weapon
@@ -150,13 +143,28 @@ player addEventHandler ["Reloaded", {
     };
 }];
 
+// Add Actions
+// DEBUG / Tests ->
+    player addAction["location description",{
+        [] call BIS_fnc_locationDescription;
+    },[],0,false,false,"","true"];
+
+    player addAction["Punch",{
+        player playActionNow "GesturePunch";
+    },[],0,false,false,"","true"];
+
+    player addAction["Pee",{
+        player execVM "scripts\player\pee.sqf";
+    },[],0,false,false,"","true"];
+// <- DEBUG / Tests ENDE
+
 // Hide Weapons
 player addAction["Holster Weapon",{
     player action["SwitchWeapon",player,player,100];
     player switchCamera cameraView;
 },[],0,false,false,"","currentWeapon player != ''"];
 
-// Start Barricade
+// Barricading
 barricadeStartAction = player addAction["Create Barricade","scripts\barricade\fnc_startBarricde.sqf",[],0,false,false,"","isInside && (barricade isEqualTo objNull) && ({_x == 'bde_nails'} count magazines player) >= 2 && ('bde_hammer' in (magazines player)) && ('bde_plank' in (magazines player))"];
 
 player addAction ["Attach Window Barricade", {
