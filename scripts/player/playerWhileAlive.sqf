@@ -2,7 +2,6 @@ params["_playerUnit","_isRespawn"];
 
 // Player Init Situation
 if(_isRespawn)then{
-    endLoadingScreen;
     playSound "feeepSound0";
     addCamShake [10, 10, 50];
 };
@@ -130,16 +129,16 @@ player addEventHandler ["Fired", {
 // Add Actions
 // DEBUG / Tests ->
     player addAction["location description",{
-        [] call BIS_fnc_locationDescription;
-    },[],0,false,false,"","true"];
+        [position player] call BIS_fnc_locationDescription;
+    },[],0,false,false,"",""];
 
     player addAction["Punch",{
         player playActionNow "GesturePunch";
-    },[],6,false,false,"(currentWeapon player == '')","true"];
+    },[],6,false,false,"","currentWeapon player == ''"];
 
     player addAction["Pee",{
         player execVM "scripts\player\pee.sqf";
-    },[],0,false,false,"","true"];
+    },[],0,false,false,"",""];
 // <- DEBUG / Tests ENDE
 
 // Hide Weapons
@@ -203,7 +202,7 @@ player addAction["drink water",{
 },_cursorObject,6,true,true,"","nearOpenWater || ((cursorObject distance player < 2) && (str (getModelInfo cursorObject) find 'watertank' > -1 || str (getModelInfo cursorObject) find 'waterbarrel' > -1 || str (getModelInfo cursorObject) find 'barrelwater' > -1 || str (getModelInfo cursorObject) find 'stallwater' > -1 || str (getModelInfo cursorObject) find 'water_source' > -1))"];
 
 
-
+playerReady = true;
 /*-/-/-/-/-> LOOP <-/-/-/-/-/*/
 while{true}do{
 	t=time;

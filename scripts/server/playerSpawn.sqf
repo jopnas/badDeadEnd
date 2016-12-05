@@ -15,7 +15,7 @@ removeHeadgear _playerUnit;
 removeGoggles _playerUnit;
 removeUniform _playerUnit;
 
-if(!(_dbAll isEqualType false) &&  !(_db isEqualType false))then{
+if(!(_dbAll isEqualTo []))then{
 	_playerPosition        = _db select 0;
 	_playerStance          = _db select 1;
 

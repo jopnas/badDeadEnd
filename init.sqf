@@ -2,7 +2,9 @@ worldHalfSize   = (getNumber (configFile >> "CfgWorlds" >> worldName >> "mapSize
 worldCenter     = [worldHalfSize,worldHalfSize,0];
 
 if(!isDedicated)then{
-    startLoadingScreen ["Can't skip loading time...", "bde_loadingScreen"];
+    playerReady = false;
+    //startLoadingScreen ["prepare to survive", "bde_loadingScreen"];
+    [] execVM "LLW_Climate\loadFunctions.sqf";
     [] execVM "scripts\player\playerGlobalFuncs.sqf";
     [] execVM "scripts\player\playerGlobalVars.sqf";
 };
@@ -38,7 +40,8 @@ if(isServer)then{
     [] execVM "scripts\server\sqlLoadDoors.sqf";
 };
 
-if(!isDedicated)then {
-    [] execVM "LLW_Climate\loadFunctions.sqf";
+if(!isDedicated)then{
+    waitUntil { playerReady };
+    systemChat format["playerReady %1",playerReady];
+    //endLoadingScreen;
 };
-
