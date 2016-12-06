@@ -4,5 +4,9 @@ _killer 		= _this select 1;
 _respawn 		= _this select 2;
 _respawnDelay 	= _this select 3;
 
-[getPlayerUID player] remoteExec ["fnc_deletePlayerStats",2,false];
+systemChat "onPlayerKilled.sqf";
+
 cutText ["You died ...", "BLACK"];
+[getPlayerUID player] call fnc_deletePlayerStats;
+sleep _respawnDelay;
+forceRespawn _oldUnit;

@@ -4,7 +4,7 @@ _oldUnit = _this select 1;
 _respawn = _this select 2;
 _respawnDelay = _this select 3;
 
-systemChat "is respawn";
+systemChat "onPlayerRespawn.sqf";
 
 _newUnitUID     = getPlayerUID _newUnit;
 [_newUnit,false,false] execVM "scripts\server\playerSpawn.sqf";

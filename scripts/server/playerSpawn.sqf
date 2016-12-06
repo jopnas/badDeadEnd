@@ -1,10 +1,14 @@
-params["_playerUnit","_db","_dbAll","_fnc_dogBehaviour"];
+params["_playerUnit","_db","_dbAll"/**/,"_isRespawn"];
+
+if(!(_dbAll isEqualTo []))then{
+    _isRespawn = false;
+}else{
+    _isRespawn = true;
+};
 
 // Player Setup
 _playerUnit enableFatigue false;
 enableCamShake true;
-
-_isRespawn = false;
 
 // Player Equipment Reset
 removeAllWeapons _playerUnit;
@@ -15,7 +19,7 @@ removeHeadgear _playerUnit;
 removeGoggles _playerUnit;
 removeUniform _playerUnit;
 
-if(!(_dbAll isEqualTo []))then{
+if(!(_isRespawn))then{
 	_playerPosition        = _db select 0;
 	_playerStance          = _db select 1;
 
@@ -133,7 +137,7 @@ if(!(_dbAll isEqualTo []))then{
 		};
 
       if(_i >= _hitPointsCount)then{
-        _playerUnit setVariable["playerSetupReady",true,false];
+        _playerUnit setVariable["playerSetupReady",true,true];
       };
 	};
 
@@ -154,10 +158,12 @@ if(!(_dbAll isEqualTo []))then{
     _forestPlaces = _forests apply {_x select 0};
     _rdmSpawnPos = (_forestPlaces select 0) findEmptyPosition [0, 10, "C_man_1"];
     _playerUnit setPosATL _rdmSpawnPos;
-    _playerUnit setVariable["playerSetupReady",true,false];
+    _playerUnit setVariable["playerSetupReady",true,true];
 };
 
-waitUntil{_playerUnit getVariable["playerSetupReady",false]};
+waitUntil {
+    _playerUnit getVariable["playerSetupReady",false];
+};
 
 _playerUnit addAction["Arsenal",{
     ["Open",true] spawn BIS_fnc_arsenal;
