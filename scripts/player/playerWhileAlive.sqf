@@ -32,6 +32,8 @@ nextEverySecond         = 0;
 barricade               = objNull;
 isInside                = false;
 
+isPunching              = false;
+
 // current GUI blink status
 guiBlink                = false;
 
@@ -126,19 +128,28 @@ player addEventHandler ["Fired", {
     };
 }];
 
+player addEventHandler ["AnimDone", {
+    _unit = _this select 0; // Object - Object the event handler is assigned to
+    _anim = _this select 1; // String - Name of the anim that has been finished
+
+    if(_anim == "GesturePunch")then{
+        isPunching = false;
+    };
+}];
+
 // Add Actions
 // DEBUG / Tests ->
     player addAction["location description",{
-        [position player] call BIS_fnc_locationDescription;
+        [getPos player] call BIS_fnc_locationDescription;
     },[],0,false,false,"",""];
 
-    player addAction["Punch",{
+    /*player addAction["Punch",{
         player playActionNow "GesturePunch";
-    },[],6,false,false,"","currentWeapon player == ''"];
+    },[],6,false,false,"","currentWeapon player == ''"];*/
 
     player addAction["Pee",{
         player execVM "scripts\player\pee.sqf";
-    },[],0,false,false,"",""];
+    },[],0,false,false,"","((player getVariable ['playerBladder',0]) > 70)"];
 // <- DEBUG / Tests ENDE
 
 // Hide Weapons
@@ -178,20 +189,23 @@ player addAction["Attach Codelock","scripts\barricade\fnc_attachLock.sqf",[],0,f
 player addAction["Use Codelock","scripts\barricade\fnc_lockdoor.sqf",[],0,false,false,"","closeToDoor && doorHasLock"];
 
 // Gut Animal
-player addAction["Gut Animal","scripts\animals\gutAnimal.sqf",[],6,true,true,"","(cursorObject isKindOf 'Animal') && ('bde_multitool_knife' in magazines player) && (player distance cursorObject < 2) && !(alive cursorObject)"];
+_gutAnimalActionID = player addAction["gut animal","scripts\animals\gutAnimal.sqf",[],6,true,true,"","(cursorObject isKindOf 'Animal') && ('bde_multitool_knife' in magazines player) && (player distance cursorObject < 2) && !(alive cursorObject)"];
+player setUserActionText [_gutAnimalActionID,"gut animal","<t color='#ff0000'><img image='\a3\ui_f\data\gui\cfg\Hints\actionmenu_ca.paa' /></t>",""];
 
 // Chop Wood
-player addAction["chop wood",{
+_chopWoodActionID = player addAction["chop wood",{
     [cursorObject] call chopWood;
 },[],6,true,true,"","('bde_hatchet' in magazines player) && (str (cursorObject) find ': t_' > -1) && (player distance2d cursorObject < 3)"];
+player setUserActionText [_chopWoodActionID,"chop wood","<t color='#b57326'><img image='\a3\ui_f\data\gui\cfg\Hints\actionmenu_ca.paa' /></t>",""];
 
 // Drink Water
-player addAction["drink water",{
+_drinkActionID = player addAction["drink",{
     player playActionNow "PutDown";
     player say3D "drink Sound0";
     sleep 2;
     [10] call bde_fnc_changeThirst;
-    if(nearOpenWater && random 100 > 90)then{
+
+    if(nearOpenWater && random 100 > 50)then{
         _cur = player getVariable ["playerSick",0];
         _new = _cur + 0.5;
     	if(_new > 1)then{
@@ -199,13 +213,19 @@ player addAction["drink water",{
     	};
     	player setVariable ["playerSick",_new,true];
     };
-},_cursorObject,6,true,true,"","nearOpenWater || ((cursorObject distance player < 2) && (str (getModelInfo cursorObject) find 'watertank' > -1 || str (getModelInfo cursorObject) find 'waterbarrel' > -1 || str (getModelInfo cursorObject) find 'barrelwater' > -1 || str (getModelInfo cursorObject) find 'stallwater' > -1 || str (getModelInfo cursorObject) find 'water_source' > -1))"];
-
+},_cursorObject,6,true,true,"","( nearOpenWater || ((cursorObject distance player < 2) && (str (getModelInfo cursorObject) find 'watertank' > -1 || str (getModelInfo cursorObject) find 'waterbarrel' > -1 || str (getModelInfo cursorObject) find 'barrelwater' > -1 || str (getModelInfo cursorObject) find 'stallwater' > -1 || str (getModelInfo cursorObject) find 'water_source' > -1)) )"];
+player setUserActionText [_drinkActionID,"drink","<t color='#0000ff'><img image='\a3\ui_f\data\gui\cfg\Hints\actionmenu_ca.paa' /></t>",""];
 
 playerReady = true;
 /*-/-/-/-/-> LOOP <-/-/-/-/-/*/
 while{true}do{
 	t=time;
+
+    // inputAction EventHandler
+    if(inputAction "Fire" > 0 && currentWeapon player == "" && !(isPunching))then{
+        isPunching = true;
+        player playActionNow "GesturePunch";
+    };
 
     // Player Variables
     _playerHunger            = player getVariable ["playerHunger",100];
@@ -217,8 +237,7 @@ while{true}do{
     _playerInfected          = player getVariable ["playerInfected",0];
     _playerPoisoning         = player getVariable ["playerPoisoning",0];
     _playerRadiation         = player getVariable ["playerRadiation",0];
-
-    curAmmo = player ammo currentMuzzle player;
+    _playerBladder           = player getVariable ["playerBladder",0];
 
     //"dog 0" setMarkerPos getPos (player getVariable "playersDog");
 
@@ -298,6 +317,16 @@ while{true}do{
         [player,[_playerHunger,_playerThirst,_playerHealth,_playerTemperature,_playerWet,_playerSick,_playerInfected,_playerPoisoning,_playerRadiation]] remoteExec ["fnc_savePlayerStats",2,false];
         [] call updateUI;
         nextEverySecond = t + 1;
+
+        // Bladder Check + pee in pants
+        if(_playerBladder > 99)then{
+            if(_playerWet > 50)then{
+                player setVariable ["playerWet",100,true];
+            }else{
+                player setVariable ["playerWet",_playerWet + 50,true];
+            };
+            player setVariable ["playerBladder",0,true];
+        };
     };
 
 	_nearestFireplaces  = nearestObjects [player, ["Land_FirePlace_F","Land_Campfire_F"], 3];
@@ -377,6 +406,7 @@ while{true}do{
     };
 
     hintsilent (
+            "playerBladder: " + (str (player getVariable ["playerBladder",0])) +
             "nearOpenWater:" + (str nearOpenWater) +
             "\nacidRain:" + (str acidRain) +
             "\n\n" + ([] call llw_fnc_getDateTime) +

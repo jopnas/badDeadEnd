@@ -12,7 +12,7 @@ class Header {
     maxPlayers = 4;
 };
 
-onCheat = "hint 'computer says NO!'";
+onCheat = "hint 'NOOOO!'";
 
 forceRotorLibSimulation = 0;
 disableRandomization[] = {"All"};
@@ -43,9 +43,9 @@ showNotePad = 0;
 // Disable dropping items while swimming
 enableItemsDropping = 0
 
-respawn = 0;//3; // Respawn type. 0:"NONE", 1:"BIRD", 2:"INSTANT", 3:"BASE", 4:"GROUP", 5:"SIDE"
+respawn = 3; // Respawn type. 0:"NONE", 1:"BIRD", 2:"INSTANT", 3:"BASE", 4:"GROUP", 5:"SIDE"
 respawndelay = 5; // Delay in seconds before playable unit respawns.
-respawnVehicleDelay = 100000; // Delay in seconds before vehicle respawns.
+respawnVehicleDelay = 10000000; // Delay in seconds before vehicle respawns.
 respawnDialog = 0; // 0 to disable the score table (it can still be opened manually by pressing 'P' key).
 //respawnTemplates[] = {}; // Respawn templates from CfgRespawnTemplates. You can combine any number of them together.
 respawnOnStart = -1; // 1 to respawn player when he joins the game. Available only for INSTANT and BASE respawn types. -1 to not run respawn script

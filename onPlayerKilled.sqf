@@ -5,8 +5,5 @@ _respawn 		= _this select 2;
 _respawnDelay 	= _this select 3;
 
 systemChat "onPlayerKilled.sqf";
-
 cutText ["You died ...", "BLACK"];
 [getPlayerUID player] call fnc_deletePlayerStats;
-sleep _respawnDelay;
-forceRespawn _oldUnit;
