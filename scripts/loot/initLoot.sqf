@@ -29,7 +29,7 @@ fnc_spawnLoot = {
   _BuildingsExclude     = _pierNames + _bridgeNames;
 
   // Furniture
-  _furnituresCivil      =["Land_ChairWood_F","Land_Metal_rack_F","Land_Rack_F","Land_Metal_wooden_rack_F","Land_ShelvesWooden_khaki_F","Land_ShelvesWooden_F","Land_WoodenTable_small_F","Land_WoodenTable_large_F","Land_ChairPlastic_F"];
+  _furnituresCivil      = ["Land_ChairWood_F","Land_Metal_rack_F","Land_Rack_F","Land_Metal_wooden_rack_F","Land_ShelvesWooden_khaki_F","Land_ShelvesWooden_F","Land_WoodenTable_small_F","Land_WoodenTable_large_F","Land_ChairPlastic_F"];
 
   _constructionItems append [_bottles,_canteen];
   _foodItems append [_canteen,_bottles,_ducttapes];
@@ -95,14 +95,14 @@ fnc_spawnLoot = {
 
                   // Ammo only
                   if(random 100 < 30) then {
-                    _rdmWeaponAmmoMil  = selectRandom (heavyWeapons call BIS_fnc_arrayShuffle);
+                    _rdmWeaponAmmoMil  = selectRandom heavyWeapons;
                     _rmags = getArray(configfile >> "cfgWeapons" >> _rdmWeaponAmmoMil >> "magazines");
                     _spawn addItemCargoGlobal [selectRandom _rmags, round(random 3)+1];
                   };
 
                   // Backpacks
                   if(random 100 < 30) then {
-                    _spawn addItemCargoGlobal [selectRandom backpacks,1];
+                    _spawn addBackpackCargoGlobal [selectRandom backpacks,1];
                   };
 
                   // Cloth
@@ -230,7 +230,7 @@ fnc_spawnLoot = {
 
                         // Backpacks
                         if(random 100 < 30) then {
-                            _spawn addItemCargoGlobal [selectRandom backpacks,1];
+                            _spawn addBackpackCargoGlobal [selectRandom backpacks,1];
                         };
 
                         // Clothes

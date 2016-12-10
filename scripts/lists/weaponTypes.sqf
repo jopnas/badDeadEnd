@@ -7,7 +7,7 @@ heavyWeapons    = [];
 
 attachments     = [];
 
-_allWeaponTypes = ["AssaultRifle","Handgun","MachineGun","Shotgun","Rifle","SubmachineGun","SniperRifle"];
+_allWeaponTypes = ["AssaultRifle","Handgun","MachineGun","Shotgun","Rifle","SubmachineGun","SniperRifle","Melee"];
 // AssaultRifle,BombLauncher,Cannon,GrenadeLauncher,Handgun,Launcher,MachineGun,Magazine,MissileLauncher,Mortar,RocketLauncher,Shotgun,Throw,Rifle,SubmachineGun,SniperRifle
 //Full List: https://community.bistudio.com/wiki/BIS_fnc_itemType -> section Weapon
 _allBannedWeapons=[];  //add banned weapons, make shure to use the base version of the weapon
@@ -30,7 +30,6 @@ _wpList = (configFile >> "cfgWeapons") call BIS_fnc_getCfgSubClasses;
                 {
                     attachments pushBackUnique _x;
                 } forEach _compatibles;
-
 
                 // Get Magazines List
                 _hardestHitPossible = 0;

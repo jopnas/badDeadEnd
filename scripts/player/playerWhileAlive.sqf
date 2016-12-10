@@ -128,26 +128,14 @@ player addEventHandler ["Fired", {
     };
 }];
 
-player addEventHandler ["AnimChanged", {
+/*player addEventHandler ["AnimDone", {
     _unit = _this select 0; // Object - Object the event handler is assigned to
     _anim = _this select 1; // String - Name of the anim that has been finished
-
-    if(_anim == "GesturePunch")then{
-        isPunching = false;
-        systemChat format["_anim: %1, _unit: %2",_anim,_unit];
-    };
-}];
+    systemChat format["_anim: %1, _unit: %2",_anim,_unit];
+}];*/
 
 // Add Actions
 // DEBUG / Tests ->
-    player addAction["location description",{
-        [getPos player] call BIS_fnc_locationDescription;
-    },[],0,false,false,"",""];
-
-    /*player addAction["Punch",{
-        player playActionNow "GesturePunch";
-    },[],6,false,false,"","currentWeapon player == ''"];*/
-
     player addAction["Pee",{
         player execVM "scripts\player\pee.sqf";
     },[],0,false,false,"","((player getVariable ['playerBladder',0]) > 70)"];
@@ -217,6 +205,13 @@ _drinkActionID = player addAction["drink",{
 },_cursorObject,6,true,true,"","( nearOpenWater || ((cursorObject distance player < 2) && (str (getModelInfo cursorObject) find 'watertank' > -1 || str (getModelInfo cursorObject) find 'waterbarrel' > -1 || str (getModelInfo cursorObject) find 'barrelwater' > -1 || str (getModelInfo cursorObject) find 'stallwater' > -1 || str (getModelInfo cursorObject) find 'water_source' > -1)) )"];
 player setUserActionText [_drinkActionID,"drink","<t color='#0000ff'><img image='\a3\ui_f\data\gui\cfg\Hints\actionmenu_ca.paa' /></t>",""];
 
+bde_fnc_punch = {
+    isPunching = true;
+    player playActionNow "GesturePunch";
+    sleep 2;
+    isPunching = false;
+};
+
 playerReady = true;
 /*-/-/-/-/-> LOOP <-/-/-/-/-/*/
 while{true}do{
@@ -225,10 +220,7 @@ while{true}do{
 
     // inputAction EventHandler
     if(_inputActionFire > 0 && currentWeapon player == "" && !(isPunching))then{
-        isPunching = true;
-        player playActionNow "GesturePunch";
-        sleep 4;
-        isPunching = false;
+        [] spawn bde_fnc_punch;
     };
 
     // Player Variables
@@ -328,7 +320,7 @@ while{true}do{
             if(_playerWet > 50)then{
                 player setVariable ["playerWet",100,true];
             }else{
-                player setVariable ["playerWet",_playerWet + 50,true];
+                player setVariable ["playerWet",50,true];
             };
             player setVariable ["playerBladder",0,true];
         };
@@ -365,7 +357,7 @@ while{true}do{
 
 		_canUnknownCount  		= {_x == "bde_canunknown"} count magazines player;
 		_canPastaCount  		= {_x == "bde_canpasta"} count magazines player;
-		_canCount				= _canBeansCount + _canUnknownCount + _canPastaCount;
+		_canCount				= _canUnknownCount + _canPastaCount;
 
 		_meatSmallCount  		= {_x == "bde_meat_small"} count magazines player;
 		_meatBigCount  			= {_x == "bde_meat_big"} count magazines player;
@@ -378,7 +370,7 @@ while{true}do{
 			boilWaterAvailable = true;
 		};
 		if(!cookCannedFoodAvailable && cannedFoodCooldownCountdown == 0 && _canCount > 0) then {
-			cookCannedFoodAction = player addAction["Cook baked beans",{
+			cookCannedFoodAction = player addAction["Cook canned food",{
 				["cookCannedFood"] call foodFuncs;
 			}];
 			cookCannedFoodAvailable = true;

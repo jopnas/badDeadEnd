@@ -47,3 +47,4 @@ _this playMove "Acts_AidlPercMstpSlowWrflDnon_pissing";
 	};
 
 	deleteVehicle _stream;
+    player setVariable ["playerBladder",0,true];

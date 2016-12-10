@@ -16,57 +16,65 @@ _putOutputItem  = getText (configFile >> "CfgMagazines" >> _usedItem >> "itemAct
 _actionTime     = getNumber (configFile >> "CfgMagazines" >> _usedItem >> "itemActions" >> _selectedAction >> "actionTime");
 _actionSound    = getText (configFile >> "CfgMagazines" >> _usedItem >> "itemActions" >> _selectedAction >> "actionSound");
 _customFunction = getText (configFile >> "CfgMagazines" >> _usedItem >> "itemActions" >> _selectedAction >> "customFunction");
+_justFunction   = getNumber (configFile >> "CfgMagazines" >> _usedItem >> "itemActions" >> _selectedAction >> "justFunction");
 
 _allItems = (uniformitems player) + (vestitems player) + (backpackitems player);
 
 // Validate Requirements
-{
-    _xOfRequired    = _x;
-    _countItemReq   = {_x == _xOfRequired} count _requiredItems;
-    _countItemInv   = {_x == _xOfRequired} count _allItems;
-    if(_countItemReq > _countItemInv) exitWith {
-        _missingItem = _xOfRequired;
+if(_justFunction == 1)then{
+    // Execute function
+    if(_customFunction != "")then{
+        [] call compile format["%1",_customFunction];
     };
-} forEach _requiredItems;
-
-if(_missingItem != "") exitWith {
-    cutText [format["missing '%1'",_missingItem], "PLAIN DOWN"];
-};
-
-// Remove consuming items
-if(!(_consumesItems isEqualTo [])) then {
+} else {
     {
-        _skip = false;
-        if(_x in uniformItems player && !_skip) then {
-            player removeItemFromUniform _x;
-            _skip = true;
+        _xOfRequired    = _x;
+        _countItemReq   = {_x == _xOfRequired} count _requiredItems;
+        _countItemInv   = {_x == _xOfRequired} count _allItems;
+        if(_countItemReq > _countItemInv) exitWith {
+            _missingItem = _xOfRequired;
         };
-        if(_x in uniformItems player && !_skip) then {
-            player removeItemFromUniform _x;
-            _skip = true;
-        };
-        if(_x in uniformItems player && !_skip) then {
-            player removeItemFromUniform _x;
-            _skip = true;
-        };
-    } forEach _consumesItems;
-};
+    } forEach _requiredItems;
 
-// Wait until action is done
-sleep _actionTime;
+    if(_missingItem != "") exitWith {
+        cutText [format["missing '%1'",_missingItem], "PLAIN DOWN"];
+    };
 
-// Remove used item
-[_usedItem,_cargoType] call bde_fnc_removeItemCargo;
+    // Remove consuming items
+    if(!(_consumesItems isEqualTo [])) then {
+        {
+            _skip = false;
+            if(_x in uniformItems player && !_skip) then {
+                player removeItemFromUniform _x;
+                _skip = true;
+            };
+            if(_x in uniformItems player && !_skip) then {
+                player removeItemFromUniform _x;
+                _skip = true;
+            };
+            if(_x in uniformItems player && !_skip) then {
+                player removeItemFromUniform _x;
+                _skip = true;
+            };
+        } forEach _consumesItems;
+    };
 
-// Put new item to ground or player inventory
-if(_putOutputItem == "ground")then{
-    [_outputItem] call bde_fnc_addItemGround;
-};
-if(_putOutputItem == "cargo")then{
-    [_outputItem,_cargoType] call bde_fnc_addItemCargo;
-};
+    // Wait until action is done
+    sleep _actionTime;
 
-// Execute special function (must be global for player)
-if(_customFunction != "")then{
-    [] call compile _customFunction;
+    // Remove used item
+    [_usedItem,_cargoType] call bde_fnc_removeItemCargo;
+
+    // Put new item to ground or player inventory
+    if(_putOutputItem == "ground")then{
+        [_outputItem] call bde_fnc_addItemGround;
+    };
+    if(_putOutputItem == "cargo")then{
+        [_outputItem,_cargoType] call bde_fnc_addItemCargo;
+    };
+
+    // Execute function
+    if(_customFunction != "")then{
+        [] call compile format["%1",_customFunction];
+    };
 };

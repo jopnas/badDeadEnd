@@ -14,12 +14,17 @@ bde_fnc_changeThirst = {
     player setVariable ["playerThirst", _new, true];
 
     // Bladder
-    _curBladder = player getVariable ["playerBladder",0];
-    _newBladder = _curBladder + (_val/2);
-    if(_newBladder > 100)then{
-        _newBladder = 100;
+    if(_val > 0)then{
+        _curBladder = player getVariable ["playerBladder",0];
+        _newBladder = _curBladder + (_val/2);
+        if(_newBladder > 100)then{
+            _newBladder = 100;
+        };
+        if(_newBladder < 0)then{
+            _newBladder = 0;
+        };
+        player setVariable ["playerBladder",_newBladder,true];
     };
-    player setVariable ["playerBladder",_newBladder,true];
 };
 
 bde_fnc_changeHunger = {
