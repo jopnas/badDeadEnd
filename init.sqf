@@ -41,6 +41,7 @@ if(isServer)then{
 };
 
 if(!isDedicated)then{
+    [] execVM "LLW_Climate\loadFunctions.sqf";
     waitUntil { playerReady };
     systemChat format["playerReady %1",playerReady];
     //endLoadingScreen;

@@ -128,12 +128,13 @@ player addEventHandler ["Fired", {
     };
 }];
 
-player addEventHandler ["AnimDone", {
+player addEventHandler ["AnimChanged", {
     _unit = _this select 0; // Object - Object the event handler is assigned to
     _anim = _this select 1; // String - Name of the anim that has been finished
 
     if(_anim == "GesturePunch")then{
         isPunching = false;
+        systemChat format["_anim: %1, _unit: %2",_anim,_unit];
     };
 }];
 
@@ -220,11 +221,14 @@ playerReady = true;
 /*-/-/-/-/-> LOOP <-/-/-/-/-/*/
 while{true}do{
 	t=time;
+    _inputActionFire = inputAction "Fire";
 
     // inputAction EventHandler
-    if(inputAction "Fire" > 0 && currentWeapon player == "" && !(isPunching))then{
+    if(_inputActionFire > 0 && currentWeapon player == "" && !(isPunching))then{
         isPunching = true;
         player playActionNow "GesturePunch";
+        sleep 4;
+        isPunching = false;
     };
 
     // Player Variables
@@ -311,6 +315,7 @@ while{true}do{
     if(t > 5)then{
         [] call checkSick;
         [getPos player] remoteExec ["fnc_spawnLoot",2,false];
+        //systemChat format["_inputActionFire: %1", _inputActionFire];
     };
 
     if(t > nextEverySecond)then{
@@ -407,7 +412,7 @@ while{true}do{
 
     hintsilent (
             "playerBladder: " + (str (player getVariable ["playerBladder",0])) +
-            "nearOpenWater:" + (str nearOpenWater) +
+            "\nnearOpenWater:" + (str nearOpenWater) +
             "\nacidRain:" + (str acidRain) +
             "\n\n" + ([] call llw_fnc_getDateTime) +
             "\nSolar radiation: " + str _sunRadiation + " W/m²" +
