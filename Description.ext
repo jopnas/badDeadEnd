@@ -7,7 +7,7 @@ OnLoadMissionTime = 0;
 loadScreen = "images\BadDeadEndLoadingScreen.paa";
 
 class Header {
-    gameType = Coop;
+    gameType = survive;
     minPlayers = 1;
     maxPlayers = 4;
 };
