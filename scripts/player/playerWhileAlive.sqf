@@ -92,7 +92,7 @@ cannedFoodCooldownTime      = 120;
 cannedFoodCooldownCountdown = 0;
 
 eatCookedFoodAction = {
-    player say3D "eatSound0";
+    [player,"eatSound0",500,1] remoteExec ["bde_fnc_say3d",0,false];
     sleep 1;
 
     [random(20)+30] call bde_fnc_changeHunger;
@@ -190,7 +190,7 @@ player setUserActionText [_chopWoodActionID,"chop wood","<t color='#b57326'><img
 // Drink Water
 _drinkActionID = player addAction["drink",{
     player playActionNow "PutDown";
-    player say3D "drink Sound0";
+    [player,"drinkSound0",500,1] remoteExec ["bde_fnc_say3d",0,false];
     sleep 2;
     [10] call bde_fnc_changeThirst;
 

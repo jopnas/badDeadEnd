@@ -1,11 +1,23 @@
+_lastClientState = "";
+while{true}do{
+    _curClientState = getClientState;
+    if(_curClientState != _lastClientState)then{
+        systemChat format["_curClientState: %1",_curClientState];
+        _lastClientState = _curClientState;
+    };
+};
+
 worldHalfSize   = (getNumber (configFile >> "CfgWorlds" >> worldName >> "mapSize") / 2);
 worldCenter     = [worldHalfSize,worldHalfSize,0];
 
 if(!isDedicated)then{
     playerReady = false;
-    //startLoadingScreen ["prepare to survive", "bde_loadingScreen"];
+    startLoadingScreen ["prepare to survive ...", "bde_loadingScreen"];
+    progressLoadingScreen 0;
     [] execVM "LLW_Climate\loadFunctions.sqf";
+    progressLoadingScreen 0.2;
     [] execVM "scripts\player\playerGlobalFuncs.sqf";
+    progressLoadingScreen 0.4;
     [] execVM "scripts\player\playerGlobalVars.sqf";
 };
 
@@ -41,8 +53,11 @@ if(isServer)then{
 };
 
 if(!isDedicated)then{
+    progressLoadingScreen 0.6;
     [] execVM "LLW_Climate\loadFunctions.sqf";
+    progressLoadingScreen 0.8;
     waitUntil { playerReady };
     systemChat format["playerReady %1",playerReady];
-    //endLoadingScreen;
+    progressLoadingScreen 1;
+    endLoadingScreen;
 };
