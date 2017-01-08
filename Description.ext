@@ -41,7 +41,9 @@ showMap = 1;
 showNotePad = 0;
 
 // Disable dropping items while swimming
-enableItemsDropping = 0
+enableItemsDropping = 0;
+
+persistent = 1;
 
 respawn = 3; // Respawn type. 0:"NONE", 1:"BIRD", 2:"INSTANT", 3:"BASE", 4:"GROUP", 5:"SIDE"
 respawndelay = 5; // Delay in seconds before playable unit respawns.

@@ -1,4 +1,4 @@
-_result = call compile ("extDB2" callExtension "0:SQL_VH_LOAD:SELECT * FROM vehicles");
+_result = call compile ("extDB3" callExtension "0:SQL:SELECT * FROM vehicles");
 waitUntil{count _result > 0 && _result select 0 > 0};
 _vehiclesQueryStatus  = _result select 0;
 _vehiclesInDB         = _result select 1;

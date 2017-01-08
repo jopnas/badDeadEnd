@@ -185,7 +185,7 @@ player setUserActionText [_gutAnimalActionID,"gut animal","<t color='#ff0000'><i
 _chopWoodActionID = player addAction["chop wood",{
     [cursorObject] call chopWood;
 },[],6,true,true,"","('bde_hatchet' in magazines player) && (str (cursorObject) find ': t_' > -1) && (player distance2d cursorObject < 3)"];
-player setUserActionText [_chopWoodActionID,"chop wood","<t color='#b57326'><img image='\a3\ui_f\data\gui\cfg\Hints\actionmenu_ca.paa' /></t>",""];
+player setUserActionText [_chopWoodActionID,"chop wood","<t color='#b57326'><img image='\bde\pics\actions\bde_chopWood.paa' /></t>",""];
 
 // Drink Water
 _drinkActionID = player addAction["drink",{
@@ -203,7 +203,7 @@ _drinkActionID = player addAction["drink",{
     	player setVariable ["playerSick",_new,true];
     };
 },_cursorObject,6,true,true,"","( nearOpenWater || ((cursorObject distance player < 2) && (str (getModelInfo cursorObject) find 'watertank' > -1 || str (getModelInfo cursorObject) find 'waterbarrel' > -1 || str (getModelInfo cursorObject) find 'barrelwater' > -1 || str (getModelInfo cursorObject) find 'stallwater' > -1 || str (getModelInfo cursorObject) find 'water_source' > -1)) )"];
-player setUserActionText [_drinkActionID,"drink","<t color='#0000ff'><img image='\a3\ui_f\data\gui\cfg\Hints\actionmenu_ca.paa' /></t>",""];
+player setUserActionText [_drinkActionID,"drink","<t color='#0000ff'><img image='\bde\pics\actions\bde_drink.paa' /></t>",""];
 
 bde_fnc_punch = {
     isPunching = true;
@@ -313,7 +313,7 @@ while{true}do{
     if(t > nextEverySecond)then{
         [player,[_playerHunger,_playerThirst,_playerHealth,_playerTemperature,_playerWet,_playerSick,_playerInfected,_playerPoisoning,_playerRadiation]] remoteExec ["fnc_savePlayerStats",2,false];
         [] call updateUI;
-        nextEverySecond = t + 1;
+        nextEverySecond = t + 3;
 
         // Bladder Check + pee in pants
         if(_playerBladder > 99)then{
