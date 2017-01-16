@@ -1,4 +1,13 @@
-params["_playerUnit","_db","_dbAll"/**/,"_isRespawn"];
+private["_db","_dbAll","_playerUnit","_isRespawn"];
+_playerUnit = player;
+
+systemChat "client: init playerSpawn.sqf";
+
+waitUntil { player getVariable ["playerDBstats",false] isEqualType [] };
+
+_playerDBstats = _playerUnit getVariable "playerDBstats";
+_db = _playerDBstats select 0;
+_dbAll = _playerDBstats select 1;
 
 if(!(_dbAll isEqualTo []))then{
     _isRespawn = false;

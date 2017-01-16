@@ -1,3 +1,6 @@
+"extDB3" callExtension "9:ADD_DATABASE:sid110451_1";
+"extDB3" callExtension "9:ADD_DATABASE_PROTOCOL:sid110451_1:SQL:SQL";
+
 fnc_deletePlayerStats = {
 	_PlayerUID	= _this select 0;
 
@@ -11,6 +14,8 @@ fnc_deletePlayerStats = {
 fnc_loadPlayerStats = {
 	params["_playerUnit","_PlayerUID","_result","_resultData"];
 
+    systemChat format["server: MySQLdata loadPlayerStats %1",_playerUnit];
+
     if(_PlayerUID == "_SP_PLAYER_")then{
         _PlayerUID = 12345;
     };
@@ -18,7 +23,7 @@ fnc_loadPlayerStats = {
 	_result = call compile ("extDB3" callExtension format["0:SQL:SELECT PlayerPosition,PlayerStance,hunger,thirst,health,temperature,wet,sick,infected,playerDirection,playerDamage,currentWeapon,loadout,dog,poisoning,radiation FROM player WHERE PlayerUID='%1'",_PlayerUID]);
 
     waitUntil { (count _result > 0 && _result select 0 > 0) };
-    [_playerUnit,(_result select 1) select 0,_result select 1] execVM "scripts\server\playerSpawn.sqf";
+    _playerUnit setVariable ["playerDBstats", [(_result select 1) select 0,_result select 1], true];
 };
 
 fnc_savePlayerStats = {

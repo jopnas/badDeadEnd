@@ -16,7 +16,6 @@ if(isServer)then{
 
     setTimeMultiplier 5; // 0.1 - 120
 
-    [] execVM "scripts\server\registerDBdata.sqf";
     [] execVM "scripts\server\MySQLdata.sqf";
 
     [] execVM "scripts\server\worldObjectsOptions.sqf";
@@ -51,6 +50,7 @@ if(!isDedicated)then{
     //progressLoadingScreen 0.4;
     [] execVM "scripts\player\playerGlobalVars.sqf";
     //progressLoadingScreen 0.6;
+    [] execVM "scripts\player\playerSpawn.sqf";
     //progressLoadingScreen 0.8;
     waitUntil { playerReady };
     systemChat format["playerReady %1",playerReady];
