@@ -53,7 +53,7 @@ for "_a" from 0 to 3 step 1 do {
 			}else{
 				if(random 100 < 50)then{
 					_anomalyLoot addItemCargoGlobal [selectRandom _mediumRangeLootItem,1];
-				}else{;
+				}else{
 					_anomalyLoot addMagazineCargoGlobal [selectRandom _mediumRangeLootItem2,1];
 				};
 			};
