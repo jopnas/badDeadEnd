@@ -7,4 +7,4 @@ _respawnDelay = _this select 3;
 systemChat "onPlayerRespawn.sqf";
 
 _newUnitUID     = getPlayerUID _newUnit;
-[_newUnit,false,false] execVM "scripts\server\playerSpawn.sqf";
+[] execVM "scripts\player\playerSpawn.sqf";

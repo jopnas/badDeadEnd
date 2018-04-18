@@ -1,3 +1,4 @@
+params[/**/"_result"];
 _result = call compile ("extDB3" callExtension "0:SQL:SELECT * FROM vehicles");
 waitUntil{count _result > 0 && _result select 0 > 0};
 _vehiclesQueryStatus  = _result select 0;

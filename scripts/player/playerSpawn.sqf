@@ -1,18 +1,17 @@
-private["_db","_dbAll","_playerUnit","_isRespawn"];
+private["_db","_dbAll","_playerUnit","_isRespawn","_playerDBstats"];
 _playerUnit = player;
 
 systemChat "client: init playerSpawn.sqf";
 
 waitUntil { player getVariable ["playerDBstats",false] isEqualType [] };
-
+systemChat str(_playerDBstats);
 _playerDBstats = _playerUnit getVariable "playerDBstats";
 _db = _playerDBstats select 0;
 _dbAll = _playerDBstats select 1;
 
+_isRespawn = true;
 if(!(_dbAll isEqualTo []))then{
     _isRespawn = false;
-}else{
-    _isRespawn = true;
 };
 
 // Player Setup
@@ -179,7 +178,7 @@ _playerUnit addAction["Arsenal",{
 },[],1,false,false,"",""];
 
 // Player Init
-[_playerUnit,_isRespawn] execVM "scripts\player\playerWhileAlive.sqf";
+[_isRespawn] execVM "scripts\player\playerWhileAlive.sqf";
 
 // Init BDE GUI
 3 cutRsc ['playerStatusGUI', 'PLAIN',3,false];

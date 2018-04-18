@@ -1,5 +1,5 @@
-params["_playerUnit","_isRespawn"];
-
+params["_isRespawn"/**/,"_playerUnit"];
+_playerUnit = player;
 // Player Init Situation
 if(_isRespawn)then{
     playSound "feeepSound0";
@@ -212,7 +212,6 @@ bde_fnc_punch = {
     isPunching = false;
 };
 
-playerReady = true;
 /*-/-/-/-/-> LOOP <-/-/-/-/-/*/
 while{true}do{
 	t=time;
